@@ -122,16 +122,16 @@
 ### 🔑Commit Convention 
 |태그|설명|예시|
 |:--:|:--:|:--:|
-|Feat|새로운 기능 추가|Feat: 회원 로그인 기능 추가|
-|Style|코드형식 변경(비즈니스 로직 변경 ❌)|Style: 회원 조회 코드형식 변경|
-|Fix|버그 수정|Fix: 회원 탈퇴 불가 수정|
-|Docs|문서 추가/수정/삭제|Docs: 리드미 수정|
-|Test|테스트|Test: 회원가입 테스트|
-|Refactor|코드 리팩토링|Refactor: 피커 비즈니스 로직 리팩토링|
-|Design| CSS 및 레이아웃 작업 | Design: 로그인 페이지 레이아웃 배치|
-|Chore|코드 외 패키지 매니저 수정사항|Chore: 공백 제거|
-|Build|빌드 관련 파일 수정|Build: Docker파일 수정|
-|Merge|Merge 진행 시|Merge: 회원 서비스 개발 브랜치 병합|
+|FEAT|새로운 기능 추가|FEAT: 회원 로그인 기능 추가|
+|STYLE|코드형식 변경(비즈니스 로직 변경 ❌)|STYLE: 회원 조회 코드형식 변경|
+|FIX|버그 수정|FIX: 회원 탈퇴 불가 수정|
+|DOCS|문서 추가/수정/삭제|DOCS: 리드미 수정|
+|TEST|테스트|TEST: 회원가입 테스트|
+|REFACTOR|코드 리팩토링|REFACTOR: 피커 비즈니스 로직 리팩토링|
+|DESIGN| CSS 및 레이아웃 작업 | DESIGN: 로그인 페이지 레이아웃 배치|
+|CHORE|코드 외 패키지 매니저 수정사항|CHORE: 공백 제거|
+|BUILD|빌드 관련 파일 수정|BUILD: Docker파일 수정|
+|MERGE|Merge 진행 시|MERGE: 회원 서비스 개발 브랜치 병합|
 
 
 ### 🔑Branch
