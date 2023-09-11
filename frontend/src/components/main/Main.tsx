@@ -1,6 +1,6 @@
 const Main = () => {
     return (
-        <div style={{fontFamily:'Pretendard'}}>
+        <div>
             test
         </div>
     )
