@@ -10,7 +10,7 @@ const { persistAtom } = recoilPersist({
 const userAtom = atom<userType>({
     key : "userAtom",
     default: {
-        userIdx : -1,
+        userIdx : 1,
         userId : "",
         userName : "비회원",
         accessToken : "",

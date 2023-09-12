@@ -8,15 +8,3 @@
     font-weight: normal;
     font-style: normal;
 }
-
-/* tailwind setting */
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@layer base {
-    html {
-        font-family: pretendard;
-        font-size: 10px;
-    }
-}
