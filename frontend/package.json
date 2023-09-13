@@ -18,6 +18,7 @@
     "react-router-dom": "^6.15.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
+    "tw-colors": "^3.0.3",
     "vite-plugin-pwa": "^0.16.5"
   },
   "devDependencies": {

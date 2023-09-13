@@ -1,4 +1,4 @@
-import Intro from '@/components/login/Intro';
+import Intro from '@/components/intro/Intro';
 
 const AppIntro = () => {
     return (

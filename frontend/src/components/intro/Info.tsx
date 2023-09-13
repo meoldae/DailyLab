@@ -7,13 +7,13 @@ interface InfoProps {
 
 const Info: React.FC<InfoProps> = ({ imgsrc, name, desc, color }) => {
     return (
-        <div className="mx-auto mb-8 max-w-xl py-8 pr-8 flex items-center rounded-2xl bg-white">
+        <div className="mx-auto mb-8 max-w-xl py-8 pr-8 flex items-center rounded-2xl bg-primary">
             <img className="ml-3 w-[90px]" src={imgsrc} alt="" />
             <div className="ml-2 flex-1">
                 <div className="mb-3 text-xl font-bold" style={{color:color}}>
                     {name}
                 </div>
-                <div dangerouslySetInnerHTML={{__html: desc}}>
+                <div className="font-thin break-keep" dangerouslySetInnerHTML={{__html: desc}}>
                 </div>
             </div>
         </div>
