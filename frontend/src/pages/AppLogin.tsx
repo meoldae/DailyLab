@@ -1,4 +1,4 @@
-import Login from '@/components/main/Login';
+import Login from '@/components/login/Login';
 
 const AppLogin = () => {
     return (
