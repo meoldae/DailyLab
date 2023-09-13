@@ -30,16 +30,7 @@ export default {
     plugin(function({ matchVariant }) {
       matchVariant(
         'child',
-        (value) => {
-          return `& > ${value}`;
-        },
-        {
-          values: {
-            1: '1',
-            2: '2',
-            3: '3',
-          }
-        }
+        (value) => {return `& > ${value}`;}
       );
     })
   ],
