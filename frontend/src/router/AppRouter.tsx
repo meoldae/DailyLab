@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { SetModeToHtml } from "@/atom/modeAtom";
 import AuthRoute from "./AuthRoute";
 import AppInfo from "@/pages/AppInfo";
 import AppMain from "@/pages/AppMain";
@@ -9,6 +10,8 @@ import AppLogin from "@/pages/AppLogin";
 import AppIntro from "@/pages/AppIntro";
 
 const AppRouter = () => {
+    SetModeToHtml();
+
     return (
         <BrowserRouter>
             <Routes>

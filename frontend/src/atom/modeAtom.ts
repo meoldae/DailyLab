@@ -12,10 +12,21 @@ type modeType = {
 
 const modeAtom = atom<modeType>({
     key : "modeAtom",
-    default: {
-        mode : "light",
-    },
+    default: {mode : "light"},
     effects_UNSTABLE: [persistAtom],
 });
 
-export { modeAtom };
+function GetMode():string {return useRecoilValue(modeAtom).mode;}
+
+function SetModeToHtml():void {
+    if(GetMode() == 'dark'){
+    document.getElementsByTagName('html')[0].classList.add('dark');
+    document.getElementsByTagName('html')[0].classList.remove('light');
+    } else {
+        document.getElementsByTagName('html')[0].classList.add('light');
+        document.getElementsByTagName('html')[0].classList.remove('dark');
+    
+    }
+}
+
+export { modeAtom, GetMode, SetModeToHtml };
