@@ -6,6 +6,7 @@ import AppSchedule from "@/pages/AppSchedule";
 import AppStatistics from "@/pages/AppStatistics";
 import AppMyPage from "@/pages/AppMyPage";
 import AppLogin from "@/pages/AppLogin";
+import AppIntro from "@/pages/AppIntro";
 
 const AppRouter = () => {
     return (
@@ -21,6 +22,7 @@ const AppRouter = () => {
                 <Route element={<AuthRoute authentication="NotUser"/>}>    
                     <Route path="/login" element={<AppLogin />} />
                 </Route>
+                <Route path="/intro" element={<AppIntro />} />
             </Routes>
         </BrowserRouter>
     )

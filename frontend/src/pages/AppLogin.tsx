@@ -1,7 +1,11 @@
-export default function AppLogin() {
+import Login from '@/components/login/Login';
+
+const AppLogin = () => {
     return (
-        <>
-            로그인 페이지
-        </>
+        <div>
+            <Login />
+        </div>
     )
 }
+
+export default AppLogin;
