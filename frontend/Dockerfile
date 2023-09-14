@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM node:15-alpine AS build
 
 ENV NODE_ENV=production
 
@@ -13,7 +13,7 @@ RUN npm install -g typescript
 
 RUN npm install
 
-RUN npm install --save-dev @types/react @types/react-dom
+# RUN npm install --save-dev @types/react @types/react-dom
 
 COPY . .
 
