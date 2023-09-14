@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     IMAGE_NAME_BE = "dailylab-dev-springboot"
-                    APPLICATION_YML_PATH = "/usr/spring/resources/dev"
+                    APPLICATION_YML_PATH = "/usr/spring/resources/dev/"
                     CONTAINER_NAME_BE = "daily_dev_be"
                     PROJECT_DIR_BE = "backend"
                 }
