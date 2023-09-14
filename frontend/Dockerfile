@@ -8,6 +8,11 @@ COPY package.json .
 
 RUN npm cache clean --force
 
+# Typescript 먼저 install
+RUN npm install -g typescript
+
+RUN tsc --version
+
 RUN npm install
 
 COPY . .
