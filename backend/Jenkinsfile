@@ -4,10 +4,8 @@ pipeline {
         stage("Set Variable") {
             steps {
                 script {
-                    IMAGE_NAME_BE = "rkdehdvy315/dailylab-dev-springboot"
-                    IMAGE_STORAGE = "https://registry.hub.docker.com"
-                    IMAGE_STORAGE_CREDENTIAL = "docker-hub"
-                    APPLICATION_YML_PATH = "/usr/spring/resources"
+                    IMAGE_NAME_BE = "dailylab-dev-springboot"
+                    APPLICATION_YML_PATH = "/usr/spring/resources/dev"
                     CONTAINER_NAME_BE = "daily_dev_be"
                     PROJECT_DIR_BE = "backend"
                 }
