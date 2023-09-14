@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-    html {@apply bg-secondary; @apply text-text; font-family: pretendard; font-size: 10px;}
+    html {@apply bg-secondary; @apply text-text; font-family: pretendard; font-size: 10px; min-height: 100vh;}
     * { margin: 0; padding: 0; box-sizing: border-box; list-style: none;}
     a { text-decoration: none; color: inherit; transition: all 0.2s ease;}
     input{-webkit-appearance: none; outline: none;}
