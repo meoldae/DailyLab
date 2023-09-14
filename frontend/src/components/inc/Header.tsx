@@ -17,16 +17,20 @@ export default function Header() {
         headerMenuBg.current!.classList.toggle('opacity-60');
         headerMenuCon.current!.classList.toggle('z-[-1]');
         headerMenuCon.current!.classList.toggle('z-[1000]');
-        headerMenuCon.current!.classList.toggle('h-0');
-        if(headerMenuCon.current!.style.height == '135px') headerMenuCon.current!.style.height = '';
-        else headerMenuCon.current!.style.height = '135px';
+        if(headerMenuCon.current!.style.height == '135px'){
+            headerMenuCon.current!.style.transition = '';
+            headerMenuCon.current!.style.height = '';
+        }else {
+            headerMenuCon.current!.style.transition = 'height 0.2s ease';
+            headerMenuCon.current!.style.height = '135px';
+        }
     }
 
     return (
         <header className="flex justify-end pt-[20px] pr-[20px] overflow-hidden">
             <div className="w-screen h-screen z-[-1] absolute left-0 top-0 opacity-0 bg-black text-0 transition-all" onClick={toggleHeaderMenu} ref={headerMenuBg}>헤더 메뉴 active시 screen 배경</div>
             <button type="button" onClick={toggleHeaderMenu}><img src={settingIconImg} alt="설정 아이콘" className='w-[24px]'/></button>
-            <div className="top-[45px] right-[10px] absolute text-right overflow-hidden h-0 z-[-1]" ref={headerMenuCon} style={{transition: 'height .15s ease'}}>
+            <div className="top-[45px] right-[10px] absolute text-right overflow-hidden h-0 z-[-1]" ref={headerMenuCon}>
                 <img className="inline-block w-[30px] z-[2] relative -mb-[1px] mr-[10px]" src={headerMenuTriangle} alt="헤더 메뉴 삼각형 아이콘" />
                     <ul className="bg-white text-center rounded-[10px] overflow-hidden border-[1px] border-black
                     child-[li]:text-[13px] child-[li]:font-medium child-[li]:px-[50px] child-[li]:py-[8px] child-[li]:border-b-[1px] child-[li]:border-black
