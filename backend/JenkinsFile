@@ -9,7 +9,7 @@ pipeline {
                     IMAGE_STORAGE_CREDENTIAL = "docker-hub"
                     APPLICATION_YML_PATH = "/usr/spring/resources"
                     CONTAINER_NAME_BE = "daily_dev_be"
-                    PROJECT_DIR_BE = "dev-backend"
+                    PROJECT_DIR_BE = "backend"
                 }
             }
         }
