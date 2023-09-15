@@ -17,6 +17,8 @@ RUN npm install -g typescript
 
 RUN npm install -g vite@latest
 
+RUN npm install @vitejs/plugin-react-swc
+
 COPY . .
 
 RUN vite build
