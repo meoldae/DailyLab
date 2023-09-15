@@ -4,8 +4,8 @@ const CheckboxList = () => {
     return (
         <div className="bg-primary rounded-2xl px-5 py-8 
         child-[div:not(:last-child)]:mb-4">
-            {todoList.length > 0 && todoList.map((todo)=>(
-                <Checkbox state={todo.state} content={todo.content}/>
+            {todoList.length > 0 && todoList.map((todo, index)=>(
+                <Checkbox key={index} state={todo.state} content={todo.content}/>
             ))}
         </div>
     )
