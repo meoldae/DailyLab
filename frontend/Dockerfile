@@ -1,6 +1,6 @@
 FROM node:18-alpine AS build
 
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 WORKDIR /frontend
 
@@ -8,16 +8,18 @@ COPY package.json .
 
 RUN npm cache clean --force
 
-RUN npm install
-
 # Typescript 먼저 install
-RUN npm install -g typescript
+RUN npm install -g typescript vite
 
 # RUN npm install --save-dev @types/react-dom
 
-RUN npm install -g vite@latest
-
 RUN npm install @vitejs/plugin-react-swc
+
+ENV NODE_ENV=development
+
+RUN npm install
+
+ENV NODE_ENV=production
 
 COPY . .
 
