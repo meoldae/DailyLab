@@ -11,7 +11,7 @@ RUN npm cache clean --force
 RUN npm install
 
 # Typescript 먼저 install
-# RUN npm install -g typescript
+RUN npm install typescript
 
 # RUN npm install --save-dev @types/react-dom
 
