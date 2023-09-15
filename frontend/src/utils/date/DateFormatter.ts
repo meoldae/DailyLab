@@ -3,8 +3,7 @@ function leftPad(value: number) {
     else return `0${value}`;
 }
 
-function toStringByFormatting(selectDate: Date, delimiter?: string) {
-    if(delimiter == null) delimiter = '-';
+function toStringByFormatting(selectDate: Date, delimiter: string="-") {                                                             
     const year = selectDate.getFullYear();
     const month = leftPad(selectDate.getMonth() + 1);
     const day = leftPad(selectDate.getDate());

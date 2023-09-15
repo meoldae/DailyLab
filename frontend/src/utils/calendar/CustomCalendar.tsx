@@ -4,6 +4,7 @@ import { toStringByFormatting } from '@/utils/date/DateFormatter';
 
 interface CalendarProps {
     initDate : string
+    showOverDate : boolean
 }
 
 const CustomCalendar = (props : CalendarProps) => {
@@ -28,11 +29,34 @@ const CustomCalendar = (props : CalendarProps) => {
         getDateList();
     }, []);
 
-    
-
     return (
         <div>
-            캘린더 
+            <div><button>과거로</button>{dateList[0].split('-')}<button>미래로</button></div>
+            <div className='w-full child-[span]:text-[13px]'>
+                <span>월</span>
+                <span>화</span
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                >
+                <span>수</span>
+                <span>목</span>
+                <span>금</span>
+                <span>토</span>
+                <span>일</span>
+            </div>
             {dateList.map((item, index) => (
                 <CustomCalendarItem selectDate={item} key={index} />
             ))}

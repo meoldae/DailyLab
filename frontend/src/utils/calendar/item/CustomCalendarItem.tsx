@@ -5,8 +5,7 @@ interface CalendarItemProps {
 const CustomCalendarItem = (props : CalendarItemProps) => {
     return (
         <div>
-            {props.selectDate}
-            
+            {Number(props.selectDate.split('-')[2])}
         </div>
     )
 }

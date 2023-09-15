@@ -8,7 +8,7 @@ export default function AppSchedule() {
             <Header />
                 <div className='h-screen'>
                     스케줄 페이지
-                    <CustomCalendar initDate="2023-09-14"/>
+                    <CustomCalendar initDate="2023-09-14" showOverDate={false} />
                 </div>
             <Footer />
         </>

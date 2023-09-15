@@ -3,7 +3,6 @@ import { GetMode } from "@/atom/modeAtom";
 
 export default function Footer() {
     const isLight = GetMode() == 'light';
-    console.log(isLight);
     return (
         <footer className="w-full flex justify-between overflow-hidden fixed left-0 bottom-0 rounded-t-2xl px-[23px] py-[15px] bg-primary child-[a]:inline-block child-[a]:bg-cover child-[a]:w-[40px] child-[a]:h-[40px] child-[a]:text-0 ">
             <NavLink to="/info" className={({isActive}: {isActive : boolean}) => getBgClass(isActive, 0)}>정보입력</NavLink>
