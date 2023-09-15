@@ -15,6 +15,8 @@ RUN npm install -g typescript
 
 # RUN npm install --save-dev @types/react-dom
 
+RUN npm install -g vite@latest
+
 COPY . .
 
 RUN vite build
