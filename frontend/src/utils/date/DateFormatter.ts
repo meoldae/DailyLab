@@ -1,6 +1,6 @@
 function leftPad(value: number) {
     if (value >= 10) return value;
-    else `0${value}`;
+    else return `0${value}`;
 }
 
 function toStringByFormatting(selectDate: Date, delimiter?: string) {

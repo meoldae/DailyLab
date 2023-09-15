@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import CustomCalendarItem from './item/CustomCalendarItem';
-import { toStringByFormatting } from '@/utils/date/Date';
+import { toStringByFormatting } from '@/utils/date/DateFormatter';
 
 interface CalendarProps {
     initDate : string
@@ -10,20 +10,23 @@ const CustomCalendar = (props : CalendarProps) => {
     const initDateTemp = new Date(props.initDate);
     const initDateYear = initDateTemp.getFullYear();
     const initDateMonth = initDateTemp.getMonth();
-    const [firstDate, setFirstDate] = useState<Date>(new Date(initDateYear, initDateMonth, 1));
-    const [lastDate, setLastDate] = useState<Date>(new Date(initDateYear, initDateMonth + 1, 0));
-    function getDateList():string[] {
-        const result = [];
+    const firstDate = new Date(initDateYear, initDateMonth, 1);
+    const lastDate = new Date(initDateYear, initDateMonth + 1, 0);
+    const [dateList, setDateList] = useState<string[]>([]);
+    function getDateList() {
+        const result:string[] = [];
         const tempFirstDate = firstDate;
         const tempLastDate = lastDate;
-        while(tempFirstDate != tempLastDate){
+        while(tempFirstDate.getTime() != tempLastDate.getTime()){
             result.push(toStringByFormatting(tempFirstDate));
             tempFirstDate.setDate(tempFirstDate.getDate() + 1);
         }
         result.push(toStringByFormatting(tempLastDate));
-        return result;
+        setDateList(() => result);
     }
-    const [dateList, setDateList] = useState<string[]>(['2023-09-10', '2023-09-11']);
+    useEffect(() => {
+        getDateList();
+    }, []);
 
     
 
