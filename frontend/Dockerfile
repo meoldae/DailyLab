@@ -11,13 +11,13 @@ RUN npm cache clean --force
 RUN npm install
 
 # Typescript 먼저 install
-RUN npm install typescript
+RUN npm install -g typescript
 
 # RUN npm install --save-dev @types/react-dom
 
 COPY . .
 
-RUN npm run build
+RUN vite build
 
 FROM nginx:1.21.3-alpine
 
