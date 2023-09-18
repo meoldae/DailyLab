@@ -15,7 +15,7 @@ pipeline {
         // 설정파일 참조
         stage("copy env") {
             steps {
-                sh "cp ${APPLICATION_ENV_PATH}/* ${PROJECT_DIR_FE}"
+                sh "cp ${APPLICATION_ENV_PATH}/.* ${PROJECT_DIR_FE}"
             }
         }
 
