@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.amor4ti.dailylab.domain.entity.diary.DiaryPredict;
+import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -76,5 +77,12 @@ public class Member {
 
 	public void setReligion(String religion) {
 		this.religion = religion;
+	}
+
+	public void updateMember(UpdateMemberDto updateMemberDto){
+		if (updateMemberDto.getMbtiId() != 0) this.mbtiId = updateMemberDto.getMbtiId();
+		if (updateMemberDto.getJob() != null) this.job = updateMemberDto.getJob();
+		if (updateMemberDto.getGoal() != null) this.goal = updateMemberDto.getGoal();
+		if (updateMemberDto.getReligion() != null) this.religion = updateMemberDto.getReligion();
 	}
 }
