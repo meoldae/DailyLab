@@ -21,6 +21,18 @@ const BarChart = () => {
         {name: '14', data: [2, 5, 7, 4]},
     ];
     const options: ApexCharts.ApexOptions = {
+        states: {
+            active: {
+              filter: {
+                type: 'none' /* none, lighten, darken */
+              }
+            },
+            hover: {
+                filter: {
+                    type: 'none' /* none, lighten, darken */
+                } 
+            }
+        },
         colors : colorList,
         chart: {
             type: 'bar',
@@ -47,22 +59,7 @@ const BarChart = () => {
     }
 
     return (
-        <ApexCharts type="bar" series={state} options={options} states={{normal: {
-            filter: {
-                type: 'none',
-                value: 1,
-            }
-        },
-        hover: {
-            filter: {type: 'none', value: 1,}
-        },
-        active: {
-            allowMultipleDataPointsSelection: true,
-            filter: {
-                type: 'none',
-                value: 1,
-            }
-        }}}/>
+        <ApexCharts type="bar" series={state} options={options} />
     )
 }
 
