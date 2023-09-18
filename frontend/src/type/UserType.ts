@@ -1,9 +1,9 @@
 type userType = {
-    userIdx : number,
-    userId : string,
-    userName : string,
+    // userIdx : number,
+    // userId : string,
+    // userName : string,
     accessToken : string,
-    isAdmin : boolean,
+    // isAdmin : boolean,
 }
 
 export default userType;
