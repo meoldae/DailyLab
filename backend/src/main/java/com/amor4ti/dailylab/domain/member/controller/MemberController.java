@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +44,17 @@ public class MemberController {
 	}
 
 	@GetMapping("/info")
-	public DataResponse<Member> getMemberInfo(Authentication authentication) {
-
-		return null;
+	public DataResponse getMemberInfo(Authentication authentication) {
+		Member member = (Member) authentication.getPrincipal();
+		return memberService.getMainMemberDto(member.getMemberId());
 	}
+
+	@PostMapping("/modify")
+	public CommonResponse updateMember(@RequestBody UpdateMemberDto updateMemberDto, Authentication authentication){
+		Member member = (Member) authentication.getPrincipal();
+		return memberService.updateMemberInfo(member.getMemberId(), updateMemberDto);
+	}
+
 
 	@DeleteMapping("/logout")
 	public CommonResponse logout(HttpServletRequest request, HttpServletResponse response) {
@@ -56,5 +64,11 @@ public class MemberController {
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
 		return responseService.successResponse(ResponseStatus.LOGOUT_SUCCESS);
+	}
+
+	@GetMapping("/hobby")
+	public DataResponse getHobbyList(Authentication authentication){
+		Member member = (Member) authentication.getPrincipal();
+		return memberService.getHobbyList(member.getMemberId());
 	}
 }
