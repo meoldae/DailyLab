@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-	private static final String REDIRECT_ENDPOINT = "https://j9b104.p,ssafy.io";
+	private static final String REDIRECT_ENDPOINT = "https://j9b104.p.ssafy.io";
 
 	private final MemberRepository memberRepository;
 	private final JwtProvider jwtProvider;
@@ -47,7 +47,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 		member.ifPresentOrElse(
 			tempMember -> {
 				if (tempMember.getBirthday() == null) {
-					redirectUrl = REDIRECT_ENDPOINT + "/userInfo?id=" + tempMember.getMemberId();
+					redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
 				} else {
 					String accessToken = jwtProvider.createAccessToken(member.get());
 					String refreshToken = jwtProvider.createRefreshToken();
@@ -66,7 +66,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 					.build();
 
 				Member signupMember = memberRepository.save(newMember);
-				redirectUrl = REDIRECT_ENDPOINT + "/userInfo?id=" + signupMember.getMemberId();
+				redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
 			}
 		);
 
