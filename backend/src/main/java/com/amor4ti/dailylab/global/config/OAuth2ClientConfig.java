@@ -1,5 +1,7 @@
 package com.amor4ti.dailylab.global.config;
 
+import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.global.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.catalina.User;
@@ -29,7 +31,10 @@ public class OAuth2ClientConfig {
 	private final CustomOAuth2UserService customOAuth2UserService;
 
 	private final CustomOidcUserService customOidcUserService;
-	private final CustomAuthenticationFilter customAuthenticationFilter;
+//	private final CustomAuthenticationFilter customAuthenticationFilter;
+
+	private final JwtProvider jwtProvider;
+	private final MemberRepository memberRepository;
 
 	private final CustomOAuth2LoginFailureHandler customOAuth2LoginFailureHandler;
 	private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
@@ -55,7 +60,7 @@ public class OAuth2ClientConfig {
 			.antMatchers(ignoredUrls).permitAll()
 			.anyRequest().authenticated()
 			.and()
-			.addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(new CustomAuthenticationFilter(jwtProvider, memberRepository), UsernamePasswordAuthenticationFilter.class);
 
 		// OAuth
 		http

@@ -39,9 +39,9 @@ public class EmotionController {
                                            @RequestBody RegisterMemberEmotionDto requestDto) {
 
         log.info("Controller OK");
-        Member member = (Member) authentication.getDetails();
-        log.info("detail={}", member);
-        emotionService.registerEmotion(member.getMemberId(), requestDto);
+        String memberId = authentication.getName();
+        log.info("memberId={}", memberId);
+//        emotionService.registerEmotion(memberId, requestDto);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
