@@ -4,7 +4,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,7 +14,6 @@ import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.util.CookieUtils;
 import com.amor4ti.dailylab.global.util.JwtProvider;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Controller
