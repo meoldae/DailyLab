@@ -1,7 +1,7 @@
 package com.amor4ti.dailylab.domain.emotion.service;
 
 
-import com.amor4ti.dailylab.domain.emotion.repository.EmotionRepository;
+import com.amor4ti.dailylab.domain.emotion.mongorepo.EmotionRepository;
 import com.amor4ti.dailylab.domain.entity.Emotion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

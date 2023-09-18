@@ -3,6 +3,7 @@ package com.amor4ti.dailylab.domain.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,7 +14,11 @@ import javax.persistence.Id;
 public class Emotion {
 
     @Id
-    private Long emotionId;
+    private String emotionId;
+
+    @Field(name = "name")
     private String name;
+
+    @Field(name = "type")
     private String type;
 }
