@@ -1,5 +1,6 @@
 package com.amor4ti.dailylab.domain.member.service;
 
+import com.amor4ti.dailylab.domain.entity.Hobby;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.hobby.service.MemberHobbyService;
 import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -76,5 +78,11 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Hobby List 반영 필요
 		
 		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+	@Override
+	public DataResponse getHobbyList(Long memberId) {
+		List<Hobby> hobbyList = memberHobbyService.getHobbyListByMemberId(memberId);
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, hobbyList);
 	}
 }
