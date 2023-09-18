@@ -1,7 +1,9 @@
+import DailyChart from "@/components/chart/emotion/daily/DailyChart";
+
 const Result = () => {
     return (
-        <div>
-            test
+        <div className="min-h-screen pb-[80px]">
+            <DailyChart />
         </div>
     )
 }
