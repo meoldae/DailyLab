@@ -30,7 +30,7 @@ public class EmotionController {
     private DataResponse findAllEmotion() {
 
         List<Emotion> result = emotionService.getAllEmotion();
-        
+
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
