@@ -17,7 +17,7 @@ public class DiaryHistory {
     private Long diaryHistoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "memberId")
     private Member member;
 
     private String content;
