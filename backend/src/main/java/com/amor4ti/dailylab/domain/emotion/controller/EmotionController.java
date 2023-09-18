@@ -29,14 +29,14 @@ public class EmotionController {
     private DataResponse findAllEmotion() {
         List<Emotion> result = emotionService.getAllEmotion();
         log.info("result={}", result);
-        return responseService.successDataResponse(ResponseStatus.REQUEST_SUCCESS, result);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
     @PostMapping
     private CommonResponse registerEmotion(Authentication authentication,
                                            @RequestBody RegisterMemberEmotionDto requestDto) {
         emotionService.registerEmotion(requestDto);
-        return responseService.successResponse(ResponseStatus.REQUEST_SUCCESS);
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 
     @GetMapping("/date")

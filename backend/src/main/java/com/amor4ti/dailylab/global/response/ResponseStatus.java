@@ -7,8 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ResponseStatus {
     /* 공통 */
-    REQUEST_SUCCESS("200", "요청에 성공했습니다."),
-
+    RESPONSE_SUCCESS("200", "요청에 성공했습니다."),
 
     /* Member */
     ACCESS_TOKEN_REFRESHED("1001", "액세스 토큰이 재 발급되었습니다"),
