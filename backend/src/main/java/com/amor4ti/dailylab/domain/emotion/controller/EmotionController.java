@@ -9,8 +9,11 @@ import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -29,9 +32,18 @@ public class EmotionController {
         return responseService.successDataResponse(ResponseStatus.REQUEST_SUCCESS, result);
     }
 
-    @PostMapping()
-    private CommonResponse registerEmotion(@RequestBody RegisterMemberEmotionDto requestDto) {
+    @PostMapping
+    private CommonResponse registerEmotion(Authentication authentication,
+                                           @RequestBody RegisterMemberEmotionDto requestDto) {
         emotionService.registerEmotion(requestDto);
         return responseService.successResponse(ResponseStatus.REQUEST_SUCCESS);
     }
+
+    @GetMapping("/date")
+    private DataResponse findDayEmotion(Authentication authentication,
+                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+
+//        emotionService.getDayEmotion(date);
+    }
+
 }

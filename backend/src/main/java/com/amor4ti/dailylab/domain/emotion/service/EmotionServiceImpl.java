@@ -27,11 +27,12 @@ public class EmotionServiceImpl implements EmotionService {
     }
 
     public void registerEmotion(RegisterMemberEmotionDto requestDto) {
-        MemberEmotion value = MemberEmotion.builder()
+        MemberEmotion memberEmotion = MemberEmotion.builder()
                                            .memberId(1)
                                            .emotionId(requestDto.getEmotionId())
                                            .timestamp(requestDto.getTimeStamp())
                                            .build();
-        memberEmotionRepository.save(value);
+
+        memberEmotionRepository.save(memberEmotion);
     }
 }
