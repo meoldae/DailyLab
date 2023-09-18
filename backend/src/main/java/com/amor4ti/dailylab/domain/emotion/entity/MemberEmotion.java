@@ -16,7 +16,7 @@ public class MemberEmotion {
     @Id
     private String id;
 
-    private int memberId;
+    private Long memberId;
     private int emotionId;
     private LocalDateTime timestamp;
 

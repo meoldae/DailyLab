@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -26,9 +24,11 @@ public class EmotionServiceImpl implements EmotionService {
         return emotionRepository.findAll();
     }
 
-    public void registerEmotion(RegisterMemberEmotionDto requestDto) {
+    public void registerEmotion(Long memberId, RegisterMemberEmotionDto requestDto) {
+
+        log.info("memberId={}", memberId);
         MemberEmotion memberEmotion = MemberEmotion.builder()
-                                           .memberId(1)
+                                           .memberId(memberId)
                                            .emotionId(requestDto.getEmotionId())
                                            .timestamp(requestDto.getTimeStamp())
                                            .build();

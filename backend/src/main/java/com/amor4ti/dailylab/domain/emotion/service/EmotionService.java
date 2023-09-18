@@ -8,5 +8,5 @@ import java.util.List;
 public interface EmotionService {
     List<Emotion> getAllEmotion();
 
-    void registerEmotion(RegisterMemberEmotionDto requestDto);
+    void registerEmotion(Long memberId, RegisterMemberEmotionDto requestDto);
 }

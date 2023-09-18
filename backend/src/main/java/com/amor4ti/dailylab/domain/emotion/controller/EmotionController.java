@@ -3,6 +3,7 @@ package com.amor4ti.dailylab.domain.emotion.controller;
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
+import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
@@ -27,23 +28,27 @@ public class EmotionController {
 
     @GetMapping
     private DataResponse findAllEmotion() {
+
         List<Emotion> result = emotionService.getAllEmotion();
-        log.info("result={}", result);
+        
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
     @PostMapping
     private CommonResponse registerEmotion(Authentication authentication,
                                            @RequestBody RegisterMemberEmotionDto requestDto) {
-        emotionService.registerEmotion(requestDto);
+
+        Member member = (Member) authentication.getPrincipal();
+        emotionService.registerEmotion(member.getMemberId(), requestDto);
+
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 
-    @GetMapping("/date")
-    private DataResponse findDayEmotion(Authentication authentication,
-                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-
+//    @GetMapping("/date")
+//    private DataResponse findDayEmotion(Authentication authentication,
+//                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+//
 //        emotionService.getDayEmotion(date);
-    }
+//    }
 
 }
