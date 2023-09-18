@@ -3,6 +3,7 @@ package com.amor4ti.dailylab.domain.member.service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +37,12 @@ public class MemberServiceImpl implements MemberService{
 		Member findMember = memberRepository.findById(signUpDto.getMemberId()).orElseThrow(
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
-		signUpDto.modifyMember(findMember);
-
+		
+		findMember.setBirthday(signUpDto.getBirthDay());
+		findMember.setGender(signUpDto.getGender());
+		// Dirty Checking 이상으로 Save 호출
+		memberRepository.save(findMember);
+		
 		String accessToken = jwtProvider.createAccessToken(findMember);
 
 		String refreshToken = jwtProvider.createRefreshToken();
@@ -45,5 +50,13 @@ public class MemberServiceImpl implements MemberService{
 		response.addCookie(cookie);
 
 		return responseService.successDataResponse(ResponseStatus.SIGNUP_SUCCESS, accessToken);
+	}
+
+	@Override
+	public DataResponse getMainMemberDto(Long memberId) {
+		MainMemberDto mainMemberDto = memberRepository.findMainMemberDtoByMemberId(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, mainMemberDto);
 	}
 }

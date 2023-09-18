@@ -44,8 +44,8 @@ public class MemberController {
 
 	@GetMapping("/info")
 	public DataResponse<Member> getMemberInfo(Authentication authentication) {
-
-		return null;
+		Member member = (Member) authentication.getPrincipal();
+		return memberService.getMainMemberDto(member.getMemberId());
 	}
 
 	@DeleteMapping("/logout")
