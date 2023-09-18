@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-	private static final String REDIRECT_ENDPOINT = "https://j9b104.p,ssafy.io";
+	private static final String REDIRECT_ENDPOINT = "https://j9b104.p.ssafy.io";
 
 	private final MemberRepository memberRepository;
 	private final JwtProvider jwtProvider;
