@@ -17,6 +17,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.amor4ti.dailylab.global.filter.CustomAuthenticationFilter;
+import com.amor4ti.dailylab.global.oauth.handler.CustomOAuth2LoginFailureHandler;
+import com.amor4ti.dailylab.global.oauth.handler.CustomOAuth2LoginSuccessHandler;
 import com.amor4ti.dailylab.global.oauth.service.CustomOAuth2UserService;
 import com.amor4ti.dailylab.global.oauth.service.CustomOidcUserService;
 import com.amor4ti.dailylab.global.util.CustomAuthorityMapper;
@@ -30,11 +32,15 @@ public class OAuth2ClientConfig {
 	private final CustomOidcUserService customOidcUserService;
 	private final CustomAuthenticationFilter customAuthenticationFilter;
 
+	private final CustomOAuth2LoginFailureHandler customOAuth2LoginFailureHandler;
+	private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
+
 	@Value("${auth.ignored-urls}")
 	private String[] ignoredUrls;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		// 기본 설정 및 Form 비활성화
 		http
 			.cors().configurationSource(corsConfigurationSource())
 			.and()
@@ -45,24 +51,31 @@ public class OAuth2ClientConfig {
 			.formLogin().disable()
 			.httpBasic().disable();
 
-
+		// Custom Filter 
 		http.authorizeRequests()
 			.antMatchers(ignoredUrls).permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+		// OAuth
 		http
 			.oauth2Login(oAuth2
 					-> oAuth2.userInfoEndpoint(userInfoEndpointConfig
 					-> userInfoEndpointConfig
 					.userService(customOAuth2UserService)
 					.oidcUserService(customOidcUserService)
-				)
+					.and()
+					.successHandler(customOAuth2LoginSuccessHandler) // 인증 성공
+					.failureHandler(customOAuth2LoginFailureHandler)) // 인증 실패
+					.permitAll()
 			);
 
-		http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
-		http.logout().logoutSuccessUrl("/");
+		// API 요청
+		// http
+		// 	.exceptionHandling()
+		// 	.authenticationEntryPoint(customAuthenticationEntryPoint) // 인가 실패
+		// 	.accessDeniedHandler(customAccessDeniedHandler); // 인가 실패
 
 		return http.build();
 	}

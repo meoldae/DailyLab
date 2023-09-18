@@ -12,9 +12,8 @@ public interface ProviderUser {
     String getUsername();
     String getPassword();
     String getEmail();
-    String getProvider(); // 어떤 서비스인지 
-    List<? extends GrantedAuthority> getAuthorities(); // 권한
-    Map<String, Object> getAttributes();  // 서비스가 제공하는 유저 속성
-
+    String getProvider();
+    List<? extends GrantedAuthority> getAuthorities();
+    Map<String, Object> getAttributes();
     OAuth2User getOAuth2User();
 }

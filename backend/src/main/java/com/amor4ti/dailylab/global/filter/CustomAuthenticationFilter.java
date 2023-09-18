@@ -14,7 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.amor4ti.dailylab.domain.entity.Member;
+import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.domain.member.service.MemberService;
 import com.amor4ti.dailylab.global.exception.CustomException;
+import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.util.JwtProvider;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,7 +32,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
-	private final JwtProvider jwtTokenProvider;
+	private final JwtProvider jwtProvider;
+
+	private final MemberService memberService;
+	private final MemberRepository memberRepository;
 
 	public static final String TOKEN_EXCEPTION_KEY = "exception";
 	public static final String TOKEN_INVALID = "invalid";
@@ -42,18 +49,26 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 		ServletException, IOException {
 		try {
 
-			String accessToken = jwtTokenProvider.getAccessToken(request);
+			String accessToken = jwtProvider.getAccessToken(request);
 
-			if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
-				// AccessToken에서 기존 값 꺼내기
+			if (StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)) {
 
-				// Long memberId = jwtTokenProvider.getIdFromToken(accessToken, "memberId");
+				if (jwtProvider.isExpired(accessToken)) {
+					throw new CustomException(ExceptionStatus.TOKEN_EXPIRED);
+				}
 
-				// avatarId만 넘겨준다.
+				Long memberId = jwtProvider.getClaimFromToken(accessToken, "memberId");
+
+				/*
+				23.09.18 우선 Member 객체 그대로 넣음
+				TODO 필요한 Dto 만들어서 사용 용이하게 하도록 변경
+				 */
+				Member findMember = memberRepository.findById(memberId).orElseThrow(
+					() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+				);
+
 				UsernamePasswordAuthenticationToken authentication =
-					new UsernamePasswordAuthenticationToken("Object 들어갈 자리", null);
-				
-				// Principal 에 객체 주면 안되나?
+					new UsernamePasswordAuthenticationToken(findMember, null);
 
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
