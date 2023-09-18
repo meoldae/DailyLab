@@ -1,19 +1,19 @@
 package com.amor4ti.dailylab.domain.emotion.controller;
 
+import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
-import com.amor4ti.dailylab.domain.emotion.service.EmotionServiceImpl;
-import com.amor4ti.dailylab.domain.entity.Emotion;
+import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
+import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/emotion")
 @RequiredArgsConstructor
@@ -25,7 +25,13 @@ public class EmotionController {
     @GetMapping
     private DataResponse findAllEmotion() {
         List<Emotion> result = emotionService.getAllEmotion();
+        log.info("result={}", result);
         return responseService.successDataResponse(ResponseStatus.REQUEST_SUCCESS, result);
     }
 
+    @PostMapping()
+    private CommonResponse registerEmotion(@RequestBody RegisterMemberEmotionDto requestDto) {
+        emotionService.registerEmotion(requestDto);
+        return responseService.successResponse(ResponseStatus.REQUEST_SUCCESS);
+    }
 }
