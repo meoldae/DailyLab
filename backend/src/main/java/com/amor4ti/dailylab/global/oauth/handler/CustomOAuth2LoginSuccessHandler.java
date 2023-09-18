@@ -47,7 +47,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 		member.ifPresentOrElse(
 			tempMember -> {
 				if (tempMember.getBirthday() == null) {
-					redirectUrl = REDIRECT_ENDPOINT + "/userInfo?id=" + tempMember.getMemberId();
+					redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
 				} else {
 					String accessToken = jwtProvider.createAccessToken(member.get());
 					String refreshToken = jwtProvider.createRefreshToken();
@@ -66,7 +66,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 					.build();
 
 				Member signupMember = memberRepository.save(newMember);
-				redirectUrl = REDIRECT_ENDPOINT + "/userInfo?id=" + signupMember.getMemberId();
+				redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
 			}
 		);
 
