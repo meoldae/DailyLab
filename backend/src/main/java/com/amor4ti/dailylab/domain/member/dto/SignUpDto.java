@@ -4,11 +4,13 @@ import java.time.LocalDate;
 
 import com.amor4ti.dailylab.domain.entity.Member;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class SignUpDto {
 
 	private Long memberId;
