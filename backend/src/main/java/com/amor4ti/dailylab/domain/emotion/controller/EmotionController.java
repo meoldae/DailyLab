@@ -28,7 +28,7 @@ public class EmotionController {
 
     @GetMapping
     private DataResponse findAllEmotion() {
-
+        log.info("OK");
         List<Emotion> result = emotionService.getAllEmotion();
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
@@ -38,7 +38,9 @@ public class EmotionController {
     private CommonResponse registerEmotion(Authentication authentication,
                                            @RequestBody RegisterMemberEmotionDto requestDto) {
 
-        Member member = (Member) authentication.getPrincipal();
+        log.info("Controller OK");
+        Member member = (Member) authentication.getDetails();
+        log.info("detail={}", member);
         emotionService.registerEmotion(member.getMemberId(), requestDto);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);

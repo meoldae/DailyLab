@@ -31,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
-
 	private final JwtProvider jwtProvider;
 
 	private final MemberService memberService;
@@ -50,7 +49,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 		try {
 
 			String accessToken = jwtProvider.getAccessToken(request);
-
 			if (StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)) {
 
 				if (jwtProvider.isExpired(accessToken)) {
@@ -67,12 +65,14 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 					() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 				);
 
+				log.info("memberId={}", findMember.getMemberId());
 				UsernamePasswordAuthenticationToken authentication =
 					new UsernamePasswordAuthenticationToken(findMember, null);
 
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+ 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
+
 		}  catch (MalformedJwtException e) {
 			log.info("유효하지 않은 토큰입니다.");
 			request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_INVALID);
@@ -92,6 +92,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 			request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_INVALID);
 		}
 
+		log.info("next filter");
 		filterChain.doFilter(request, response);
 	}
 }
