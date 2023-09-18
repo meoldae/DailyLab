@@ -8,6 +8,7 @@ import AppStatistics from "@/pages/AppStatistics";
 import AppMyPage from "@/pages/AppMyPage";
 import AppLogin from "@/pages/AppLogin";
 import AppIntro from "@/pages/AppIntro";
+import AppMemberInfo from "@/pages/AppMemberInfo";
 
 const AppRouter = () => {
     SetModeToHtml();
@@ -26,6 +27,7 @@ const AppRouter = () => {
                     <Route path="/login" element={<AppLogin />} />
                 </Route>
                 <Route path="/intro" element={<AppIntro />} />
+                <Route path="/memberInfo" element={<AppMemberInfo />} />
             </Routes>
         </BrowserRouter>
     )
