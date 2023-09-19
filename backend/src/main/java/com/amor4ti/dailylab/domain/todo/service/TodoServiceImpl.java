@@ -6,7 +6,6 @@ import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.RegistTodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.UpdateTodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
-import com.amor4ti.dailylab.domain.todo.repository.TodoReportRepository;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -16,7 +15,6 @@ import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
