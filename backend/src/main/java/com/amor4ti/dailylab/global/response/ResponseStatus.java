@@ -9,6 +9,9 @@ public enum ResponseStatus {
     /* 공통 */
     RESPONSE_SUCCESS("200", "요청에 성공했습니다."),
 
+    /* Emotion */
+    REGISTER_EMOTION_SUCCESS("200", "감정이 정상적으로 추가되었습니다."),
+
     /* Member */
     ACCESS_TOKEN_REFRESHED("1001", "액세스 토큰이 재 발급되었습니다"),
 
