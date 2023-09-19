@@ -18,7 +18,10 @@ public enum ExceptionStatus {
 
 	TODO_NOT_FOUND("-3000", "Todo가 존재하지 않습니다."),
 
-	CATEGORY_NOT_FOUND("-4000", "Category가 존재하지 않습니다.");
+	CATEGORY_NOT_FOUND("-4000", "Category가 존재하지 않습니다."),
+
+	CATEGORY_BLACKLIST_NOT_FOUND("-5000", "BlackList에 해당 MemberCategory가 존재하지 않습니다."),
+	CATEGORY_BLACKLIST_ALREADY_EXISTED("-5001", "BlackList에 이미 해당 MemberCategory가 존재합니다.");
 
 	private final String code;
 	private final String message;
