@@ -12,8 +12,8 @@ const Emotion: React.FC<EmotionProps> = ({ onEmotionClick }) => {
     const fetchData = async () => {
         await getEmotionList(
             (Response) => {
-                console.log(Response.data.data);
-                setEmotionList(Response.data.data);
+                console.log(Response.data);
+                setEmotionList(Response.data);
         },
         (error) => {
             console.error('Error fetching emotion list:', error);

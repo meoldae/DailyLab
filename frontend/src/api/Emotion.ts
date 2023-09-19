@@ -1,12 +1,12 @@
-import { HttpJson } from "./Http";
 import EmotionType from "@/type/EmotionType";
+import { HttpJson } from "./Http";
 
-interface props {
-    data : EmotionType[]
+const getEmotionList =async (success: (data : {data : EmotionType[]}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.get(`/emotion`).then(success).catch(fail);
 }
 
-const getEmotionList =async (success: (data : {data : props}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.get('emotion').then(success).catch(fail);
+const getDailyData =async (param: object, success: ({data: object}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.get(`/emotion/date`, { params: param }).then(success).catch(fail);
 }
 
-export { getEmotionList };
+export { getEmotionList, getDailyData };
