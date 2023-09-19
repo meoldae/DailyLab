@@ -10,4 +10,5 @@
     button, select {font-family: pretendard;}
     .contents_wrap{min-height: 100vh; padding: 60px 30px 110px;}
     .bg_contents_con{border-radius: 20px; @apply bg-primary;}
+    .bg_contents_con.type_2{border-radius: 15px; @apply bg-secondary;}
 }

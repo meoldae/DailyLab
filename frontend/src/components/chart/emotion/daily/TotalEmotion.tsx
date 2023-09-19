@@ -1,8 +1,26 @@
+import { useEffect } from 'react';
+import { getEmotionList } from '@/api/Emotion';
 import emotionList from "@/type/EmotionType";
+import { GetAccessToken } from '@/atom/UserAtom';
 
 const TotalEmotion = () => {
+    const getList = async () => {
+        await getEmotionList(({data}) => {
+            console.log(data);
+        }, (error) => {console.log(error)}) 
+    }
+    
+    console.log(GetAccessToken());
+    console.log(localStorage.getItem('userAtom'));
+
+    useEffect(() => {
+        void getList();
+        
+    }, []);
+
+
     return (
-        <div className="bg-[#F5F5F5] overflow-hidden child-[div]:float-left child-[div]:w-[12.5%] child-[div]:mb-[15px] child-[div:nth-child(n+9)]:mb-0  child-[div:nth-child(9)]:clear-left">
+        <div className="bg_contents_con type_2 overflow-hidden child-[div]:float-left child-[div]:w-[12.5%] child-[div]:mb-[15px] child-[div:nth-child(n+9)]:mb-0  child-[div:nth-child(9)]:clear-left">
             {emotionList.map((item, index) => (
                 <div key={index} className="text-center">
                     <img className="mb-[5px]" src={item.imgsrc} alt={item.name} />
