@@ -1,12 +1,13 @@
 import Header from '@/components/inc/Header';
 import Footer from '@/components/inc/Footer';
-import Result from "./Result";
+import MainCurrent from "./Current";
+import MainResult from "./Result";
 
 const Main = () => {
     return (
         <>
             <Header />
-            <Result/>
+            <MainResult />
             <Footer />
         </>
     )

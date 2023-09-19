@@ -8,6 +8,8 @@ import AppStatistics from "@/pages/AppStatistics";
 import AppMyPage from "@/pages/AppMyPage";
 import AppLogin from "@/pages/AppLogin";
 import AppIntro from "@/pages/AppIntro";
+import AppMemberInfo from "@/pages/AppMemberInfo";
+import AppRedirect from "@/pages/AppRedirect";
 
 const AppRouter = () => {
     SetModeToHtml();
@@ -24,8 +26,10 @@ const AppRouter = () => {
                 </Route>
                 <Route element={<AuthRoute authentication="NotUser"/>}>    
                     <Route path="/login" element={<AppLogin />} />
+                    <Route path="/oauth2/redirect" element={<AppRedirect />} />
                 </Route>
                 <Route path="/intro" element={<AppIntro />} />
+                <Route path="/memberInfo" element={<AppMemberInfo />} />
             </Routes>
         </BrowserRouter>
     )

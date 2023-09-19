@@ -6,10 +6,10 @@ type EmotionType = {
 }
 const emotionList: EmotionType[] = [
     {
-        imgsrc: 'src/resources/img/emotion/moved.png',
+        imgsrc: 'src/resources/img/emotion/emotion_category_img_000.png',
         color: '#FF48B3',
         name: '감동',
-        state: 'positive '
+        state: 'positive'
     },
     {
         imgsrc: 'src/resources/img/emotion/anger.png',

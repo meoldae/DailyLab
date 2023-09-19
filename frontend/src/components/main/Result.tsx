@@ -1,11 +1,14 @@
 import DailyChart from "@/components/chart/emotion/daily/DailyChart";
 
-const Result = () => {
+const MainResult = () => {
     return (
         <div className="min-h-screen pb-[80px]">
-            <DailyChart />
+            {/** 차트 부분 */}
+            <div className="bg-primary p-[20px]">
+                <DailyChart />
+            </div>
         </div>
     )
 }
 
-export default Result;
+export default MainResult;
