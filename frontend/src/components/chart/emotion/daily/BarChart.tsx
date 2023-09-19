@@ -2,24 +2,15 @@ import ApexCharts from "react-apexcharts";
 import {EmotionType, EmotionResultType} from '@/type/EmotionType';
 
 const BarChart = ({emotionResultList, emotionList} : {emotionResultList: EmotionResultType[], emotionList : EmotionType[]}) => {
-    
-    const state = [
-        {name: '0', data: [4, 5, 1, 7]},
-        {name: '1', data: [3, 2, 5, 2]},
-        {name: '2', data: [2, 5, 7, 4]},
-        {name: '3', data: [0, 1, 9, 8]},
-        {name: '4', data: [3, 2, 5, 2]},
-        {name: '5', data: [2, 5, 7, 4]},
-        {name: '6', data: [0, 1, 9, 8]},
-        {name: '7', data: [3, 2, 5, 2]},
-        {name: '8', data: [2, 5, 7, 4]},
-        {name: '9', data: [0, 1, 9, 8]},
-        {name: '10', data: [3, 2, 5, 2]},
-        {name: '11', data: [2, 5, 7, 4]},
-        {name: '12', data: [0, 1, 9, 8]},
-        {name: '13', data: [3, 2, 5, 2]},
-        {name: '14', data: [2, 5, 7, 4]},
-    ];
+    const data = new Array(emotionList.length);
+    for(let i=0; i < emotionList.length; i++) data[i] = {name : String(i), data : [0,0,0,0]};
+
+    emotionResultList.map((item) => {
+        const hourPeriod = Math.floor(Number(item.timeStamp.substring(0, 2)) / 6);
+        data[item.emotionId - 1].data[hourPeriod] = data[item.emotionId - 1].data[hourPeriod] + 1;
+    });
+
+    const state = data;
     const options: ApexCharts.ApexOptions = {
         states: {
             active: {

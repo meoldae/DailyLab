@@ -10,8 +10,8 @@ const Main = () => {
     return (
         <>
             <Header />
-            <MainCurrent curDate={curDate}/>
-            {/* <MainResult curDate={curDate} /> */}
+            {/*<MainCurrent curDate={curDate}/> */}
+            <MainResult curDate={curDate} />
             <Footer />
         </>
     )
