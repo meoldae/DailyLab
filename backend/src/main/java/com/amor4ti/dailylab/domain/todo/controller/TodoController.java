@@ -18,9 +18,9 @@ public class TodoController {
 
     @GetMapping("")
     public DataResponse getTodoListByMemberId(Authentication authentication) {
-        Member member = (Member) authentication.getPrincipal();
+        Long memberId = Long.parseLong(authentication.getName());
 
-        return todoService.getTodoListByMemberId(member.getMemberId());
+        return todoService.getTodoListByMemberId(memberId);
     }
 
     @GetMapping("/all")
@@ -31,8 +31,8 @@ public class TodoController {
 
     @PostMapping("")
     public CommonResponse registTodo(@RequestBody RegistTodoDto registTodoDto, Authentication authentication) {
-        Member member = (Member) authentication.getPrincipal();
+        Long memberId = Long.parseLong(authentication.getName());
 
-        return todoService.registTodo(registTodoDto, member.getMemberId());
+        return todoService.registTodo(registTodoDto, memberId);
     }
 }
