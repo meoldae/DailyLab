@@ -1,13 +1,11 @@
 package com.amor4ti.dailylab.domain.emotion.service;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
-import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
 import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public interface EmotionService {
@@ -15,5 +13,7 @@ public interface EmotionService {
 
     void registerEmotion(Long memberId, RegisterMemberEmotionDto requestDto);
 
-    List<MemberEmotionDto> getDayEmotion(Long memberId, String date);
+    List<MemberEmotionDayDto> getDayEmotion(Long memberId, String date);
+
+    List<MemberEmotionPeriodDto> getEmotionsBetweenDates(Long memberId, String startDate, String endDate);
 }
