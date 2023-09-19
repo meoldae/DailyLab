@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.todo.service;
 
 import com.amor4ti.dailylab.domain.todo.dto.request.RegistTodoDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.UpdateTodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
@@ -12,4 +13,9 @@ public interface TodoService {
     DataResponse getAllTodoList();
 
     CommonResponse registTodo(RegistTodoDto registTodoDto, Long memberId);
+
+    CommonResponse deleteTodo(Long memberId, UpdateTodoDto updateTodoDto);
+
+    CommonResponse checkTodo(Long memberId, UpdateTodoDto updateTodoDto
+    );
 }

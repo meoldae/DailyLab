@@ -40,4 +40,12 @@ public class Todo {
         this.isDeleted = isDeleted;
         this.member = member;
     }
+
+    public void deleteTodo() {
+        this.isDeleted = true;
+    }
+
+    public void checkTodo() {
+        this.checkedDate = LocalDateTime.now();
+    }
 }

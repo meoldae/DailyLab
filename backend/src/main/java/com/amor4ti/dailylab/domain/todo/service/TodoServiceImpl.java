@@ -4,6 +4,7 @@ import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.RegistTodoDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.UpdateTodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.repository.TodoReportRepository;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
@@ -28,7 +29,6 @@ import java.util.List;
 public class TodoServiceImpl implements TodoService{
 
     private final TodoRepository todoRepository;
-    private final TodoReportRepository todoReportRepository;
     private final MemberRepository memberRepository;
     private final ResponseService responseService;
 
@@ -69,8 +69,21 @@ public class TodoServiceImpl implements TodoService{
         Todo todo = registTodoDto.toEntity(member);
         todoRepository.save(todo);
 
-//        todoReportRepository.findBy
-
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
+
+    @Override
+    public CommonResponse deleteTodo(Long memberId, UpdateTodoDto updateTodoDto) {
+        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, updateTodoDto.getCategoryId(), updateTodoDto.getTodoDate())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+
+        todo.deleteTodo();
+
+        return null;
+    }
+
+    @Override
+    public CommonResponse checkTodo(Long memberId, UpdateTodoDto updateTodoDto) {
+        return null;
     }
 }
