@@ -55,6 +55,7 @@ public class EmotionController {
     private DataResponse findPeriodEmotion(Authentication authentication,
                                            @RequestParam("startdate") String startDate,
                                            @RequestParam("enddate") String endDate) {
+
         Long memberId = Long.parseLong(authentication.getName());
         List<MemberEmotionPeriodDto> result = emotionService.getEmotionsBetweenDates(memberId, startDate, endDate);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
