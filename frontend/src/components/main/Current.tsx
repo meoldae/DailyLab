@@ -3,17 +3,31 @@ import Footer from '../inc/Footer';
 import CheckboxList from '@/utils/checkbox/CheckboxList';
 import Emotion from './emotion/Emotion';
 import { useState } from 'react';
+import { putEmotion } from '@/api/Emotion';
 
 const MainCurrent = () => {
     const [emotionCnt, setEmotionCnt] = useState(0);
-    const [selectedEmotionId, setSelectedEmotionId] = useState<number | null>(null);
 
     const handleEmotionClick = (emotionId: number):void => {
-        setSelectedEmotionId(emotionId); // 클릭된 감정의 ID를 상태에 저장
-        setEmotionCnt(emotionCnt + 1);
+        updateEmotion(emotionId);// 클릭된 감정의 ID를 상태에 저장
     }
 
-    console.log(selectedEmotionId)
+    const updateEmotion = async (emotionId : number) => {
+        const now = new Date();
+        const formattedDateTime = now.toISOString().slice(0, 16).replace("T", " ");
+
+        console.log(emotionId)
+        const emotionData = {
+            emotionId: emotionId,
+            timeStamp: formattedDateTime
+        };
+
+        await putEmotion(emotionData,({ data }) => {
+            console.log(data);
+            setEmotionCnt(emotionCnt + 1);
+        }, (error) => {console.log(error)});
+    };
+
     return (
         <div className='px-8'>
             <Header/>

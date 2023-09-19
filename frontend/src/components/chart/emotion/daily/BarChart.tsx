@@ -1,7 +1,7 @@
 import ApexCharts from "react-apexcharts";
 import EmotionType from '@/type/EmotionType';
 
-const BarChart = ({emotionList} : {emotionList : EmotionType[]}) => {
+const BarChart = ({emotionResultemotionList} : {emotionList : EmotionType[]}) => {
     
     const state = [
         {name: '0', data: [4, 5, 1, 7]},

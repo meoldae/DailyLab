@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"; // `useState` 추가
-import EmotionType from "@/type/EmotionType";
+import {EmotionType} from "@/type/EmotionType";
 import { getEmotionList } from "@/api/Emotion";
 
 interface EmotionProps {
@@ -9,20 +9,14 @@ interface EmotionProps {
 const Emotion: React.FC<EmotionProps> = ({ onEmotionClick }) => {
     const [emotionList, setEmotionList] = useState<EmotionType[]>([]);
 
-    const fetchData = async () => {
-        await getEmotionList(
-            (Response) => {
-                console.log(Response.data);
-                setEmotionList(Response.data);
-        },
-        (error) => {
-            console.error('Error fetching emotion list:', error);
-        },
-        )
-    }
+    const getList = async () => {
+        await getEmotionList(({data}) => {
+            setEmotionList(data.data as EmotionType[])
+        }, (error) => {console.log(error)});
+    };
 
     useEffect(() => {
-        void fetchData();
+        void getList();
     }, []);
 
     return (
