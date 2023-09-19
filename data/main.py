@@ -2,6 +2,7 @@ import test_router
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from domain.diary import diaryService
 
 app = FastAPI()
 
@@ -14,15 +15,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
+
+@app.get("/diary")
+async def createDiary():
+    data = diaryService.createDiary()
+    return data
 
 app.include_router(test_router.router)
 
