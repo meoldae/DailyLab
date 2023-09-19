@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.emotion.service;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDto;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
 import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
 
@@ -14,5 +15,5 @@ public interface EmotionService {
 
     void registerEmotion(Long memberId, RegisterMemberEmotionDto requestDto);
 
-    List<MemberEmotion> getDayEmotion(Long memberId, LocalDate localDate);
+    List<MemberEmotionDto> getDayEmotion(Long memberId, String date);
 }

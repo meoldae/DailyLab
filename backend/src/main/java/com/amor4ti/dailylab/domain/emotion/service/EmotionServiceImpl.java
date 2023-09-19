@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.emotion.service;
 
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDto;
 import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
 import com.amor4ti.dailylab.domain.emotion.mongorepo.EmotionRepository;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -39,9 +42,11 @@ public class EmotionServiceImpl implements EmotionService {
         memberEmotionRepository.save(memberEmotion);
     }
 
-    public List<MemberEmotion> getDayEmotion(Long memberId, LocalDate localDate) {
-        LocalDateTime startOfDay = localDate.atStartOfDay();
-        LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999999);
-        return memberEmotionRepository.findByMemberIdAndTimestampBetween(memberId, startOfDay, endOfDay);
+    public List<MemberEmotionDto> getDayEmotion(Long memberId, String date) {
+        List<MemberEmotion> memberEmotions = memberEmotionRepository.findByMemberIdAndDate(memberId, date);
+
+        return memberEmotions.stream()
+                .map(MemberEmotionDto::of)
+                .collect(Collectors.toList());
     }
 }

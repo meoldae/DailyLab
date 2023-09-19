@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.emotion.controller;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDto;
 import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
@@ -45,9 +46,8 @@ public class EmotionController {
     @GetMapping("/date")
     private DataResponse findDayEmotion(Authentication authentication,
                                         @RequestParam String date) {
-        LocalDate localDate = LocalDate.parse(date);
         Long memberId = Long.parseLong(authentication.getName());
-        List<MemberEmotion> result = emotionService.getDayEmotion(memberId, localDate);
+        List<MemberEmotionDto> result = emotionService.getDayEmotion(memberId, date);
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }

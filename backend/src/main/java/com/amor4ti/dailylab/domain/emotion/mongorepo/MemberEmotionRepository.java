@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberEmotionRepository extends MongoRepository<MemberEmotion, String> {
-    List<MemberEmotion> findByMemberIdAndTimestampBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate);
+    List<MemberEmotion> findByMemberIdAndDate(Long memberId, String date);
 }
