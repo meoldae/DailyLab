@@ -6,7 +6,6 @@ type EmotionData = {
     timeStamp: string;
 }
 
-
 const getEmotionList =async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.get(`emotion`).then(success).catch(fail);
 }
