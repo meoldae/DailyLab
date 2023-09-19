@@ -1,18 +1,6 @@
-import { useEffect } from 'react';
-import { getEmotionList } from '@/api/Emotion';
-import { GetAccessToken } from '@/atom/UserAtom';
+
 
 const TotalEmotion = () => {
-    const getList = async () => {
-        await getEmotionList(({data}) => {
-            console.log(data);
-        }, (error) => {console.log(error)}) 
-    }
-
-    useEffect(() => {
-        void getList();
-        
-    }, []);
 
 
     return (

@@ -1,7 +1,7 @@
-import EmotionType from "@/type/EmotionType";
+import ReturnType from "@/type/ReturnType";
 import { HttpJson } from "./Http";
 
-const getEmotionList =async (success: (data : {data : EmotionType[]}) => void, fail: (error: unknown) => void) => {
+const getEmotionList =async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.get(`/emotion`).then(success).catch(fail);
 }
 

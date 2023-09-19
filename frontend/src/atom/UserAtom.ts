@@ -3,7 +3,7 @@ import { recoilPersist } from "recoil-persist";
 import userType from "@/type/UserType";
 
 const { persistAtom } = recoilPersist({
-    key: 'localStorage',
+    key : "userAtom",
     storage : localStorage,
 })
 
