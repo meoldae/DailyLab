@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -28,14 +29,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
-
-	private final JwtProvider jwtProvider;
-
-	private final MemberService memberService;
-	private final MemberRepository memberRepository;
+	private JwtProvider jwtProvider;
+	private MemberRepository memberRepository;
 
 	public static final String TOKEN_EXCEPTION_KEY = "exception";
 	public static final String TOKEN_INVALID = "invalid";
@@ -50,7 +47,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 		try {
 
 			String accessToken = jwtProvider.getAccessToken(request);
-
 			if (StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)) {
 
 				if (jwtProvider.isExpired(accessToken)) {
@@ -67,12 +63,16 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 					() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 				);
 
+				String mId = String.valueOf(findMember.getMemberId());
+				log.info("memberId={}", findMember.getMemberId());
+
 				UsernamePasswordAuthenticationToken authentication =
-					new UsernamePasswordAuthenticationToken(findMember, null);
+						new UsernamePasswordAuthenticationToken(mId, null, null);
 
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+ 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
+
 		}  catch (MalformedJwtException e) {
 			log.info("유효하지 않은 토큰입니다.");
 			request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_INVALID);
@@ -92,6 +92,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 			request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_INVALID);
 		}
 
+		log.info("next filter");
 		filterChain.doFilter(request, response);
 	}
 }
