@@ -46,7 +46,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ state, content, type, onCheckboxCha
     }
 
     return (
-        <div className="w-full p-4 bg-secondary rounded-xl">
+        <div className="w-full p-4 bg-secondary rounded-xl text-xl">
             <div className="flex items-center justify-between">
                 <div className="flex">
                     {/* 체크박스 */}

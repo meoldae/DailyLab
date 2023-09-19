@@ -20,7 +20,7 @@ const Emotion: React.FC<EmotionProps> = ({ onEmotionClick }) => {
     }, []);
 
     return (
-        <div className="m-auto p-4 bg-primary rounded-2xl max-w-xl
+        <div className="m-auto bg_contents_con p-[4px]
         child-[button]:w-[30px]
         child-[button]:m-2">
             {emotionList.length > 0 && emotionList.map((emo, index) => (
