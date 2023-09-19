@@ -10,7 +10,7 @@ const { persistAtom } = recoilPersist({
 const userAtom = atom<userType>({
     key : "userAtom",
     default: {
-        accessToken : "",
+        accessToken : "asdf",
     },
     effects_UNSTABLE: [persistAtom],
 });
