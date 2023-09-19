@@ -1,14 +1,19 @@
+import { userAtom } from "@/atom/UserAtom";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from "recoil";
 
 const MemberInfo = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
-
+    
     console.log(id)
     const [birth, setBirth] = useState("");
     const [gender, setGender] = useState("M");
-
+    const navigate = useNavigate(); 
+    const setUserInfo = useSetRecoilState(userAtom);
+    
     const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setGender(e.target.value);
     };
@@ -21,6 +26,10 @@ const MemberInfo = () => {
         })
         .then((response) => {
             console.log(response.data);
+            setUserInfo({
+                accessToken: response.data.accessToken,
+            });
+            navigate('/'); 
         })
         .catch((error) => {
             console.error('Error:', error);
