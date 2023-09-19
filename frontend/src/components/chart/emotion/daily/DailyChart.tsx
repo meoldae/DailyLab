@@ -3,15 +3,16 @@ import { getDailyData } from "@/api/Emotion";
 import BarChart from "./BarChart";
 import LineChart from "./LineChart";
 import TotalEmotion from "./TotalEmotion";
-import EmotionType from '@/type/EmotionType';
+import { EmotionType, EmotionResultType } from '@/type/EmotionType';
 import { getEmotionList } from '@/api/Emotion';
 
 const DailyChart = ({selectDate} : {selectDate: string}) => {
+    const [ emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
     const [ emotionList, setEmontionList ] = useState<EmotionType[]>([]);
 
     const getData = async () => {
         await getDailyData({date : selectDate}, ({data}) => {
-            console.log(data);
+            setEmontionResultList(() => data.data as EmotionResultType[]);
         }, (error) => {console.log(error)});
     };
 
@@ -22,16 +23,16 @@ const DailyChart = ({selectDate} : {selectDate: string}) => {
       }
 
     useEffect(() => {
-        void getData();
         void getEmotionData();
+        void getData();
     }, []);
 
 
     return (
         <div>
-            <LineChart />
-            <BarChart emotionList={emotionList} />
-            <TotalEmotion />
+            <LineChart emotionResultList={emotionResultList} />
+            <BarChart emotionResultList={emotionResultList} emotionList={emotionList} />
+            <TotalEmotion emotionResultList={emotionResultList} emotionList={emotionList} />
         </div>
     )
 }
