@@ -13,7 +13,7 @@ const CheckboxAdd = () => {
                 <div className="bg_contents_con type_2 py-[10px] px-[15px] ">
                     <div className="flex w-full justify-between mb-4">
                         <div>
-                            대분류 > 중분류 > 소분류
+                            대분류 중분류 소분류
                         </div>
                         <div>
                             + 추가
