@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TodoReportRepository extends JpaRepository<TodoReport, Long> {
 
-    Optional<TodoReport> findByUserInfoIdAndCategoryId(Long userInfoId, Long categoryId);
+//    Optional<TodoReport> findByUserInfoIdAndCategoryId(Long userInfoId, Long categoryId);
 }

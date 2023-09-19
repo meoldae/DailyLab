@@ -1,6 +1,8 @@
 package com.amor4ti.dailylab.domain.todo.service;
 
+import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.entity.Todo;
+import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.RegistTodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.repository.TodoReportRepository;
@@ -13,7 +15,9 @@ import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ public class TodoServiceImpl implements TodoService{
 
     private final TodoRepository todoRepository;
     private final TodoReportRepository todoReportRepository;
+    private final MemberRepository memberRepository;
     private final ResponseService responseService;
 
     @Override
@@ -56,8 +61,12 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    @Transactional
     public CommonResponse registTodo(RegistTodoDto registTodoDto, Long memberId) {
-        Todo todo = registTodoDto.toEntity(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+        Todo todo = registTodoDto.toEntity(member);
         todoRepository.save(todo);
 
 //        todoReportRepository.findBy
