@@ -1,8 +1,21 @@
+import { useEffect, useState } from 'react';
 import ApexCharts from "react-apexcharts";
-import emotionList from "@/type/EmotionType";
+import { getEmotionList } from "@/api/Emotion";
+import EmotionType from '@/type/EmotionType';
 
 const BarChart = () => {
-    const colorList = emotionList.map(item => item.color);
+    const [ emotionList, setEmontionList ] = useState<EmotionType[]>([]);
+
+    const getEmotionData =async () => {
+      await getEmotionList(({data}) => {
+        setEmontionList(() => data);
+      }, (error) => {console.log(error)});
+    }
+
+    useEffect(() => {
+      void getEmotionData();
+    }, []);
+
     const state = [
         {name: '0', data: [4, 5, 1, 7]},
         {name: '1', data: [3, 2, 5, 2]},
@@ -33,7 +46,7 @@ const BarChart = () => {
                 } 
             }
         },
-        colors : colorList,
+        colors : ['#000000'],
         chart: {
             type: 'bar',
             toolbar:{show:false},
