@@ -78,12 +78,19 @@ public class TodoServiceImpl implements TodoService{
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
         todo.deleteTodo();
+        todoRepository.save(todo);
 
-        return null;
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 
     @Override
     public CommonResponse checkTodo(Long memberId, UpdateTodoDto updateTodoDto) {
-        return null;
+        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, updateTodoDto.getCategoryId(), updateTodoDto.getTodoDate())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+
+        todo.checkTodo();
+        todoRepository.save(todo);
+
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 }
