@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberEmotionDto {
+public class MemberEmotionDayDto {
 
     private int emotionId;
     private String date;
     private String timeStamp;
 
-    public static MemberEmotionDto of(MemberEmotion memberEmotion) {
-        return MemberEmotionDto.builder()
+    public static MemberEmotionDayDto of(MemberEmotion memberEmotion) {
+        return MemberEmotionDayDto.builder()
                             .emotionId(memberEmotion.getEmotionId())
                             .date(memberEmotion.getDate())
                             .timeStamp(memberEmotion.getTimestamp())
