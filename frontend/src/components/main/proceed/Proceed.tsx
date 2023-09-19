@@ -3,7 +3,7 @@ import Emotion from './emotion/Emotion';
 import { useEffect, useState } from 'react';
 import { getDailyData, putEmotion } from '@/api/Emotion';
 
-const MainCurrent = ({curDate} : {curDate : string}) => {
+const MainProceed = ({curDate} : {curDate : string}) => {
     const [emotionCnt, setEmotionCnt] = useState(0);
 
     const handleEmotionClick = (emotionId: number):void => {
@@ -83,4 +83,4 @@ const MainCurrent = ({curDate} : {curDate : string}) => {
     )
 }
 
-export default MainCurrent;
+export default MainProceed;

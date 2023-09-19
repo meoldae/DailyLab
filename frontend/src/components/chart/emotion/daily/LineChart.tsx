@@ -1,12 +1,34 @@
 import ApexCharts from "react-apexcharts";
+import { EmotionResultType } from '@/type/EmotionType';
 import emtionCategoryImg000 from "@/resources/img/emotion/emotion_category_img_000.png";
 import emtionCategoryImg001 from "@/resources/img/emotion/emotion_category_img_001.png";
 import emtionCategoryImg002 from "@/resources/img/emotion/emotion_category_img_002.png";
 
-const LineChart = () => {
+type LineResult = {
+    [key: string]: number
+    p : number
+    n : number
+}
+
+const LineChart = ({emotionResultList} : {emotionResultList: EmotionResultType[]}) => {
+    
+
+    const tempData:LineResult[] = [];
+    const data = [];
+    for(let i=0; i < 24; i++){
+        data.push(0);
+        tempData.push({p : 0, n : 0});
+    }
+    emotionResultList.map((item) => {
+        const hour = Number(item.timeStamp.substring(0, 2));
+        tempData[hour][item.type] = tempData[hour][item.type] + 1;
+    });
+
+    tempData.map((item, index) => {if(item.p + item.n > 0) data[index] = (item.p - item.n) / (item.p + item.n);});
+
     const state = [{
         name: "Daily Emotion",
-        data: [0, 0.2, 1, -0.2, 0, 0.4, 0.5, -0.5, 0]
+        data: data
     }];
     const options: ApexCharts.ApexOptions = {
         chart: {
@@ -19,7 +41,10 @@ const LineChart = () => {
         dataLabels: {enabled: false},
         stroke: {curve: 'smooth', colors: ['#12AB47']},
         yaxis: {show: false, min: -1, max: 1, tickAmount: 2},
-        xaxis: {categories: ['00', '03', '06', '09', '12', '15', '18', '21', '24'],}
+        xaxis: {
+            categories: ['00','01','02','03', '04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
+            tickAmount: 6,
+        }
       }
 
     return (
