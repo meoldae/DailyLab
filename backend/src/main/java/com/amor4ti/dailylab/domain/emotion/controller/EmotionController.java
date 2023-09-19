@@ -1,8 +1,8 @@
 package com.amor4ti.dailylab.domain.emotion.controller;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
-import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDto;
-import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
+import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
 import com.amor4ti.dailylab.global.response.CommonResponse;
@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -40,16 +39,25 @@ public class EmotionController {
         Long memberId = Long.parseLong(authentication.getName());
         emotionService.registerEmotion(memberId, requestDto);
 
-        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+        return responseService.successResponse(ResponseStatus.REGISTER_EMOTION_SUCCESS);
     }
 
     @GetMapping("/date")
     private DataResponse findDayEmotion(Authentication authentication,
                                         @RequestParam String date) {
         Long memberId = Long.parseLong(authentication.getName());
-        List<MemberEmotionDto> result = emotionService.getDayEmotion(memberId, date);
+        List<MemberEmotionDayDto> result = emotionService.getDayEmotion(memberId, date);
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
+    @GetMapping("/period")
+    private DataResponse findPeriodEmotion(Authentication authentication,
+                                           @RequestParam("startdate") String startDate,
+                                           @RequestParam("enddate") String endDate) {
+
+        Long memberId = Long.parseLong(authentication.getName());
+        List<MemberEmotionPeriodDto> result = emotionService.getEmotionsBetweenDates(memberId, startDate, endDate);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+    }
 }

@@ -51,11 +51,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	// 23.09.18 Swagger 의존성 추가
-//	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 	// 23.09.19 querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	// 23.09.19 GPT API 의존성 추가
+	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 }
 
 tasks.named('test') {
