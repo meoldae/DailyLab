@@ -2,9 +2,9 @@ import DailyChart from "@/components/chart/emotion/daily/DailyChart";
 
 const MainResult = () => {
     return (
-        <div className="min-h-screen pb-[80px]">
+        <div className="contents_wrap">
             {/** 차트 부분 */}
-            <div className="bg-primary p-[20px]">
+            <div className="bg_contents_con p-[20px]">
                 <DailyChart />
             </div>
         </div>

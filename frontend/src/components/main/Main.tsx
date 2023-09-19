@@ -9,7 +9,6 @@ const Main = () => {
         <>
             <Header />
             <MainResult />
-            
             <Footer />
         </>
     )
