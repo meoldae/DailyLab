@@ -13,10 +13,10 @@ def makeTodo(member_id: int, db):
     topFiveRecords = topFiveRecords.limit(5).all()
 
 
-    resultList = []
+    resultList = [0] * 290
     for record in topFiveRecords:
         category_id = record.category_id
-        resultList = resultList + cbf.printSim(category_id)
+        resultList = resultList + cbf.printSim(str(category_id))
 
     for remove in firstList:
         category_id = remove.category_id
