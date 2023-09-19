@@ -1,12 +1,9 @@
-import Header from '../inc/Header';
-import Footer from '../inc/Footer';
 import CheckboxList from '@/utils/checkbox/CheckboxList';
 import Emotion from './emotion/Emotion';
 import { useEffect, useState } from 'react';
 import { getDailyData, putEmotion } from '@/api/Emotion';
-import { EmotionResultType } from '@/type/EmotionType';
 
-const MainCurrent = ({curDate} : {curDate : string}) => {
+const MainProceed = ({curDate} : {curDate : string}) => {
     const [emotionCnt, setEmotionCnt] = useState(0);
 
     const handleEmotionClick = (emotionId: number):void => {
@@ -42,9 +39,8 @@ const MainCurrent = ({curDate} : {curDate : string}) => {
     }, []);
 
     return (
-        <div className='px-8'>
-            <Header/>
-            <div className='text-center text-2xl font-semibold h-screen my-4
+        <div className='contents_wrap'>
+            <div className='text-center text-2xl font-semibold
             child-[div:not(:last-child)]:mb-12
             child-[div]:m-auto child-[div]:max-w-xl'>
                 <p className='mb-8'>
@@ -57,13 +53,13 @@ const MainCurrent = ({curDate} : {curDate : string}) => {
                         <p>당신을 위한 오늘의 할일...</p>
                     </div>
                     <div className='relative -mt-12'>
-                        <CheckboxList/>
+                        <CheckboxList type='default'/>
                     </div>
                 </div>
                 {/* 일기영역 */}
                 <div>
                     <img className='w-[90px] m-auto' src="src/resources/img/character/diego.png" alt="디에고" />
-                    <div className='relative -mt-[40px] bg-primary h-20 rounded-2xl flex items-center justify-center'>
+                    <div className='relative -mt-[40px] bg_contents_con p-[20px] flex items-center justify-center'>
                         <p>오늘의 일기를 확인해볼까요</p>
                     </div>
                 </div>
@@ -83,9 +79,8 @@ const MainCurrent = ({curDate} : {curDate : string}) => {
                     <p className='text-primary'>오늘 하루 마무리</p>
                 </div>
             </div>
-            <Footer/>
         </div>
     )
 }
 
-export default MainCurrent;
+export default MainProceed;
