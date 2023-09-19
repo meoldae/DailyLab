@@ -1,9 +1,9 @@
-import Main from '@/components/main/Main';
+import Current from '@/components/main/Current';
 
 const AppMain = () => {
     return (
         <div>
-            <Main />
+            <Current />
         </div>
     )
 }

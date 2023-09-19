@@ -1,8 +1,10 @@
-import { useState } from 'react';
-import CheckboxList from '@/components/main/checkbox/CheckboxList';
+import Header from '../inc/Header';
+import Footer from '../inc/Footer';
+import CheckboxList from '@/utils/checkbox/CheckboxList';
 import Emotion from './emotion/Emotion';
+import { useState } from 'react';
 
-const MainCurrent = () => {
+const Current = () => {
     const [emotionCnt, setEmotionCnt] = useState(0);
 
     const handleEmotionClick = ():void => {
@@ -10,7 +12,9 @@ const MainCurrent = () => {
     }
 
     return (
-        <div className='text-center text-2xl font-semibold 
+        <div className='px-8'>
+            <Header/>
+            <div className='text-center text-2xl font-semibold h-screen my-4
             child-[div:not(:last-child)]:mb-12
             child-[div]:m-auto child-[div]:max-w-xl'>
                 <p className='mb-8'>
@@ -49,7 +53,9 @@ const MainCurrent = () => {
                     <p className='text-primary'>오늘 하루 마무리</p>
                 </div>
             </div>
+            <Footer/>
+        </div>
     )
 }
 
-export default MainCurrent;
+export default Current;

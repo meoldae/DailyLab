@@ -4,10 +4,12 @@ import MainCurrent from "./Current";
 import MainResult from "./Result";
 
 const Main = () => {
+
     return (
         <>
             <Header />
             <MainResult />
+            
             <Footer />
         </>
     )
