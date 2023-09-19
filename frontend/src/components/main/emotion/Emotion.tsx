@@ -1,6 +1,7 @@
 import emotionList from "@/type/EmotionType";
 
 const Emotion = ({ onEmotionClick } : {onEmotionClick : () => void}) => {
+
     return (
         <div className="m-auto p-4 bg-primary rounded-2xl max-w-xl
         child-[button]:w-[30px]
