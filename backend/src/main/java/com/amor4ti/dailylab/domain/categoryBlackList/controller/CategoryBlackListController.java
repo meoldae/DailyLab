@@ -20,4 +20,11 @@ public class CategoryBlackListController {
 
         return categoryBlackListService.black(categoryBlackListRegistDto, memberId);
     }
+
+    @PutMapping("/cancel/{categoryId}")
+    public CommonResponse cancelBlack(@PathVariable Long categoryId, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return categoryBlackListService.cancelBlack(categoryId, memberId);
+    }
 }

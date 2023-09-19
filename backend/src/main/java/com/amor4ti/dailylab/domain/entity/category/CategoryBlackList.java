@@ -25,4 +25,12 @@ public class CategoryBlackList {
         this.id = id;
         this.isRemove = isRemove;
     }
+
+    public void cancelBlack() {
+        this.isRemove = true;
+    }
+
+    public void reBlack() {
+        this.isRemove = false;
+    }
 }

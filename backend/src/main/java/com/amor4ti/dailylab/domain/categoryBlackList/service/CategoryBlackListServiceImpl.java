@@ -44,16 +44,52 @@ public class CategoryBlackListServiceImpl implements CategoryBlackListService {
 
         Optional<CategoryBlackList> byMemberCategoryId = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
 
-        // 이미 블랙리스트에 해당 Row가 존재한다면 중복 에러
-        if(byMemberCategoryId.isPresent())
-            throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_EXISTED);
+        // 이미 블랙리스트에 해당 Row가 존재한다면
+        if(byMemberCategoryId.isPresent()) {
+            // 이전에 블랙리스트에서 해방시킨 적이 있다면
+            if(byMemberCategoryId.get().isRemove()) {
+                System.out.println("reblack33333333333333333333333333333333333");
+                byMemberCategoryId.get().reBlack();
+
+                // 등록
+                categoryBlackListRepository.save(byMemberCategoryId.get());
+            }
+            else {
+                System.out.println("exception4444444444444444444");
+                throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_TRUE);
+            }
+        }
         else {
+            System.out.println("regist222222222");
             CategoryBlackList categoryBlackList = CategoryBlackList.builder()
                     .id(memberCategoryId)
                     .isRemove(false)
                     .build();
 
             // 등록
+            categoryBlackListRepository.save(categoryBlackList);
+
+        }
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
+
+    @Override
+    public CommonResponse cancelBlack(Long categoryId, Long memberId) {
+        // 복합키
+        MemberCategoryId memberCategoryId = MemberCategoryId.builder()
+                .memberId(memberId)
+                .categoryId(categoryId)
+                .build();
+
+        CategoryBlackList categoryBlackList = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_NOT_FOUND));
+
+        if(categoryBlackList.isRemove()) {
+            System.out.println("이미 isRemove가 true인데요 !!!");
+            throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_FALSE);
+        }
+        else {
+            categoryBlackList.cancelBlack();
             categoryBlackListRepository.save(categoryBlackList);
 
             return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);

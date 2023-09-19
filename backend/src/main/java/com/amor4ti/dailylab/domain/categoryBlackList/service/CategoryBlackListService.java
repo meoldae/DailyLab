@@ -6,4 +6,6 @@ import com.amor4ti.dailylab.global.response.CommonResponse;
 public interface CategoryBlackListService {
 
     CommonResponse black(CategoryBlackListRegistDto categoryBlackListRegistDto, Long memberId);
+
+    CommonResponse cancelBlack(Long categoryId, Long memberId);
 }
