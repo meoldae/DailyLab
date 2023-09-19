@@ -1,7 +1,6 @@
+import { EmotionResultType } from '@/type/EmotionType';
 
-
-const TotalEmotion = () => {
-
+const TotalEmotion = ({emotionResultList} : {emotionResultList: EmotionResultType[]}) => {
 
     return (
         <div className="bg_contents_con type_2 overflow-hidden child-[div]:float-left child-[div]:w-[12.5%] child-[div]:mb-[15px] child-[div:nth-child(n+9)]:mb-0  child-[div:nth-child(9)]:clear-left">
