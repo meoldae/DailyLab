@@ -35,7 +35,7 @@ const MainPrepare = ({curDate} : {curDate : string}) => {
             )}
             {/* 버튼 */}
             <div className='m-auto w-72 h-20 bg-text rounded-2xl flex items-center justify-center'>
-                    <p className='text-primary'>오늘 하루 마무리</p>
+                <p className='text-primary'>새로운 하루 시작</p>
             </div>
         </div>
     )
