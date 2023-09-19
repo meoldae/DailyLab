@@ -4,13 +4,16 @@ import CheckboxList from '@/utils/checkbox/CheckboxList';
 import Emotion from './emotion/Emotion';
 import { useState } from 'react';
 
-const Current = () => {
+const MainCurrent = () => {
     const [emotionCnt, setEmotionCnt] = useState(0);
+    const [selectedEmotionId, setSelectedEmotionId] = useState<number | null>(null);
 
-    const handleEmotionClick = ():void => {
+    const handleEmotionClick = (emotionId: number):void => {
+        setSelectedEmotionId(emotionId); // 클릭된 감정의 ID를 상태에 저장
         setEmotionCnt(emotionCnt + 1);
     }
 
+    console.log(selectedEmotionId)
     return (
         <div className='px-8'>
             <Header/>
@@ -58,4 +61,4 @@ const Current = () => {
     )
 }
 
-export default Current;
+export default MainCurrent;
