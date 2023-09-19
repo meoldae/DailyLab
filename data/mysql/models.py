@@ -53,12 +53,12 @@ class category_dict(Base):
 class category_blacklist(Base):
     __tablename__ = "category_blacklist"
 
-    category_id = Column(BigInteger, ForeignKey('category_dict.category_id'))
-    member_id = Column(BigInteger, ForeignKey('Member.member_id'))
+    category_id = Column(BigInteger, ForeignKey('category_dict.category_id'), primary_key=True)
+    member_id = Column(BigInteger, ForeignKey('Member.member_id'), primary_key=True)
     is_removed = Column(Boolean)
 
 class category_whitelist(Base):
     __tablename__ = "category_whitelist"
 
-    category_id = Column(BigInteger, ForeignKey('category_dict.category_id'))
-    member_id = Column(BigInteger, ForeignKey('Member.member_id'))
+    category_id = Column(BigInteger, ForeignKey('category_dict.category_id'), primary_key=True)
+    member_id = Column(BigInteger, ForeignKey('Member.member_id'), primary_key=True)
