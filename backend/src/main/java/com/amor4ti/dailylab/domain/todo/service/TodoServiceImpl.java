@@ -3,6 +3,7 @@ package com.amor4ti.dailylab.domain.todo.service;
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.todo.dto.request.RegistTodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
+import com.amor4ti.dailylab.domain.todo.repository.TodoReportRepository;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -23,6 +24,7 @@ import java.util.List;
 public class TodoServiceImpl implements TodoService{
 
     private final TodoRepository todoRepository;
+    private final TodoReportRepository todoReportRepository;
     private final ResponseService responseService;
 
     @Override
@@ -57,6 +59,8 @@ public class TodoServiceImpl implements TodoService{
     public CommonResponse registTodo(RegistTodoDto registTodoDto, Long memberId) {
         Todo todo = registTodoDto.toEntity(memberId);
         todoRepository.save(todo);
+
+//        todoReportRepository.findBy
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
