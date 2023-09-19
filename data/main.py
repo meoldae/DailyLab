@@ -1,3 +1,5 @@
+import test_router
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
@@ -21,6 +23,8 @@ async def root():
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
+
+app.include_router(test_router.router)
 
 if __name__ == "__main__":
     import uvicorn
