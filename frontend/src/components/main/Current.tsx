@@ -2,14 +2,44 @@ import Header from '../inc/Header';
 import Footer from '../inc/Footer';
 import CheckboxList from '@/utils/checkbox/CheckboxList';
 import Emotion from './emotion/Emotion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getDailyData, putEmotion } from '@/api/Emotion';
+import { EmotionResultType } from '@/type/EmotionType';
 
-const Current = () => {
+const MainCurrent = ({curDate} : {curDate : string}) => {
     const [emotionCnt, setEmotionCnt] = useState(0);
 
-    const handleEmotionClick = ():void => {
-        setEmotionCnt(emotionCnt + 1);
+    const handleEmotionClick = (emotionId: number):void => {
+        updateEmotion(emotionId);// 클릭된 감정의 ID를 상태에 저장
     }
+
+    const updateEmotion = async (emotionId : number) => {
+        const now = new Date();
+        const formattedDateTime = now.toISOString().slice(0, 16).replace("T", " ");
+
+        console.log(emotionId)
+        const emotionData = {
+            emotionId: emotionId,
+            timeStamp: formattedDateTime
+        };
+
+        await putEmotion(emotionData,({ data }) => {
+            console.log(data);
+            setEmotionCnt(emotionCnt + 1);
+        }, (error) => {console.log(error)});
+
+    };
+    
+    // 누적된 감정 갯수 조회 
+    const getData = async () => {
+        await getDailyData({date : curDate}, ({data}) => {
+            setEmotionCnt(() => data.data.length);
+        }, (error) => {console.log(error)});
+    };
+
+    useEffect(() => {
+        void getData();
+    }, []);
 
     return (
         <div className='px-8'>
@@ -58,4 +88,4 @@ const Current = () => {
     )
 }
 
-export default Current;
+export default MainCurrent;

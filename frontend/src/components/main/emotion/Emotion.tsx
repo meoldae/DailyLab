@@ -1,15 +1,32 @@
-import emotionList from "@/type/EmotionType";
+import { useEffect, useState } from "react"; // `useState` 추가
+import {EmotionType} from "@/type/EmotionType";
+import { getEmotionList } from "@/api/Emotion";
 
-const Emotion = ({ onEmotionClick } : {onEmotionClick : () => void}) => {
+interface EmotionProps {
+    onEmotionClick: (emotionId: number) => void;
+}
+
+const Emotion: React.FC<EmotionProps> = ({ onEmotionClick }) => {
+    const [emotionList, setEmotionList] = useState<EmotionType[]>([]);
+
+    const getList = async () => {
+        await getEmotionList(({data}) => {
+            setEmotionList(data.data as EmotionType[])
+        }, (error) => {console.log(error)});
+    };
+
+    useEffect(() => {
+        void getList();
+    }, []);
 
     return (
         <div className="m-auto p-4 bg-primary rounded-2xl max-w-xl
         child-[button]:w-[30px]
         child-[button]:m-2">
-            {emotionList.length>0 && emotionList.map((emo, index)=>(
-            <button className="transition-transform duration-300 ease-in-out active:scale-125" key={index} onClick={() => onEmotionClick()}>
-                <img src={emo.imgsrc} alt={emo.name} />
-            </button>
+            {emotionList.length > 0 && emotionList.map((emo, index) => (
+                <button className="transition-transform duration-300 ease-in-out active:scale-125" key={index} onClick={() => onEmotionClick(emo.emotionId)}>
+                    <img src={`src/resources/img/emotion/${emo.emotionId}.png`} alt={emo.name} />
+                </button>
             ))}
         </div>
     )
