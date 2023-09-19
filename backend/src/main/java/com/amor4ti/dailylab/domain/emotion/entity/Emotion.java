@@ -17,6 +17,9 @@ public class Emotion {
     @Id
     private String emotionId;
 
+    @Field(name = "color")
+    private String color;
+
     @Field(name = "name")
     private String name;
 

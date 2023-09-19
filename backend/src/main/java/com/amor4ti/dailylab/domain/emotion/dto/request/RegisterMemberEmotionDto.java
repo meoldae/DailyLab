@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 @Data
 public class RegisterMemberEmotionDto {
     private int emotionId;
-    private LocalDateTime timeStamp;
+    private String timeStamp;
 }

@@ -66,10 +66,8 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 				String mId = String.valueOf(findMember.getMemberId());
 				log.info("memberId={}", findMember.getMemberId());
 
-				// UsernamePasswordAuthenticationToken의 첫 번째 매개변수 값은 String Object
-//				UsernamePasswordAuthenticationToken authentication =
-//					new UsernamePasswordAuthenticationToken(findMember, null);
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(mId, null, null);
+				UsernamePasswordAuthenticationToken authentication =
+						new UsernamePasswordAuthenticationToken(mId, null, null);
 
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
  				SecurityContextHolder.getContext().setAuthentication(authentication);
