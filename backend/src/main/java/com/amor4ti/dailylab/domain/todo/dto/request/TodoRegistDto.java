@@ -7,18 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class RegistTodoDto {
+public class TodoRegistDto {
 
     private Long categoryId;
     private String content;
     private LocalDate todoDate;
 
     @Builder
-    public RegistTodoDto(Long categoryId, String content, LocalDate todoDate) {
+    public TodoRegistDto(Long categoryId, String content, LocalDate todoDate) {
         this.categoryId = categoryId;
         this.content = content;
         this.todoDate = todoDate;

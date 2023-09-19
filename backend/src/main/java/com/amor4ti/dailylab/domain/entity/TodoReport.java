@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,8 +26,26 @@ public class TodoReport {
     private LocalDate firstRecommendDate;
     private LocalDate lastRecommendDate;
 
-    @PrePersist
-    public void onPrePersist() {
-        this.firstRecommendDate = LocalDate.now();
+    @Builder
+    public TodoReport(Long todoReportId, Member member, Long categoryId, Long successCount, Long failCount, LocalDate firstRecommendDate, LocalDate lastRecommendDate) {
+        this.todoReportId = todoReportId;
+        this.member = member;
+        this.categoryId = categoryId;
+        this.successCount = successCount;
+        this.failCount = failCount;
+        this.firstRecommendDate = firstRecommendDate;
+        this.lastRecommendDate = lastRecommendDate;
+    }
+
+    public void updateSuccessCount() {
+        this.successCount++;
+    }
+
+    public void updateFailCount() {
+        this.failCount++;
+    }
+
+    public void updateLastRecommendDate(LocalDate todoDate) {
+        this.lastRecommendDate = todoDate;
     }
 }

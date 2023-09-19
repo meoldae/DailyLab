@@ -3,8 +3,8 @@ package com.amor4ti.dailylab.domain.todo.service;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
-import com.amor4ti.dailylab.domain.todo.dto.request.RegistTodoDto;
-import com.amor4ti.dailylab.domain.todo.dto.request.UpdateTodoDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
@@ -60,19 +60,20 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     @Transactional
-    public CommonResponse registTodo(RegistTodoDto registTodoDto, Long memberId) {
+    public CommonResponse registTodo(TodoRegistDto todoRegistDto, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
-        Todo todo = registTodoDto.toEntity(member);
+        Todo todo = todoRegistDto.toEntity(member);
         todoRepository.save(todo);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 
     @Override
-    public CommonResponse deleteTodo(Long memberId, UpdateTodoDto updateTodoDto) {
-        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, updateTodoDto.getCategoryId(), updateTodoDto.getTodoDate())
+    @Transactional
+    public CommonResponse deleteTodo(Long memberId, TodoUpdateDto todoUpdateDto) {
+        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, todoUpdateDto.getCategoryId(), todoUpdateDto.getTodoDate())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
         todo.deleteTodo();
@@ -82,8 +83,9 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public CommonResponse checkTodo(Long memberId, UpdateTodoDto updateTodoDto) {
-        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, updateTodoDto.getCategoryId(), updateTodoDto.getTodoDate())
+    @Transactional
+    public CommonResponse checkTodo(Long memberId, TodoUpdateDto todoUpdateDto) {
+        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, todoUpdateDto.getCategoryId(), todoUpdateDto.getTodoDate())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
         todo.checkTodo();

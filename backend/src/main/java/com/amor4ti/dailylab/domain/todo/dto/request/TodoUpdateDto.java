@@ -8,13 +8,13 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-public class UpdateTodoDto {
+public class TodoUpdateDto {
 
     Long categoryId;
     LocalDate todoDate;
 
     @Builder
-    public UpdateTodoDto(Long categoryId, LocalDate todoDate) {
+    public TodoUpdateDto(Long categoryId, LocalDate todoDate) {
         this.categoryId = categoryId;
         this.todoDate = todoDate;
     }
