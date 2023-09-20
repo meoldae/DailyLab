@@ -22,6 +22,6 @@ async def getInfo(data: Data):
     print(todoDate)
 
 
-    # 추천
+    # 삽입 위치 #
 
     return
