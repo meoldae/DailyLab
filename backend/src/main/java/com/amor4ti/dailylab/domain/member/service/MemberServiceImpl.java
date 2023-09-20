@@ -41,7 +41,7 @@ public class MemberServiceImpl implements MemberService{
 		Member findMember = memberRepository.findById(signUpDto.getMemberId()).orElseThrow(
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
-		
+
 		findMember.setBirthday(signUpDto.getBirthDay());
 		findMember.setGender(signUpDto.getGender());
 		// Dirty Checking 이상으로 Save 호출

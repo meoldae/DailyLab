@@ -1,4 +1,4 @@
-package com.amor4ti.dailylab.domain.entity.diary;
+package com.amor4ti.dailylab.domain.diary.entity;
 
 import com.amor4ti.dailylab.domain.entity.Member;
 import lombok.AccessLevel;
@@ -11,15 +11,14 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DiaryPredict {
+public class DiaryHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long diaryPredictId;
+    private Long diaryHistoryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
-    private Member member;
-
+    private Long memberId;
     private String content;
     private LocalDate diaryDate;
+
+    private Double similarity;
 }
