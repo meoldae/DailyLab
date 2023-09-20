@@ -26,11 +26,11 @@ def getBlacklist(member_id: int, db: Session):
     else:
         return blacklist
 
-def getRecomendedList(member_id: int, db: Session):
-    recomendedList = db.query(models.todo_report).filter(models.todo_report.member_id == member_id)\
-    .filter(models.todo_report.last_recomended_date >= datetime.now().date()-timedelta(days=7))\
+def getRecommendedList(member_id: int, db: Session):
+    recommendedList = db.query(models.todo_report).filter(models.todo_report.member_id == member_id)\
+    .filter(models.todo_report.last_recommend_date >= datetime.now().date()-timedelta(days=7))\
     .all()
 
-    if not recomendedList:
+    if not recommendedList:
         return 0
-    else : return recomendedList
+    else : return recommendedList
