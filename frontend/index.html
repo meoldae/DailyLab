@@ -11,20 +11,25 @@
     <div id="root"></div>
     <script type="module" src="/src/App.tsx"></script>
     <script>
-      if (!window.location.href.includes('/api') && "serviceWorker" in navigator) {
-        // Register a service worker hosted at the root of the
-        // site using the default scope.
-        navigator.serviceWorker
-          .register("serviceWorker.js")
-          .then((registration) => {
-            console.log("Service worker registration succeeded:", registration);
-          })
-          .catch((err) => {
-            console.log("Service worker registration failed:", error);
-          });
+      if(!window.location.href.includes('/api')){
+        if ( "serviceWorker" in navigator) {
+          // Register a service worker hosted at the root of the
+          // site using the default scope.
+          navigator.serviceWorker
+            .register("serviceWorker.js")
+            .then((registration) => {
+              console.log("Service worker registration succeeded:", registration);
+            })
+            .catch((err) => {
+              console.log("Service worker registration failed:", error);
+            });
+        } else {
+          console.log("Service workers are not supported.");
+        }
       } else {
-        console.log("Service workers are not supported.");
+        window.location.reload(true);
       }
+      
     </script>
   </body>
 </html>
