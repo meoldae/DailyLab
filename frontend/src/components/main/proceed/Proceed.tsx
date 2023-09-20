@@ -2,6 +2,7 @@ import CheckboxList from '@/utils/checkbox/CheckboxList';
 import Emotion from './emotion/Emotion';
 import { useEffect, useState } from 'react';
 import { getDailyData, putEmotion } from '@/api/Emotion';
+import { addHours } from 'date-fns';
 
 const MainProceed = ({curDate} : {curDate : string}) => {
     const [emotionCnt, setEmotionCnt] = useState(0);
@@ -10,11 +11,16 @@ const MainProceed = ({curDate} : {curDate : string}) => {
         updateEmotion(emotionId);// 클릭된 감정의 ID를 상태에 저장
     }
 
+    const handleFinishButton = () => {
+        // 하루 마무리 요청 API 호출
+    }
+
     const updateEmotion = async (emotionId : number) => {
         const now = new Date();
-        const formattedDateTime = now.toISOString().slice(0, 16).replace("T", " ");
+        const newDate = addHours(now, 9);
+        const formattedDateTime = newDate.toISOString().slice(0, 16).replace("T", " ");
 
-        console.log(emotionId)
+        console.log(emotionId, formattedDateTime)
         const emotionData = {
             emotionId: emotionId,
             timeStamp: formattedDateTime
@@ -75,7 +81,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                     </div>
                 </div>
                 {/* 버튼 */}
-                <div className='w-72 h-20 bg-text rounded-2xl flex items-center justify-center'>
+                <div onClick={handleFinishButton} className='w-72 h-20 bg-text rounded-2xl flex items-center justify-center'>
                     <p className='text-primary'>오늘 하루 마무리</p>
                 </div>
             </div>
