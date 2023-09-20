@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import testPng from "@/resources/img/character/coco.png";
 
 
 function AppNotFound() {
@@ -12,6 +13,7 @@ function AppNotFound() {
           <h1>404</h1>
           <h2>페이지를 찾을 수 없습니다.</h2>
           <p>죄송합니다. 이 페이지를 사용할 수 없습니다.</p>
+          <img src={testPng} alt="" />
           <a onClick={() => {
             navigate("/")
           }}>홈페이지로 돌아가기</a>

@@ -35,12 +35,8 @@ self.addEventListener("install", function (event) {
 // Modified fetch event handler
 self.addEventListener('fetch', event => {
   const checkurl = event.request.url;
-
-  console.log("____________________________redirect test____________________________");
-
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
-  if (checkurl.includes('/api') || checkurl.includes('/manifest') || checkurl.includes('/serviceWorker')) {
-    console.log("____________________________test____________________________");
+  if (checkurl.includes('/api')) {
     event.respondWith(fetch(event.request));
     return;
   }
