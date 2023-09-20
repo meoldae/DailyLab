@@ -17,7 +17,8 @@ router = APIRouter(
 
 @router.get("/{member_id}")
 async def makeTodo(member_id: int, db: Session = Depends(get_db)):
-    todoResult = makeTodo(member_id, db)
+    print("hello")
+    todoResult = todoService.makeTodo(member_id, db)
 
     if todoResult :
         return todoResult
