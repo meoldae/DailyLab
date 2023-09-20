@@ -17,10 +17,16 @@ router = APIRouter(
 
 @router.get("/{member_id}")
 async def makeTodo(member_id: int, db: Session = Depends(get_db)):
-    print("hello")
     todoResult = todoService.makeTodo(member_id, db)
 
-    if todoResult :
+    if not todoResult.empty :
         return todoResult
     raise HTTPException(status_code=401, detail="no todo")
 
+@router.post("")
+async def makeTodo(request: schemas.todoReq, db: Session = Depends(get_db)):
+    todoResult =  todoService.makeTodo(request.id, db)
+    if todoResult:
+        print(todoResult)
+        return todoResult
+    raise HTTPException(status_code=401, detail="todo Result에서 에러 뜸!")
