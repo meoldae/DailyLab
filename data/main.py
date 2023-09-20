@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 import test_router
+from domain.todo.routers import getInfoFromSpring_router
 
 app = FastAPI()
 
@@ -19,6 +20,7 @@ app.add_middleware(
 )
 
 app.include_router(test_router.router)
+app.include_router(getInfoFromSpring_router.router)
 
 if __name__ == "__main__":
     import uvicorn
