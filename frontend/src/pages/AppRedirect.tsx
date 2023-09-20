@@ -8,6 +8,7 @@ const AppRedirect = () => {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
+        console.log(token)
     
         if (token !== null) {
             SetAccessToken(token);
