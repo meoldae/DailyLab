@@ -19,14 +19,17 @@ app.add_middleware(
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/hello/{name}")
+@app.get("/hello/{name}") 
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
-@app.get("/diary")
-async def createDiary():
-    data = diaryService.createDiary()
+# gpt 3.5 일기 작성
+@app.post("/diary/default")
+async def createDiary(param: dict):
+    data = diaryService.createDiary(param)
     return data
+
+# gpt 4 일기 작성
 
 app.include_router(test_router.router)
 
