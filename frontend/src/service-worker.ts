@@ -38,7 +38,6 @@ registerRoute(
 
     // If this is a URL that starts with /_, skip.
     if (url.pathname.startsWith('/_') || url.pathname.startsWith('/dev/api') || url.pathname.startsWith('/prod/api')) {
-      alert("regist test");
       return false;
     }
 
@@ -72,14 +71,13 @@ registerRoute(
 
 // Modified fetch event handler
 self.addEventListener('fetch', event => {
-  const checkurl = event.request.url;
+  //const checkurl = event.request.url;
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
-  if (checkurl.includes('/api')) {
-    alert("fetch test");
+  /*if (checkurl.includes('/api')) {
     event.respondWith(fetch(event.request));
     return;
-  }
+  }*/
 
   // For other requests, follow the cache-then-network strategy
   event.respondWith(
