@@ -7,8 +7,8 @@ import loginGoogle from "@/resources/img/login/login_google.png";
 const Login = () => {
     
     const loginHandler = (service : string) => {
-        const redirectUrl = (import.meta.env.VITE_DEV_API as string) + 'oauth2/authorization/' + service;
-        //const redirectUrl = 'https://j9b104.p.ssafy.io:8180/api/oauth2/authorization/' + service;
+        //const redirectUrl = (import.meta.env.VITE_DEV_API as string) + 'oauth2/authorization/' + service;
+        const redirectUrl = 'https://j9b104.p.ssafy.io:8180/dev/api/oauth2/authorization/' + service;
         window.location.href = redirectUrl;
     }
 

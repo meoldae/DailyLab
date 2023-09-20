@@ -32,14 +32,4 @@ export default defineConfig({
   define: {
     global: 'window',
   },
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:8180",
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
-  },
 })
