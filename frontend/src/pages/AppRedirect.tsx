@@ -6,6 +6,7 @@ const AppRedirect = () => {
     const navigate = useNavigate(); 
     
     useEffect(() => {
+        alert('asdfasdf')
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
         console.log(token)
