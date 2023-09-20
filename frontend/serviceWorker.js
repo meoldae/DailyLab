@@ -37,7 +37,7 @@ self.addEventListener('fetch', event => {
   const checkurl = event.request.url;
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
-  if (checkurl.includes('/manifest.json') || checkurl.includes('/api')) {
+  if (checkurl.includes('/api') && checkurl.includes('/manifest.json')) {
     event.respondWith(fetch(event.request));
     return;
   }
