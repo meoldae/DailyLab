@@ -7,9 +7,8 @@ import loginGoogle from "@/resources/img/login/login_google.png";
 const Login = () => {
     
     const loginHandler = (service : string) => {
-        //const redirectUrl = (import.meta.env.VITE_DEV_API as string) + 'oauth2/authorization/' + service;
-        const redirectUrl = "https://www.naver.com";
-        window.location.replace(redirectUrl);
+        const redirectUrl = (import.meta.env.VITE_DEV_API as string) + 'oauth2/authorization/' + service;
+        window.location.assign(redirectUrl);
     }
 
     return (
