@@ -11,6 +11,10 @@ public interface TodoService {
 
     DataResponse getTodoListByMemberId(Long memberId);
 
+    DataResponse getPartTodoListByMemberIdAndTodoDate(LocalDate todoDate, Long memberId);
+
+    DataResponse getFullTodoListByMemberIdAndTodoDate(LocalDate todoDate, Long memberId);
+
     DataResponse getAllTodoList();
 
     CommonResponse registTodo(TodoRegistDto todoRegistDto, Long memberId);

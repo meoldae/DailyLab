@@ -1,11 +1,14 @@
 package com.amor4ti.dailylab.domain.todo.service;
 
+import com.amor4ti.dailylab.domain.category.repository.CategoryRepository;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.entity.Todo;
+import com.amor4ti.dailylab.domain.entity.category.Category;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
+import com.amor4ti.dailylab.domain.todo.dto.response.TodoSmallDto;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -32,6 +35,8 @@ public class TodoServiceImpl implements TodoService{
 
     private final TodoRepository todoRepository;
     private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
+
     private final ResponseService responseService;
 
     @Override
@@ -42,12 +47,29 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    public DataResponse getPartTodoListByMemberIdAndTodoDate(LocalDate todoDate, Long memberId) {
+        List<TodoSmallDto> todoSmallDtoList = todoRepository.findSomedayPartTodoDtoListByMemberIdAndTodoDate(todoDate, memberId);
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoSmallDtoList);
+    }
+
+    @Override
+    public DataResponse getFullTodoListByMemberIdAndTodoDate(LocalDate todoDate, Long memberId) {
+        List<TodoDto> todoDtoList = todoRepository.findSomedayFullTodoDtoListByMemberIdAndTodoDate(todoDate, memberId);
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoDtoList);
+    }
+
+    @Override
     public DataResponse getAllTodoList() {
         List<TodoDto> todoDtoList = new ArrayList<>();
         List<Todo> todoList = todoRepository.findAll();
 
         for (Todo todo : todoList) {
-            TodoDto todoDto = new TodoDto().toDto(todo);
+            Category category = categoryRepository.findByCategoryId(todo.getCategory().getCategoryId())
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+
+            TodoDto todoDto = new TodoDto().toDto(todo, category);
 
             todoDtoList.add(todoDto);
         }
@@ -61,7 +83,10 @@ public class TodoServiceImpl implements TodoService{
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
-        Todo todo = todoRegistDto.toEntity(member);
+        Category category = categoryRepository.findByCategoryId(todoRegistDto.getCategoryId())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+
+        Todo todo = todoRegistDto.toEntity(member, category);
         todoRepository.save(todo);
 
         return responseService.successResponse(ResponseStatus.TODO_REGIST_SUCCESS);
