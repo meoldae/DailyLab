@@ -37,7 +37,7 @@ registerRoute(
     }
 
     // If this is a URL that starts with /_, skip.
-    if (url.pathname.startsWith('/_')) {
+    if (url.pathname.startsWith('/_') || url.pathname.startsWith('/api')) {
       return false;
     }
 
@@ -50,7 +50,7 @@ registerRoute(
     // Return true to signal that we want to use the handler.
     return true;
   },
-  createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
+  createHandlerBoundToURL(import.meta.env.VITE_DEV as string + '/index.html')
 );
 
 // An example runtime caching route for requests that aren't handled by the
