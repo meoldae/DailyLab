@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class EmotionCount {
     private String emotionId;
+    private String type;
     private Long count;
 }

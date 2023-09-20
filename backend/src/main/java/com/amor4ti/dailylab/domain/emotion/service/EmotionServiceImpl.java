@@ -11,11 +11,11 @@ import com.amor4ti.dailylab.domain.emotion.mongorepo.MemberEmotionRepository;
 import com.mongodb.BasicDBObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,10 +48,28 @@ public class EmotionServiceImpl implements EmotionService {
     }
 
     public List<MemberEmotionDayDto> getDayEmotion(Long memberId, String date) {
-        List<MemberEmotion> memberEmotions = memberEmotionRepository.findByMemberIdAndDate(memberId, date);
+        Criteria memberCriteria = Criteria.where("memberId").is(memberId).and("date").is(date);
+        MatchOperation matchStage = Aggregation.match(memberCriteria);
 
-        return memberEmotions.stream()
-                .map(MemberEmotionDayDto::of)
+        LookupOperation lookupStage = Aggregation.lookup("emotion", "emotionId", "emotionId", "emotionInfo");
+
+        Aggregation aggregation = Aggregation.newAggregation(matchStage, lookupStage);
+
+        List<Document> results = mongoTemplate.aggregate(aggregation, "member_emotion", Document.class).getMappedResults();
+
+        return results.stream()
+                .map(document -> {
+                    List<Document> emotionInfoList = (List<Document>) document.get("emotionInfo");
+                    Document emotionInfo = emotionInfoList.get(0);
+                    String type = emotionInfo.getString("type");
+
+                    return MemberEmotionDayDto.builder()
+                            .emotionId(document.getInteger("emotionId"))
+                            .type(type)
+                            .date(document.getString("date"))
+                            .timeStamp(document.getString("timestamp"))
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -65,30 +83,41 @@ public class EmotionServiceImpl implements EmotionService {
                         )
         );
 
-        // 2. 각 날짜 및 감정별로 그룹화
-        GroupOperation firstGroupOperation = Aggregation.group("date", "emotionId").count().as("count");
+        // 2. emotion 컬렉션과 조인
+        LookupOperation lookupOperation =
+                Aggregation.lookup("emotion", "emotionId", "emotionId", "emotionInfo");
 
-        // 3. 각 날짜별로 재그룹화하며 감정 정보 포함
+        // 3. 조인된 결과와 함께 각 날짜 및 감정별로 그룹화
+        GroupOperation firstGroupOperation = Aggregation.group("date", "emotionId")
+                                                        .first("emotionInfo.type")
+                                                        .as("type")
+                                                        .count().as("count");
+
+        // 4. 각 날짜별로 재그룹화하며 감정 정보 포함
         GroupOperation secondGroupOperation = Aggregation.group("_id.date")
-                .push(new BasicDBObject("emotionId", "$_id.emotionId").append("count", "$count")).as("emotions");
+                                                         .push(new BasicDBObject("emotionId", "$_id.emotionId")
+                                                         .append("count", "$count")
+                                                         .append("type", "$type"))
+                                                         .as("emotions");
 
-        // 4. 날짜 필드를 직접 설정 (ProjectionOperation 추가)
+        // 5. 날짜 필드를 직접 설정
         ProjectionOperation projectionOperation = Aggregation.project()
-                .andExpression("_id").as("date")
-                .and("emotions").as("emotions");
+                                                             .andExpression("_id").as("date")
+                                                             .and("emotions").as("emotions");
 
-        // 5. 날짜별로 정렬
+        // 6. 날짜별로 정렬
         SortOperation sortOperation = Aggregation.sort(Sort.by(Sort.Order.asc("date")));
 
         Aggregation aggregation = Aggregation.newAggregation(
                 matchOperation,
+                lookupOperation,
                 firstGroupOperation,
                 secondGroupOperation,
                 projectionOperation,
                 sortOperation
         );
 
-        // 5. 집계 연산 수행
+        // 7. 집계 연산 수행
         AggregationResults<MemberEmotionPeriodDto> results = mongoTemplate.aggregate(
                 aggregation, "member_emotion", MemberEmotionPeriodDto.class
         );

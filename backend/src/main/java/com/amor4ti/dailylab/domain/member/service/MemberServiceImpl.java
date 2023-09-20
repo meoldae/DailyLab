@@ -44,6 +44,7 @@ public class MemberServiceImpl implements MemberService{
 
 		findMember.setBirthday(signUpDto.getBirthDay());
 		findMember.setGender(signUpDto.getGender());
+
 		// Dirty Checking 이상으로 Save 호출
 		memberRepository.save(findMember);
 		

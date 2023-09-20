@@ -18,6 +18,7 @@ public class MemberEmotion {
 
     private Long memberId;
     private int emotionId;
+    private String type;
     private String timestamp;
     private String date;
 }

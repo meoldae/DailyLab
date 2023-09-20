@@ -20,7 +20,9 @@ public enum ResponseStatus {
 
     SIGNUP_SUCCESS("2000", "회원 가입이 완료 되었습니다."),
     LOGIN_SUCCESS("2001", "로그인 되었습니다."),
-    LOGOUT_SUCCESS("2002", "로그아웃 되었습니다.");
+    LOGOUT_SUCCESS("2002", "로그아웃 되었습니다."),
+
+    TODO_REGIST_SUCCESS("3000", "Todo가 등록되었습니다.");
 
     private final String code;
     private final String message;

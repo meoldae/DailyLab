@@ -24,21 +24,23 @@ public class DiaryServiceImpl implements DiaryService {
     private final WebClientUtil webClientUtil;
     private final DiaryPredictRepository diaryPredictRepository;
     private final MemberRepository memberRepository;
+
     @Override
     public void createDefaultDiary(Long memberId, LocalDate date) {
-//        Member member = memberRepository.(memberId).orElseThrow();
+        Member member = memberRepository.findMemberByMemberId(memberId).orElseThrow();
 
-//        webClientUtil.post(DATA_SERVER_URL + "/diary/default", RequestDiaryDto.of(member), String.class)
-//                .subscribe(
-//                        response -> {
-//                                diaryPredictRepository.save(DiaryPredict.builder()
-//                                                                        .diaryDate(date)
-//                                                                        .memberId(memberId)
-//                                                                        .content(response).build());
-//                            },
-//                        error -> {
-//                            error.printStackTrace();
-//                        }
-//                );
+        webClientUtil.post(DATA_SERVER_URL + "/diary/default", RequestDiaryDto.of(member), String.class)
+                .subscribe(
+                        response -> {
+                            diaryPredictRepository.save(DiaryPredict.builder()
+                                                                    .diaryDate(date)
+                                                                    .memberId(memberId)
+                                                                    .content(response).build());
+                        },
+                        error -> {
+                            error.printStackTrace();
+                        }
+                );
     }
 }
+
