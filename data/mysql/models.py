@@ -38,8 +38,8 @@ class todo_report(Base):
     category_id = Column(BigInteger)
     success_count = Column(Integer)
     fail_count = Column(Integer)
-    first_recomended_date = Column(Date)
-    last_recomended_date = Column(Date)
+    first_recommend_date = Column(Date)
+    last_recommend_date = Column(Date)
 
 class category_dict(Base):
     __tablename__ = "category_id"
