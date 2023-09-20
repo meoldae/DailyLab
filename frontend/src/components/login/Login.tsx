@@ -30,7 +30,7 @@ const Login = () => {
                     <button onClick={() => loginHandler('naver')}>
                         <img src={loginNaver} alt="네이버로그인" />
                     </button>
-                    <a href={`${(import.meta.env.VITE_DEV_API as string)}'oauth2/authorization/kakao'`}>
+                    <a href={`${(import.meta.env.VITE_DEV_API as string)}oauth2/authorization/kakao`}>
                         <img src={loginKakao} alt="카카오로그인" />
                     </a>
                     <button onClick={() => loginHandler('google')}>
