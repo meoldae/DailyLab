@@ -10,6 +10,7 @@ import AppLogin from "@/pages/AppLogin";
 import AppIntro from "@/pages/AppIntro";
 import AppMemberInfo from "@/pages/AppMemberInfo";
 import AppRedirect from "@/pages/AppRedirect";
+import AppNotFound from "@/error/AppNotFound";
 //import { SetAccessToken } from "@/atom/UserAtom";
 
 const AppRouter = () => {
@@ -32,6 +33,7 @@ const AppRouter = () => {
                 </Route>
                 <Route path="/intro" element={<AppIntro />} />
                 <Route path="/memberInfo" element={<AppMemberInfo />} />
+                <Route path="/*" element={<AppNotFound/>}/>
             </Routes>
         </BrowserRouter>
     )
