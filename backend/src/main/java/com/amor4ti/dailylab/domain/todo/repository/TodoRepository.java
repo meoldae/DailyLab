@@ -13,6 +13,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long>,
                                         TodoCustomRepository,
                                         QuerydslPredicateExecutor<Todo> {
 
-    @Query("SELECT t FROM Todo t WHERE t.member.memberId = :memberId")
-    List<Todo> findByMemberId(Long memberId);
+//    @Query("SELECT t FROM Todo t WHERE t.member.memberId = :memberId")
+//    List<Todo> findByMemberId(Long memberId);
 }

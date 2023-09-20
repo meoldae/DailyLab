@@ -36,16 +36,9 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public DataResponse getTodoListByMemberId(Long memberId) {
-        List<TodoDto> todoDtoListByMemberId = new ArrayList<>();
-        List<Todo> todoListByMemberId = todoRepository.findByMemberId(memberId);
+        List<TodoDto> todoDtoList = todoRepository.findByMemberId(memberId);
 
-        for (Todo todo : todoListByMemberId) {
-            TodoDto todoDto = new TodoDto().toDto(todo);
-
-            todoDtoListByMemberId.add(todoDto);
-        }
-
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoDtoListByMemberId);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoDtoList);
     }
 
     @Override
@@ -71,7 +64,7 @@ public class TodoServiceImpl implements TodoService{
         Todo todo = todoRegistDto.toEntity(member);
         todoRepository.save(todo);
 
-        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+        return responseService.successResponse(ResponseStatus.TODO_REGIST_SUCCESS);
     }
 
     @Override
