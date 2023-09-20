@@ -39,7 +39,7 @@ self.addEventListener('fetch', event => {
   console.log("____________________________redirect test____________________________");
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
-  if (checkurl.includes('/api') || checkurl.includes('/manifest')) {
+  if (checkurl.includes('/api') || checkurl.includes('/manifest') || checkurl.includes('/serviceWorker')) {
     console.log("____________________________test____________________________");
     event.respondWith(fetch(event.request));
     return;
