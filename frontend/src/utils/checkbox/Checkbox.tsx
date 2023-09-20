@@ -11,13 +11,14 @@
 import { useState } from "react";
 
 interface CheckboxProps {
+    index: number,
     state: boolean;
     content: string;
     type: string;
-    onCheckboxChange: (content: string, isChecked: boolean) => void;
+    onCheckboxChange: (index: number, isChecked: boolean) => void;
   }
 
-const Checkbox: React.FC<CheckboxProps> = ({ state, content, type, onCheckboxChange }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ index, state, content, type, onCheckboxChange }) => {
     const [checkState, setCheckState] = useState(state);
     const [inputState, setInputState] = useState('input');
     const [contentText, setContentText] = useState(content);
@@ -42,7 +43,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ state, content, type, onCheckboxCha
         // defaultLock 상태에서는 체크처리 불가능
         if(type !== 'defaultLock')
             setCheckState(!checkState)
-        onCheckboxChange(content, !checkState);
+        onCheckboxChange(index, !checkState);
     }
 
     return (
