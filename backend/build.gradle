@@ -58,7 +58,8 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 	// 23.09.19 GPT API 의존성 추가
-	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+	// 23.09.20 GPT API 의존성 제거
+//	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 }
 
 tasks.named('test') {

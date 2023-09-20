@@ -92,7 +92,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 			request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_INVALID);
 		}
 
-		log.info("next filter");
 		filterChain.doFilter(request, response);
 	}
 }
