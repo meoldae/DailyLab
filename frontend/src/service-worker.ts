@@ -38,6 +38,7 @@ registerRoute(
 
     // If this is a URL that starts with /_, skip.
     if (url.pathname.startsWith('/_') || url.pathname.startsWith('/dev/api') || url.pathname.startsWith('/prod/api')) {
+      alert("regist test");
       return false;
     }
 
@@ -75,6 +76,7 @@ self.addEventListener('fetch', event => {
 
   // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
   if (checkurl.includes('/api')) {
+    alert("fetch test");
     event.respondWith(fetch(event.request));
     return;
   }
