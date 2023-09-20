@@ -25,6 +25,20 @@ public class TodoController {
         return todoService.getTodoListByMemberId(memberId);
     }
 
+    @GetMapping("/{todoDate}")
+    public DataResponse getPartTodoListByMemberIdAndTodoDate(@PathVariable LocalDate todoDate, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return todoService.getPartTodoListByMemberIdAndTodoDate(todoDate, memberId);
+    }
+
+    @GetMapping("/full/{todoDate}")
+    public DataResponse getFullTodoListByMemberIdAndTodoDate(@PathVariable LocalDate todoDate, Authentication authentication){
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return todoService.getFullTodoListByMemberIdAndTodoDate(todoDate, memberId);
+    }
+
     @GetMapping("/all")
     public DataResponse getAllTodoList() {
 

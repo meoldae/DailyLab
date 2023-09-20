@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.todo.dto.request;
 
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.entity.Todo;
+import com.amor4ti.dailylab.domain.entity.category.Category;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +24,11 @@ public class TodoRegistDto {
         this.todoDate = todoDate;
     }
 
-    public Todo toEntity(Member member) {
+    public Todo toEntity(Member member, Category category) {
 
         return Todo.builder()
                 .member(member)
-                .categoryId(this.categoryId)
+                .category(category)
                 .content(this.content)
                 .todoDate(this.todoDate)
                 .checkedDate(null)

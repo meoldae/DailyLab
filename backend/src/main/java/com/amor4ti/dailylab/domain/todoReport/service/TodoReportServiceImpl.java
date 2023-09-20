@@ -39,13 +39,13 @@ public class TodoReportServiceImpl implements TodoReportService {
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
         for (Todo todo : todayTodoList) {
-            Optional<TodoReport> todoReport = todoReportRepository.findTodoReportByMemberIdAndCategoryId(memberId, todo.getCategoryId());
+            Optional<TodoReport> todoReport = todoReportRepository.findTodoReportByMemberIdAndCategoryId(memberId, todo.getCategory().getCategoryId());
 
             // 기존에 db에 존재하지 않는 todoReport인 경우
             if(todoReport.isEmpty()) {
                 TodoReport newTodoReport = TodoReport.builder()
                         .member(member)
-                        .categoryId(todo.getCategoryId())
+                        .categoryId(todo.getCategory().getCategoryId())
                         .successCount(0L)
                         .failCount(0L)
                         .firstRecommendDate(todoDate)
