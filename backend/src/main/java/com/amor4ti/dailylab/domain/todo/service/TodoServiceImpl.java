@@ -17,9 +17,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -90,6 +94,24 @@ public class TodoServiceImpl implements TodoService{
 
         todo.checkTodo();
         todoRepository.save(todo);
+
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
+
+    @Override
+    public CommonResponse recommendTodo(Long memberId, String todoDate) {
+        String fastApiUrl = "http://localhost:8181/data/info";
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("memberId", memberId);
+        data.put("todoDate", todoDate);
+
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println(2);
+        String response = restTemplate.postForObject(fastApiUrl, data, String.class);
+        System.out.println(3);
+
+        System.out.println(response);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
