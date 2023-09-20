@@ -23,8 +23,7 @@ const MemberInfo = () => {
             birthday: birth
         })
         .then((response) => {
-            console.log(response.data);
-            SetAccessToken(response.data.accessToken);
+            SetAccessToken(response.data.data);
             navigate('/'); 
         })
         .catch((error) => {
