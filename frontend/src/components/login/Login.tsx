@@ -8,7 +8,7 @@ const Login = () => {
     
     const loginHandler = (service : string) => {
         const redirectUrl = (import.meta.env.VITE_DEV_API as string) + 'oauth2/authorization/' + service;
-        window.location.replace(redirectUrl);
+        window.open(redirectUrl,"팝업 테스트","width=400, height=300, top=10, left=10");
     }
 
     return (
