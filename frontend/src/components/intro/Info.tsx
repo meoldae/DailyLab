@@ -13,7 +13,7 @@ const Info: React.FC<InfoProps> = ({ imgsrc, name, desc, color }) => {
                 <div className="mb-3 text-xl font-bold" style={{color:color}}>
                     {name}
                 </div>
-                <div className="font-thin break-keep" dangerouslySetInnerHTML={{__html: desc}}>
+                <div className="font-light break-keep" dangerouslySetInnerHTML={{__html: desc}}>
                 </div>
             </div>
         </div>
