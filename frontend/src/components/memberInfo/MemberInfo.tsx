@@ -20,11 +20,10 @@ const MemberInfo = () => {
         axios.post(((import.meta.env.VITE_DEV_API as string) + 'member/signup'), {
             memberId: id,
             gender: gender,
-            birthday: birth
+            birthDay: birth
         })
         .then((response) => {
-            console.log(response.data);
-            SetAccessToken(response.data.accessToken);
+            SetAccessToken(response.data.data);
             navigate('/'); 
         })
         .catch((error) => {
