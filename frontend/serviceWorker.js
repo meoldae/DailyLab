@@ -31,3 +31,25 @@ self.addEventListener("install", function (event) {
     })
   );
 });
+
+// Modified fetch event handler
+self.addEventListener('fetch', event => {
+  const checkurl = event.request.url;
+
+  // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
+  if (checkurl.includes('/manifest.json') || checkurl.includes('/api')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // For other requests, follow the cache-then-network strategy
+  event.respondWith(
+    caches.match(event.request)
+      .then(cachedResponse => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request);
+      })
+  );
+});

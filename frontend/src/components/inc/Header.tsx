@@ -40,7 +40,7 @@ export default function Header() {
     }
 
     return (
-        <header className="flex justify-end pt-[20px] pr-[20px] overflow-hidden absolute top-0 left-0 w-full">
+        <header className="flex justify-end pt-[20px] pr-[20px] absolute top-0 left-0 w-full z-[3]">
             <div className="w-screen h-screen z-[-1] absolute left-0 top-0 opacity-0 bg-text text-0 transition-all" onClick={toggleHeaderMenu} ref={headerMenuBg}>헤더 메뉴 active시 screen 배경</div>
             <button type="button" onClick={toggleHeaderMenu}><img src={isLight ? settingIconImgLight : settingIconImgDark} alt="설정 아이콘" className='w-[24px]'/></button>
             <div className="top-[45px] right-[10px] absolute text-right overflow-hidden h-0 z-[-1]" ref={headerMenuCon}>

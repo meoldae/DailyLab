@@ -10,11 +10,11 @@ import AppLogin from "@/pages/AppLogin";
 import AppIntro from "@/pages/AppIntro";
 import AppMemberInfo from "@/pages/AppMemberInfo";
 import AppRedirect from "@/pages/AppRedirect";
-// import { SetAccessToken } from "@/atom/UserAtom";
+//import { SetAccessToken } from "@/atom/UserAtom";
 
 const AppRouter = () => {
     SetModeToHtml();
-    // SetAccessToken("");
+    //SetAccessToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwicHJvdmlkZXIiOiJrYWthbyIsImV4cCI6MTY5NTI1NzI0NSwiaWF0IjoxNjk1MTcwODQ1LCJtZW1iZXJJZCI6IjIifQ.nkHoxGGugVdkGxo-v2Am3d0RaUgplyI7AXiX1TScY5a_5k8WdcBUBkIFRQ87RIl-DP5gKsxRpJFQ7ge-0H-4Zg");
 
     return (
         <BrowserRouter>
