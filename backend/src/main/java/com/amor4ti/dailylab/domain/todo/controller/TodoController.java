@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/todo")
 @RequiredArgsConstructor
@@ -48,5 +50,12 @@ public class TodoController {
         Long memberId = Long.parseLong(authentication.getName());
 
         return todoService.checkTodo(memberId, todoUpdateDto);
+    }
+
+    @GetMapping("/recommend/{todoDate}")
+    public CommonResponse recommendTodo(@PathVariable("todoDate") String todoDate, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        System.out.println(1);
+        return todoService.recommendTodo(memberId, todoDate);
     }
 }

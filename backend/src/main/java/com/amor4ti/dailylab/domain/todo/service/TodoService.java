@@ -5,6 +5,8 @@ import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 
+import java.time.LocalDate;
+
 public interface TodoService {
 
     DataResponse getTodoListByMemberId(Long memberId);
@@ -15,6 +17,7 @@ public interface TodoService {
 
     CommonResponse deleteTodo(Long memberId, TodoUpdateDto todoUpdateDto);
 
-    CommonResponse checkTodo(Long memberId, TodoUpdateDto todoUpdateDto
-    );
+    CommonResponse checkTodo(Long memberId, TodoUpdateDto todoUpdateDto);
+
+    CommonResponse recommendTodo(Long memberId, String todoDate);
 }

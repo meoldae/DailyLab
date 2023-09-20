@@ -22,7 +22,9 @@ public enum ExceptionStatus {
 
 	CATEGORY_BLACKLIST_NOT_FOUND("-5000", "BlackList에 해당 MemberCategory가 존재하지 않습니다."),
 	CATEGORY_BLACKLIST_ALREADY_FALSE("-5001", "BlackList에 이미 해당 MemberCategory가 풀리지 않은 상태로 존재하는 경우"),
-	CATEGORY_BLACKLIST_ALREADY_TRUE("-5001", "BlackList에 이미 해당 MemberCategory가 풀려난 상태로 존재하는 경우");
+	CATEGORY_BLACKLIST_ALREADY_TRUE("-5001", "BlackList에 이미 해당 MemberCategory가 풀려난 상태로 존재하는 경우"),
+
+	CATEGORY_WHITELIST_NOT_FOUND("6000", "WhiteList에 해당 MemberCategory가 존재하지 않습니다.");
 
 	private final String code;
 	private final String message;
