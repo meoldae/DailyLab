@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'inline',
+      injectRegister: 'auto',
       devOptions : {
         enabled: true,
       },
