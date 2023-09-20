@@ -1,7 +1,7 @@
 import pandas as pd
 
-filePath = '../../../dataset/'
-# filePath = 'dataset/'
+# filePath = '../../../dataset/'
+filePath = 'dataset/'
 cosine_similarity_matrix = pd.read_csv(filePath + 'cosine_similarity_matrix.csv', encoding='utf-8')
 
 def printSim(A):
