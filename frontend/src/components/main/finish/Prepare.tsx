@@ -43,7 +43,7 @@ const MainPrepare = ({curDate} : {curDate : string}) => {
             {/* 추천 체크리스트 목록 */}
             <div className="text-right">
                 <div className='flex items-center'>
-                    <img className='w-[90px]' src="src/resources/img/character/ian.png" alt="이안" />
+                    <img className='w-[90px]' src="./resources/img/character/ian.png" alt="이안" />
                     <p className="">다음에는 이런 일 어때요?</p>
                 </div>
                 <div className='relative -mt-12 mb-4'>
