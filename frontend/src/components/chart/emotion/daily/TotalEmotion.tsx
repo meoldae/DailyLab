@@ -2,7 +2,7 @@ import { EmotionType, EmotionResultType } from '@/type/EmotionType';
 
 const TotalEmotion = ({emotionResultList, emotionList} : {emotionResultList: EmotionResultType[], emotionList : EmotionType[]}) => {
     const data = new Array(emotionList.length);
-    for(let i=0; i < emotionList.length; i++) data[i] = {imgsrc : `src/resources/img/emotion/${emotionList[i].emotionId}.png`, name : emotionList[i].name, cnt : 0};
+    for(let i=0; i < emotionList.length; i++) data[i] = {imgsrc : `@/resources/img/emotion/${emotionList[i].emotionId}.png`, name : emotionList[i].name, cnt : 0};
 
     emotionResultList.map((item) => data[item.emotionId - 1]["cnt"] = data[item.emotionId - 1]["cnt"] + 1);
 
