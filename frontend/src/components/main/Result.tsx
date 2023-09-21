@@ -1,4 +1,4 @@
-import Diary from "@/utils/diary/Diary";
+import Diary from "@/components/diary/Diary";
 
 const MainResult = ({curDate} : {curDate : string}) => {
     return (
