@@ -31,6 +31,9 @@ def getRecommendedList(member_id: int, db: Session):
     .filter(models.todo_report.last_recommend_date >= datetime.now().date()-timedelta(days=7))\
     .all()
 
+    print(member_id)
+    print(recommendedList)
+
     if not recommendedList:
         return 0
     else : return recommendedList
