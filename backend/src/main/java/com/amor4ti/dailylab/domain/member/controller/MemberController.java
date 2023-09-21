@@ -45,14 +45,14 @@ public class MemberController {
 
 	@GetMapping("/info")
 	public DataResponse getMemberInfo(Authentication authentication) {
-		Member member = (Member) authentication.getPrincipal();
-		return memberService.getMainMemberDto(member.getMemberId());
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getMainMemberDto(memberId);
 	}
 
 	@PostMapping("/modify")
 	public CommonResponse updateMember(@RequestBody UpdateMemberDto updateMemberDto, Authentication authentication){
-		Member member = (Member) authentication.getPrincipal();
-		return memberService.updateMemberInfo(member.getMemberId(), updateMemberDto);
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.updateMemberInfo(memberId, updateMemberDto);
 	}
 
 
@@ -68,7 +68,7 @@ public class MemberController {
 
 	@GetMapping("/hobby")
 	public DataResponse getHobbyList(Authentication authentication){
-		Member member = (Member) authentication.getPrincipal();
-		return memberService.getHobbyList(member.getMemberId());
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getHobbyList(memberId);
 	}
 }
