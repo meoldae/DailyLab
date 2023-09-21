@@ -1,14 +1,14 @@
 package com.amor4ti.dailylab.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class MemberHobby {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
