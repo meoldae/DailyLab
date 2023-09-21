@@ -14,7 +14,8 @@ public interface MemberService {
 
 	DataResponse<String> saveMember(SignUpDto signUpDto, HttpServletResponse response);
 
-    DataResponse<MainMemberDto> getMemberInfo(Long memberId);
+    DataResponse getMemberInfo(Long memberId);
+    DataResponse getMainMemberDto(Long memberId);
 
     CommonResponse updateMemberInfo(Long memberId, UpdateMemberDto updateMemberDto);
 

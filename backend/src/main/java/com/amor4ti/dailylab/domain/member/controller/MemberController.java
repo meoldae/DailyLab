@@ -46,6 +46,13 @@ public class MemberController {
 	}
 
 	@GetMapping("/info")
+	public DataResponse getMainMember(Authentication authentication) {
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getMainMemberDto(memberId);
+	}
+
+
+	@GetMapping("/mypage")
 	public DataResponse getMemberInfo(Authentication authentication) {
 		Long memberId = Long.parseLong(authentication.getName());
 		return memberService.getMemberInfo(memberId);
