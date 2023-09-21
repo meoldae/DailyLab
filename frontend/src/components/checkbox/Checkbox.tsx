@@ -53,7 +53,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ index, state, content, type, onChec
                     {/* 체크박스 */}
                     {type !== 'future' && (
                         // future - 체크박스 보이지 않게 처리
-                        <img onClick={handleCheckState} className="mr-4 w-[20px]" src={checkState ? "src/resources/img/icon/checkbox_fill.png" : "src/resources/img/icon/checkbox_empty.png"}  alt="" />
+                        <img onClick={handleCheckState} className="mr-4 w-[20px]" src={checkState ? "./resources/img/icon/checkbox_fill.png" : "./resources/img/icon/checkbox_empty.png"}  alt="" />
                     )}
                     {/* TODO Content */}
                     {type !== 'plan' ? (
@@ -97,7 +97,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ index, state, content, type, onChec
                     ))}
                     {type === 'future' && (
                         <button>
-                            <img className="w-[15px]" src="src/resources/img/icon/x.png" alt="X" />
+                            <img className="w-[15px]" src="./resources/img/icon/x.png" alt="X" />
                         </button>
                     )}
                 </div>
