@@ -18,6 +18,7 @@ public class DiaryPredict {
 
     private Long memberId;
 
+    private String title;
     private String content;
     private LocalDate diaryDate;
 }

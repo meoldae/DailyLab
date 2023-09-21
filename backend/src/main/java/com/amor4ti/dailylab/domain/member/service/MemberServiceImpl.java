@@ -86,4 +86,137 @@ public class MemberServiceImpl implements MemberService{
 		List<Hobby> hobbyList = memberHobbyService.getHobbyListByMemberId(memberId);
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, hobbyList);
 	}
+<<<<<<< Updated upstream
+=======
+
+	@Override
+	public DataResponse getGoal(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		String goal = findMember.getGoal();
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, goal);
+	}
+
+	@Override
+	public CommonResponse updateGoal(String goal, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		findMember.setGoal(goal);
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+	@Override
+	public DataResponse getJob(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		String job = findMember.getJob();
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, job);
+	}
+
+	@Override
+	public CommonResponse updateJob(String job, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		findMember.setJob(job);
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+	@Override
+	public DataResponse getMbti(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		MemberMbtiDto memberMbtiDto = mbtiService.getMbti(findMember.getMbtiId());
+
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, memberMbtiDto);
+	}
+
+	@Override
+	public CommonResponse updateMbti(MemberMbtiDto memberMbtiDto, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		Mbti mbti = mbtiService.getMbtiByDto(memberMbtiDto);
+		findMember.setMbtiId(mbti.getMbtiId());
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+	@Override
+	public DataResponse getReligion(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		String religion = findMember.getReligion();
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, religion);
+	}
+
+	@Override
+	public CommonResponse updateReligion(String religion, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		findMember.setReligion(religion);
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+
+	@Override
+	public DataResponse getMemberFlask(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		List<Hobby> hobbyList = memberHobbyService.getHobbyListByMemberId(memberId);
+		UpdateMemberDto memberInfo = memberMapper.memberToUpdateMember(findMember, hobbyList);
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, memberInfo);
+	}
+
+	@Override
+	public DataResponse getMemberStatus(Long memberId) {
+		MemberStatusDto res = memberStatusRepository.findFirstByMemberIdOrderByDateDesc(memberId)
+				.map(MemberStatusDto::of)
+				.orElse(new MemberStatusDto(null, "init"));
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, res);
+	}
+
+	@Override
+	public void updateStatusProceed(Long memberId, LocalDate date) {
+		memberStatusRepository.save(MemberStatus.builder()
+												.memberId(memberId)
+												.date(date)
+												.status("proceed")
+												.build());
+	}
+
+	@Override
+	public void updateStatusWait(Long memberId, LocalDate date) {
+		MemberStatus memberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date)
+														  .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+		memberStatus.setStatus("wait");
+		memberStatusRepository.save(memberStatus);
+	}
+
+	@Override
+	public void updateStatusFinish(Long memberId, LocalDate date) {
+		MemberStatus memberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date)
+				.orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+		memberStatus.setStatus("finish");
+		memberStatusRepository.save(memberStatus);
+	}
+>>>>>>> Stashed changes
 }
