@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 public class WebClientUtil {
 
     private final WebClientConfig webClientConfig;
+
     public <T> T get(String url, Class<T> responseDtoClass) {
         return webClientConfig.webClient().method(HttpMethod.GET)
                 .uri(url)
