@@ -4,10 +4,7 @@ import com.amor4ti.dailylab.domain.entity.Hobby;
 import com.amor4ti.dailylab.domain.entity.Mbti;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.hobby.service.MemberHobbyService;
-import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
-import com.amor4ti.dailylab.domain.member.dto.MemberMbtiDto;
-import com.amor4ti.dailylab.domain.member.dto.SignUpDto;
-import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
+import com.amor4ti.dailylab.domain.member.dto.*;
 import com.amor4ti.dailylab.domain.member.mapper.MbtiMapper;
 import com.amor4ti.dailylab.domain.member.mapper.MemberMapper;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
@@ -65,13 +62,22 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	public DataResponse getMainMemberDto(Long memberId) {
+		MainMemberDto mainMemberDto = memberRepository.findMainMemberDtoByMemberId(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		System.out.println(mainMemberDto);
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, mainMemberDto);
+	}
+
+	@Override
 	public DataResponse getMemberInfo(Long memberId) {
 		Member findMember = memberRepository.findById(memberId).orElseThrow(
 				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
-		MainMemberDto mainMemberDto = memberMapper.memberToMainMember(findMember);
+		MyPageDto myPageDto = memberMapper.memberToMyPage(findMember);
 
-		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, mainMemberDto);
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, myPageDto);
 	}
 
 	@Transactional

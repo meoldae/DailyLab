@@ -13,4 +13,9 @@ public class MainMemberDto {
     private String username;
     private String gender;
     private LocalDate birthday;
+    private Long mbtiId;
+    private String job;
+    private String goal;
+    private String religion;
+
 }
