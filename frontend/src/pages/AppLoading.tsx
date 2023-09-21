@@ -1,4 +1,4 @@
-import DiaryLoading from "@/components/loading/DiaryLoading";
+import DiaryLoading from "@/components/main/proceed/DiaryLoading";
 
 const AppLoading = () => {
     return (

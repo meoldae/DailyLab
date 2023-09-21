@@ -15,10 +15,23 @@ interface CheckboxProps {
     state: boolean;
     content: string;
     type: string;
+
+    categoryId?: number,
+    large?: string,
+    medium?: string,
+    small?: string,
+    todoDate?: string,
+    checkedDate?: string,
+    check?: boolean,
+    memberId?: number,
+    username?: string,
+    system?: boolean,
+    deleted?: boolean
+
     onCheckboxChange: (todoId: number, isChecked: boolean) => void;
   }
 
-const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, small }) => {
     const [checkState, setCheckState] = useState(state);
     const [inputState, setInputState] = useState('input');
     const [contentText, setContentText] = useState(content);
@@ -63,7 +76,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
                     ) : (
                         inputState === 'input' ?(
                             <div>
-                                {contentText}
+                                {contentText === '상세내용' && (small)}
                             </div>
                         ) : (
                         <div className="child-[select]:bg-secondary">
