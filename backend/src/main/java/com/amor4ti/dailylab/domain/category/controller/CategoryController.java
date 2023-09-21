@@ -26,4 +26,11 @@ public class CategoryController {
 
         return categoryService.getCategoryList();
     }
+
+    @GetMapping("/all/tree")
+    public DataResponse getCategoryTreeList() {
+
+        return categoryService.getCategoryTreeList();
+    }
+
 }
