@@ -8,7 +8,7 @@
     a { text-decoration: none; color: inherit; transition: all 0.2s ease;}
     input{-webkit-appearance: none; outline: none;}
     button, select {font-family: pretendard;}
-    .contents_wrap{min-height: calc(100vh - 44px); padding: 60px 30px 110px; position: relative;}
+    .contents_wrap{min-height: calc(100vh - 44px); padding: 20px 30px 110px; position: relative;}
     .bg_contents_con{border-radius: 20px; @apply bg-primary;}
     .bg_contents_con.type_2{border-radius: 15px; @apply bg-secondary;}
 }

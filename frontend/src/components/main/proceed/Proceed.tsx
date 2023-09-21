@@ -6,13 +6,15 @@ import { addHours } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MainProceed = ({curDate} : {curDate : string}) => {
-    const [emotionCnt, setEmotionCnt] = useState(0);
+    const [diaryOpen, setDiaryOpen] = useState(false);
+    const [diaryContents, setDiaryContents] = useState("테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기");
 
-    
-    const handleTodayDiary = () => {
-
+    const handleDiaryContents = () => {
+        document.getElementsByTagName('html')[0].classList.toggle('overflow-hidden');
+        setDiaryOpen((prev) => !prev);
     }
 
+    const [emotionCnt, setEmotionCnt] = useState(0);
     const handleEmotionClick = (emotionId: number):void => {
         updateEmotion(emotionId);// 클릭된 감정의 ID를 상태에 저장
     }
@@ -72,13 +74,81 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                 {/* 일기영역 */}
                 <div>
                     <img className='w-[90px] m-auto' src="src/resources/img/character/diego.png" alt="디에고" />
-                    <AnimatePresence>
-                        <motion.div
-                        
-                        onClick={handleTodayDiary} className='relative -mt-[40px] bg_contents_con p-[20px] flex items-center justify-center'>
-                            <p>오늘의 일기를 확인해볼까요</p>
-                        </motion.div>
-                    </AnimatePresence>
+                    <div className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
+                        <AnimatePresence initial={false} mode="wait">
+                            <motion.div onClick={handleDiaryContents}
+                                initial={{
+                                    height: 0,
+                                    opacity: 0,
+                                }}
+                                animate={{
+                                    height: "auto",
+                                    opacity: 1,
+                                }}
+                                exit={{
+                                    height: 0,
+                                    opacity: 0,
+                                }}
+                            >
+                                오늘의 일기를 확인해볼까요
+                            </motion.div>
+                        </AnimatePresence>    
+                        <AnimatePresence>
+                            {diaryOpen && (
+                                <motion.div onClick={handleDiaryContents} className="fixed bg_contents_con"
+                                    initial={{
+                                        zIndex : -1,
+                                        width: 0,
+                                        height: 0,
+                                        opacity: 0,
+                                        transform : "translate(-50%,-50%)",
+                                        left: "50%",
+                                        top: "50%",
+                                    }}
+                                    animate={{
+                                        zIndex: 1000,
+                                        width: "calc(100vw - 60px)",
+                                        height: "calc(100vh - 60px)",
+                                        opacity: 1,
+                                    }}
+                                    exit={{
+                                        zIndex : -1,
+                                        width: 0,
+                                        height: 0,
+                                        opacity: 0,
+                                    }}
+                                    transition={{
+                                        ease: "easeInOut",
+                                        type: "spring",
+                                        duration: 0.5,
+                                    }}
+                                    >
+                                    {diaryContents}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                        <AnimatePresence>
+                            {diaryOpen && (
+                                <motion.div onClick={handleDiaryContents} className="fixed bg-text left-[0] w-screen top-[0] h-screen"
+                                    initial={{
+                                        zIndex : -1,
+                                        opacity: 0,
+                                    }}
+                                    animate={{
+                                        zIndex: 999,
+                                        opacity: 0.6,
+                                    }}
+                                    exit={{
+                                        zIndex : -1,
+                                        opacity: 0,
+                                    }}
+                                    transition={{duration: 0,}}
+                                    >
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                    
                 </div>
                 {/* 감정영역 */}
                 <div>
