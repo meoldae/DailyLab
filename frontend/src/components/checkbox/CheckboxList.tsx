@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Checkbox from "./Checkbox";
-import { checkUpdateTodoItem, getDefaultTodoList } from "@/api/Todo";
+import { checkUpdateTodoItem, getDefaultTodoList, getPlanTodoList } from "@/api/Todo";
 import { addHours } from "date-fns";
 
 /*
@@ -16,14 +16,24 @@ interface CheckboxListProps {
     type: string;
     date : string;
   }
-interface DefaultTodoType {
+interface TodoType {
     todoId: number,
     check: boolean,
     content: string,
+    categoryId?: number,
+    large?: string,
+    medium?: string,
+    small?: string,
+    todoDate?: string,
+    checkedDate?: string,
+    memberId?: number,
+    username?: string,
+    system?: boolean,
+    deleted?: boolean
 }
 
 const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
-    const [items, setItems] = useState<DefaultTodoType[]>([]);
+    const [items, setItems] = useState<TodoType[]>([]);
     const [checkedItems, setCheckedItems] = useState<number[]>([]);
     const [checkedItemNo, setCheckedItemNo] = useState(0);
     const [showInput, setShowInput] = useState(false);
@@ -67,10 +77,17 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
     
     const getDefaultList = async (date : string) => {
         await getDefaultTodoList(date, ({data}) => {
-            console.log(data, items)
-            setItems(data.data as DefaultTodoType[]);
+            setItems(data.data as TodoType[]);
         }, (error) => {console.log(error)})
     }
+
+    const getPlanList = async (date : string) => {
+        await getPlanTodoList(date, ({data}) => {
+            console.log(data)
+            setItems(data.data as TodoType[]);
+        }, (error) => {console.log(error)})
+    }
+
 
     const updateCheckItem = async (todoId : number) => {
         const now = new Date();
@@ -99,6 +116,7 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
     useEffect(() => {
         if(type === 'plan'){
             // plan 리스트 불러오는 API 함수 호출
+            getPlanList(date);
         }
         else{
             // default 리스트 불러오기
@@ -120,6 +138,7 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
             </div>)}
             {items.length > 0 && items.map((todo)=>(
                 <Checkbox key={todo.todoId} todoId={todo.todoId} state={todo.check} content={todo.content} type={type} 
+                large={todo.large} medium={todo.medium} small={todo.small}
                 onCheckboxChange={handleCheckboxChange}/>
             ))}
             {showInput && (

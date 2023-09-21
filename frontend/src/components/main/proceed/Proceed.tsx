@@ -5,23 +5,33 @@ import { getDailyData, putEmotion } from '@/api/Emotion';
 import { addHours } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { getPredictDiary } from '@/api/diary';
+import { getPredictDiary, postTodayDiary } from '@/api/diary';
 
-const MainProceed = ({curDate} : {curDate : string}) => {
+interface DiaryType { 
+    title : string,
+    content : string,
+}
+
+const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}) => {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const [emotionCnt, setEmotionCnt] = useState(0);
-    let todayDiary = "";
+    const [todayDiary, setTodayDiary] = useState<DiaryType>();
 
     const handleDiaryContents = () => {
-        getDiary();
+        
         setIsOpen(!isOpen);
     }
     
     const getDiary = async () =>{
         await getPredictDiary(curDate, ({data}) => {
+            setTodayDiary(data.data as DiaryType)
+        }, (error) => {console.log(error)})
+    }
+
+    const getNewDiary = async () =>{
+        await postTodayDiary(curDate, ({data}) => {
             console.log(data.data)
-            todayDiary = data.data as string
         }, (error) => {console.log(error)})
     }
 
@@ -30,7 +40,8 @@ const MainProceed = ({curDate} : {curDate : string}) => {
     }
 
     const handleFinishButton = () => {
-        // 하루 마무리 요청 API 호출
+        // 하루 마무리 요청 API 호출 - 추천 TODO List 생성, 오늘 일기 생성
+        getNewDiary();
         navigate('/loading');
     }
 
@@ -62,6 +73,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
     
     useEffect(() => {
         void getData();
+        void getDiary();
     }, []);
 
     return (
@@ -92,18 +104,24 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                                     height: 0,
                                 }}
                                 animate={{
-                                    height: isOpen ? 200 : 20,
+                                    height: isOpen ? 200 : 50,
                                 }}
                                 exit={{
                                     height: 0,
                                 }}
                                 transition={{
-                                    height: { duration: 0.3 }, // 높이 변화를 부드럽게 만듦
+                                    height: { duration: 0.3 },
                                 }}
                                 className='overflow-scroll'
                             >
                                 <div className='text-left break-keep leading-relaxed'>
-                                    {isOpen ? todayDiary : "오늘의 일기를 확인해볼까요"}
+                                    {isOpen ? (todayDiary !== undefined) && (todayDiary.content) : 
+                                    (todayDiary !== undefined) ? (
+                                        <div className='text-center'>
+                                            <div>오늘의 일기</div>
+                                            [ {todayDiary.title} ]
+                                        </div>) 
+                                    : "오늘의 일기가 만들어지고 있어요!"}
                                 </div>
                             </motion.div>
                         </AnimatePresence>   

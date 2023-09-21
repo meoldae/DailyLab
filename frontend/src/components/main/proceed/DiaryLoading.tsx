@@ -16,7 +16,7 @@ const DiaryLoading = () => {
         }
 
         return () => clearInterval(timer);
-    }, [countdown, history]);
+    }, [countdown]);
     
     return (
         <div className="p-[30px] text-center text-3xl font-semibold">
