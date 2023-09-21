@@ -3,10 +3,7 @@ package com.amor4ti.dailylab.domain.todo.repository;
 import com.amor4ti.dailylab.domain.entity.QTodo;
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.entity.category.QCategoryBlackList;
-import com.amor4ti.dailylab.domain.todo.dto.response.QTodoDto;
-import com.amor4ti.dailylab.domain.todo.dto.response.QTodoSmallDto;
-import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
-import com.amor4ti.dailylab.domain.todo.dto.response.TodoSmallDto;
+import com.amor4ti.dailylab.domain.todo.dto.response.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -94,6 +91,18 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
     }
 
     @Override
+    public Optional<Todo> findByMemberIdAndCategoryId(Long memberId, Long categoryId) {
+        List<Long> blackListCategoryIdList = fetchBlackListCategoryIdList(memberId);
+
+        return Optional.ofNullable(jpaQueryFactory
+                .selectFrom(qtodo)
+                .where(qtodo.member.memberId.eq(memberId)
+                        .and(qtodo.category.categoryId.eq(categoryId))
+                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .fetchOne());
+    }
+
+    @Override
     public Optional<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate) {
         List<Long> blackListCategoryIdList = fetchBlackListCategoryIdList(memberId);
 
@@ -130,6 +139,30 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .where(qtodo.member.memberId.eq(memberId)
                         .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
                 .fetch();
+    }
+
+    @Override
+    public Optional<TodoRecommendedDto> findTodoRecommendedDtoByMemberIdAndTodoId(Long memberId, Long todoId) {
+        List<Long> blackListCategoryIdList = fetchBlackListCategoryIdList(memberId);
+
+        TodoRecommendedDto result = jpaQueryFactory
+                .select(new QTodoRecommendedDto(
+                        qtodo.category.categoryId,
+                        qtodo.category.large,
+                        qtodo.category.medium,
+                        qtodo.category.small,
+                        checkedExpression
+
+                ))
+                .from(qtodo)
+                .where(qtodo.todoId.eq(todoId)
+                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .fetchOne();
+
+        System.out.println("findTodoRecommendedDtoByMemberIdAndTodoId");
+        System.out.println(result);
+
+        return Optional.ofNullable(result);
     }
 
     // checkedDate가 null이면 false, 아니면 true

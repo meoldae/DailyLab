@@ -19,11 +19,11 @@ public interface TodoService {
 
     DataResponse getAllTodoList();
 
-    CommonResponse registTodo(TodoRegistDto todoRegistDto, Long memberId);
+    DataResponse registTodo(TodoRegistDto todoRegistDto, Long memberId);
 
     CommonResponse deleteTodo(Long memberId, List<Long> todoIdList);
 
     CommonResponse changeCheckTodo(Long memberId, TodoCheckUpdateDto todoCheckUpdateDto);
 
-    CommonResponse recommendTodo(Long memberId, String todoDate);
+    DataResponse recommendTodo(Long memberId, String todoDate);
 }

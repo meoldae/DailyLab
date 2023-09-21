@@ -34,7 +34,7 @@ public class TodoReportServiceImpl implements TodoReportService {
     @Transactional
     public CommonResponse finishToday(Long memberId, LocalDate todoDate) {
         List<Todo> todayTodoList = todoRepository.findTodayTodoListByMemberIdAndTodoDate(memberId, todoDate);
-        List<TodoReport> todoReportList = todoReportRepository.findAll();
+
         Member member = memberRepository.findMemberByMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 

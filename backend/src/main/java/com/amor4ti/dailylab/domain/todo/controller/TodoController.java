@@ -6,6 +6,7 @@ import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.service.TodoService;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
+import com.amor4ti.dailylab.global.util.JsonConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class TodoController {
     }
 
     @PostMapping("")
-    public CommonResponse registTodo(@RequestBody TodoRegistDto todoRegistDto, Authentication authentication) {
+    public DataResponse registTodo(@RequestBody TodoRegistDto todoRegistDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
         return todoService.registTodo(todoRegistDto, memberId);
@@ -70,9 +71,9 @@ public class TodoController {
     }
 
     @GetMapping("/recommend/{todoDate}")
-    public CommonResponse recommendTodo(@PathVariable("todoDate") String todoDate, Authentication authentication) {
+    public DataResponse recommendTodo(@PathVariable("todoDate") String todoDate, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
-        System.out.println(1);
+
         return todoService.recommendTodo(memberId, todoDate);
     }
 }
