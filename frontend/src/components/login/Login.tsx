@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
-import inform from "@/resources/img/login/inform.png";
-import loginNaver from "@/resources/img/login/login_naver.png";
-import loginKakao from "@/resources/img/login/login_kakao.png";
-import loginGoogle from "@/resources/img/login/login_google.png";
+import inform from "public/assets/img/login/inform.png";
+import loginNaver from "public/assets/img/login/login_naver.png";
+import loginKakao from "public/assets/img/login/login_kakao.png";
+import loginGoogle from "public/assets/img/login/login_google.png";
 
 const Login = () => {
     
@@ -38,7 +38,7 @@ const Login = () => {
                     </button>
                 </div>
             </div>
-            <div className="z-[-1] absolute top-[20px] left-[-20px] bg-[url('./resources/img/login/login_bg.png')] bg-cover w-[calc(100%+20px)] h-[calc(100%-20px)]"></div>
+            <div className="z-[-1] absolute top-[20px] left-[-20px] bg-[url('/assets/img/login/login_bg.png')] bg-cover w-[calc(100%+20px)] h-[calc(100%-20px)]"></div>
         </div>
     )
 }

@@ -25,7 +25,7 @@ const Emotion: React.FC<EmotionProps> = ({ onEmotionClick }) => {
         child-[button]:m-2">
             {emotionList.length > 0 && emotionList.map((emo, index) => (
                 <button className="transition-transform duration-300 ease-in-out active:scale-125" key={index} onClick={() => onEmotionClick(emo.emotionId)}>
-                    <img src={`./resources/img/emotion/${emo.emotionId}.png`} alt={emo.name} />
+                    <img src={`/assets/img/emotion/${emo.emotionId}.png`} alt={emo.name} />
                 </button>
             ))}
         </div>

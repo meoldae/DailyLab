@@ -64,7 +64,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                 {/* TODO영역 */}
                 <div>
                     <div className='flex items-center'>
-                        <img className='w-[90px]' src="./resources/img/character/ian.png" alt="이안" />
+                        <img className='w-[90px]' src="./assets/img/character/ian.png" alt="이안" />
                         <p>당신을 위한 오늘의 할일...</p>
                     </div>
                     <div className='relative -mt-12'>
@@ -73,7 +73,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                 </div>
                 {/* 일기영역 */}
                 <div>
-                    <img className='w-[90px] m-auto' src="./resources/img/character/diego.png" alt="디에고" />
+                    <img className='w-[90px] m-auto' src="./assets/img/character/diego.png" alt="디에고" />
                     <div className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
                         <AnimatePresence initial={false} mode="wait">
                             <motion.div onClick={handleDiaryContents}
@@ -155,7 +155,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                     <Emotion onEmotionClick={handleEmotionClick} />
                     <div className='flex items-center'>
                         <div className='ml-6 -mt-2 mr-4'>
-                            <img className='w-[90px]' src="./resources/img/character/cloe_basket.png" alt="" />
+                            <img className='w-[90px]' src="./assets/img/character/cloe_basket.png" alt="" />
                             <p className='-mt-12 ml-2'>{emotionCnt}</p>
                         </div>
                         <p className='-mt-4'>지금은 어떤 기분인가요?</p>
