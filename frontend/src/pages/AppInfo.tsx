@@ -1,11 +1,14 @@
 import Header from '@/components/inc/Header';
 import Footer from '@/components/inc/Footer';
+import Info from '@/components/info/Info';
 
 export default function AppInfo() {
     return (
         <>
             <Header />
-            사용자 추가정보 페이지   
+            <div className="contents_wrap">
+                <Info/>
+            </div>
             <Footer />
         </>
     )

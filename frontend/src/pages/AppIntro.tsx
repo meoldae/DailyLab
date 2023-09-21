@@ -2,9 +2,9 @@ import Intro from '@/components/intro/Intro';
 
 const AppIntro = () => {
     return (
-        <div>
+        <>
             <Intro />
-        </div>
+        </>
     )
 }
 

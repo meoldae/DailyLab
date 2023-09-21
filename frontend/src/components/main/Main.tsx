@@ -20,9 +20,7 @@ const Main = () => {
 
     return (
         <>
-            <Header />
             {status == "proceed" ? <MainProceed curDate={curDate}/> : <MainFinish comp={comp} curDate={curDate}/>}
-            <Footer />
         </>
     )
 }
