@@ -3,11 +3,13 @@ package com.amor4ti.dailylab.domain.member.service;
 import com.amor4ti.dailylab.domain.entity.Hobby;
 import com.amor4ti.dailylab.domain.entity.Mbti;
 import com.amor4ti.dailylab.domain.entity.Member;
+import com.amor4ti.dailylab.domain.entity.MemberStatus;
 import com.amor4ti.dailylab.domain.hobby.service.MemberHobbyService;
 import com.amor4ti.dailylab.domain.member.dto.*;
 import com.amor4ti.dailylab.domain.member.mapper.MbtiMapper;
 import com.amor4ti.dailylab.domain.member.mapper.MemberMapper;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.domain.member.repository.MemberStatusRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.response.CommonResponse;
@@ -23,16 +25,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+	private final MemberStatusRepository memberStatusRepository;
+
 	private final JwtProvider jwtProvider;
 	private final CookieUtils cookieUtils;
+
 	private final ResponseService responseService;
 	private final MemberHobbyService memberHobbyService;
 	private final MbtiService mbtiService;
@@ -194,5 +201,48 @@ public class MemberServiceImpl implements MemberService{
 		UpdateMemberDto memberInfo = memberMapper.memberToUpdateMember(findMember, hobbyList);
 
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, memberInfo);
+	}
+
+	@Override
+	public DataResponse getMemberStatus(Long memberId) {
+		Optional<MemberStatus> memberStatus = memberStatusRepository.findFirstByMemberIdOrderByDateDesc(memberId);
+
+		MemberStatusDto res;
+
+		// 최초 회원
+		if (!memberStatus.isPresent()) {
+			res = new MemberStatusDto(null, "init");
+		} else {
+			res = MemberStatusDto.of(memberStatus.get());
+		}
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, res);
+	}
+
+	@Override
+	public void updateStatusProceed(Long memberId, LocalDate date) {
+		memberStatusRepository.save(MemberStatus.builder()
+												.memberId(memberId)
+												.date(date)
+												.status("proceed")
+												.build());
+	}
+
+	@Override
+	public void updateStatusWait(Long memberId, LocalDate date) {
+		MemberStatus memberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date)
+														  .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+		memberStatus.setStatus("wait");
+		memberStatusRepository.save(memberStatus);
+	}
+
+	@Override
+	public void updateStatusFinish(Long memberId, LocalDate date) {
+		MemberStatus memberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date)
+				.orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+		memberStatus.setStatus("finish");
+		memberStatusRepository.save(memberStatus);
 	}
 }

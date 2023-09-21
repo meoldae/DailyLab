@@ -21,4 +21,8 @@ public class MemberStatus {
     private Long memberId;
     private LocalDate date;
     private String status;
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

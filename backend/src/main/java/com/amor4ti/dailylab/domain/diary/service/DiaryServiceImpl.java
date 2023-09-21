@@ -8,7 +8,10 @@ import com.amor4ti.dailylab.domain.diary.entity.DiaryPredict;
 import com.amor4ti.dailylab.domain.diary.repository.DiaryHistoryRepository;
 import com.amor4ti.dailylab.domain.diary.repository.DiaryPredictRepository;
 import com.amor4ti.dailylab.domain.entity.Member;
+import com.amor4ti.dailylab.domain.entity.MemberStatus;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.domain.member.repository.MemberStatusRepository;
+import com.amor4ti.dailylab.domain.member.service.MemberService;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -33,7 +36,10 @@ public class DiaryServiceImpl implements DiaryService {
     @Value("${data-server-url}")
     private String DATA_SERVER_URL;
 
+    private final MemberService memberService;
+
     private final WebClientUtil webClientUtil;
+    private final MemberStatusRepository memberStatusRepository;
     private final DiaryPredictRepository diaryPredictRepository;
     private final DiaryHistoryRepository diaryHistoryRepository;
     private final MemberRepository memberRepository;
@@ -99,6 +105,7 @@ public class DiaryServiceImpl implements DiaryService {
                                                                     .content(response)
                                                                     .similarity(0.0)
                                                                     .build());
+                            memberService.updateStatusFinish(memberId, date);
                         },
                         error -> {
                             new CustomException(ExceptionStatus.DIARY_CANNOT_WRITE);
@@ -119,7 +126,5 @@ public class DiaryServiceImpl implements DiaryService {
 
         return ResponseDiaryDto.ofDate(diaryHistory);
     }
-
-    
 }
 
