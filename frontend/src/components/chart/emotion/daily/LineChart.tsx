@@ -1,8 +1,8 @@
 import ApexCharts from "react-apexcharts";
 import { EmotionResultType } from '@/type/EmotionType';
-import emtionCategoryImg000 from "@/resources/img/emotion/emotion_category_img_000.png";
-import emtionCategoryImg001 from "@/resources/img/emotion/emotion_category_img_001.png";
-import emtionCategoryImg002 from "@/resources/img/emotion/emotion_category_img_002.png";
+import emtionCategoryImg000 from "public/assets/img/emotion/emotion_category_img_000.png";
+import emtionCategoryImg001 from "public/assets/img/emotion/emotion_category_img_001.png";
+import emtionCategoryImg002 from "public/assets/img/emotion/emotion_category_img_002.png";
 
 type LineResult = {
     [key: string]: number
