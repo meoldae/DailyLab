@@ -12,5 +12,5 @@ public interface MemberHobbyService {
     List<Hobby> getHobbyListByMemberId(Long memberId);
     DataResponse getAllHobby();
     CommonResponse registerHobby(Long memberId, MemberHobbyDto memberHobbyDto);
-    CommonResponse deleteHobby(Long memberId, MemberHobbyDto memberHobbyDto);
+    CommonResponse deleteHobby(Long memberId, String hobbyName);
 }
