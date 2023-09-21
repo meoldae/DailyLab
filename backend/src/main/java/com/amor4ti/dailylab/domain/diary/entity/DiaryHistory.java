@@ -17,6 +17,7 @@ public class DiaryHistory {
     private Long diaryHistoryId;
 
     private Long memberId;
+    private String title;
     private String content;
     private LocalDate diaryDate;
 

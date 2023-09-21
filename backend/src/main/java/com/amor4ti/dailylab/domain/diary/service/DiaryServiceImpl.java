@@ -25,6 +25,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -63,13 +64,14 @@ public class DiaryServiceImpl implements DiaryService {
                                         .build())
                 .collect(Collectors.toList());
 
-        webClientUtil.post(DATA_SERVER_URL + "/diary/default", RequestDiaryDto.of(member, tasks), String.class)
+        webClientUtil.post(DATA_SERVER_URL + "/diary/default", RequestDiaryDto.of(member, tasks), Map.class)
                 .subscribe(
                         response -> {
                             diaryPredictRepository.save(DiaryPredict.builder()
                                                                     .diaryDate(date)
                                                                     .memberId(memberId)
-                                                                    .content(response)
+                                                                    .title(String.valueOf(response.get("title")))
+                                                                    .content(String.valueOf(response.get("content")))
                                                                     .build());
                         },
                         error -> {
@@ -96,13 +98,14 @@ public class DiaryServiceImpl implements DiaryService {
                         .build())
                 .collect(Collectors.toList());
 
-        webClientUtil.post(DATA_SERVER_URL + "/diary/confirm", RequestDiaryDto.of(member, tasks), String.class)
+        webClientUtil.post(DATA_SERVER_URL + "/diary/confirm", RequestDiaryDto.of(member, tasks), Map.class)
                 .subscribe(
                         response -> {
                             diaryHistoryRepository.save(DiaryHistory.builder()
                                                                     .diaryDate(date)
                                                                     .memberId(memberId)
-                                                                    .content(response)
+                                                                    .title(String.valueOf(response.get("title")))
+                                                                    .content(String.valueOf(response.get("content")))
                                                                     .similarity(0.0)
                                                                     .build());
                             memberService.updateStatusFinish(memberId, date);

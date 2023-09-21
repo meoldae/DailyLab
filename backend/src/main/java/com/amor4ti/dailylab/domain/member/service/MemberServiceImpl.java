@@ -207,7 +207,7 @@ public class MemberServiceImpl implements MemberService {
 	public DataResponse getMemberStatus(Long memberId) {
 		MemberStatusDto res = memberStatusRepository.findFirstByMemberIdOrderByDateDesc(memberId)
 				.map(MemberStatusDto::of)
-				.orElse(new MemberStatusDto(null, "init"));  
+				.orElse(new MemberStatusDto(null, "init"));
 
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, res);
 	}
