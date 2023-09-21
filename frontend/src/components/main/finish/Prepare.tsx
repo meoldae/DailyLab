@@ -1,4 +1,4 @@
-import CheckboxList from "@/utils/checkbox/CheckboxList";
+import CheckboxList from "@/components/checkbox/CheckboxList";
 
 const MainPrepare = ({curDate} : {curDate : string}) => {
     

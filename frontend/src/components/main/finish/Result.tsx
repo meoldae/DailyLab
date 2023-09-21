@@ -1,5 +1,5 @@
 import DailyChart from "@/components/chart/emotion/daily/DailyChart";
-import Diary from "@/utils/diary/Diary";
+import Diary from "@/components/diary/Diary";
 
 const MainResult = ({curDate} : {curDate : string}) => {
     return (

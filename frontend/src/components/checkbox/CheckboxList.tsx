@@ -18,7 +18,7 @@ interface CheckboxListProps {
 const CheckboxList: React.FC<CheckboxListProps> = ({ type }) => {
     const [checkedItems, setCheckedItems] = useState<number[]>([]);
     const [checkedItemNo, setCheckedItemNo] = useState(0);
-    const [showInput, setShowInput] = useState(false); // Add state for input visibility
+    const [showInput, setShowInput] = useState(false);
     const [newTodoContent, setNewTodoContent] = useState('');
 
     // plan 인 경우 체크된 목록을 얻기 위한 부분
@@ -89,19 +89,22 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type }) => {
                 onCheckboxChange={handleCheckboxChange}/>
             ))}
             {showInput && (
-                <div className="flex mt-4">
-                    <input
-                        type="text"
-                        className="border border-gray-300 p-2 mr-2 rounded"
-                        value={newTodoContent}
-                        onChange={handleInputChange}
-                    />
-                    <button
-                        className="w-28 h-10 bg-text rounded-xl"
-                        onClick={handleAddTodo}
-                    >
-                        추가하기
-                    </button>
+                <div className="w-full p-4 bg-secondary rounded-xl text-xl">
+                    <div className="flex items-center justify-between">
+                        <input
+                            type="text"
+                            className="border-none bg-secondary text-text ml-2 placeholder:text-gray"
+                            value={newTodoContent}
+                            onChange={handleInputChange}
+                            placeholder="할 일을 입력해 주세요!"
+                            />
+                        <button
+                            className="pr-4 font-semibold text-text underline underline-offset-4"
+                            onClick={handleAddTodo}
+                            >
+                            확인
+                        </button>
+                    </div>
                 </div>
             )}
             {type == 'plan' && (
