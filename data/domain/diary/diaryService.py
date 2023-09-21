@@ -1,26 +1,35 @@
 import openai
+import config
+from datetime import datetime
 
-openai.api_key = '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' # 디에고
+openai.api_key = config.OPENAI_API_KEY
 
-def createDiary(param):
+def createDiary(param, gpt_model):
     builder = DiaryContentBuilder(param)
     content = builder.build()
 
-    print(content)
-    
+    todo_list = []
+    sorted_todos = sorted(param["todos"], key=lambda x: x["date"] if x["date"] is not None else [0])
+    for todo in sorted_todos:
+        if todo["date"] is None:
+            date_status = "(수행 하지 않음)"
+        else:
+            hour, minute = todo["date"][3], todo["date"][4]
+            date_status = f"({hour}시 {minute}분 수행함)"
+        todo_str = f"{todo['task']} - {date_status}"
+        todo_list.append(todo_str)
+
+    user_content = (
+        "해야할 일\n" + 
+        "\n".join(todo_list) + "\n\n" +
+        "너에게 주어진 역할을 기반으로 해야할 일을 수행했을 때, 1인칭 시점의 일기를 작성해줘. 단, 날짜는 작성하지마"
+    )
+
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-16k",
+        model=gpt_model,
             messages=[
             {"role": "system", "content": content},
-            {"role": "user",
-            "content":                 
-                    "해야할 일\n"
-                    "1.한화투자증권 자소서 완성\n"
-                    "2.공통 이력서 첨삭\n"
-                    "3.비타민 검색하기\n"
-                    "4.두부먹기\n"
-                    
-                    "너에게 주어진 역할을 기반으로 해야할 일을 수행했을 때, 1인칭 시점의 일기를 작성해줘. 단, 날짜는 작성하지마"
+            {"role": "user", "content": user_content
             }, 
         ], 
 
@@ -60,9 +69,17 @@ class DiaryContentBuilder:
         if self.param.get('religion'):
             self.content += "종교: {}\n".format(self.param['religion'])
 
+    def _add_age(self):
+        if self.param.get('birthday'):
+            current_year = datetime.now().year
+            birth_year = self.param['birthday'][0]
+            age = current_year - birth_year
+            self.content += "나이: {}세\n".format(age)
+
     def build(self):
         self._add_gender()
         self._add_birthday()
+        self._add_age()  # 나이를 추가하기 위해 이 메서드를 호출
         self._add_job()
         self._add_goal()
         self._add_religion()

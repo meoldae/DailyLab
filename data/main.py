@@ -26,10 +26,14 @@ async def say_hello(name: str):
 # gpt 3.5 일기 작성
 @app.post("/diary/default")
 async def createDiary(param: dict):
-    data = diaryService.createDiary(param)
+    data = diaryService.createDiary(param, "gpt-3.5-turbo-16k")
     return data
 
 # gpt 4 일기 작성
+@app.post("/diary/confirm")
+async def createDiary(param: dict):
+    data = diaryService.createDiary(param, "gpt-4")
+    return data
 
 app.include_router(test_router.router)
 
