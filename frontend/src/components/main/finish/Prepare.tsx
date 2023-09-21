@@ -1,6 +1,41 @@
+import { getCategoryList } from "@/api/Todo";
 import CheckboxList from "@/components/checkbox/CheckboxList";
+import { useEffect, useState } from "react";
+
+interface SmallActivity {
+    name: string;
+    categoryId: number;
+  }
+  
+  interface MediumActivity {
+    small: SmallActivity[];
+  }
+  
+  interface LargeActivity {
+    name: string;
+    medium: MediumActivity[];
+  }
+  
+  interface CategoryData {
+    large: LargeActivity[];
+  }
+  
 
 const MainPrepare = ({curDate} : {curDate : string}) => {
+    const [categoryList, setCategoryList] = useState<CategoryData>({large : []});
+
+    const getCategory = async () => {
+        await getCategoryList(({data}) => {
+            setCategoryList(data.data as CategoryData)
+            console.log(categoryList)
+        }, (error) => {
+            console.log(error)
+        });
+    }
+
+    useEffect(() => {
+        void getCategory();
+    },[])
     
     return (
         <div className="text-center text-2xl font-semibold

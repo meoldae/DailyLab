@@ -4,23 +4,34 @@ import { useEffect, useState } from 'react';
 import { getDailyData, putEmotion } from '@/api/Emotion';
 import { addHours } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { getPredictDiary } from '@/api/diary';
 
 const MainProceed = ({curDate} : {curDate : string}) => {
-    const [diaryOpen, setDiaryOpen] = useState(false);
-    const [diaryContents, setDiaryContents] = useState("테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기테스트 일기 테스트일기");
+    const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
+    const [emotionCnt, setEmotionCnt] = useState(0);
+    let todayDiary = "";
 
     const handleDiaryContents = () => {
-        document.getElementsByTagName('html')[0].classList.toggle('overflow-hidden');
-        setDiaryOpen((prev) => !prev);
+        getDiary();
+        setIsOpen(!isOpen);
+    }
+    
+    const getDiary = async () =>{
+        await getPredictDiary(curDate, ({data}) => {
+            console.log(data.data)
+            todayDiary = data.data as string
+        }, (error) => {console.log(error)})
     }
 
-    const [emotionCnt, setEmotionCnt] = useState(0);
     const handleEmotionClick = (emotionId: number):void => {
         updateEmotion(emotionId);// 클릭된 감정의 ID를 상태에 저장
     }
 
     const handleFinishButton = () => {
         // 하루 마무리 요청 API 호출
+        navigate('/loading');
     }
 
     const updateEmotion = async (emotionId : number) => {
@@ -68,87 +79,35 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                         <p>당신을 위한 오늘의 할일...</p>
                     </div>
                     <div className='relative -mt-12'>
-                        <CheckboxList type='default'/>
+                        <CheckboxList type='default' date={curDate}/>
                     </div>
                 </div>
                 {/* 일기영역 */}
                 <div>
                     <img className='w-[90px] m-auto' src="./assets/img/character/diego.png" alt="디에고" />
-                    <div className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
+                    <div onClick={handleDiaryContents} className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
                         <AnimatePresence initial={false} mode="wait">
-                            <motion.div onClick={handleDiaryContents}
+                            <motion.div
                                 initial={{
                                     height: 0,
-                                    opacity: 0,
                                 }}
                                 animate={{
-                                    height: "auto",
-                                    opacity: 1,
+                                    height: isOpen ? 200 : 20,
                                 }}
                                 exit={{
                                     height: 0,
-                                    opacity: 0,
                                 }}
+                                transition={{
+                                    height: { duration: 0.3 }, // 높이 변화를 부드럽게 만듦
+                                }}
+                                className='overflow-scroll'
                             >
-                                오늘의 일기를 확인해볼까요
+                                <div className='text-left break-keep leading-relaxed'>
+                                    {isOpen ? todayDiary : "오늘의 일기를 확인해볼까요"}
+                                </div>
                             </motion.div>
-                        </AnimatePresence>    
-                        <AnimatePresence>
-                            {diaryOpen && (
-                                <motion.div onClick={handleDiaryContents} className="fixed bg_contents_con"
-                                    initial={{
-                                        zIndex : -1,
-                                        width: 0,
-                                        height: 0,
-                                        opacity: 0,
-                                        transform : "translate(-50%,-50%)",
-                                        left: "50%",
-                                        top: "50%",
-                                    }}
-                                    animate={{
-                                        zIndex: 1000,
-                                        width: "calc(100vw - 60px)",
-                                        height: "calc(100vh - 60px)",
-                                        opacity: 1,
-                                    }}
-                                    exit={{
-                                        zIndex : -1,
-                                        width: 0,
-                                        height: 0,
-                                        opacity: 0,
-                                    }}
-                                    transition={{
-                                        ease: "easeInOut",
-                                        type: "spring",
-                                        duration: 0.5,
-                                    }}
-                                    >
-                                    {diaryContents}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                        <AnimatePresence>
-                            {diaryOpen && (
-                                <motion.div onClick={handleDiaryContents} className="fixed bg-text left-[0] w-screen top-[0] h-screen"
-                                    initial={{
-                                        zIndex : -1,
-                                        opacity: 0,
-                                    }}
-                                    animate={{
-                                        zIndex: 999,
-                                        opacity: 0.6,
-                                    }}
-                                    exit={{
-                                        zIndex : -1,
-                                        opacity: 0,
-                                    }}
-                                    transition={{duration: 0,}}
-                                    >
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        </AnimatePresence>   
                     </div>
-                    
                 </div>
                 {/* 감정영역 */}
                 <div>
