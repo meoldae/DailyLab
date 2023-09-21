@@ -5,6 +5,7 @@ import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.entity.category.Category;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
@@ -106,11 +107,13 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     @Transactional
-    public CommonResponse checkTodo(Long memberId, TodoUpdateDto todoUpdateDto) {
-        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, todoUpdateDto.getCategoryId(), todoUpdateDto.getTodoDate())
+    public CommonResponse changeCheckTodo(Long memberId, TodoCheckUpdateDto todoCheckUpdateDto) {
+        Todo todo = todoRepository.findByTodoId(todoCheckUpdateDto.getTodoId())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-        todo.checkTodo();
+        System.out.println(todoCheckUpdateDto.getCheckedDate());
+
+        todo.checkTodo(todoCheckUpdateDto.getCheckedDate());
         todoRepository.save(todo);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);

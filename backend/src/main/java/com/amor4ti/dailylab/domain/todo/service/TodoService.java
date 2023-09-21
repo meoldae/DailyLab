@@ -1,5 +1,6 @@
 package com.amor4ti.dailylab.domain.todo.service;
 
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.global.response.CommonResponse;
@@ -21,7 +22,7 @@ public interface TodoService {
 
     CommonResponse deleteTodo(Long memberId, TodoUpdateDto todoUpdateDto);
 
-    CommonResponse checkTodo(Long memberId, TodoUpdateDto todoUpdateDto);
+    CommonResponse changeCheckTodo(Long memberId, TodoCheckUpdateDto todoCheckUpdateDto);
 
     CommonResponse recommendTodo(Long memberId, String todoDate);
 }
