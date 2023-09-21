@@ -2,8 +2,14 @@ from sklearn import decomposition
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
+filePath = '../../../dataset/'
+
+def load_data():
+    df_todos = pd.read_csv(filePath + 'ToDoVer1.csv', encoding='utf-8')
+
+
 # csv 파일 읽기
-ds = pd.read_csv('../../../dataset/ToDoVer1.csv', encoding='utf-8')
+ds = pd.read_csv(filePath + 'ToDoVer1.csv', encoding='utf-8')
 
 # 읽은 csv 파일에서 특정 열만 선택해서 배열에 저장
 x = ds.iloc[:, [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]].values
@@ -26,5 +32,5 @@ cosine_similarity_df2 = pd.DataFrame(cosine_similarity_matrix2, columns=df.index
 print(cosine_similarity_df)
 print(cosine_similarity_df2)
 
-cosine_similarity_df2.to_csv('cosine_similarity_matrix.csv', index=False)
+cosine_similarity_df2.to_csv(filePath + 'cosine_similarity_matrix.csv', index=False)
 

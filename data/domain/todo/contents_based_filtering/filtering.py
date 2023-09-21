@@ -1,8 +1,10 @@
 import pandas as pd
 import random
 
+# filePath = '../../../dataset/'
+filePath = 'dataset/'
 # csv 파일 읽기
-cosine_similarity_matrix = pd.read_csv('../similarity/cosine_similarity_matrix.csv', encoding='utf-8')
+cosine_similarity_matrix = pd.read_csv(filePath + 'cosine_similarity_matrix.csv', encoding='utf-8')
 
 random_number_list = []
 most_similar_list = []
@@ -36,6 +38,3 @@ print(random_number_list)
 
 print(most_similar_list)
 print(most_unsimilar_list)
-
-
-
