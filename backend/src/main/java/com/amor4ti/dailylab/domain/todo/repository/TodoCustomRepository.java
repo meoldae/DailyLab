@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.todo.repository;
 
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
+import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoSmallDto;
 
 import java.time.LocalDate;
@@ -16,7 +17,11 @@ public interface TodoCustomRepository {
 
     List<TodoDto> findSomedayFullTodoDtoListByMemberIdAndTodoDate(LocalDate todoDate, Long memberId);
 
+    Optional<Todo> findByMemberIdAndCategoryId(Long memberId, Long categoryId);
+
     Optional<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate);
 
     List<TodoDto> findByMemberId(Long memberId);
+
+    Optional<TodoRecommendedDto> findTodoRecommendedDtoByMemberIdAndTodoId(Long memberId, Long todoId);
 }

@@ -22,6 +22,7 @@ public enum ExceptionStatus {
 	MEMBER_NOT_FOUND("-2000", "회원이 존재하지 않습니다."),
 
 	TODO_NOT_FOUND("-3000", "Todo가 존재하지 않습니다."),
+	TODO_ALREADY_REGIST_TODAY("-3001", "이미 오늘 등록한 카테고리의 Todo입니다. 하루에 같은 카테고리 두번은 불가능합니다."),
 
 	CATEGORY_NOT_FOUND("-4000", "Category가 존재하지 않습니다."),
 
