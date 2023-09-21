@@ -7,7 +7,7 @@ const Diary: React.FC<DiaryProps> = ({ date }) => {
         <div>
             {/* 캐릭터 영역*/}
             <div className='flex items-center'>
-                <img className='w-[90px] mr-4' src="src/resources/img/character/diego_2.png" alt="디에고" />
+                <img className='w-[90px] mr-4' src="./resources/img/character/diego_2.png" alt="디에고" />
                 <p className="-mt-4 text-2xl font-semibold">오늘의 일기를 써봤어요</p>
             </div>
             {/* 일기 내용 */}

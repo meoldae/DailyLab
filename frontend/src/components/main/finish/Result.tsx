@@ -11,7 +11,7 @@ const MainResult = ({curDate} : {curDate : string}) => {
             {/* 차트 부분 */}
             <div className="flex justify-end items-center pr-[10px]">
                 <p className="-mt-4 text-2xl font-semibold">오늘의 감정을 정리해봤어요.</p>
-                <img className="w-[90px]" src="src/resources/img/character/cloe_2.png" alt="클로에"/>
+                <img className="w-[90px]" src="./resources/img/character/cloe_2.png" alt="클로에"/>
             </div>
             <div className="-mt-[30px] relative bg_contents_con p-[20px]">
                 <DailyChart selectDate={curDate} />
