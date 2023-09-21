@@ -4,13 +4,25 @@ import { useEffect, useState } from 'react';
 import { getDailyData, putEmotion } from '@/api/Emotion';
 import { addHours } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { getPredictDiary } from '@/api/diary';
 
 const MainProceed = ({curDate} : {curDate : string}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
     const [emotionCnt, setEmotionCnt] = useState(0);
+    let todayDiary = "";
 
+    const handleDiaryContents = () => {
+        getDiary();
+        setIsOpen(!isOpen);
+    }
     
-    const handleTodayDiary = () => {
-
+    const getDiary = async () =>{
+        await getPredictDiary(curDate, ({data}) => {
+            console.log(data.data)
+            todayDiary = data.data as string
+        }, (error) => {console.log(error)})
     }
 
     const handleEmotionClick = (emotionId: number):void => {
@@ -19,6 +31,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
 
     const handleFinishButton = () => {
         // 하루 마무리 요청 API 호출
+        navigate('/loading');
     }
 
     const updateEmotion = async (emotionId : number) => {
@@ -72,13 +85,29 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                 {/* 일기영역 */}
                 <div>
                     <img className='w-[90px] m-auto' src="src/resources/img/character/diego.png" alt="디에고" />
-                    <AnimatePresence>
-                        <motion.div
-
-                        onClick={handleTodayDiary} className='relative -mt-[40px] bg_contents_con p-[20px] flex items-center justify-center'>
-                            <p>오늘의 일기를 확인해볼까요</p>
-                        </motion.div>
-                    </AnimatePresence>
+                    <div onClick={handleDiaryContents} className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
+                        <AnimatePresence initial={false} mode="wait">
+                            <motion.div
+                                initial={{
+                                    height: 0,
+                                }}
+                                animate={{
+                                    height: isOpen ? 200 : 20,
+                                }}
+                                exit={{
+                                    height: 0,
+                                }}
+                                transition={{
+                                    height: { duration: 0.3 }, // 높이 변화를 부드럽게 만듦
+                                }}
+                                className='overflow-scroll'
+                            >
+                                <div className='text-left break-keep leading-relaxed'>
+                                    {isOpen ? todayDiary : "오늘의 일기를 확인해볼까요"}
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>   
+                    </div>
                 </div>
                 {/* 감정영역 */}
                 <div>

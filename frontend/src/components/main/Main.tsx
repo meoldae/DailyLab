@@ -1,5 +1,3 @@
-import Header from '@/components/inc/Header';
-import Footer from '@/components/inc/Footer';
 import MainProceed from "./proceed/Proceed";
 import MainFinish from "./finish/Finish";
 import { toStringByFormatting } from '@/utils/date/DateFormatter';
@@ -20,9 +18,7 @@ const Main = () => {
 
     return (
         <>
-            <Header />
             {status == "proceed" ? <MainProceed curDate={curDate}/> : <MainFinish comp={comp} curDate={curDate}/>}
-            <Footer />
         </>
     )
 }

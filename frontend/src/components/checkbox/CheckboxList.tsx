@@ -18,7 +18,7 @@ interface CheckboxListProps {
   }
 interface DefaultTodoType {
     todoId: number,
-    state: boolean,
+    check: boolean,
     content: string,
 }
 
@@ -80,15 +80,15 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
         console.log(todoId, formattedDateTime)
         const todoData = {
             todoId: todoId,
-            timeStamp: formattedDateTime
+            checkedDate: formattedDateTime
         };
 
         await checkUpdateTodoItem(todoData,({ data }) => {
             console.log(data);
         }, (error) => {console.log(error)});
-
     }
 
+    // 체크한 item의 목록이 바뀔 때 마다 체크한것 확인하기
     useEffect(() => {
         if(type === 'default' && checkedItemNo !== 0){
             console.log('checkedItemNo', checkedItemNo)
@@ -119,7 +119,7 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
                 </button>
             </div>)}
             {items.length > 0 && items.map((todo)=>(
-                <Checkbox key={todo.todoId} todoId={todo.todoId} state={todo.state} content={todo.content} type={type} 
+                <Checkbox key={todo.todoId} todoId={todo.todoId} state={todo.check} content={todo.content} type={type} 
                 onCheckboxChange={handleCheckboxChange}/>
             ))}
             {showInput && (

@@ -11,6 +11,7 @@ import AppIntro from "@/pages/AppIntro";
 import AppSignUp from "@/pages/AppSignUp";
 import AppRedirect from "@/pages/AppRedirect";
 import AppNotFound from "@/error/AppNotFound";
+import AppLoading from "@/pages/AppLoading";
 //import { SetAccessToken } from "@/atom/UserAtom";
 
 const AppRouter = () => {
@@ -26,6 +27,7 @@ const AppRouter = () => {
                     <Route path="/schedule" element={<AppSchedule />} />
                     <Route path="/statistics" element={<AppStatistics />} />
                     <Route path="/mypage" element={<AppMyPage />} />
+                    <Route path="/loading" element={<AppLoading />} />
                 </Route>
                 <Route element={<AuthRoute authentication="NotUser"/>}>    
                     <Route path="/login" element={<AppLogin />} />
