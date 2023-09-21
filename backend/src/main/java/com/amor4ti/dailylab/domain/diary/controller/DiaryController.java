@@ -23,8 +23,17 @@ public class DiaryController {
     private final DiaryService diaryService;
     private final ResponseService responseService;
 
-    @PostMapping("/predict")
+    @PostMapping("/start")
     public CommonResponse createPredictDiary(Authentication authentication,
+                                             @RequestParam("date") LocalDate date) {
+
+        Long memberId = Long.parseLong(authentication.getName());
+        diaryService.createDefaultDiary(memberId, date);
+        return responseService.successResponse(ResponseStatus.CREATE_PREDICT_DIARY);
+    }
+
+    @PostMapping("/confirm")
+    public CommonResponse createConfirmDiary(Authentication authentication,
                                              @RequestParam("date") LocalDate date) {
 
         Long memberId = Long.parseLong(authentication.getName());
