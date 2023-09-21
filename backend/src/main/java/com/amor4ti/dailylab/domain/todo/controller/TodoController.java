@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/todo")
@@ -53,11 +55,11 @@ public class TodoController {
         return todoService.registTodo(todoRegistDto, memberId);
     }
 
-    @PutMapping("/delete")
-    public CommonResponse deleteTodo(@RequestBody TodoUpdateDto todoUpdateDto, Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
+    @DeleteMapping("/delete")
+        public CommonResponse deleteTodo(@RequestBody Map<String, List<Long>> todoIdList, Authentication authentication) {
+            Long memberId = Long.parseLong(authentication.getName());
 
-        return todoService.deleteTodo(memberId, todoUpdateDto);
+            return todoService.deleteTodo(memberId, todoIdList.get("todoIdList"));
     }
 
     @PutMapping("/change/check")

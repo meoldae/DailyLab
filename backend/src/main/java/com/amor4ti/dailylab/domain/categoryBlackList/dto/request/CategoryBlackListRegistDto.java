@@ -12,12 +12,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CategoryBlackListRegistDto {
 
-    private Long categoryId;
+    private Long todoId;
     private LocalDate todoDate;
 
     @Builder
-    public CategoryBlackListRegistDto(Long categoryId, LocalDate todoDate) {
-        this.categoryId = categoryId;
+    public CategoryBlackListRegistDto(Long todoId, LocalDate todoDate) {
+        this.todoId = todoId;
         this.todoDate = todoDate;
     }
 }

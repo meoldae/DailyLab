@@ -95,12 +95,14 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     @Transactional
-    public CommonResponse deleteTodo(Long memberId, TodoUpdateDto todoUpdateDto) {
-        Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, todoUpdateDto.getCategoryId(), todoUpdateDto.getTodoDate())
-                .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+    public CommonResponse deleteTodo(Long memberId, List<Long> todoIdList) {
+        for (Long todoId : todoIdList) {
+            Todo todo = todoRepository.findByTodoId(todoId)
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-        todo.deleteTodo();
-        todoRepository.save(todo);
+            todo.deleteTodo();
+            todoRepository.save(todo);
+        }
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }

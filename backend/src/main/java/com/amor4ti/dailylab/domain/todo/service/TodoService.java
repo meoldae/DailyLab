@@ -7,6 +7,7 @@ import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface TodoService {
 
@@ -20,7 +21,7 @@ public interface TodoService {
 
     CommonResponse registTodo(TodoRegistDto todoRegistDto, Long memberId);
 
-    CommonResponse deleteTodo(Long memberId, TodoUpdateDto todoUpdateDto);
+    CommonResponse deleteTodo(Long memberId, List<Long> todoIdList);
 
     CommonResponse changeCheckTodo(Long memberId, TodoCheckUpdateDto todoCheckUpdateDto);
 
