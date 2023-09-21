@@ -25,12 +25,12 @@ const DiaryLoading = () => {
             </div>
             <div className="mb-10">
                 <p>이안이 오늘 있었던 일을<br />디에고에게 전달하고 있어요</p>
-                <img className="w-screen mb-[60px]" src="src/resources/img/character/loading_diary.gif" alt="일기로딩" />
+                <img className="w-screen mb-[60px]" src="./assets/img/character/loading_diary.gif" alt="일기로딩" />
                 <p>디에고가 일기를 쓰기까지는<br />30초에서 1분정도 걸려요</p>
             </div>
             <p className="text-3xl font-light">이 페이지는 {countdown}초 후에 자동으로 닫혀요</p>
             <div className="text-right">
-                <img className="mr-12 inline w-[150px]" src="src/resources/img/character/loading_emotion.gif" alt="감정로딩" />
+                <img className="mr-12 inline w-[150px]" src="./assets/img/character/loading_emotion.gif" alt="감정로딩" />
             </div>
         </div>
     )
