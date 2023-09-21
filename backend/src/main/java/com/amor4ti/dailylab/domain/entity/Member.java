@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.amor4ti.dailylab.domain.entity.diary.DiaryPredict;
+import com.amor4ti.dailylab.domain.diary.entity.DiaryPredict;
 import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -39,9 +39,6 @@ public class Member {
 
 	@OneToMany(mappedBy = "member")
 	private List<TodoReport> todoReports = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<DiaryPredict> diaryPredicts = new ArrayList<>();
 
 	@Builder
 	public Member(String email, String username, String provider){

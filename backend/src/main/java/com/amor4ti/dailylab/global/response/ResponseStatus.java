@@ -12,6 +12,9 @@ public enum ResponseStatus {
     /* Emotion */
     REGISTER_EMOTION_SUCCESS("200", "감정이 정상적으로 추가되었습니다."),
 
+    /* Diary */
+    CREATE_PREDICT_DIARY("201", "일기작성 요청을 확인했습니다."),
+    CREATE_CONFIRM_DIARY("201", "마무리 일기작성 요청을 확인했습니다"),
     /* Member */
     ACCESS_TOKEN_REFRESHED("1001", "액세스 토큰이 재 발급되었습니다"),
 
