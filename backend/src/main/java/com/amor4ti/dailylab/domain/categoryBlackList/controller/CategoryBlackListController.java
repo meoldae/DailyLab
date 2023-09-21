@@ -3,6 +3,7 @@ package com.amor4ti.dailylab.domain.categoryBlackList.controller;
 import com.amor4ti.dailylab.domain.categoryBlackList.dto.request.CategoryBlackListRegistDto;
 import com.amor4ti.dailylab.domain.categoryBlackList.service.CategoryBlackListService;
 import com.amor4ti.dailylab.global.response.CommonResponse;
+import com.amor4ti.dailylab.global.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,12 @@ public class CategoryBlackListController {
         Long memberId = Long.parseLong(authentication.getName());
 
         return categoryBlackListService.cancelBlack(categoryId, memberId);
+    }
+
+    @GetMapping
+    public DataResponse getBlacklist(Authentication authentication){
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return categoryBlackListService.getBlacklist(memberId);
     }
 }

@@ -1,8 +1,11 @@
 package com.amor4ti.dailylab.domain.categoryBlackList.service;
 
+import com.amor4ti.dailylab.domain.category.repository.CategoryRepository;
+import com.amor4ti.dailylab.domain.category.service.CategoryService;
 import com.amor4ti.dailylab.domain.categoryBlackList.dto.request.CategoryBlackListRegistDto;
 import com.amor4ti.dailylab.domain.categoryBlackList.repository.CategoryBlackListRepository;
 import com.amor4ti.dailylab.domain.entity.Todo;
+import com.amor4ti.dailylab.domain.entity.category.Category;
 import com.amor4ti.dailylab.domain.entity.category.CategoryBlackList;
 import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
@@ -11,12 +14,14 @@ import com.amor4ti.dailylab.domain.todo.service.TodoService;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.response.CommonResponse;
+import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +35,7 @@ public class CategoryBlackListServiceImpl implements CategoryBlackListService {
 
     private final CategoryBlackListRepository categoryBlackListRepository;
     private final TodoRepository todoRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public CommonResponse black(List<Long> todoIdList, Long memberId) {
@@ -93,5 +99,18 @@ public class CategoryBlackListServiceImpl implements CategoryBlackListService {
 
             return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
         }
+    }
+
+    @Override
+    public DataResponse getBlacklist(Long memberId) {
+        List<CategoryBlackList> list = categoryBlackListRepository.findAllById_MemberIdAndIsRemove(memberId, false);
+        List<Category> result = new LinkedList<>();
+
+        for(CategoryBlackList cbl : list){
+            Category category = categoryRepository.findByCategoryId(cbl.getId().getCategoryId())
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+            result.add(category);
+        }
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 }
