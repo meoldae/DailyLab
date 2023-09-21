@@ -2,7 +2,7 @@ import CustomKeyword from "../item/CustomKeyword";
 import { GetHobbyList } from "@/api/Info";
 import { useEffect, useState } from "react";
 import { HobbyTreeType, HobbyType } from "@/type/HobbyType";
-import XIcon from "@/resources/img/icon/x.png";
+import XIcon from "public/assets/img/icon/x.png";
 
 interface props {
     handleInsert : () => void

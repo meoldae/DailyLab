@@ -1,14 +1,14 @@
 import { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { GetMode, modeAtom } from "@/atom/modeAtom";
-import settingIconImgLight from '@/resources/img/header/header_setting_icon_light.png';
-import settingIconImgDark from '@/resources/img/header/header_setting_icon_dark.png';
-import headerMenuTriangleLight from '@/resources/img/header/header_menu_triangle_icon_light.png';
-import headerMenuTriangleDark from '@/resources/img/header/header_menu_triangle_icon_dark.png';
-import headerMenuLightIconLight from '@/resources/img/header/header_light_mode_icon_light.png';
-import headerMenuLightIconDark from '@/resources/img/header/header_light_mode_icon_dark.png';
-import headerMenuDarkIconLight from '@/resources/img/header/header_dark_mode_icon_light.png';
-import headerMenuDarkIconDark from '@/resources/img/header/header_dark_mode_icon_dark.png';
+import settingIconImgLight from 'public/assets/img/header/header_setting_icon_light.png';
+import settingIconImgDark from 'public/assets/img/header/header_setting_icon_dark.png';
+import headerMenuTriangleLight from 'public/assets/img/header/header_menu_triangle_icon_light.png';
+import headerMenuTriangleDark from 'public/assets/img/header/header_menu_triangle_icon_dark.png';
+import headerMenuLightIconLight from 'public/assets/img/header/header_light_mode_icon_light.png';
+import headerMenuLightIconDark from 'public/assets/img/header/header_light_mode_icon_dark.png';
+import headerMenuDarkIconLight from 'public/assets/img/header/header_dark_mode_icon_light.png';
+import headerMenuDarkIconDark from 'public/assets/img/header/header_dark_mode_icon_dark.png';
 import { useSetRecoilState } from "recoil";
 
 

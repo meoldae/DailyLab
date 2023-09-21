@@ -13,10 +13,10 @@ export default function Footer() {
     )
 
     function getBgClass(activeStatus: boolean, index: number ):string {
-        if(index == 0) return (activeStatus ? "bg-[url('./resources/img/footer/footer_info_img_000_active.png')]" : "hover:bg-[url('./resources/img/footer/footer_info_img_000_active.png')] " + (isLight ? "bg-[url('./resources/img/footer/footer_info_img_000_light.png')]" : "bg-[url('./resources/img/footer/footer_info_img_000_dark.png')]"));
-        else if(index == 1) return (activeStatus ? "bg-[url('./resources/img/footer/footer_info_img_001_active.png')]" : "hover:bg-[url('./resources/img/footer/footer_info_img_001_active.png')] " + (isLight ? "bg-[url('./resources/img/footer/footer_info_img_001_light.png')]" : "bg-[url('./resources/img/footer/footer_info_img_001_dark.png')]"));
-        else if(index == 2) return (activeStatus ? "bg-[url('./resources/img/footer/footer_info_img_002_active.png')]" : "hover:bg-[url('./resources/img/footer/footer_info_img_002_active.png')] " + (isLight ? "bg-[url('./resources/img/footer/footer_info_img_002_light.png')]" : "bg-[url('./resources/img/footer/footer_info_img_002_dark.png')]"));
-        else return (activeStatus ? "bg-[url('./resources/img/footer/footer_info_img_003_active.png')]" : "hover:bg-[url('./resources/img/footer/footer_info_img_003_active.png')] " + (isLight ? "bg-[url('./resources/img/footer/footer_info_img_003_light.png')]" : "bg-[url('./resources/img/footer/footer_info_img_003_dark.png')]"));
+        if(index == 0) return (activeStatus ? "bg-[url('/assets/img/footer/footer_info_img_000_active.png')]" : "hover:bg-[url('/assets/img/footer/footer_info_img_000_active.png')] " + (isLight ? "bg-[url('/assets/img/footer/footer_info_img_000_light.png')]" : "bg-[url('/assets/img/footer/footer_info_img_000_dark.png')]"));
+        else if(index == 1) return (activeStatus ? "bg-[url('/assets/img/footer/footer_info_img_001_active.png')]" : "hover:bg-[url('/assets/img/footer/footer_info_img_001_active.png')] " + (isLight ? "bg-[url('/assets/img/footer/footer_info_img_001_light.png')]" : "bg-[url('/assets/img/footer/footer_info_img_001_dark.png')]"));
+        else if(index == 2) return (activeStatus ? "bg-[url('/assets/img/footer/footer_info_img_002_active.png')]" : "hover:bg-[url('/assets/img/footer/footer_info_img_002_active.png')] " + (isLight ? "bg-[url('/assets/img/footer/footer_info_img_002_light.png')]" : "bg-[url('/assets/img/footer/footer_info_img_002_dark.png')]"));
+        else return (activeStatus ? "bg-[url('/assets/img/footer/footer_info_img_003_active.png')]" : "hover:bg-[url('/assets/img/footer/footer_info_img_003_active.png')] " + (isLight ? "bg-[url('/assets/img/footer/footer_info_img_003_light.png')]" : "bg-[url('/assets/img/footer/footer_info_img_003_dark.png')]"));
     }
 }
 
