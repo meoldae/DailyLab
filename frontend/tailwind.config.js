@@ -39,11 +39,13 @@ export default {
     createThemes({
       light: {
         'primary': '#FFFFFF',
+        'reverse-primary': '#000000',
         'secondary': '#F5F5F5',
         'text': '#000000',
       },
       dark: {
         'primary': '#000000',
+        'reverse-primary': '#FFFFFF',
         'secondary': '#2A2A2A',
         'text': '#FFFFFF',
       },
