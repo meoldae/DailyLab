@@ -4,7 +4,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.amor4ti.dailylab.domain.member.dto.MemberMbtiDto;
 import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
+import lombok.Data;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +48,7 @@ public class MemberController {
 	@GetMapping("/info")
 	public DataResponse getMemberInfo(Authentication authentication) {
 		Long memberId = Long.parseLong(authentication.getName());
-		return memberService.getMainMemberDto(memberId);
+		return memberService.getMemberInfo(memberId);
 	}
 
 	@PostMapping("/modify")
@@ -70,5 +72,60 @@ public class MemberController {
 	public DataResponse getHobbyList(Authentication authentication){
 		Long memberId = Long.parseLong(authentication.getName());
 		return memberService.getHobbyList(memberId);
+	}
+
+	@GetMapping("/goal")
+	public DataResponse getGoal(Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getGoal(memberId);
+	}
+
+	@PostMapping("/goal")
+	public CommonResponse updateGoal(@RequestBody String goal, Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.updateGoal(goal, memberId);
+	}
+
+	@GetMapping("/job")
+	public DataResponse getJob(Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getJob(memberId);
+	}
+
+	@PostMapping("/job")
+	public CommonResponse updateJob(@RequestBody String job, Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.updateJob(job, memberId);
+	}
+
+	@GetMapping("/mbti")
+	public DataResponse getMbti(Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getMbti(memberId);
+	}
+
+	@PostMapping("/mbti")
+	public CommonResponse updateMbti(@RequestBody MemberMbtiDto memberMbtiDto, Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.updateMbti(memberMbtiDto, memberId);
+	}
+
+	@GetMapping("/religion")
+	public DataResponse getReligion(Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getReligion(memberId);
+	}
+
+	@PostMapping("/religion")
+	public CommonResponse updateReligion(@RequestBody String religion, Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.updateReligion(religion, memberId);
+	}
+
+
+	@GetMapping("/flask")
+	public DataResponse getMemberFlask(Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getMemberFlask(memberId);
 	}
 }
