@@ -238,4 +238,9 @@ public class MemberServiceImpl implements MemberService {
 		memberStatus.setStatus("finish");
 		memberStatusRepository.save(memberStatus);
 	}
+
+	@Override
+	public List getProceedMemberList(LocalDate date) {
+		return memberStatusRepository.findMemberIdListByDateAndStatus(date, "proceed");
+	}
 }

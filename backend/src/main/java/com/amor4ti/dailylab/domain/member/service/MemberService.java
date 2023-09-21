@@ -11,6 +11,7 @@ import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface MemberService {
 
@@ -42,4 +43,6 @@ public interface MemberService {
     void updateStatusWait(Long memberId, LocalDate date);
 
     void updateStatusFinish(Long memberId, LocalDate date);
+
+    List getProceedMemberList(LocalDate date);
 }
