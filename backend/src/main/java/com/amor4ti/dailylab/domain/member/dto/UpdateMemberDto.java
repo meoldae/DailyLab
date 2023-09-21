@@ -11,11 +11,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class UpdateMemberDto {
-
-    private short mbtiId;
+    private Long mbtiId;
     private String job;
     private String goal;
     private String religion;
     private List<Hobby> hobbyList;
-
 }
