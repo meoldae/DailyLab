@@ -22,7 +22,10 @@ public enum ResponseStatus {
     LOGIN_SUCCESS("2001", "로그인 되었습니다."),
     LOGOUT_SUCCESS("2002", "로그아웃 되었습니다."),
 
-    TODO_REGIST_SUCCESS("3000", "Todo가 등록되었습니다.");
+    TODO_REGIST_SUCCESS("3000", "Todo가 등록되었습니다."),
+
+    HOBBY_REGIST_SUCCESS("4000", "관심사가 등록되었습니다."),
+    HOBBY_DELETE_SUCCESS("4004", "관심사 삭제가 완료되었습니다.");
 
     private final String code;
     private final String message;

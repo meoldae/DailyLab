@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
@@ -49,7 +50,12 @@ public class Todo {
         this.isDeleted = true;
     }
 
-    public void checkTodo() {
-        this.checkedDate = LocalDateTime.now();
+    public void checkTodo(String checkedDate) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        if(this.checkedDate == null)
+            this.checkedDate = LocalDateTime.parse(checkedDate, dateTimeFormatter);
+        else
+            this.checkedDate = null;
     }
 }

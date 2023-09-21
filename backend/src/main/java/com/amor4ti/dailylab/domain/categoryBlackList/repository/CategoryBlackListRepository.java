@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +15,6 @@ public interface CategoryBlackListRepository extends JpaRepository<CategoryBlack
 
     @Query("SELECT cb FROM CategoryBlackList cb WHERE cb.id = :memberCategoryId")
     Optional<CategoryBlackList> findByMemberCategoryId(@Param("memberCategoryId") MemberCategoryId memberCategoryId);
+
+    List<CategoryBlackList> findAllById_MemberIdAndIsRemove(Long memberId, boolean IsRemove);
 }

@@ -1,11 +1,11 @@
 package com.amor4ti.dailylab.domain.entity;
 
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Getter
@@ -14,10 +14,11 @@ import javax.persistence.Id;
 public class Mbti {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mbtiId;
 
-    private String typeA;
-    private String typeB;
-    private String typeC;
-    private String typeD;
+    private Integer typeA;
+    private Integer typeB;
+    private Integer typeC;
+    private Integer typeD;
 }

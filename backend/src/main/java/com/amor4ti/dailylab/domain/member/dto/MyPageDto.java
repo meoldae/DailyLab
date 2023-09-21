@@ -9,13 +9,8 @@ import java.time.LocalDate;
 @Getter
 @Builder
 @AllArgsConstructor
-public class MainMemberDto {
+public class MyPageDto {
     private String username;
     private String gender;
     private LocalDate birthday;
-    private Long mbtiId;
-    private String job;
-    private String goal;
-    private String religion;
-
 }

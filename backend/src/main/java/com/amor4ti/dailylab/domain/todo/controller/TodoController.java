@@ -1,15 +1,19 @@
 package com.amor4ti.dailylab.domain.todo.controller;
 
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.service.TodoService;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
+import com.amor4ti.dailylab.global.util.JsonConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/todo")
@@ -46,30 +50,30 @@ public class TodoController {
     }
 
     @PostMapping("")
-    public CommonResponse registTodo(@RequestBody TodoRegistDto todoRegistDto, Authentication authentication) {
+    public DataResponse registTodo(@RequestBody TodoRegistDto todoRegistDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
         return todoService.registTodo(todoRegistDto, memberId);
     }
 
-    @PutMapping("/delete")
-    public CommonResponse deleteTodo(@RequestBody TodoUpdateDto todoUpdateDto, Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
+    @DeleteMapping("/delete")
+        public CommonResponse deleteTodo(@RequestBody Map<String, List<Long>> todoIdList, Authentication authentication) {
+            Long memberId = Long.parseLong(authentication.getName());
 
-        return todoService.deleteTodo(memberId, todoUpdateDto);
+            return todoService.deleteTodo(memberId, todoIdList.get("todoIdList"));
     }
 
-    @PutMapping("/check")
-    public CommonResponse checkTodo(@RequestBody TodoUpdateDto todoUpdateDto, Authentication authentication) {
+    @PutMapping("/change/check")
+    public CommonResponse changeCheckTodo(@RequestBody TodoCheckUpdateDto todoCheckUpdateDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
-        return todoService.checkTodo(memberId, todoUpdateDto);
+        return todoService.changeCheckTodo(memberId, todoCheckUpdateDto);
     }
 
     @GetMapping("/recommend/{todoDate}")
-    public CommonResponse recommendTodo(@PathVariable("todoDate") String todoDate, Authentication authentication) {
+    public DataResponse recommendTodo(@PathVariable("todoDate") String todoDate, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
-        System.out.println(1);
+
         return todoService.recommendTodo(memberId, todoDate);
     }
 }

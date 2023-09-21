@@ -1,12 +1,15 @@
 package com.amor4ti.dailylab.domain.member.service;
 
 import com.amor4ti.dailylab.domain.entity.Hobby;
+import com.amor4ti.dailylab.domain.entity.Mbti;
 import com.amor4ti.dailylab.domain.entity.Member;
+import com.amor4ti.dailylab.domain.entity.MemberStatus;
 import com.amor4ti.dailylab.domain.hobby.service.MemberHobbyService;
-import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
-import com.amor4ti.dailylab.domain.member.dto.SignUpDto;
-import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
+import com.amor4ti.dailylab.domain.member.dto.*;
+import com.amor4ti.dailylab.domain.member.mapper.MbtiMapper;
+import com.amor4ti.dailylab.domain.member.mapper.MemberMapper;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.domain.member.repository.MemberStatusRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.response.CommonResponse;
@@ -22,18 +25,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+	private final MemberStatusRepository memberStatusRepository;
+
 	private final JwtProvider jwtProvider;
 	private final CookieUtils cookieUtils;
+
 	private final ResponseService responseService;
 	private final MemberHobbyService memberHobbyService;
+	private final MbtiService mbtiService;
+
+	private final MemberMapper memberMapper;
 
 	@Override
 	@Transactional
@@ -62,7 +73,18 @@ public class MemberServiceImpl implements MemberService{
 		MainMemberDto mainMemberDto = memberRepository.findMainMemberDtoByMemberId(memberId).orElseThrow(
 				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
+		System.out.println(mainMemberDto);
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, mainMemberDto);
+	}
+
+	@Override
+	public DataResponse getMemberInfo(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		MyPageDto myPageDto = memberMapper.memberToMyPage(findMember);
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, myPageDto);
 	}
 
 	@Transactional
@@ -75,8 +97,8 @@ public class MemberServiceImpl implements MemberService{
 		findMember.updateMember(updateMemberDto);
 		// Dirty Checking 이상으로 Save 호출
 		memberRepository.save(findMember);
-		
-		// TODO Hobby List 반영 필요
+
+
 		
 		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
 	}
@@ -86,8 +108,6 @@ public class MemberServiceImpl implements MemberService{
 		List<Hobby> hobbyList = memberHobbyService.getHobbyListByMemberId(memberId);
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, hobbyList);
 	}
-<<<<<<< Updated upstream
-=======
 
 	@Override
 	public DataResponse getGoal(Long memberId) {
@@ -218,5 +238,4 @@ public class MemberServiceImpl implements MemberService{
 		memberStatus.setStatus("finish");
 		memberStatusRepository.save(memberStatus);
 	}
->>>>>>> Stashed changes
 }

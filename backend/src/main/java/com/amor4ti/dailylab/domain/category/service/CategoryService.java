@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 public interface CategoryService {
 
-    public DataResponse getOneCategory(Long categoryId);
+    DataResponse getOneCategory(Long categoryId);
 
-    public DataResponse getCategoryList();
+    DataResponse getCategoryList();
+
+    DataResponse getCategoryTreeList();
 }
