@@ -70,8 +70,8 @@ public class MemberHobbyServiceImpl implements MemberHobbyService{
     }
 
     @Override
-    public CommonResponse deleteHobby(Long memberId, MemberHobbyDto memberHobbyDto) {
-        MemberHobby memberHobby = memberHobbyRepository.findMemberHobbyByMember_MemberIdAndHobby_HobbyName(memberId, memberHobbyDto.getHobbyName())
+    public CommonResponse deleteHobby(Long memberId, String hobbyName) {
+        MemberHobby memberHobby = memberHobbyRepository.findMemberHobbyByMember_MemberIdAndHobby_HobbyName(memberId, hobbyName)
                         .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_HOBBY_NOT_FOUND ));
 
         memberHobbyRepository.delete(memberHobby);
