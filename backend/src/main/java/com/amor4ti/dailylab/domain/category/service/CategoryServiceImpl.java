@@ -13,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -22,6 +24,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     private final ResponseService responseService;
     private final CategoryRepository categoryRepository;
+
+    private final CategoryConverter categoryConverter;
 
     @Override
     public DataResponse getOneCategory(Long categoryId) {
@@ -45,5 +49,26 @@ public class CategoryServiceImpl implements CategoryService{
         }
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, categoryDtoList);
+    }
+
+    @Override
+    public DataResponse getCategoryTreeList() {
+        // 카테고리 전체 리스트
+        List<Category> categoryList = categoryRepository.findAll();
+
+        // 변환 결과를 저장할 Map
+        Map<String, Object> result = new HashMap<>();
+
+        for(Category category : categoryList) {
+            String large = category.getLarge();
+            String medium = category.getMedium();
+            String small = category.getSmall();
+            Long categoryId = category.getCategoryId();
+
+            // result Map에 데이터 추가
+            categoryConverter.addCategoryToResult(result, large, medium, small, categoryId);
+        }
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 }
