@@ -1,13 +1,10 @@
-import { SetAccessToken } from "@/atom/UserAtom";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { SetAccessToken } from "@/atom/UserAtom";
+import { UpdateSignUp } from "@/api/User";
 
-const MemberInfo = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-    
-    console.log(id)
+const SignUp = () => {
+    const id = new URLSearchParams(window.location.search).get("id");
     const [birth, setBirth] = useState("");
     const [gender, setGender] = useState("M");
     const navigate = useNavigate(); 
@@ -16,19 +13,12 @@ const MemberInfo = () => {
         setGender(e.target.value);
     };
 
-    const handleSignUp = () => {
-        axios.post(((import.meta.env.VITE_DEV_API as string) + 'member/signup'), {
-            memberId: id,
-            gender: gender,
-            birthDay: birth
-        })
-        .then((response) => {
-            SetAccessToken(response.data.data);
+    const handleSignUp = async () => {
+        const param = {memberId: id, gender: gender, birthDay: birth};
+        await UpdateSignUp(param, ({data}) => {
+            SetAccessToken(data.data as string);
             navigate('/'); 
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        }, (error) => {console.log(error)});
     };
     
     return (
@@ -64,4 +54,4 @@ const MemberInfo = () => {
     )
 }
 
-export default MemberInfo;
+export default SignUp;
