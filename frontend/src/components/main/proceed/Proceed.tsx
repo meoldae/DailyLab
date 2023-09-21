@@ -66,7 +66,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                         <p>당신을 위한 오늘의 할일...</p>
                     </div>
                     <div className='relative -mt-12'>
-                        <CheckboxList type='default'/>
+                        <CheckboxList type='default' date={curDate}/>
                     </div>
                 </div>
                 {/* 일기영역 */}
@@ -74,7 +74,7 @@ const MainProceed = ({curDate} : {curDate : string}) => {
                     <img className='w-[90px] m-auto' src="src/resources/img/character/diego.png" alt="디에고" />
                     <AnimatePresence>
                         <motion.div
-                        
+
                         onClick={handleTodayDiary} className='relative -mt-[40px] bg_contents_con p-[20px] flex items-center justify-center'>
                             <p>오늘의 일기를 확인해볼까요</p>
                         </motion.div>

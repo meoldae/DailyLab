@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Checkbox from "./Checkbox";
+import { checkUpdateTodoItem, getDefaultTodoList } from "@/api/Todo";
+import { addHours } from "date-fns";
 
 /*
 --type--
@@ -12,10 +14,16 @@ import Checkbox from "./Checkbox";
 
 interface CheckboxListProps {
     type: string;
-    date? : string;
+    date : string;
   }
+interface DefaultTodoType {
+    todoId: number,
+    state: boolean,
+    content: string,
+}
 
-const CheckboxList: React.FC<CheckboxListProps> = ({ type }) => {
+const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
+    const [items, setItems] = useState<DefaultTodoType[]>([]);
     const [checkedItems, setCheckedItems] = useState<number[]>([]);
     const [checkedItemNo, setCheckedItemNo] = useState(0);
     const [showInput, setShowInput] = useState(false);
@@ -56,10 +64,35 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type }) => {
         setNewTodoContent(''); // 입력내용 초기화
     }
     
+    
+    const getDefaultList = async (date : string) => {
+        await getDefaultTodoList(date, ({data}) => {
+            console.log(data, items)
+            setItems(data.data as DefaultTodoType[]);
+        }, (error) => {console.log(error)})
+    }
+
+    const updateCheckItem = async (todoId : number) => {
+        const now = new Date();
+        const newDate = addHours(now, 9);
+        const formattedDateTime = newDate.toISOString().slice(0, 16).replace("T", " ");
+
+        console.log(todoId, formattedDateTime)
+        const todoData = {
+            todoId: todoId,
+            timeStamp: formattedDateTime
+        };
+
+        await checkUpdateTodoItem(todoData,({ data }) => {
+            console.log(data);
+        }, (error) => {console.log(error)});
+
+    }
+
     useEffect(() => {
         if(type === 'default' && checkedItemNo !== 0){
             console.log('checkedItemNo', checkedItemNo)
-            // 할 일 체크여부 업데이트하는 API 함수 호출
+            updateCheckItem(checkedItemNo);
         }
     }, [checkedItems]);
 
@@ -68,7 +101,8 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type }) => {
             // plan 리스트 불러오는 API 함수 호출
         }
         else{
-            // default 리스트 불러오는 API 함수 호출
+            // default 리스트 불러오기
+            getDefaultList(date);
         }
     }, []);
 
@@ -84,8 +118,8 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type }) => {
                     삭제
                 </button>
             </div>)}
-            {todoList.length > 0 && todoList.map((todo)=>(
-                <Checkbox key={todo.index} index={todo.index} state={todo.state} content={todo.content} type={type} 
+            {items.length > 0 && items.map((todo)=>(
+                <Checkbox key={todo.todoId} todoId={todo.todoId} state={todo.state} content={todo.content} type={type} 
                 onCheckboxChange={handleCheckboxChange}/>
             ))}
             {showInput && (
@@ -119,36 +153,3 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type }) => {
 }
 
 export default CheckboxList;
-
-const todoList = [
-    {
-        index: 1,
-        state: true,
-        content:'첫번째 할 일',
-    },
-    {
-        index: 2,
-        state: false,
-        content:'두번째 할 일',
-    },
-    {
-        index: 3,
-        state: false,
-        content:'할일3',
-    },
-    {
-        index: 4,
-        state: false,
-        content:'할일4',
-    },
-    {
-        index: 5,
-        state: false,
-        content:'할일5',
-    },
-    {
-        index: 6,
-        state: false,
-        content:'할일6',
-    },
-]
