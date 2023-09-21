@@ -205,16 +205,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public DataResponse getMemberStatus(Long memberId) {
-		Optional<MemberStatus> memberStatus = memberStatusRepository.findFirstByMemberIdOrderByDateDesc(memberId);
-
-		MemberStatusDto res;
-
-		// 최초 회원
-		if (!memberStatus.isPresent()) {
-			res = new MemberStatusDto(null, "init");
-		} else {
-			res = MemberStatusDto.of(memberStatus.get());
-		}
+		MemberStatusDto res = memberStatusRepository.findFirstByMemberIdOrderByDateDesc(memberId)
+				.map(MemberStatusDto::of)
+				.orElse(new MemberStatusDto(null, "init"));  
 
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, res);
 	}
