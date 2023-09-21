@@ -1,10 +1,15 @@
-import test_router
-
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from domain.diary import diaryService
 
+import test_router
+from domain.todo.routers import getInfoFromSpring_router, todo
+
 app = FastAPI()
+
+origins = [
+    "*"
+]
 
 # CORS 미들웨어 설정
 app.add_middleware(
@@ -14,14 +19,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@app.get("/hello/{name}") 
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
 
 # gpt 3.5 일기 작성
 @app.post("/diary/default")
@@ -36,6 +33,8 @@ async def createDiary(param: dict):
     return data
 
 app.include_router(test_router.router)
+app.include_router(getInfoFromSpring_router.router)
+app.include_router(todo.router)
 
 if __name__ == "__main__":
     import uvicorn

@@ -8,21 +8,16 @@ def createDiary(param, gpt_model):
     builder = DiaryContentBuilder(param)
     content = builder.build()
 
-    todo_list = []
-    sorted_todos = sorted(param["todos"], key=lambda x: x["date"] if x["date"] is not None else [0])
-    for todo in sorted_todos:
-        if todo["date"] is None:
-            date_status = "(수행 하지 않음)"
-        else:
-            hour, minute = todo["date"][3], todo["date"][4]
-            date_status = f"({hour}시 {minute}분 수행함)"
-        todo_str = f"{todo['task']} - {date_status}"
-        todo_list.append(todo_str)
+    todo_list = build_todo_list(param["todos"], gpt_model)
 
     user_content = (
-        "해야할 일\n" + 
+        "오늘 할 일\n" + 
         "\n".join(todo_list) + "\n\n" +
-        "너에게 주어진 역할을 기반으로 해야할 일을 수행했을 때, 1인칭 시점의 일기를 작성해줘. 단, 날짜는 작성하지마"
+        "너에게 주어진 역할을 참고해서 할 일을 했을 때, 다음의 양식으로 1인칭 시점의 일기를 한글로 작성해줘. \n" +
+        "1. 생년월일을 일기에 작성하지마. \n"
+        "2. 읽고 싶게 자극적인 기사처럼 제목을 작성해줘. \n" +
+        "title: \n" +
+        "content: \n" 
     )
 
     response = openai.ChatCompletion.create(
@@ -40,6 +35,25 @@ def createDiary(param, gpt_model):
         presence_penalty=0.0, # 반복적이지 않은 텍스트를 생성하도록 유도. 반복되며 penalty 부여되며 2에 가까울수록 penalty 가 커진다
     )
     return response['choices'][0]['message']['content']
+
+def build_todo_list(todos, gpt_model):
+    todo_list = []
+    sorted_todos = sorted(todos, key=lambda x: x["date"] if x["date"] is not None else [0])
+    
+    for todo in sorted_todos:
+        todo_str = todo['task']
+        
+        if gpt_model != "gpt-3.5-turbo-16k":
+            if todo["date"] is None:
+                date_status = "(수행 하지 않음)"
+            else:
+                hour, minute = todo["date"][3], todo["date"][4]
+                date_status = f"({hour}시 {minute}분 수행함)"
+            todo_str += f" - {date_status}"
+            
+        todo_list.append(todo_str)
+
+    return todo_list
 
 class DiaryContentBuilder:
     def __init__(self, param):
