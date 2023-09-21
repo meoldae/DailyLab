@@ -1,5 +1,6 @@
 package com.amor4ti.dailylab.domain.todo.controller;
 
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.service.TodoService;
@@ -59,11 +60,11 @@ public class TodoController {
         return todoService.deleteTodo(memberId, todoUpdateDto);
     }
 
-    @PutMapping("/check")
-    public CommonResponse checkTodo(@RequestBody TodoUpdateDto todoUpdateDto, Authentication authentication) {
+    @PutMapping("/change/check")
+    public CommonResponse changeCheckTodo(@RequestBody TodoCheckUpdateDto todoCheckUpdateDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
-        return todoService.checkTodo(memberId, todoUpdateDto);
+        return todoService.changeCheckTodo(memberId, todoCheckUpdateDto);
     }
 
     @GetMapping("/recommend/{todoDate}")
