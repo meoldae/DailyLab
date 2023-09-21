@@ -1,11 +1,8 @@
+import ReturnType from "@/type/ReturnType";
 import { HttpJson } from "./Http";
 
-interface props {
-    data : string
+const UpdateSignUp =async (param: object, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.post(`member/signup`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-const Login =async (param: object, success: (data : {data : props}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.post(`/diary`, JSON.stringify(param)).then(success).catch(fail);
-}
-
-export { Login };
+export { UpdateSignUp };

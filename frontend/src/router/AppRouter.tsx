@@ -8,7 +8,7 @@ import AppStatistics from "@/pages/AppStatistics";
 import AppMyPage from "@/pages/AppMyPage";
 import AppLogin from "@/pages/AppLogin";
 import AppIntro from "@/pages/AppIntro";
-import AppMemberInfo from "@/pages/AppMemberInfo";
+import AppSignUp from "@/pages/AppSignUp";
 import AppRedirect from "@/pages/AppRedirect";
 import AppNotFound from "@/error/AppNotFound";
 //import { SetAccessToken } from "@/atom/UserAtom";
@@ -32,7 +32,7 @@ const AppRouter = () => {
                     <Route path="/oauth2/redirect" element={<AppRedirect />} />
                 </Route>
                 <Route path="/intro" element={<AppIntro />} />
-                <Route path="/memberInfo" element={<AppMemberInfo />} />
+                <Route path="/memberInfo" element={<AppSignUp />} />
                 <Route path="/*" element={<AppNotFound/>}/>
             </Routes>
         </BrowserRouter>
