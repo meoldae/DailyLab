@@ -13,7 +13,7 @@ interface characterList {
 
 const characters: characterList = {
     char1: {
-        imgsrc: './resources/img/character/coco_clothes_2.png',
+        imgsrc: '/assets/img/character/coco_clothes_2.png',
         name: '연구소장 코코',
         desc: `몸집은 제일 작지만 연구소의 대장을 맡고있다.<br/>
         주요 업무는 연구원들 감시하기다.<br/>
@@ -21,7 +21,7 @@ const characters: characterList = {
         color: '#FA4949',
     },
     char2: {
-        imgsrc: './resources/img/character/ian_2.png',
+        imgsrc: '/assets/img/character/ian_2.png',
         name: '할일담당 이안',
         desc: `마르코에게 받은 자료를 분석해 할 일을 만든다.<br/>
         작성한 할 일 목록을 소중하게 품에 안고 다닌다.<br/>
@@ -30,7 +30,7 @@ const characters: characterList = {
         color: '#FF891A'
     },
     char3: {
-        imgsrc: './resources/img/character/diego_2.png',
+        imgsrc: '/assets/img/character/diego_2.png',
         name: '일기담당 디에고',
         desc: `이안에게 자료를 받으면 일기를 작성한다.<br/>
         항상 같은 펜을 들고다닌다. <br/>
@@ -38,7 +38,7 @@ const characters: characterList = {
         color: '#208FFF'
     },
     char4: {
-        imgsrc: './resources/img/character/marco_2.png',
+        imgsrc: '/assets/img/character/marco_2.png',
         name: '분석담당 마르코',
         desc: `받은 자료를 통해서 성향을 파악한다.<br/>
         꼼꼼한 성격으로 늘 연구소에 제일 먼저 출근한다.<br/>
@@ -47,7 +47,7 @@ const characters: characterList = {
         color: '#12AB47'
     },
     char5: {
-        imgsrc: './resources/img/character/cloe_2.png',
+        imgsrc: '/assets/img/character/cloe_2.png',
         name: '감정담당 클로에',
         desc: `감정을 수집하고 분석한다.<br/>
         수줍은 성격으로 분석 결과를 발표할 때 긴장한다.<br/>

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import testPng from "@/resources/img/character/coco.png";
+import testPng from "public/assets/img/character/coco.png";
 
 
 function AppNotFound() {
