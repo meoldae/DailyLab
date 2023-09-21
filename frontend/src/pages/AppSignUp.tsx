@@ -1,11 +1,11 @@
-import MemberInfo from '@/components/memberInfo/MemberInfo';
+import SignUp from '@/components/signup/SignUp';
 
-const AppMemberInfo = () => {
+const AppSignUp = () => {
     return (
         <div>
-            <MemberInfo />
+            <SignUp />
         </div>
     )
 }
 
-export default AppMemberInfo;
+export default AppSignUp;
