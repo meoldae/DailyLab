@@ -1,5 +1,4 @@
 from sklearn import decomposition
-from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
 # filePath = '../../../dataset/'

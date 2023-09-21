@@ -16,10 +16,9 @@ def findDummy():
         resultList = resultList + printSim(str(record))
 
     for item in firstList:
-        print(item)
         resultList = resultList.drop(item)
 
     resultList = resultList.sort_values(ascending=False)
     return resultList
 
-print(findDummy())
+# print(findDummy())
