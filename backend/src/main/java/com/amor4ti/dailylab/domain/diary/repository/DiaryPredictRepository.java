@@ -7,5 +7,5 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface DiaryPredictRepository extends JpaRepository<DiaryPredict, Long> {
-    Optional<DiaryPredict> findByMemberIdAntDate(Long memberId, LocalDate date);
+    Optional<DiaryPredict> findByMemberIdAndDiaryDate(Long memberId, LocalDate date);
 }

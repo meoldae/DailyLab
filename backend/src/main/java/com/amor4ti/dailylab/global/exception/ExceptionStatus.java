@@ -13,6 +13,7 @@ public enum ExceptionStatus {
 	/* Diary */
 	TODAY_DIARY_IS_EXIST("-400", "이미 오늘 일기를 작성했습니다."),
 	DIARY_CANNOT_WRITE("-400", "일기 작성아 실패했습니다."),
+	DIARY_DAY_NOT_EXIST("-400", "오늘 작성된 일기가 없습니다."),
 
 	TOKEN_EXPIRED("-1000", "토큰이 만료되었습니다."),
 	REFRESH_TOKEN_EXPIRED("-1001", "토큰이 만료되었습니다."),
