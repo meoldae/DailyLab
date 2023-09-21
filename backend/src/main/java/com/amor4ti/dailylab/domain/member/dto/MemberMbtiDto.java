@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @Getter
 @Builder
 @AllArgsConstructor
-public class MainMemberDto {
-    private String username;
-    private String gender;
-    private LocalDate birthday;
+public class MemberMbtiDto {
+    private Integer typeA;
+    private Integer typeB;
+    private Integer typeC;
+    private Integer typeD;
 }

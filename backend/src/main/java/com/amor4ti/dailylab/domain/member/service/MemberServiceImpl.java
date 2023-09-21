@@ -1,11 +1,15 @@
 package com.amor4ti.dailylab.domain.member.service;
 
 import com.amor4ti.dailylab.domain.entity.Hobby;
+import com.amor4ti.dailylab.domain.entity.Mbti;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.hobby.service.MemberHobbyService;
 import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
+import com.amor4ti.dailylab.domain.member.dto.MemberMbtiDto;
 import com.amor4ti.dailylab.domain.member.dto.SignUpDto;
 import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
+import com.amor4ti.dailylab.domain.member.mapper.MbtiMapper;
+import com.amor4ti.dailylab.domain.member.mapper.MemberMapper;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -34,6 +38,9 @@ public class MemberServiceImpl implements MemberService{
 	private final CookieUtils cookieUtils;
 	private final ResponseService responseService;
 	private final MemberHobbyService memberHobbyService;
+	private final MbtiService mbtiService;
+
+	private final MemberMapper memberMapper;
 
 	@Override
 	@Transactional
@@ -58,10 +65,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public DataResponse getMainMemberDto(Long memberId) {
-		MainMemberDto mainMemberDto = memberRepository.findMainMemberDtoByMemberId(memberId).orElseThrow(
+	public DataResponse getMemberInfo(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
 				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
+		MainMemberDto mainMemberDto = memberMapper.memberToMainMember(findMember);
+
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, mainMemberDto);
 	}
 
@@ -75,8 +84,8 @@ public class MemberServiceImpl implements MemberService{
 		findMember.updateMember(updateMemberDto);
 		// Dirty Checking 이상으로 Save 호출
 		memberRepository.save(findMember);
-		
-		// TODO Hobby List 반영 필요
+
+
 		
 		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
 	}
@@ -85,5 +94,99 @@ public class MemberServiceImpl implements MemberService{
 	public DataResponse getHobbyList(Long memberId) {
 		List<Hobby> hobbyList = memberHobbyService.getHobbyListByMemberId(memberId);
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, hobbyList);
+	}
+
+	@Override
+	public DataResponse getGoal(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		String goal = findMember.getGoal();
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, goal);
+	}
+
+	@Override
+	public CommonResponse updateGoal(String goal, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		findMember.setGoal(goal);
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+	@Override
+	public DataResponse getJob(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		String job = findMember.getJob();
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, job);
+	}
+
+	@Override
+	public CommonResponse updateJob(String job, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		findMember.setJob(job);
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+	@Override
+	public DataResponse getMbti(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		MemberMbtiDto memberMbtiDto = mbtiService.getMbti(findMember.getMbtiId());
+
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, memberMbtiDto);
+	}
+
+	@Override
+	public CommonResponse updateMbti(MemberMbtiDto memberMbtiDto, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		Mbti mbti = mbtiService.getMbtiByDto(memberMbtiDto);
+		findMember.setMbtiId(mbti.getMbtiId());
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+	@Override
+	public DataResponse getReligion(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		String religion = findMember.getReligion();
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, religion);
+	}
+
+	@Override
+	public CommonResponse updateReligion(String religion, Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		findMember.setReligion(religion);
+		memberRepository.save(findMember);
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
+
+
+	@Override
+	public DataResponse getMemberFlask(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		List<Hobby> hobbyList = memberHobbyService.getHobbyListByMemberId(memberId);
+		UpdateMemberDto memberInfo = memberMapper.memberToUpdateMember(findMember, hobbyList);
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, memberInfo);
 	}
 }

@@ -29,7 +29,7 @@ public class Member {
 	private LocalDateTime joinDate;
 	private LocalDateTime exitDate;
 	private String provider;
-	private short mbtiId;
+	private Long mbtiId;
 	private String job;
 	private String goal;
 	private String religion;
@@ -60,7 +60,7 @@ public class Member {
 		this.birthday = birthday;
 	}
 
-	public void setMbtiId(short mbtiId) {
+	public void setMbtiId(Long mbtiId) {
 		this.mbtiId = mbtiId;
 	}
 

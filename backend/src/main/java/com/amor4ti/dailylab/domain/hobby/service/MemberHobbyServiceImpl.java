@@ -37,13 +37,7 @@ public class MemberHobbyServiceImpl implements MemberHobbyService{
 
     @Override
     public DataResponse getAllHobby() {
-        String[] categoryName = {"운동", "문화", "탐방", "여가"};
-
-        List<List<Hobby>> hobbyList = new LinkedList<>();
-        for(String category : categoryName){
-            hobbyList.add(hobbyRepository.findAllByCategory(category));
-        }
-
+        List<Hobby> hobbyList = hobbyRepository.findAll();
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, hobbyList);
     }
 
