@@ -34,7 +34,21 @@ def createDiary(param, gpt_model):
         frequency_penalty=0.0, # 특정 단어나 phrase 를 포함하지 않도록. -2~2 까지 조정 가능한테, 2에 가까울수록 penalty 가 커진다
         presence_penalty=0.0, # 반복적이지 않은 텍스트를 생성하도록 유도. 반복되며 penalty 부여되며 2에 가까울수록 penalty 가 커진다
     )
-    return response['choices'][0]['message']['content']
+    data = response['choices'][0]['message']['content']
+
+    clean_data = data.replace('\n', ' ')
+    title_start = clean_data.find("title: ") + len("title: ")
+    content_start = clean_data.find("content: ")
+
+    title = clean_data[title_start:content_start].strip()
+    content = clean_data[content_start + len("content: "):].strip()
+
+    res = {
+        "title": title,
+        "content": content
+    }
+
+    return res
 
 def build_todo_list(todos, gpt_model):
     todo_list = []
