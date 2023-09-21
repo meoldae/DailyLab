@@ -47,6 +47,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 		member.ifPresentOrElse(
 			tempMember -> {
 				if (tempMember.getBirthday() == null) {
+					log.info("============ 생년월일 없음 {} ============", tempMember.getMemberId());
 					redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
 				} else {
 					String accessToken = jwtProvider.createAccessToken(member.get());
@@ -55,6 +56,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 					Cookie cookie = cookieUtils.createCookie(refreshToken);
 					response.addCookie(cookie);
 
+					log.info("============ 기존 회원 {} ============", tempMember.getMemberId());
 					redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken;
 				}
 			},
@@ -66,6 +68,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 					.build();
 
 				Member signupMember = memberRepository.save(newMember);
+				log.info("============ 최초 진입 {} ============", signupMember.getMemberId());
 				redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
 			}
 		);

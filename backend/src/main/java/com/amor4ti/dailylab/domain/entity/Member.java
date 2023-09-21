@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.amor4ti.dailylab.domain.entity.diary.DiaryPredict;
+import com.amor4ti.dailylab.domain.diary.entity.DiaryPredict;
 import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,7 +29,7 @@ public class Member {
 	private LocalDateTime joinDate;
 	private LocalDateTime exitDate;
 	private String provider;
-	private short mbtiId;
+	private Long mbtiId;
 	private String job;
 	private String goal;
 	private String religion;
@@ -39,9 +39,6 @@ public class Member {
 
 	@OneToMany(mappedBy = "member")
 	private List<TodoReport> todoReports = new ArrayList<>();
-
-	@OneToMany(mappedBy = "member")
-	private List<DiaryPredict> diaryPredicts = new ArrayList<>();
 
 	@Builder
 	public Member(String email, String username, String provider){
@@ -63,7 +60,7 @@ public class Member {
 		this.birthday = birthday;
 	}
 
-	public void setMbtiId(short mbtiId) {
+	public void setMbtiId(Long mbtiId) {
 		this.mbtiId = mbtiId;
 	}
 

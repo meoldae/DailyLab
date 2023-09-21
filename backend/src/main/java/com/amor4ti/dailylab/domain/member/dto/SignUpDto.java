@@ -21,4 +21,5 @@ public class SignUpDto {
 		updateMember.setGender(this.gender);
 		updateMember.setBirthday(this.birthDay);
 	}
+
 }

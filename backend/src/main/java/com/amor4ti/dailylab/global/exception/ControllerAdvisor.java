@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.amor4ti.dailylab.global.response.CommonResponse;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@RestControllerAdvice
 public class ControllerAdvisor {
 
 	@ExceptionHandler(CustomException.class)

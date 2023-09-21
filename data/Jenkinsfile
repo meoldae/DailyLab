@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    stages {
+        stage("Set Variable") {
+            steps {
+                script {
+                    IMAGE_NAME_BE = "dailylab-dev-fastapi"
+                    CONTAINER_NAME_BE = "daily_dev_data"
+                    PROJECT_DIR_BE = "data"
+                }
+            }
+        }
+
+        // 컨테이너 클리닝
+        stage("container cleaning") {
+            steps{
+                sh "docker ps -q -f name=${CONTAINER_NAME_BE} | xargs --no-run-if-empty docker container stop"
+                sh "docker container ls -a -q -f name=${CONTAINER_NAME_BE} | xargs --no-run-if-empty docker rm"
+            }
+        }
+
+        // 이미지 삭제
+        stage("image cleaning") {
+            steps{
+                sh "docker images ${IMAGE_NAME_BE} -q | xargs -r docker rmi -f"
+            }
+        }
+
+        // 도커 이미지 빌드
+        stage("be image build") {
+            steps {
+                dir("${PROJECT_DIR_BE}") {
+                    script {
+                        sh "docker build --no-cache -t ${IMAGE_NAME_BE} ."
+                    }
+                }
+            }
+        }
+
+        // 컨테이너 실행
+        stage("be container run") {
+            steps {
+                script {
+                    sh "docker run -d -p 8181:8181 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE} -e TZ=Asia/Seoul"
+                }
+            }
+        }
+    }
+}
