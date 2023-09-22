@@ -23,6 +23,8 @@ type Config = {
 };
 
 export function register(config: Config) {
+  const test = import.meta.env.PROD;
+  console.log(test);
   if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL((import.meta.env.VITE_DEV as string), window.location.href);
