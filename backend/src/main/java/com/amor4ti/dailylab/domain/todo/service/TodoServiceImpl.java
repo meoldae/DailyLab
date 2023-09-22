@@ -15,6 +15,7 @@ import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoSmallDto;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
+import com.amor4ti.dailylab.domain.todoReport.service.TodoReportService;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.response.CommonResponse;
@@ -48,6 +49,7 @@ public class TodoServiceImpl implements TodoService{
     private final CategoryBlackListRepository categoryBlackListRepository;
 
     private final ResponseService responseService;
+    private final TodoReportService todoReportService;
 
     private final JsonConverter jsonConverter;
 
@@ -150,19 +152,14 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    @Transactional
     public DataResponse recommendTodo(Long memberId, String todoDate) {
-        // fastAPI 요청 주소
-//        String fastApiUrl = "http://localhost:8181/data/todo";
-        String fastApiUrl = DATA_SERVER_URL + "/todo";
+        // 우선 하루 마무리
+        // 마무리는 언제 추천 요청을 하든 간에 추천 todo 수행일 -1에 실행된다.
+        todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
 
-        // RestTemplate 통신
-        Map<String, Object> data = new HashMap<>();
-        data.put("memberId", memberId);
-        data.put("todoDate", todoDate);
-        RestTemplate restTemplate = new RestTemplate();
-
-        // 통신 결과 (FastAPI에서 반환한 값)
-        String response = restTemplate.postForObject(fastApiUrl, data, String.class);
+        // FastAPI와 통신
+        String response = communicateWithFastAPI(memberId, todoDate);
 
         // String -> JSON
         JsonObject jsonObject = jsonConverter.converter(response);
@@ -221,5 +218,22 @@ public class TodoServiceImpl implements TodoService{
         }
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoRecommendedDtoList);
+    }
+
+    private String communicateWithFastAPI(Long memberId, String todoDate) {
+        // fastAPI 요청 주소
+//        String fastApiUrl = "http://localhost:8181/data/todo";
+        String fastApiUrl = DATA_SERVER_URL + "/todo";
+
+        // RestTemplate 통신
+        Map<String, Object> data = new HashMap<>();
+        data.put("memberId", memberId);
+        data.put("todoDate", todoDate);
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 통신 결과 (FastAPI에서 반환한 값)
+        String response = restTemplate.postForObject(fastApiUrl, data, String.class);
+
+        return response;
     }
 }
