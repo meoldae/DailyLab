@@ -20,6 +20,7 @@ clientsClaim();
 precacheAndRoute(self.__WB_MANIFEST);
 
 const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
+
 registerRoute(
   ({ request, url }) => {
 
