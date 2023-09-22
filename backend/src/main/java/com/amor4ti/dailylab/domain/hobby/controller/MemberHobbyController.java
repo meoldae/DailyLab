@@ -26,14 +26,14 @@ public class MemberHobbyController {
     }
 
     @PostMapping
-    public CommonResponse registMemberHobby(@RequestBody MemberHobbyDto memberHobbyDto, Authentication authentication){
+    public CommonResponse registMemberHobby(@RequestParam Long hobbyId, Authentication authentication){
         Long memberId = Long.parseLong(authentication.getName());
-        return memberHobbyService.registerHobby(memberId, memberHobbyDto);
+        return memberHobbyService.registerHobby(memberId, hobbyId);
     }
 
     @DeleteMapping
-    public CommonResponse deleteMemberHobby(@RequestParam String hobbyName, Authentication authentication){
+    public CommonResponse deleteMemberHobby(@RequestParam Long hobbyId, Authentication authentication){
         Long memberId = Long.parseLong(authentication.getName());
-        return memberHobbyService.deleteHobby(memberId, hobbyName);
+        return memberHobbyService.deleteHobby(memberId, hobbyId);
     }
 }
