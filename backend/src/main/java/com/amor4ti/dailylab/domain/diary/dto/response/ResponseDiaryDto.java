@@ -16,14 +16,14 @@ public class ResponseDiaryDto {
 
     public static ResponseDiaryDto ofToday(DiaryPredict diaryPredict) {
         return ResponseDiaryDto.builder()
-                .title("")
+                .title(diaryPredict.getTitle())
                 .content(diaryPredict.getContent())
                 .build();
     }
 
     public static ResponseDiaryDto ofDate(DiaryHistory diaryHistory) {
         return ResponseDiaryDto.builder()
-                .title("")
+                .title(diaryHistory.getTitle())
                 .content(diaryHistory.getContent())
                 .build();
     }

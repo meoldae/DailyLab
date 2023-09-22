@@ -10,6 +10,9 @@ import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface MemberService {
 
 	DataResponse<String> saveMember(SignUpDto signUpDto, HttpServletResponse response);
@@ -33,4 +36,13 @@ public interface MemberService {
 
     DataResponse getMemberFlask(Long memberId);
 
+    DataResponse getMemberStatus(Long memberId);
+
+    void updateStatusProceed(Long memberId, LocalDate date);
+
+    void updateStatusWait(Long memberId, LocalDate date);
+
+    void updateStatusFinish(Long memberId, LocalDate date);
+
+    List getProceedMemberList(LocalDate date);
 }

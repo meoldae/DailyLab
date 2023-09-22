@@ -8,12 +8,7 @@ import com.amor4ti.dailylab.domain.member.dto.MemberMbtiDto;
 import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
 import lombok.Data;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.member.dto.SignUpDto;
@@ -129,10 +124,15 @@ public class MemberController {
 		return memberService.updateReligion(religion, memberId);
 	}
 
-
 	@GetMapping("/flask")
 	public DataResponse getMemberFlask(Authentication authentication){
 		Long memberId = Long.parseLong(authentication.getName());
 		return memberService.getMemberFlask(memberId);
+	}
+
+	@GetMapping("/status")
+	public DataResponse getMemberStatus(Authentication authentication) {
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getMemberStatus(memberId);
 	}
 }
