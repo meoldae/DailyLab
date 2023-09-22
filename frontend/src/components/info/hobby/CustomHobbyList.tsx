@@ -9,12 +9,16 @@ interface props {
 }
 
 const CustomHobbyList = (data: props) => {
+
+    function updateHobby(activeStatus: boolean, idx: number) {
+        data.handleHobby(true, idx);
+    }
     
     return (
         <div>
             {data.myHobbyList.map((item, index) => {
                 return (
-                    <CustomKeyword key={index} idx={item.hobbyId} name={item.hobbyName} XStatus={true} activeStatus={false} clickEvent={data.handleHobby} />   
+                    <CustomKeyword key={index} idx={item.hobbyId} name={item.hobbyName} XStatus={true} activeStatus={false} clickEvent={updateHobby} />   
                 )
             }) }
             {!data.insertStatus ?
