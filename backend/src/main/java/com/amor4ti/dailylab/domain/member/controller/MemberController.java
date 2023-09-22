@@ -46,6 +46,12 @@ public class MemberController {
 		return memberService.getMainMemberDto(memberId);
 	}
 
+	@DeleteMapping("/exit")
+	public CommonResponse exitMember(Authentication authentication){
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.exitMember(memberId);
+	}
+
 
 	@GetMapping("/mypage")
 	public DataResponse getMemberInfo(Authentication authentication) {
