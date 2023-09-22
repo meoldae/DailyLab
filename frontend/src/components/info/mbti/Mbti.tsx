@@ -38,14 +38,14 @@ const Mbti = () => {
             <div className="w-[calc(100% + 20px)] overflow-hidden -ml-[20px] child-[div]:w-[50%] child-[div]:pl-[20px] child-[div]:float-left">
                 <div className="mb-[12px]">
                     <div className="rounded-[10px] bg-secondary px-[15px] py-[5px] flex justify-between child-[span]:text-[15px]">
-                        {myMbti?.typeA != 1 ? <span className="font-light" onClick={() => handleMbti(1, 1)}>내향</span> : <span className="text-green font-semibold">내향</span>}
-                        {myMbti?.typeA != 2 ? <span className="font-light" onClick={() => handleMbti(1, 2)}>외향</span> : <span className="text-green font-semibold">외향</span>}
+                        {myMbti?.typeA != 1 ? <span className="font-light cursor-pointer" onClick={() => handleMbti(1, 1)}>내향</span> : <span className="text-green font-semibold">내향</span>}
+                        {myMbti?.typeA != 2 ? <span className="font-light cursor-pointer" onClick={() => handleMbti(1, 2)}>외향</span> : <span className="text-green font-semibold">외향</span>}
                     </div>
                 </div>
                 <div className="mb-[12px]">
                     <div className="rounded-[10px] bg-secondary px-[15px] py-[5px] flex justify-between child-[span]:text-[15px]">
-                        {myMbti?.typeB != 1 ? <span className="font-light" onClick={() => handleMbti(2, 1)}>감각</span> : <span className="text-green font-semibold">감각</span>}
-                        {myMbti?.typeB != 2 ? <span className="font-light" onClick={() => handleMbti(2, 2)}>직관</span> : <span className="text-green font-semibold">직관</span>}
+                        {myMbti?.typeB != 1 ? <span className="font-light cursor-pointer" onClick={() => handleMbti(2, 1)}>감각</span> : <span className="text-green font-semibold">감각</span>}
+                        {myMbti?.typeB != 2 ? <span className="font-light cursor-pointer" onClick={() => handleMbti(2, 2)}>직관</span> : <span className="text-green font-semibold">직관</span>}
                     </div>
                 </div>
                 <div>

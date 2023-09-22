@@ -22,7 +22,7 @@ const SignUp = () => {
         }, (error) => {console.log(error)})
     }
 
-    const handleSignUp = async () => {
+    const doSignUp = async () => {
         const param = {memberId: id, gender: gender, birthDay: birth};
         await UpdateSignUp(param, ({data}) => {
             SetAccessToken(data.data as string);
@@ -30,6 +30,12 @@ const SignUp = () => {
             getRecommendTodo();
             navigate('/'); 
         }, (error) => {console.log(error)});
+    };
+
+    const handleSignUp = () => {
+        doSignUp();
+        getRecommendTodo();
+        navigate('/');        
     };
     
     return (

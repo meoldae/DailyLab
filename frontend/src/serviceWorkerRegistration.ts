@@ -23,39 +23,7 @@ type Config = {
 };
 
 export function register(config? : Config) {
-// The URL constructor is available in all browsers that support SW.
-const publicUrl = new URL((import.meta.env.BASE_URL as string), window.location.href);
-
-
-if (publicUrl.origin !== window.location.origin) {
-  // Our service worker won't work if PUBLIC_URL is on a different origin
-  // from what our page is served on. This might happen if a CDN is used to
-  // serve assets; see https://github.com/facebook/create-react-app/issues/2374
-  return;
-}
-
-window.addEventListener('load', () => {
-  const swUrl = `${import.meta.env.BASE_URL}service-worker.js`;
-  console.log(swUrl)
-  if (isLocalhost) {
-    // This is running on localhost. Let's check if a service worker still exists or not.
-    checkValidServiceWorker(swUrl, config);
-
-    // Add some additional logging to localhost, pointing developers to the
-    // service worker/PWA documentation.
-    navigator.serviceWorker.ready.then(() => {
-      console.log(
-        'This web app is being served cache-first by a service ' +
-          'worker. To learn more, visit https://cra.link/PWA'
-      );
-    });
-  } else {
-    // Is not localhost. Just register service worker
-    registerValidSW(swUrl, config);
-  }
-});
-  
-  /*if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL((import.meta.env.VITE_DEV as string), window.location.href);
     if (publicUrl.origin !== window.location.origin) {
@@ -68,6 +36,8 @@ window.addEventListener('load', () => {
     window.addEventListener('load', () => {
       const swUrl = `${import.meta.env.BASE_URL}/service-worker.js`;
 
+      console.log(swUrl)
+      
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
@@ -85,7 +55,7 @@ window.addEventListener('load', () => {
         registerValidSW(swUrl, config);
       }
     });
-  }*/
+  }
 }
 
 function registerValidSW(swUrl: string, config?: Config) {
