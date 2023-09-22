@@ -9,6 +9,7 @@ import com.amor4ti.dailylab.domain.entity.category.CategoryBlackList;
 import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
@@ -178,10 +179,10 @@ public class TodoServiceImpl implements TodoService{
         List<TodoRecommendedDto> todoRecommendedDtoList = new ArrayList<>();
 
         int cnt = 0;
-        
+        log.info("categoryIdList의 수 : " + CategoryIdList.size());
         for (Long categoryId : CategoryIdList) {
-            // 일단 3개만
-            if(cnt == 3)
+            // 일단 5개만
+            if(cnt == 5)
                 break;
 
             // 블랙리스트 체크 로직
@@ -193,7 +194,7 @@ public class TodoServiceImpl implements TodoService{
             Optional<CategoryBlackList> optionalBlackList = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
             
             if(optionalBlackList.isPresent() && !optionalBlackList.get().isRemove())
-                break;
+                continue;
 
             cnt++;
 
@@ -206,6 +207,8 @@ public class TodoServiceImpl implements TodoService{
                     .content(category.getSmall())
                     .todoDate(LocalDate.parse(todoDate))
                     .build();
+            log.info("todoDate : " + todoRegistDto.getTodoDate());
+            log.info("categoryId : " + todoRegistDto.getCategoryId());
 
             DataResponse dataResponse = registTodo(todoRegistDto, memberId);
 
@@ -223,11 +226,25 @@ public class TodoServiceImpl implements TodoService{
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoRecommendedDtoList);
     }
 
+    @Override
+    public CommonResponse changeTodoContent(TodoContentUpdateDto todoContentUpdateDto, Long memberId) {
+        Todo todo = todoRepository.findByTodoId(todoContentUpdateDto.getTodoId())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+
+        if(todo.getMember().getMemberId() != memberId)
+            throw new CustomException(ExceptionStatus.TODO_UPDATE_REQUEST_BY_OTHER_USER);
+
+        todo.changeContent(todoContentUpdateDto.getContent());
+        todoRepository.save(todo);
+
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
+
     private String communicateWithFastAPI(Long memberId, String todoDate) {
         log.info("데이터 서버와 통신 시작");
         // fastAPI 요청 주소
-//        String fastApiUrl = "http://localhost:8181/data/todo";
-        String fastApiUrl = DATA_SERVER_URL + "/todo";
+        String fastApiUrl = "http://localhost:8181/todo";
+//        String fastApiUrl = DATA_SERVER_URL + "/todo";
 
         // RestTemplate 통신
         Map<String, Object> data = new HashMap<>();
@@ -238,6 +255,7 @@ public class TodoServiceImpl implements TodoService{
         // 통신 결과 (FastAPI에서 반환한 값)
         String response = restTemplate.postForObject(fastApiUrl, data, String.class);
 
+        log.info("response : " + response);
         log.info("데이터 서버와 통신 종료");
         return response;
     }
