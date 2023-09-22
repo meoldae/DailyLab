@@ -19,14 +19,19 @@ import com.amor4ti.dailylab.global.util.WebClientUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -46,6 +51,10 @@ public class DiaryServiceImpl implements DiaryService {
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
 
+    @Retryable(
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 100L)
+    )
     @Transactional
     public void createDefaultDiary(Long memberId, LocalDate date) {
         Member member = memberRepository.findMemberByMemberId(memberId).orElseThrow();
@@ -80,6 +89,10 @@ public class DiaryServiceImpl implements DiaryService {
                 );
     }
 
+    @Retryable(
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 100L)
+    )
     @Transactional
     public void createConfirmDiary(Long memberId, LocalDate date) {
         Member member = memberRepository.findMemberByMemberId(memberId).orElseThrow();
