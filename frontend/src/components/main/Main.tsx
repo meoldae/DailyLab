@@ -4,10 +4,11 @@ import { toStringByFormatting } from '@/utils/date/DateFormatter';
 import MainWaiting from "./waiting/Waiting";
 import { useEffect, useState } from "react";
 import { getStatus } from "@/api/User";
+import MainPreview from "./Preview/Preview";
 
 /*
  * 임시로 status를 세가지 경우로 나누어 분기처리 
- * finished : 하루 마무리/미래 계획하기 단계 (하루 시작 전과 마무리 후)
+ * finish : 하루 마무리/미래 계획하기 단계 (하루 시작 전과 마무리 후)
  * proceed : 하루 진행 단계
  * waiting : 하루 마무리 버튼을 누른 직후 일기 작성을 기다리는 단계
  */
@@ -20,7 +21,7 @@ interface StatusType {
 
 const Main = () => {
     // status 가져오는 API 
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('proceed');
     const [getDate, setGetDate] = useState('');
     const comp = 'result';
     const curDate = toStringByFormatting(new Date());
@@ -30,7 +31,17 @@ const Main = () => {
             const nowState = data.data as StatusType;
             setStatus(nowState.status);
             setGetDate(nowState.date);
+
+            const curDate2: Date = new Date(curDate);
+            const getDate2: Date = new Date(getDate);
+            const timeDifference: number = (curDate2.getDate() - getDate2.getDate());
+
+            console.log('날짜 차이 : ', timeDifference)
             console.log('현재 상태 : ',data.data)
+
+            if(timeDifference >= 2){
+                setStatus('preview');
+            }
         }, (error) => {
             console.log(error)
         });
@@ -44,6 +55,8 @@ const Main = () => {
             {status === 'proceed' && (<MainProceed getDate={getDate} curDate={curDate}/>)}
             {status === 'wait' && (<MainWaiting getDate={getDate} curDate={curDate}/>)}
             {status === 'finish' && (<MainFinish comp={comp} getDate={getDate} curDate={curDate}/>)}
+            {status === 'preview' && (<MainPreview getDate={getDate} curDate={curDate}/>)}
+
         </>
     )
 }
