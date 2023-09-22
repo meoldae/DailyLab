@@ -10,7 +10,6 @@ import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
-import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoSmallDto;
@@ -143,8 +142,6 @@ public class TodoServiceImpl implements TodoService{
         Todo todo = todoRepository.findByTodoId(todoCheckUpdateDto.getTodoId())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-        System.out.println(todoCheckUpdateDto.getCheckedDate());
-
         todo.checkTodo(todoCheckUpdateDto.getCheckedDate());
         todoRepository.save(todo);
 
@@ -154,6 +151,8 @@ public class TodoServiceImpl implements TodoService{
     @Override
     @Transactional
     public DataResponse recommendTodo(Long memberId, String todoDate) {
+        log.info("todo 추천 로직 시작");
+        
         // 우선 하루 마무리
         // 마무리는 언제 추천 요청을 하든 간에 추천 todo 수행일 -1에 실행된다.
         todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
@@ -212,15 +211,17 @@ public class TodoServiceImpl implements TodoService{
             TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, newTodoId)
                     .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION));
 
-            System.out.println(todoRecommendedDto);
-
             todoRecommendedDtoList.add(todoRecommendedDto);
         }
+
+        log.info("추천 todo 개수 : " + todoRecommendedDtoList.size());
+        log.info("todo 추천 로직 종료");
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoRecommendedDtoList);
     }
 
     private String communicateWithFastAPI(Long memberId, String todoDate) {
+        log.info("데이터 서버와 통신 시작");
         // fastAPI 요청 주소
 //        String fastApiUrl = "http://localhost:8181/data/todo";
         String fastApiUrl = DATA_SERVER_URL + "/todo";
@@ -234,6 +235,7 @@ public class TodoServiceImpl implements TodoService{
         // 통신 결과 (FastAPI에서 반환한 값)
         String response = restTemplate.postForObject(fastApiUrl, data, String.class);
 
+        log.info("데이터 서버와 통신 종료");
         return response;
     }
 }
