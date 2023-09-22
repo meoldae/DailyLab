@@ -42,18 +42,15 @@ public class MemberHobbyServiceImpl implements MemberHobbyService{
     }
 
     @Override
-    public CommonResponse registerHobby(Long memberId, MemberHobbyDto memberHobbyDto) {
+    public CommonResponse registerHobby(Long memberId, Long hobbyId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
-        Hobby hobby = hobbyRepository.findByHobbyName(memberHobbyDto.getHobbyName())
+        Hobby hobby = hobbyRepository.findById(hobbyId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.HOBBY_NOT_FOUND));
 
-        boolean findHobby = memberHobbyRepository.findMemberHobbyByMember_MemberIdAndHobby_HobbyName(memberId, memberHobbyDto.getHobbyName())
+        boolean findHobby = memberHobbyRepository.findMemberHobbyByMember_MemberIdAndHobby_HobbyId(memberId, hobbyId)
                 .isPresent();
-
-
-        log.info("data={}", findHobby);
 
         if (findHobby) {
             throw new CustomException(ExceptionStatus.MEMBER_HOBBY_IS_ALREADY_PRESENT);
@@ -70,8 +67,8 @@ public class MemberHobbyServiceImpl implements MemberHobbyService{
     }
 
     @Override
-    public CommonResponse deleteHobby(Long memberId, String hobbyName) {
-        MemberHobby memberHobby = memberHobbyRepository.findMemberHobbyByMember_MemberIdAndHobby_HobbyName(memberId, hobbyName)
+    public CommonResponse deleteHobby(Long memberId, Long hobbyId) {
+        MemberHobby memberHobby = memberHobbyRepository.findMemberHobbyByMember_MemberIdAndHobby_HobbyId(memberId, hobbyId)
                         .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_HOBBY_NOT_FOUND ));
 
         memberHobbyRepository.delete(memberHobby);

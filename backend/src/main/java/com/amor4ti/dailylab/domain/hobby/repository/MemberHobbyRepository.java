@@ -13,5 +13,5 @@ public interface MemberHobbyRepository extends JpaRepository<MemberHobby, Long> 
     @Query("SELECT mh.hobby FROM MemberHobby mh WHERE mh.member.memberId = :memberId")
     List<Hobby> findHobbyListByMemberId(Long memberId);
 
-    Optional<MemberHobby> findMemberHobbyByMember_MemberIdAndHobby_HobbyName(Long memberId, String hobbyName);
+    Optional<MemberHobby> findMemberHobbyByMember_MemberIdAndHobby_HobbyId(Long memberId, Long hobbyId);
 }
