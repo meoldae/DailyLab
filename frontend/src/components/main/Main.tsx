@@ -20,7 +20,6 @@ interface StatusType {
   }
 
 const Main = () => {
-    // status 가져오는 API 
     const [status, setStatus] = useState('proceed');
     const [getDate, setGetDate] = useState('');
     const comp = 'result';
@@ -29,9 +28,13 @@ const Main = () => {
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            console.log("---------", nowState);
-            setStatus(() => nowState.status);
-            setGetDate(() => nowState.date);
+            if(nowState.status === 'init'){
+                setStatus('preview');
+            }else{
+                setStatus(() => nowState.status);
+                setGetDate(() => nowState.date);
+                getDateDiff();
+            }
         }, (error) => {
             console.log(error)
         });
@@ -42,17 +45,14 @@ const Main = () => {
         const getDate2: Date = new Date(getDate);
         const timeDifference: number = (curDate2.getDate() - getDate2.getDate());
 
-        console.log('날짜 차이 : ', curDate, getDate, timeDifference)
-
-        if(timeDifference >= 2 || getDate === ''){
+        if(timeDifference >= 2){
             setStatus('preview');
         }
     }
     
     useEffect(() => {
         void nowStatus();
-        void getDateDiff();
-    },[])
+    },)
     
     return (
         <>
@@ -60,7 +60,6 @@ const Main = () => {
             {status === 'wait' && (<MainWaiting getDate={getDate} curDate={curDate}/>)}
             {status === 'finish' && (<MainFinish comp={comp} getDate={getDate} curDate={curDate}/>)}
             {status === 'preview' && (<MainPreview getDate={getDate} curDate={curDate}/>)}
-
         </>
     )
 }
