@@ -16,6 +16,7 @@ export default {
       blue: '#208FFF',
       green: '#12AB47',
       gray: '#B2B2B2',
+      white: '#FFFFFF',
     },
     screens : {
       sm : '768px',

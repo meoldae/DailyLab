@@ -10,34 +10,36 @@ const CustomHobby = () => {
     function handleInsertMode() {setInsertMode((prev) => !prev);}
     
     const [myHobbyList, setMyHobbyList] = useState<HobbyType[]>([]);
-    const getMyHobbyList = async () => {
-        await GetSelectedHobbyList(({data}) => {
-            setMyHobbyList(() => data.data as HobbyType[]);
-        }, (error) => console.log(error));
-    }
-
     const [totalHobbyList, setTotalHobbyList] = useState<HobbyType[]>([]);
 
     useEffect(() => {
-        void getMyHobbyList();
+        GetSelectedHobbyList(({data}) => {setMyHobbyList(() => data.data as HobbyType[]);}, (error) => console.log(error));
         GetHobbyList(({data}) => {setTotalHobbyList(() => data.data as HobbyType[]);}, (error) => console.log(error));
     },[]);
 
-    const handelInsertHobby = async (name: string) => {
-        await InsertHobby({hobbyName : name}, ({data}) => {
-            if(data.code == "4000") void getMyHobbyList();
+    const handelInsertHobby = async (idx: number) => {
+        await InsertHobby(idx, ({data}) => {
+            if(data.code == "4000"){
+                const result = JSON.parse(JSON.stringify(myHobbyList));
+                const newData = totalHobbyList.find(item => item.hobbyId === idx);
+                result.push(newData);
+                setMyHobbyList(() => result);
+            }
         }, (error) => {console.log(error)});
     }
 
-    const handelDeleteHobby = async (name: string) => {
-        await DeleteHobby({hobbyName : name}, ({data}) => {
-            if(data.code == "4004") void getMyHobbyList();
+    const handelDeleteHobby = async (idx: number) => {
+        await DeleteHobby(idx, ({data}) => {
+            if(data.code == "4004"){
+                const result = myHobbyList.filter(hobby => hobby.hobbyId != idx);
+                setMyHobbyList(() => result);
+            }
         }, (error) => {console.log(error)});
     }
 
-    function handleHobby(activeStatus: boolean, name: string){
-        if(activeStatus) handelDeleteHobby(name);
-        else handelInsertHobby(name);
+    function handleHobby(activeStatus: boolean, idx: number){
+        if(activeStatus) handelDeleteHobby(idx);
+        else handelInsertHobby(idx);
     }
 
     return (

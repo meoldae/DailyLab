@@ -5,7 +5,7 @@ import XIcon from "public/assets/img/icon/x.png";
 interface props {
     myHobbyList : HobbyType[]
     totalHobbyList : HobbyType[]
-    handleHobby : (activeStatus: boolean, name: string) => void
+    handleHobby : (activeStatus: boolean, idx: number) => void
     handleInsert : () => void
 }
 
@@ -22,10 +22,6 @@ const CustomHobbyInsert = (data: props) => {
         result[idx].list.push(item);
     });
 
-    function updateHobby(activeStatus: boolean, name: string) {
-        data.handleHobby(activeStatus, name);
-    }
-
     return (
         <div className="mt-[18px] relative bg_contents_con p-[20px]">
             <div className="text-[20px] mb-[10px] font-semibold">관심사 선택하기</div>
@@ -37,7 +33,7 @@ const CustomHobbyInsert = (data: props) => {
                             <div className="-mb-[7px]">
                                 {item.list.map((listItem, itemIndex) => {
                                     return (
-                                        <CustomKeyword key={itemIndex} idx={listItem.hobbyId} name={listItem.hobbyName} XStatus={false} activeStatus={listItem.activeStatus!} clickEvent={updateHobby} />   
+                                        <CustomKeyword key={itemIndex} idx={listItem.hobbyId} name={listItem.hobbyName} XStatus={false} activeStatus={listItem.activeStatus!} clickEvent={data.handleHobby} />   
                                     )
                                 })}
                             </div>

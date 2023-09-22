@@ -14,11 +14,13 @@ const BlackList = () => {
         GetSelectedBlackList(({data}) => {
             setMyBlackList(() => data.data as blackListData[]);
         }, (error) => console.log(error));
-    })
+    }, [])
 
-    function handleBlackList(activeStatus: boolean, name: string){
-        DeleteBlackList(name, ({data}) => {
+    function handleBlackList(activeStatus: boolean, idx: number){
+        DeleteBlackList(idx, ({data}) => {
             console.log(data);
+            const result = myBlackList.filter(black => black.categoryId != idx);
+            setMyBlackList(() => result);
         }, (error) => console.log(error));
     }
 

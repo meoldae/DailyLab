@@ -9,12 +9,12 @@ const GetSelectedHobbyList = async (success: (data : {data : ReturnType}) => voi
     await HttpJson.get(`member/hobby`).then(success).catch(fail);
 }
 
-const InsertHobby = async (param: object, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.post(`hobby`, JSON.stringify(param)).then(success).catch(fail);
+const InsertHobby = async (hobbyId: number, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.post(`hobby/${hobbyId}`).then(success).catch(fail);
 }
 
-const DeleteHobby = async (param: object, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.delete(`hobby`, { params: param }).then(success).catch(fail);
+const DeleteHobby = async (hobbyId: number, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.delete(`hobby/${hobbyId}`).then(success).catch(fail);
 }
 
 const GetSelectedMbti = async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
@@ -53,8 +53,8 @@ const GetSelectedBlackList = async (success: (data : {data : ReturnType}) => voi
     await HttpJson.get(`category/blacklist`).then(success).catch(fail);
 }
 
-const DeleteBlackList = async (param: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.post(`member/goal`, JSON.stringify(param)).then(success).catch(fail);
+const DeleteBlackList = async (categoryId: number, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.delete(`category/blacklist/cancel/${categoryId}`).then(success).catch(fail);
 }
 
 export { GetHobbyList, GetSelectedHobbyList, InsertHobby, DeleteHobby, GetSelectedMbti, UpdateMbti, GetSelectedJob, UpdateJob, GetSelectedReligion, UpdateReligion, GetGoal, UpdateGoal, GetSelectedBlackList, DeleteBlackList};

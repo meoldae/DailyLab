@@ -4,21 +4,17 @@ import { HobbyType } from "@/type/HobbyType";
 interface props {
     myHobbyList : HobbyType[],
     insertStatus : boolean,
-    handleHobby : (activeStatus: boolean, name: string) => void,
+    handleHobby : (activeStatus: boolean, idx: number) => void,
     handleInsert : () => void,
 }
 
 const CustomHobbyList = (data: props) => {
-
-    function updateHobby(activeStatus: boolean, name: string) {
-        data.handleHobby(true, name);
-    }
     
     return (
         <div>
             {data.myHobbyList.map((item, index) => {
                 return (
-                    <CustomKeyword key={index} idx={item.hobbyId} name={item.hobbyName} XStatus={true} activeStatus={false} clickEvent={updateHobby} />   
+                    <CustomKeyword key={index} idx={item.hobbyId} name={item.hobbyName} XStatus={true} activeStatus={false} clickEvent={data.handleHobby} />   
                 )
             }) }
             {!data.insertStatus ?
