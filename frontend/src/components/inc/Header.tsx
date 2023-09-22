@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { GetMode, modeAtom } from "@/atom/modeAtom";
 import settingIconImgLight from 'public/assets/img/header/header_setting_icon_light.png';
 import settingIconImgDark from 'public/assets/img/header/header_setting_icon_dark.png';
@@ -10,11 +10,14 @@ import headerMenuLightIconDark from 'public/assets/img/header/header_light_mode_
 import headerMenuDarkIconLight from 'public/assets/img/header/header_dark_mode_icon_light.png';
 import headerMenuDarkIconDark from 'public/assets/img/header/header_dark_mode_icon_dark.png';
 import { useSetRecoilState } from "recoil";
+import { SetAccessToken } from "@/atom/UserAtom";
 
 
 export default function Header() {
     const changeMode = useSetRecoilState(modeAtom);
     const isLight = GetMode() == 'light';
+    const navigate = useNavigate(); 
+
     function changeModeEvent():void {
         const resultMode = isLight ? 'dark' : 'light'; 
         changeMode({mode : resultMode});
@@ -39,6 +42,12 @@ export default function Header() {
         }
     }
 
+    function logout() {
+        SetAccessToken("");
+        localStorage.removeItem("userAtom");
+        navigate("/login");
+    }
+
     return (
         <header className="flex justify-end pt-[20px] pr-[20px] top-0 left-0 w-full">
             <div className="w-screen min-h-screen h-full z-[-1] fixed left-0 top-0 opacity-0 bg-text text-0 transition-all" onClick={toggleHeaderMenu} ref={headerMenuBg}>헤더 메뉴 active시 screen 배경</div>
@@ -50,7 +59,7 @@ export default function Header() {
                     child-[li:last-child]:text-0 child-[li:last-child]:border-b-0
                     ">
                         <li className="hover:bg-[#CFCFCF] transition-all cursor-pointer"><NavLink to="/mypage">마이페이지</NavLink></li>
-                        <li className="hover:bg-[#CFCFCF] transition-all cursor-pointer">로그아웃</li>
+                        <li className="hover:bg-[#CFCFCF] transition-all cursor-pointer" onClick={logout}>로그아웃</li>
                         <li className="flex justify-center items-center">
                             <img src={isLight ? headerMenuLightIconLight : headerMenuLightIconDark } alt="라이트 모드" />
                             <input type="checkbox" id="selectMode" className="w-0 h-0 opacity-0 peer/select_mode" defaultChecked={!isLight} onChange={changeModeEvent}/>
