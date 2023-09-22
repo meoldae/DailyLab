@@ -159,9 +159,6 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                         .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
                 .fetchOne();
 
-        System.out.println("findTodoRecommendedDtoByMemberIdAndTodoId");
-        System.out.println(result);
-
         return Optional.ofNullable(result);
     }
 

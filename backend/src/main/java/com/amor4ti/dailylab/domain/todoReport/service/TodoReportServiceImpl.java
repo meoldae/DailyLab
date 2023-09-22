@@ -33,8 +33,10 @@ public class TodoReportServiceImpl implements TodoReportService {
     @Override
     @Transactional
     public CommonResponse finishToday(Long memberId, LocalDate todoDate) {
+        log.info("하루 마무리 로직 시작 : 통계 시작");
+        
         List<Todo> todayTodoList = todoRepository.findTodayTodoListByMemberIdAndTodoDate(memberId, todoDate);
-
+        
         Member member = memberRepository.findMemberByMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
@@ -65,7 +67,6 @@ public class TodoReportServiceImpl implements TodoReportService {
 
             // 이미 db에 존재하는 todoReport인 경우
             else {
-                System.out.println(todoReport.get().getTodoReportId());
                 // 이행 X Count 업데이트
                 if(todo.getCheckedDate() == null)
                     todoReport.get().updateFailCount();
@@ -82,6 +83,8 @@ public class TodoReportServiceImpl implements TodoReportService {
             }
         }
 
+        log.info("오늘 하루 로직 마무리 : 통계 저장");
+        
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 }
