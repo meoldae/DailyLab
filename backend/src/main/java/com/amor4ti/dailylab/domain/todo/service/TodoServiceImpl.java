@@ -197,10 +197,13 @@ public class TodoServiceImpl implements TodoService{
 
             cnt++;
 
+            Category category = categoryRepository.findByCategoryId(categoryId)
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+
             // db에 추천 db 등록 로직
             TodoRegistDto todoRegistDto = TodoRegistDto.builder()
                     .categoryId(categoryId)
-                    .content(null)
+                    .content(category.getSmall())
                     .todoDate(LocalDate.parse(todoDate))
                     .build();
 
