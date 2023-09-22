@@ -35,7 +35,7 @@ export function register(config?: Config) {
 
     window.addEventListener("load", () => {
       console.log(import.meta.env.BASE_URL);
-      const swUrl = `/src/service-worker.js`;
+      const swUrl = `service-worker.js`;
 
       console.log(swUrl);
 
