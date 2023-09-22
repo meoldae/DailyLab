@@ -29,25 +29,29 @@ const Main = () => {
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            setStatus(nowState.status);
-            setGetDate(nowState.date);
-
-            const curDate2: Date = new Date(curDate);
-            const getDate2: Date = new Date(getDate);
-            const timeDifference: number = (curDate2.getDate() - getDate2.getDate());
-
-            console.log('날짜 차이 : ', timeDifference)
-            console.log('현재 상태 : ',data.data)
-
-            if(timeDifference >= 2){
-                setStatus('preview');
-            }
+            console.log("---------", nowState);
+            setStatus(() => nowState.status);
+            setGetDate(() => nowState.date);
         }, (error) => {
             console.log(error)
         });
     }
+    
+    const getDateDiff = () => {
+        const curDate2: Date = new Date(curDate);
+        const getDate2: Date = new Date(getDate);
+        const timeDifference: number = (curDate2.getDate() - getDate2.getDate());
+
+        console.log('날짜 차이 : ', curDate, getDate, timeDifference)
+
+        if(timeDifference >= 2 || getDate === ''){
+            setStatus('preview');
+        }
+    }
+    
     useEffect(() => {
         void nowStatus();
+        void getDateDiff();
     },[])
     
     return (
