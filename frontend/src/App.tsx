@@ -6,12 +6,6 @@ import "@/styles/common/fontImport.css";
 // PWA
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-const test = import.meta.env.PROD;
-const test2 = import.meta.env.DEV;
-console.log("프로덕션환경 : " + test);
-console.log("개발환경 : " + test2);
-
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <RecoilRoot>
     <AppRouter />
