@@ -64,24 +64,32 @@ public class EmotionServiceImpl implements EmotionService {
         Criteria memberCriteria = Criteria.where("memberId").is(memberId).and("date").is(date);
         MatchOperation matchStage = Aggregation.match(memberCriteria);
 
-        LookupOperation lookupStage = Aggregation.lookup("emotion", "emotionId", "emotionId", "emotionInfo");
+        LookupOperation lookupStage = Aggregation.lookup("emotion", "emotions.emotionId", "emotionId", "emotionInfo");
 
         Aggregation aggregation = Aggregation.newAggregation(matchStage, lookupStage);
 
         List<Document> results = mongoTemplate.aggregate(aggregation, "member_emotion", Document.class).getMappedResults();
 
         return results.stream()
-                .map(document -> {
+                .flatMap(document -> {
+                    List<Document> emotions = (List<Document>) document.get("emotions");
                     List<Document> emotionInfoList = (List<Document>) document.get("emotionInfo");
-                    Document emotionInfo = emotionInfoList.get(0);
-                    String type = emotionInfo.getString("type");
 
-                    return MemberEmotionDayDto.builder()
-                            .emotionId(document.getInteger("emotionId"))
-                            .type(type)
-//                            .date(document.getString("date"))
-                            .timeStamp(document.getString("timestamp"))
-                            .build();
+                    return emotions.stream().map(emotion -> {
+                        Integer emotionId = emotion.getInteger("emotionId");
+                        Document matchedEmotionInfo = emotionInfoList.stream()
+                                                                     .filter(e -> e.getInteger("emotionId").equals(emotionId))
+                                                                     .findFirst()
+                                                                     .orElse(null);
+
+                        String type = matchedEmotionInfo != null ? matchedEmotionInfo.getString("type") : null;
+
+                        return MemberEmotionDayDto.builder()
+                                                  .emotionId(emotionId)
+                                                  .type(type)
+                                                  .timeStamp(emotion.getString("timestamp"))
+                                                  .build();
+                    });
                 })
                 .collect(Collectors.toList());
     }
