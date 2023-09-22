@@ -25,7 +25,7 @@ public class CategoryBlackListController {
         return categoryBlackListService.black(todoIdList.get("todoIdList"), memberId);
     }
 
-    @PutMapping("/cancel/{categoryId}")
+    @DeleteMapping("/cancel/{categoryId}")
     public CommonResponse cancelBlack(@PathVariable Long categoryId, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
