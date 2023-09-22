@@ -34,7 +34,7 @@ export function register(config? : Config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `./service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       console.log(swUrl)
 
