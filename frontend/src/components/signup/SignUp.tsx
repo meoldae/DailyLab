@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { SetAccessToken } from "@/atom/UserAtom";
 import { UpdateSignUp } from "@/api/User";
+import { makePlanTodoList } from "@/api/Todo";
+import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
 const SignUp = () => {
     const id = new URLSearchParams(window.location.search).get("id");
@@ -13,10 +15,19 @@ const SignUp = () => {
         setGender(e.target.value);
     };
 
+    const getRecommendTodo = async () =>{
+        const curDate = toStringByFormatting(new Date());
+        await makePlanTodoList(curDate, ({data}) => {
+            console.log(data.data)
+        }, (error) => {console.log(error)})
+    }
+
     const handleSignUp = async () => {
         const param = {memberId: id, gender: gender, birthDay: birth};
         await UpdateSignUp(param, ({data}) => {
             SetAccessToken(data.data as string);
+            // 첫 추천 TODOList 생성하는 API호출하기
+            getRecommendTodo();
             navigate('/'); 
         }, (error) => {console.log(error)});
     };
