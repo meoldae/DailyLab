@@ -76,7 +76,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
                     ) : (
                         inputState === 'input' ?(
                             <div>
-                                {contentText === '상세내용' && (small)}
+                                {small}
                             </div>
                         ) : (
                         <div className="child-[select]:bg-secondary">

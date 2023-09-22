@@ -6,6 +6,7 @@ import { addHours } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { getPredictDiary, postTodayDiary } from '@/api/diary';
+import { makePlanTodoList } from '@/api/Todo';
 
 interface DiaryType { 
     title : string,
@@ -35,12 +36,21 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
         }, (error) => {console.log(error)})
     }
 
+    const getRecommendTodo = async () =>{
+        await makePlanTodoList(curDate, ({data}) => {
+            console.log(data.data)
+        }, (error) => {console.log(error)})
+    }
+
     const handleEmotionClick = (emotionId: number):void => {
         updateEmotion(emotionId);// 클릭된 감정의 ID를 상태에 저장
     }
 
     const handleFinishButton = () => {
-        // 하루 마무리 요청 API 호출 - 추천 TODO List 생성, 오늘 일기 생성
+        // 하루 마무리
+        //추천 TODO List 생성
+        getRecommendTodo();
+        //오늘 일기 생성
         getNewDiary();
         navigate('/loading');
     }
