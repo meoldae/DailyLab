@@ -31,8 +31,8 @@ public class MemberHobbyController {
         return memberHobbyService.registerHobby(memberId, hobbyId);
     }
 
-    @DeleteMapping
-    public CommonResponse deleteMemberHobby(@RequestParam Long hobbyId, Authentication authentication){
+    @DeleteMapping("/{hobbyId}")
+    public CommonResponse deleteMemberHobby(@PathVariable Long hobbyId, Authentication authentication){
         Long memberId = Long.parseLong(authentication.getName());
         return memberHobbyService.deleteHobby(memberId, hobbyId);
     }
