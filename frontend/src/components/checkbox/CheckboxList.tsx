@@ -94,7 +94,6 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
 
     const getPlanList = async (date : string) => {
         await getPlanTodoList(date, ({data}) => {
-            console.log("추천데이터",data)
             setItems(data.data as TodoType[]);
         }, (error) => {console.log(error)})
     }
@@ -125,10 +124,8 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
     }, [checkedItems]);
 
     useEffect(() => {
-        console.log('type', type)
         if(type === 'plan'){
             // plan 리스트 불러오는 API 함수 호출
-            console.log("plan일때")
             getPlanList(date);
         }
         else{
