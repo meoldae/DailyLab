@@ -43,6 +43,10 @@ public class TodoReportServiceImpl implements TodoReportService {
         log.info("오늘 todoList의 갯수 : " + todayTodoList.size());
 
         for (Todo todo : todayTodoList) {
+            // 삭제한 todo였다면 todoReport에 저장하지 않음
+            if(todo.isDeleted())
+                continue;
+
             Optional<TodoReport> todoReport = todoReportRepository.findTodoReportByMemberIdAndCategoryId(memberId, todo.getCategory().getCategoryId());
 
             if(todoReport.isEmpty()) {
