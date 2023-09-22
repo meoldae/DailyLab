@@ -23,7 +23,6 @@ type Config = {
 };
 
 export function register(config? : Config) {
-  console.log(11111);
   if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL((import.meta.env.VITE_DEV as string), window.location.href);
@@ -35,8 +34,10 @@ export function register(config? : Config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${import.meta.env.VITE_DEV}/service-worker.js`;
+      const swUrl = `${import.meta.env.BASE_URL}/service-worker.js`;
 
+      console.log(swUrl)
+      
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
