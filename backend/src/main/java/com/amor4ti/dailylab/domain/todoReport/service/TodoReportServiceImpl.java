@@ -40,10 +40,14 @@ public class TodoReportServiceImpl implements TodoReportService {
         Member member = memberRepository.findMemberByMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
+        log.info("오늘 todoList의 갯수 : " + todayTodoList.size());
+
         for (Todo todo : todayTodoList) {
             Optional<TodoReport> todoReport = todoReportRepository.findTodoReportByMemberIdAndCategoryId(memberId, todo.getCategory().getCategoryId());
-            // 기존에 db에 존재하지 않는 todoReport인 경우
+
             if(todoReport.isEmpty()) {
+                log.info("기존에 존재하지 않은 todoReport");
+
                 TodoReport newTodoReport = TodoReport.builder()
                         .member(member)
                         .categoryId(todo.getCategory().getCategoryId())
@@ -67,6 +71,7 @@ public class TodoReportServiceImpl implements TodoReportService {
 
             // 이미 db에 존재하는 todoReport인 경우
             else {
+                log.info("기존에 존재했던 todoReport");
                 // 이행 X Count 업데이트
                 if(todo.getCheckedDate() == null)
                     todoReport.get().updateFailCount();

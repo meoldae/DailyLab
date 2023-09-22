@@ -23,6 +23,7 @@ public enum ExceptionStatus {
 
 	TODO_NOT_FOUND("-3000", "Todo가 존재하지 않습니다."),
 	TODO_ALREADY_REGIST_TODAY("-3001", "이미 오늘 등록한 카테고리의 Todo입니다. 하루에 같은 카테고리 두번은 불가능합니다."),
+	TODO_UPDATE_REQUEST_BY_OTHER_USER("-3002", "todo 주인이 아닌 다른 유저가 수정을 시도했습니다."),
 
 	CATEGORY_NOT_FOUND("-4000", "Category가 존재하지 않습니다."),
 
