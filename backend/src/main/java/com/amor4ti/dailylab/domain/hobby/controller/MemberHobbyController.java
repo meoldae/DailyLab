@@ -25,8 +25,8 @@ public class MemberHobbyController {
          return memberHobbyService.getAllHobby();
     }
 
-    @PostMapping
-    public CommonResponse registMemberHobby(@RequestParam Long hobbyId, Authentication authentication){
+    @PostMapping("/{hobbyId}")
+    public CommonResponse registMemberHobby(@PathVariable Long hobbyId, Authentication authentication){
         Long memberId = Long.parseLong(authentication.getName());
         return memberHobbyService.registerHobby(memberId, hobbyId);
     }
