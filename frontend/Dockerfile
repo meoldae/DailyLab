@@ -1,6 +1,6 @@
 FROM node:18-alpine AS build
 
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 WORKDIR /frontend
 
@@ -17,7 +17,7 @@ RUN npm install @vitejs/plugin-react-swc
 
 RUN npm install
 
-# ENV NODE_ENV=production
+ENV NODE_ENV=production
 
 COPY . .
 
