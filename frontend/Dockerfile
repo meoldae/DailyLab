@@ -11,8 +11,6 @@ RUN npm cache clean --force
 # Typescript 먼저 install
 RUN npm install -g typescript vite
 
-# RUN npm install --save-dev @types/react-dom
-
 RUN npm install @vitejs/plugin-react-swc
 
 ENV NODE_ENV=development
