@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.emotion.service;
 
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionDetail;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
 import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
@@ -18,7 +19,9 @@ import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,14 +40,24 @@ public class EmotionServiceImpl implements EmotionService {
     public void registerEmotion(Long memberId, RegisterMemberEmotionDto requestDto) {
         String[] dates = requestDto.getTimeStamp().split(" ");
 
-        MemberEmotion memberEmotion = MemberEmotion.builder()
-                                           .memberId(memberId)
-                                           .emotionId(requestDto.getEmotionId())
-                                           .date(dates[0])
-                                           .timestamp(dates[1])
-                                           .build();
+        String date = dates[0];
+        String timestamp = dates[1];
 
-        memberEmotionRepository.save(memberEmotion);
+        // 해당 memberId와 date에 해당하는 도큐먼트 조회
+        Optional<MemberEmotion> memberEmotionDay = memberEmotionRepository.findByMemberIdAndDate(memberId, date);
+
+        if (!memberEmotionDay.isPresent()) {
+            // 도큐먼트가 없는 경우, 새로운 도큐먼트 생성
+            MemberEmotion newEmotionDay = MemberEmotion.build(memberId, date, new ArrayList<>());
+
+            newEmotionDay.getEmotions().add(new EmotionDetail(requestDto.getEmotionId(), timestamp));
+            memberEmotionRepository.save(newEmotionDay);
+        } else {
+            // 도큐먼트가 이미 있는 경우, emotions 배열에 추가
+            MemberEmotion memberEmotion = memberEmotionDay.get();
+            memberEmotion.getEmotions().add(new EmotionDetail(requestDto.getEmotionId(), timestamp));
+            memberEmotionRepository.save(memberEmotion);
+        }
     }
 
     public List<MemberEmotionDayDto> getDayEmotion(Long memberId, String date) {
@@ -66,7 +79,7 @@ public class EmotionServiceImpl implements EmotionService {
                     return MemberEmotionDayDto.builder()
                             .emotionId(document.getInteger("emotionId"))
                             .type(type)
-                            .date(document.getString("date"))
+//                            .date(document.getString("date"))
                             .timeStamp(document.getString("timestamp"))
                             .build();
                 })
@@ -109,12 +122,12 @@ public class EmotionServiceImpl implements EmotionService {
         SortOperation sortOperation = Aggregation.sort(Sort.by(Sort.Order.asc("date")));
 
         Aggregation aggregation = Aggregation.newAggregation(
-                matchOperation,
-                lookupOperation,
-                firstGroupOperation,
-                secondGroupOperation,
-                projectionOperation,
-                sortOperation
+                                              matchOperation,
+                                              lookupOperation,
+                                              firstGroupOperation,
+                                              secondGroupOperation,
+                                              projectionOperation,
+                                              sortOperation
         );
 
         // 7. 집계 연산 수행

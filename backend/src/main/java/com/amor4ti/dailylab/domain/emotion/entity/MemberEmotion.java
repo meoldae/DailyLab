@@ -1,10 +1,12 @@
 package com.amor4ti.dailylab.domain.emotion.entity;
 
+import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionDetail;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -17,8 +19,14 @@ public class MemberEmotion {
     private String id;
 
     private Long memberId;
-    private int emotionId;
-    private String type;
-    private String timestamp;
     private String date;
+    private List<EmotionDetail> emotions;
+
+    public static MemberEmotion build(Long memberId, String date, List<EmotionDetail> emotions) {
+        return MemberEmotion.builder()
+                            .memberId(memberId)
+                            .date(date)
+                            .emotions(emotions)
+                            .build();
+    }
 }
