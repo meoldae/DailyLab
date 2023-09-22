@@ -17,6 +17,8 @@ clientsClaim();
 
 precacheAndRoute(self.__WB_MANIFEST);
 
+console.log("최상단");
+
 const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
 registerRoute(
   ({ request, url }) => {
