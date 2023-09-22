@@ -40,7 +40,6 @@ public class TodoReportServiceImpl implements TodoReportService {
 
         for (Todo todo : todayTodoList) {
             Optional<TodoReport> todoReport = todoReportRepository.findTodoReportByMemberIdAndCategoryId(memberId, todo.getCategory().getCategoryId());
-
             // 기존에 db에 존재하지 않는 todoReport인 경우
             if(todoReport.isEmpty()) {
                 TodoReport newTodoReport = TodoReport.builder()
@@ -66,6 +65,7 @@ public class TodoReportServiceImpl implements TodoReportService {
 
             // 이미 db에 존재하는 todoReport인 경우
             else {
+                System.out.println(todoReport.get().getTodoReportId());
                 // 이행 X Count 업데이트
                 if(todo.getCheckedDate() == null)
                     todoReport.get().updateFailCount();
