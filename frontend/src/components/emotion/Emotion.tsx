@@ -1,40 +1,27 @@
 import { useEffect, useState } from "react";
 
-interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
-    requestPermission?: () => Promise<'granted' | 'denied'>;
-}
-
 const Emotion = () => {
     const [alpha, setAlpha] = useState<number | null>(null);
     const [beta, setBeta] = useState<number | null>(null);
     const [gamma, setGamma] = useState<number | null>(null);
 
-    let requestPermissionFn: (() => Promise<'granted' | 'denied'>) | undefined;
-
-    if ('DeviceOrientationEvent' in window) {
-        requestPermissionFn = (DeviceOrientationEvent as unknown as DeviceOrientationEventiOS).requestPermission;
-    }
-
-    function requestOrientationPermission() {
-        if (requestPermissionFn) {
-            requestPermissionFn()
-                .then(response => {
-                    if (response === 'granted') {
-                        window.addEventListener('deviceorientation', (event) => {
-                            setAlpha(event.alpha);
-                            setBeta(event.beta);
-                            setGamma(event.gamma);
-                            console.log(`${event.alpha} : ${event.beta} : ${event.gamma}`);
-                        });
-                    }
-                })
-                .catch(console.error);
-        }
-    }
-
     useEffect(() => {
-        void requestOrientationPermission();
-    }, []);
+        const handleOrientationChange = (event: DeviceOrientationEvent) => {
+            setAlpha(event.alpha);
+            setBeta(event.beta);
+            setGamma(event.gamma);
+        }
+
+        if ('DeviceOrientationEvent' in window) {
+            window.addEventListener('deviceorientation', handleOrientationChange);
+        } else {
+            alert("이 브라우저에서는 기기 방향 이벤트를 지원하지 않습니다.");
+        }
+
+        return () => {
+            window.removeEventListener('deviceorientation', handleOrientationChange);
+        }
+    }, [])
 
     return (
         <div className="">
