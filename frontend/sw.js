@@ -11,7 +11,7 @@ import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import { StaleWhileRevalidate } from "workbox-strategies";
+import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
 
 console.log("javascript");
 
@@ -44,6 +44,8 @@ registerRoute(
     plugins: [new ExpirationPlugin({ maxEntries: 50 })],
   })
 );
+
+registerRoute(new RegExp("/oauth2/.*"), new NetworkOnly());
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
