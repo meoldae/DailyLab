@@ -21,7 +21,9 @@ ENV NODE_ENV=production
 
 COPY . .
 
-RUN vite build
+# RUN vite build
+
+RUN npm run build
 
 FROM nginx:1.21.3-alpine
 
