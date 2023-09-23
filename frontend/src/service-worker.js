@@ -53,6 +53,14 @@ self.addEventListener("message", event => {
 
 // Modified fetch event handler
 self.addEventListener("fetch", event => {
+  const checkurl = event.request.url;
+  console.log(checkurl);
+  // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
+  if (checkurl.includes("/oauth2")) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   // For other requests, follow the cache-then-network strategy
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
