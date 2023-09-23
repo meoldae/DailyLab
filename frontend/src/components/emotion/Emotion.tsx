@@ -1,52 +1,48 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react";
+
+interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
+    requestPermission?: () => Promise<'granted' | 'denied'>;
+}
 
 const Emotion = () => {
-    let lastAlpha: number | null = null
-    let lastBeta: number | null = null
-    let lastGamma: number | null = null
+    const [alpha, setAlpha] = useState<number | null>(null);
+    const [beta, setBeta] = useState<number | null>(null);
+    const [gamma, setGamma] = useState<number | null>(null);
 
-    function handleOrientation(event: DeviceOrientationEvent) {
-        const { alpha, beta, gamma } = event
-    
-        if (lastAlpha === null || lastBeta === null || lastGamma === null) {
-          lastAlpha = alpha
-          lastBeta = beta
-          lastGamma = gamma
-          return
+    let requestPermissionFn: (() => Promise<'granted' | 'denied'>) | undefined;
+
+    if ('DeviceOrientationEvent' in window) {
+        requestPermissionFn = (DeviceOrientationEvent as unknown as DeviceOrientationEventiOS).requestPermission;
+    }
+
+    function requestOrientationPermission() {
+        if (requestPermissionFn) {
+            requestPermissionFn()
+                .then(response => {
+                    if (response === 'granted') {
+                        window.addEventListener('deviceorientation', (event) => {
+                            setAlpha(event.alpha);
+                            setBeta(event.beta);
+                            setGamma(event.gamma);
+                            console.log(`${event.alpha} : ${event.beta} : ${event.gamma}`);
+                        });
+                    }
+                })
+                .catch(console.error);
         }
-    
-        if (alpha && beta && gamma) {
-          const alphaDiff = Math.abs(alpha - lastAlpha)
-          const betaDiff = Math.abs(beta - lastBeta)
-          const gammaDiff = Math.abs(gamma - lastGamma)
-    
-          if (betaDiff > 50 || gammaDiff > 50 || alphaDiff > 90) {
-            // 휴대전화가 흔들렸을 때 실행할 코드를 여기에 작성합니다.
-            navigator.vibrate([100, 100, 100, 100])
-            console.log("293874293874")
-          }
-        }
-    
-        lastAlpha = alpha
-        lastBeta = beta
-        lastGamma = gamma
-      }
+    }
 
     useEffect(() => {
-        window.addEventListener("deviceorientation", handleOrientation)
-    
-        return () => {
-          window.removeEventListener("deviceorientation", handleOrientation)
-        }
-      }, [])
-    
+        void requestOrientationPermission();
+    }, []);
+
     return (
         <div className="">
-            alpha : {lastAlpha}
-            gamma : {lastGamma}
-            beta : {lastBeta}
+            alpha : {alpha}
+            gamma : {gamma}
+            beta : {beta}
         </div>
-    )
-}
+    );
+};
 
 export default Emotion;
