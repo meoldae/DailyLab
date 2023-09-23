@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Matter from "matter-js";
 import { IChamfer } from 'matter-js';
 
-const GyroscopeExample: React.FC = () => {
+const Emotion = () => {
   useEffect(() => {
     const {
       Engine,
@@ -139,13 +139,10 @@ const GyroscopeExample: React.FC = () => {
     return () => {
       Matter.Render.stop(render);
       Matter.Runner.stop(runner);
-      if (typeof window !== "undefined") {
-        window.removeEventListener("deviceorientation", updateGravity);
-      }
     };
   }, []);
 
   return null;
 };
 
-export default GyroscopeExample;
+export default Emotion;
