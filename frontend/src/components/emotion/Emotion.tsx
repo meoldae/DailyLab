@@ -8,24 +8,24 @@ const Emotion = () => {
     function handleOrientation(event: DeviceOrientationEvent) {
         const { alpha, beta, gamma } = event
     
-        // if (lastAlpha === null || lastBeta === null || lastGamma === null) {
-        //   lastAlpha = alpha
-        //   lastBeta = beta
-        //   lastGamma = gamma
-        //   return
-        // }
+        if (lastAlpha === null || lastBeta === null || lastGamma === null) {
+          lastAlpha = alpha
+          lastBeta = beta
+          lastGamma = gamma
+          return
+        }
     
-        // if (alpha && beta && gamma) {
-        //   const alphaDiff = Math.abs(alpha - lastAlpha)
-        //   const betaDiff = Math.abs(beta - lastBeta)
-        //   const gammaDiff = Math.abs(gamma - lastGamma)
+        if (alpha && beta && gamma) {
+          const alphaDiff = Math.abs(alpha - lastAlpha)
+          const betaDiff = Math.abs(beta - lastBeta)
+          const gammaDiff = Math.abs(gamma - lastGamma)
     
-        //   if (betaDiff > 50 || gammaDiff > 50 || alphaDiff > 90) {
-        //     // 휴대전화가 흔들렸을 때 실행할 코드를 여기에 작성합니다.
-        //     navigator.vibrate([100, 100, 100, 100])
-        //     console.log("293874293874")
-        //   }
-        // }
+          if (betaDiff > 50 || gammaDiff > 50 || alphaDiff > 90) {
+            // 휴대전화가 흔들렸을 때 실행할 코드를 여기에 작성합니다.
+            navigator.vibrate([100, 100, 100, 100])
+            console.log("293874293874")
+          }
+        }
     
         lastAlpha = alpha
         lastBeta = beta
@@ -42,9 +42,9 @@ const Emotion = () => {
     
     return (
         <div className="">
-            {lastAlpha}
-            {lastGamma}
-            {lastBeta}
+            alpha : {lastAlpha}
+            gamma : {lastGamma}
+            beta : {lastBeta}
         </div>
     )
 }
