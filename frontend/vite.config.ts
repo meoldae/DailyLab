@@ -13,9 +13,6 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      workbox: {
-        swDest: "service-worker.js",
-      },
       manifest: {
         icons: [
           {
