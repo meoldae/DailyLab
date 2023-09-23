@@ -26,9 +26,6 @@ const SignUp = () => {
         const param = {memberId: id, gender: gender, birthDay: birth};
         await UpdateSignUp(param, ({data}) => {
             SetAccessToken(data.data as string);
-            // 첫 추천 TODOList 생성하는 API호출하기
-            getRecommendTodo();
-            navigate('/'); 
         }, (error) => {console.log(error)});
     };
 
