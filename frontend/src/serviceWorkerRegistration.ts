@@ -34,6 +34,7 @@ export function register(config?: Config) {
       return;
     }
 
+    console.log("OK");
     window.addEventListener("load", () => {
       const swUrl = `${import.meta.env.BASE_URL}sw.js`;
 
@@ -58,6 +59,7 @@ export function register(config?: Config) {
 }
 
 function registerValidSW(swUrl: string, config?: Config) {
+  console.log("valid");
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {

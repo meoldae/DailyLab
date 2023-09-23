@@ -57,7 +57,7 @@ self.addEventListener("message", event => {
 self.addEventListener("fetch", event => {
   const checkurl = event.request.url;
   console.log(checkurl);
-  // Directly fetch the request if it includes /img/404error.jpg or if it's an API request
+
   if (checkurl.includes("/oauth2")) {
     event.respondWith(fetch(event.request));
     return;
