@@ -29,7 +29,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=build /frontend/dist /usr/share/nginx/html
 
-COPY /frontend/src/service-worker.js /usr/share/nginx/html
+COPY /src/service-worker.js /usr/share/nginx/html
 
 EXPOSE 3001
 
