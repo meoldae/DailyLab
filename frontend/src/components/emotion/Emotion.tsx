@@ -25,9 +25,13 @@ const Emotion = () => {
 
     return (
         <div className="">
-            alpha : {alpha}
-            gamma : {gamma}
-            beta : {beta}
+            {alpha !== null && gamma !== null && beta !== null && (
+            <div>
+                alpha : {Math.floor(alpha)}
+                gamma : {Math.floor(gamma)}
+                beta : {Math.floor(beta)}
+            </div>
+            ) }
         </div>
     );
 };
