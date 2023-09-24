@@ -28,9 +28,33 @@ def makeTodo(member_id: int, db):
     if firstList:
         for remove in firstList:
             category_id = remove.category_id
-            resultList = resultList.drop(category_id)
+            resultList = resultList.drop(category_id-1)
 
+    resultList = afterListProcess(member_id, resultList, db)
     resultList = resultList.sort_values(ascending=False)
 
     return resultList
 
+def afterListProcess(member_id: int, resultList: list[int], db):
+    userBlackList = todoRepository.getBlacklist(member_id, db)
+    userWhiteList = todoRepository.getWhitelist(member_id, db)
+
+    allRemoveCategory = todoRepository.getAllRemoveCategory(db)
+
+    if userWhiteList:
+        for white in userWhiteList:
+            category_id = white.category_id
+            allRemoveCategory = allRemoveCategory.drop(category_id-1)
+
+    if userBlackList:
+        for black in userBlackList:
+            category_id = black.category_id
+            resultList = resultList.drop(category_id-1)
+
+    if allRemoveCategory:
+        for remove in allRemoveCategory:
+            category_id = remove.category_id
+            resultList = resultList.drop(category_id-1)
+
+
+    return resultList
