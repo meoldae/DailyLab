@@ -7,10 +7,11 @@ import "@/styles/common/fontImport.css";
 // PWA
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
+serviceWorkerRegistration.register();
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <RecoilRoot>
     <AppRouter />
   </RecoilRoot>
 )
 
-serviceWorkerRegistration.register();

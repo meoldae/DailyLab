@@ -9,14 +9,17 @@ export default defineConfig({
     react(),
     VitePWA({
       // swSrc: 'public/service-worker.js', 
-      srcDir: '/',
-      filename: 'service-worker.js',
-      registerType: "autoUpdate",
-      injectRegister: null,
-      devOptions: {
-        enabled: true,
-        type: "module",
-      },
+      // srcDir: '/',
+      // filename: 'service-worker.js',
+      // registerType: "autoUpdate",
+      // injectRegister: null,
+      // workbox : {
+      //   swDest: "service-worker.js"
+      // },
+      // devOptions: {
+      //   enabled: true,
+      //   type: "module",
+      // },
       manifest: {
         icons: [
           {
