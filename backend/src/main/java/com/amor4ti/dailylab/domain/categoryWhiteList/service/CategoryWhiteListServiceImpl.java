@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.categoryWhiteList.service;
 
 import com.amor4ti.dailylab.domain.category.repository.CategoryRepository;
+import com.amor4ti.dailylab.domain.categoryWhiteList.dto.response.CategoryWhiteListDto;
 import com.amor4ti.dailylab.domain.categoryWhiteList.repository.CategoryWhiteListRepository;
 import com.amor4ti.dailylab.domain.entity.category.Category;
 import com.amor4ti.dailylab.domain.entity.category.CategoryWhiteList;
@@ -8,12 +9,14 @@ import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.response.CommonResponse;
+import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,5 +50,12 @@ public class CategoryWhiteListServiceImpl implements CategoryWhiteListService {
             categoryWhiteListRepository.save(categoryWhiteList);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
+
+    @Override
+    public DataResponse getWhiteListByMemberId(Long memberId) {
+        List<CategoryWhiteListDto> whiteList = categoryWhiteListRepository.findCategoryWhiteListByMemberId(memberId);
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, whiteList);
     }
 }

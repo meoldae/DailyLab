@@ -13,9 +13,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.amor4ti.dailylab.domain.entity.QTodo.todo;
+
 public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
-    QTodo qtodo = QTodo.todo;
+    QTodo qtodo = todo;
     QCategoryBlackList qCategoryBlackList = QCategoryBlackList.categoryBlackList;
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -160,6 +162,18 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .fetchOne();
 
         return Optional.ofNullable(result);
+    }
+
+    @Override
+    public long countMemberTodoByMemberIdAndTodoDate(Long memberId, LocalDate todoDate) {
+
+        return jpaQueryFactory
+                .select(todo.count())
+                .from(todo)
+                .where(todo.member.memberId.eq(memberId)
+                        .and(todo.todoDate.eq(todoDate))
+                        .and(todo.isSystem.eq(false)))
+                .fetchCount();
     }
 
     // checkedDate가 null이면 false, 아니면 true

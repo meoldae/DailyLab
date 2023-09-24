@@ -16,12 +16,14 @@ public class TodoRegistDto {
     private Long categoryId;
     private String content;
     private LocalDate todoDate;
+    private boolean isSystem;
 
     @Builder
-    public TodoRegistDto(Long categoryId, String content, LocalDate todoDate) {
+    public TodoRegistDto(Long categoryId, String content, LocalDate todoDate, boolean isSystem) {
         this.categoryId = categoryId;
         this.content = content;
         this.todoDate = todoDate;
+        this.isSystem = isSystem;
     }
 
     public Todo toEntity(Member member, Category category) {
@@ -32,7 +34,7 @@ public class TodoRegistDto {
                 .content(this.content)
                 .todoDate(this.todoDate)
                 .checkedDate(null)
-                .isSystem(true)
+                .isSystem(this.isSystem)
                 .isDeleted(false)
                 .build();
     }
