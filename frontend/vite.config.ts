@@ -10,11 +10,9 @@ export default defineConfig({
     VitePWA({
       // srcDir: "src",
       // filename: "service-worker.js",
+      
       registerType: "autoUpdate",
       injectRegister: null,
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
-      },
       devOptions: {
         enabled: true,
         type: "module",
@@ -39,5 +37,13 @@ export default defineConfig({
   },
   define: {
     global: "window",
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: "./index.html",
+        sw: "./service-worker.js",
+      },
+    },
   },
 });
