@@ -11,7 +11,6 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        navigateFallbackDenylist : [/^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//,
