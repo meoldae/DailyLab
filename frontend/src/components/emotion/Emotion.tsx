@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import Matter from "matter-js";
-import { IChamfer } from 'matter-js';
+// import { IChamfer } from 'matter-js';
 
 const Emotion = () => {
   useEffect(() => {
+    navigator.vibrate(200000); 
+    
     const {
       Engine,
       Render,
@@ -12,8 +14,11 @@ const Emotion = () => {
       MouseConstraint,
       Mouse,
       Composite,
-      Bodies
+      Bodies,
+      Events 
     } = Matter;
+
+    let hasVibrated = false;
 
     // create engine
     const engine = Engine.create();
@@ -26,7 +31,8 @@ const Emotion = () => {
       options: {
         width: window.innerWidth,
         height: window.innerHeight,
-        showAngleIndicator: true
+        wireframes: false,
+        background: 'transparent'
       }
     });
 
@@ -38,49 +44,30 @@ const Emotion = () => {
 
     // add bodies
     const stack = Composites.stack(20, 20, 10, 5, 0, 0, (x: number, y: number) => {
-      const sides = Math.round(Math.random() * 7) + 1;
 
-      // round the edges of some bodies
-      let chamfer: IChamfer | undefined = undefined;
-      if (sides > 2 && Math.random() > 0.7) {
-        chamfer = {
-          radius: 10
-        };
-      }
-
-      switch (Math.round(Math.random())) {
-        case 0:
-          if (Math.random() < 0.8) {
-            return Bodies.rectangle(
-              x,
-              y,
-              Math.random() * 25 + 25,
-              Math.random() * 25 + 25,
-              { chamfer: chamfer }
-            );
-          } else {
-            return Bodies.rectangle(
-              x,
-              y,
-              Math.random() * 40 + 80,
-              Math.random() * 5 + 25,
-              { chamfer: chamfer }
-            );
-          }
-        case 1:
-          return Bodies.polygon(x, y, sides, Math.random() * 25 + 25, {
-            chamfer: chamfer
-          });
-        default:
-          return null;
-      }
+        const textureSize = 467;
+        const circleRadius = 40;
+        return Bodies.circle(
+            x,
+            y,
+            circleRadius,
+            {
+            render: {
+                sprite: {
+                    texture: "./assets/img/emotion/1.png",
+                    xScale: (circleRadius*2)/textureSize,
+                    yScale: (circleRadius*2)/textureSize,
+                },
+            },
+            }
+        );
     });
 
     Composite.add(world, stack);
-    Composite.add(world, Bodies.rectangle(400, 0, 800, 50, { isStatic: true }));
-    Composite.add(world, Bodies.rectangle(400, 600, 800, 50, { isStatic: true }));
-    Composite.add(world, Bodies.rectangle(800, 300, 50, 600, { isStatic: true }));
-    Composite.add(world, Bodies.rectangle(0, 300, 50, 600, { isStatic: true }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#ff0000'} }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth, window.innerHeight+130, 1000, 10, {isStatic: true, render: {fillStyle: '#535394'} }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
+    Composite.add(world, Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
 
 
     // add gyro control
@@ -94,17 +81,17 @@ const Emotion = () => {
 
         if(event.gamma !== null && event.beta !== null && event.beta !== null){
             if (orientation === 0) {
-              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(event.beta, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(event.beta, -90), 90) / 40;
             } else if (orientation === 180) {
-              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 40;
             } else if (orientation === 90) {
-              gravity.x = Math.min(Math.max(event.beta, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(event.beta, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 40;
             } else if (orientation === -90) {
-              gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 40;
             }
         }
       };
@@ -135,14 +122,35 @@ const Emotion = () => {
       max: { x: 800, y: 600 }
     });
 
+    // Add an event handler for collision
+    Events.on(engine, 'collisionStart', (event) => {
+    // Iterate through all pairs of collision events
+    event.pairs.forEach((pair) => {
+        // Check if one of the bodies is a circle and the other is a rectangle
+        if (
+        (pair.bodyA.label === 'Circle Body' && pair.bodyB.label === 'Rectangle Body') ||
+        (pair.bodyA.label === 'Rectangle Body' && pair.bodyB.label === 'Circle Body')
+        ) {
+        // Check if vibration has not been triggered yet
+        if (!hasVibrated) {
+            // Trigger vibration
+            console.log("vib")
+            navigator.vibrate(100); // Vibrate for 100ms (adjust as needed)
+            hasVibrated = true; // Set flag to true to prevent repeated vibration
+        }
+        }
+    });
+    });
+
     // Clean up the engine and renderer when component unmounts
     return () => {
       Matter.Render.stop(render);
       Matter.Runner.stop(runner);
     };
+    
   }, []);
 
-  return null;
+  return null
 };
 
 export default Emotion;
