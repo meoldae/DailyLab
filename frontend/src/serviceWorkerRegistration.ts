@@ -68,6 +68,12 @@ function registerValidSW(swUrl: string, config?: Config) {
     .then((registration) => {
       console.log("then 안으로 진입")
       registration.onupdatefound = () => {
+        if (registration.waiting) {
+          registration.waiting.postMessage({ type: 'SKIP_WATING'});
+        } else {
+          window.location.reload();
+        }
+
         const installingWorker = registration.installing;
         if (installingWorker == null) {
           return;
