@@ -35,12 +35,12 @@ export default defineConfig({
   define: {
     global: "window",
   },
-  build: {
-    rollupOptions: {
-      input: {
-        main: 'src/App.tsx', 
-        sw: 'public/service-worker.js',  
-      }
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     input: {
+  //       main: 'src/App.tsx', 
+  //       sw: 'public/service-worker.js',  
+  //     }
+  //   },
+  // },
 });
