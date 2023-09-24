@@ -1,9 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EmotionMatter from "./EmotionMatter";
 import { getEmotionList } from "@/api/Emotion";
 import { EmotionType } from "@/type/EmotionType";
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const Emotion = () => {
+    const playerRef = useRef(Player);
+    const handlePlay = () => playerRef.current.play();
+//  const handleStop = () => playerRef.current.stop();
+    const handlePause = () => playerRef.current.pause();
+
     const [circleCount, setCircleCount] = useState(0);
     const [emotionNo, setEmotionNo] = useState(1); // 이 부분에 emotionNo를 추가하고 초기값을 설정합니다.
     const [emotionName, setEmotionName] = useState(""); // 이 부분에 emotionNo를 추가하고 초기값을 설정합니다.
@@ -19,6 +25,10 @@ const Emotion = () => {
       setEmotionName(name);
       setEmotionType(type);
       void handleButtonClick();
+      handlePlay();
+      setTimeout(() => {
+        handlePause(); // 1초 뒤에 handlePause 실행
+      }, 300); 
     };
 
     const getList = async () => {
@@ -35,6 +45,15 @@ const Emotion = () => {
     return (
       <div className="">
         <div className="absolute top-[100px] left-[calc(50%-150px)] h-[230px]">
+            {/* lottie 시험하기 */}
+            <Player
+            src="./assets/lottie/sample.json"
+            className="players"
+            // loop
+            // autoplay
+            style={{ height: '200px', width: '300px' }}
+            ref={playerRef}
+            />
             <div className="text-center font-semibold text-3xl">
                 {circleCount === 0 ? (
                     <p className="mb-24 w-[300px] h-[40px]">오늘은 어떤 기분이신가요?</p>
