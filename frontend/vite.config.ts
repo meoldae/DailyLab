@@ -12,7 +12,7 @@ export default defineConfig({
       // srcDir: '/',
       // filename: 'service-worker.js',
       // registerType: "autoUpdate",
-      injectRegister: null,
+      // injectRegister: null,
       // workbox : {
       //   swDest: "service-worker.js"
       // },
