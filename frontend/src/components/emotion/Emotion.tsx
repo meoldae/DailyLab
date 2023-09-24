@@ -1,156 +1,55 @@
-import { useEffect } from "react";
-import Matter from "matter-js";
-// import { IChamfer } from 'matter-js';
+import { useEffect, useState } from "react";
+import EmotionMatter from "./EmotionMatter";
+import { getEmotionList } from "@/api/Emotion";
+import { EmotionType } from "@/type/EmotionType";
 
 const Emotion = () => {
-  useEffect(() => {
-    navigator.vibrate(200000); 
+    const [circleCount, setCircleCount] = useState(0);
+    const [emotionNo, setEmotionNo] = useState(1); // 이 부분에 emotionNo를 추가하고 초기값을 설정합니다.
+    const [emotionList, setEmotionList] = useState<EmotionType[]>([]);
     
-    const {
-      Engine,
-      Render,
-      Runner,
-      Composites,
-      MouseConstraint,
-      Mouse,
-      Composite,
-      Bodies,
-      Events 
-    } = Matter;
-
-    let hasVibrated = false;
-
-    // create engine
-    const engine = Engine.create();
-    const world = engine.world;
-
-    // create renderer
-    const render = Render.create({
-      element: document.body,
-      engine: engine,
-      options: {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        wireframes: false,
-        background: 'transparent'
-      }
-    });
-
-    Render.run(render);
-
-    // create runner
-    const runner = Runner.create();
-    Runner.run(runner, engine);
-
-    // add bodies
-    const stack = Composites.stack(20, 20, 10, 5, 0, 0, (x: number, y: number) => {
-
-        const textureSize = 467;
-        const circleRadius = 40;
-        return Bodies.circle(
-            x,
-            y,
-            circleRadius,
-            {
-            render: {
-                sprite: {
-                    texture: "./assets/img/emotion/1.png",
-                    xScale: (circleRadius*2)/textureSize,
-                    yScale: (circleRadius*2)/textureSize,
-                },
-            },
-            }
-        );
-    });
-
-    Composite.add(world, stack);
-    Composite.add(world, Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#ff0000'} }));
-    Composite.add(world, Bodies.rectangle(window.innerWidth, window.innerHeight+130, 1000, 10, {isStatic: true, render: {fillStyle: '#535394'} }));
-    Composite.add(world, Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
-    Composite.add(world, Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
-
-
-    // add gyro control
-    if (typeof window !== "undefined") {
-      const updateGravity = (event: DeviceOrientationEvent) => {
-        const orientation =
-          typeof window.orientation !== "undefined"
-            ? window.orientation
-            : 0;
-        const gravity = engine.world.gravity;
-
-        if(event.gamma !== null && event.beta !== null && event.beta !== null){
-            if (orientation === 0) {
-              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
-              gravity.y = Math.min(Math.max(event.beta, -90), 90) / 40;
-            } else if (orientation === 180) {
-              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
-              gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 40;
-            } else if (orientation === 90) {
-              gravity.x = Math.min(Math.max(event.beta, -90), 90) / 40;
-              gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 40;
-            } else if (orientation === -90) {
-              gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 40;
-              gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 40;
-            }
-        }
-      };
-
-      window.addEventListener("deviceorientation", updateGravity);
-    }
-
-    // add mouse control
-    const mouse = Mouse.create(render.canvas);
-    const mouseConstraint = MouseConstraint.create(engine, {
-      mouse: mouse,
-      constraint: {
-        stiffness: 0.2,
-        render: {
-          visible: false
-        }
-      }
-    });
-
-    Composite.add(world, mouseConstraint);
-
-    // keep the mouse in sync with rendering
-    render.mouse = mouse;
-
-    // fit the render viewport to the scene
-    Render.lookAt(render, {
-      min: { x: 0, y: 0 },
-      max: { x: 800, y: 600 }
-    });
-
-    // Add an event handler for collision
-    Events.on(engine, 'collisionStart', (event) => {
-    // Iterate through all pairs of collision events
-    event.pairs.forEach((pair) => {
-        // Check if one of the bodies is a circle and the other is a rectangle
-        if (
-        (pair.bodyA.label === 'Circle Body' && pair.bodyB.label === 'Rectangle Body') ||
-        (pair.bodyA.label === 'Rectangle Body' && pair.bodyB.label === 'Circle Body')
-        ) {
-        // Check if vibration has not been triggered yet
-        if (!hasVibrated) {
-            // Trigger vibration
-            console.log("vib")
-            navigator.vibrate(100); // Vibrate for 100ms (adjust as needed)
-            hasVibrated = true; // Set flag to true to prevent repeated vibration
-        }
-        }
-    });
-    });
-
-    // Clean up the engine and renderer when component unmounts
-    return () => {
-      Matter.Render.stop(render);
-      Matter.Runner.stop(runner);
+    const handleButtonClick = () => {
+      setCircleCount(prevCount => prevCount + 1);
     };
-    
-  }, []);
+  
+    const onEmotionClick = (emoId: number) => {
+      setEmotionNo(emoId); // 버튼 클릭 시 emotionNo를 변경합니다.
+      void handleButtonClick();
+    };
 
-  return null
-};
+    const getList = async () => {
+        await getEmotionList(({data}) => {
+            console.log(data)
+            setEmotionList(data.data as EmotionType[])
+        }, (error) => {console.log(error)});
+    };
 
-export default Emotion;
+    useEffect(() => {
+        void getList();
+    }, []);
+  
+    return (
+      <div className="">
+        <div className="absolute top-[150px] left-[calc(50%-160px)]">
+        <div className="text-center font-semibold text-3xl">
+            <p className="mb-24">감정을 알려주세요!</p>
+            <div className="relative mb-[300px]">
+                <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src="./assets/img/character/cloe_noface.png" alt="클로에" />
+                <img className="absolute left-1/2 transform mt-[20px] -translate-x-1/2 w-[100px]" src={`./assets/img/emotion/face/${emotionNo}.png`} alt="표정" />
+            </div>
+        </div>
+            <div className="w-[320px] m-auto bg_contents_con p-[15px] child-[button]:w-[30px] child-[button]:m-2">
+                {emotionList.length > 0 && emotionList.map((emo, index) => (
+                <button className="transition-transform duration-300 ease-in-out active:scale-125" key={index} onClick={() => {onEmotionClick(emo.emotionId)}}>
+                    <img src={`./assets/img/emotion/${emo.emotionId}.png`} alt={emo.name} />
+                </button>
+                ))}
+            </div>
+        </div>
+        <EmotionMatter circleCount={circleCount} emotionNo={emotionNo} />
+      </div>
+    );
+  };
+  
+  export default Emotion;
+  
