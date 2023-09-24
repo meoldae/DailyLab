@@ -5,10 +5,10 @@ import { EmotionType } from "@/type/EmotionType";
 import { Player } from '@lottiefiles/react-lottie-player';
 
 const Emotion = () => {
-    const playerRef = useRef(Player);
-    const handlePlay = () => playerRef.current.play();
+    const playerRef = useRef<Player | null>(null);
+    const handlePlay = () => playerRef.current?.play();
 //  const handleStop = () => playerRef.current.stop();
-    const handlePause = () => playerRef.current.pause();
+    const handlePause = () => playerRef.current?.pause();
 
     const [circleCount, setCircleCount] = useState(0);
     const [emotionNo, setEmotionNo] = useState(1); // 이 부분에 emotionNo를 추가하고 초기값을 설정합니다.
