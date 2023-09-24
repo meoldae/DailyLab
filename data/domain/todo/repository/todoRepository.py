@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from mysql import models, schemas
+from mysql import models
 from datetime import datetime, timedelta
 
 def getUserTodo(member_id: int, db: Session):
@@ -7,19 +7,20 @@ def getUserTodo(member_id: int, db: Session):
     .filter(models.todo.todo_date == datetime.now().date() + timedelta(days=1)) \
     .all()
 
-    if not todoList:
-         return 0
-    else : return todoList
+    if not todoList: return 0
+    else: return todoList
+
 
 def getWhitelist(member_id: int, db: Session):
-    whitelist = db.query(models.category_whitelist).filter(models.category_whitelist.member_id == member_id).all()
+    whitelist = db.query(models.category_white_list).filter(models.category_white_list.member_id == member_id).all()
 
     if not whitelist:
         return 0
     else : return whitelist
 
 def getBlacklist(member_id: int, db: Session):
-    blacklist = db.query(models.category_blacklist).filter(models.category_blacklist.member_id == member_id).all()
+    blacklist = (db.query(models.category_black_list).filter(models.category_black_list.member_id == member_id)
+                 .filter(models.category_black_list.is_remove == 1).all())
 
     if not blacklist:
         return 0
@@ -31,9 +32,11 @@ def getRecommendedList(member_id: int, db: Session):
     .filter(models.todo_report.last_recommend_date >= datetime.now().date()-timedelta(days=7))\
     .all()
 
-    print(member_id)
-    print(recommendedList)
-
     if not recommendedList:
         return 0
     else : return recommendedList
+
+def getAllRemoveCategory(db: Session):
+    removeCategory = db.query(models.category_dict).filter(models.category_dict.recommendation_fit == 0).all()
+
+    return removeCategory
