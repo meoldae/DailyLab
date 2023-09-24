@@ -11,14 +11,14 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\/authorization\/(naver|kakako|google)$/,
-            handler: "NetworkOnly",
-            options: {
-              cacheName: "oauth2-cache",
-            },
-          }]
+        // runtimeCaching: [
+        //   {
+        //     urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\/authorization\/(naver|kakao|google)$/,
+        //     handler: "NetworkOnly",
+        //     options: {
+        //       cacheName: "oauth2-cache",
+        //     },
+        //   }]
       },
       devOptions: {
         enabled: true,
