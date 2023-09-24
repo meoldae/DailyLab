@@ -47,7 +47,7 @@ export default defineConfig({
    build: {
     rollupOptions: {
       input: {
-        main: "src/App.tsx",
+        main: "./index.html",
         sw: "public/service-worker.js",
       },
     },
