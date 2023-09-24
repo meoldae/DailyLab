@@ -6,9 +6,7 @@ export default function AppInfo() {
     return (
         <>
             <Header />
-            <div className="contents_wrap">
-                <Emotion/>
-            </div>
+            <Emotion/>
             <Footer />
         </>
     )
