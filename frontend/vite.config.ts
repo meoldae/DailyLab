@@ -28,7 +28,9 @@ export default defineConfig({
         type: "module",
       },
       injectManifest: {
-        swSrc: 'src/service-worker.js',
+        swSrc: './service-worker.js',
+        swDest: 'customServiceWorker.js',
+        // swSrc: 'src/service-worker.js',
         injectionPoint: undefined
       },
       manifest: {
