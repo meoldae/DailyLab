@@ -8,9 +8,6 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // srcDir: "src",
-      // filename: "service-worker.js",
-      
       registerType: "autoUpdate",
       injectRegister: null,
       devOptions: {
