@@ -13,7 +13,7 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\/authorization\/(naver|kakako|google)$/
+            urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\/authorization\/(naver|kakako|google)$/,
             handler: "NetworkOnly",
             options: {
               cacheName: "oauth2-cache",
