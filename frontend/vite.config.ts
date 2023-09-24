@@ -9,8 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: null,
-      swSrc: "./service-worker.js",
+      injectRegister: "script",
       devOptions: {
         enabled: true,
       },
