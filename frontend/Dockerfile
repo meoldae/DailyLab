@@ -13,7 +13,7 @@ RUN npm install -g typescript vite
 
 RUN npm install @vitejs/plugin-react-swc
 
-ENV NODE_ENV=development
+# ENV NODE_ENV=development
 
 RUN npm install
 
@@ -22,6 +22,8 @@ ENV NODE_ENV=production
 COPY . .
 
 RUN vite build
+
+# RUN npm run build
 
 FROM nginx:1.21.3-alpine
 

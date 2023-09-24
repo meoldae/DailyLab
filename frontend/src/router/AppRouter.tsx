@@ -12,11 +12,12 @@ import AppSignUp from "@/pages/AppSignUp";
 import AppRedirect from "@/pages/AppRedirect";
 import AppNotFound from "@/error/AppNotFound";
 import AppLoading from "@/pages/AppLoading";
-//import { SetAccessToken } from "@/atom/UserAtom";
+import AppEmotion from "@/pages/AppEmotion";
+// import { SetAccessToken } from "@/atom/UserAtom";
 
 const AppRouter = () => {
     SetModeToHtml();
-    //SetAccessToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwicHJvdmlkZXIiOiJrYWthbyIsImV4cCI6MTY5NTI1NzI0NSwiaWF0IjoxNjk1MTcwODQ1LCJtZW1iZXJJZCI6IjIifQ.nkHoxGGugVdkGxo-v2Am3d0RaUgplyI7AXiX1TScY5a_5k8WdcBUBkIFRQ87RIl-DP5gKsxRpJFQ7ge-0H-4Zg");
+    // SetAccessToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwicHJvdmlkZXIiOiJrYWthbyIsImV4cCI6MTY5NTQ0NTg0OCwiaWF0IjoxNjk1MzU5NDQ4LCJtZW1iZXJJZCI6IjExIn0.2RQZ3MCePhJYcMtqR6b0OdgWslbPU7d6gCFs5zr626C2i60adFtPAHrJb8WUKUDcGQAGonMQO2DTCEdh3jhnFw");
 
     return (
         <BrowserRouter>
@@ -36,6 +37,7 @@ const AppRouter = () => {
                 <Route path="/intro" element={<AppIntro />} />
                 <Route path="/memberInfo" element={<AppSignUp />} />
                 <Route path="/*" element={<AppNotFound/>}/>
+                <Route path="/emotion" element={<AppEmotion/>}/>
             </Routes>
         </BrowserRouter>
     )
