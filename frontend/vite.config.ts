@@ -13,10 +13,8 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => {
-              return url.pathname.includes("/oauth2");
-            },
-            handler: "NetworkFirst" as const,
+            urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//,
+            handler: "NetworkFirst",
             options: {
               cacheName: "oauth2-cache",
             },
