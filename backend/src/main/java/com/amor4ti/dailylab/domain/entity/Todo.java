@@ -58,4 +58,8 @@ public class Todo {
         else
             this.checkedDate = null;
     }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
 }

@@ -243,4 +243,17 @@ public class MemberServiceImpl implements MemberService {
 	public List getProceedMemberList(LocalDate date) {
 		return memberStatusRepository.findMemberIdListByDateAndStatus(date, "proceed");
 	}
+
+	@Transactional
+	@Override
+	public CommonResponse exitMember(Long memberId) {
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+
+		findMember.exitMember();
+		memberRepository.save(findMember);
+
+		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+	}
 }

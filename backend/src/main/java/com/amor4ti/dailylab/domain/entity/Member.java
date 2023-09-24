@@ -45,6 +45,7 @@ public class Member {
 		this.email = email;
 		this.username = username;
 		this.provider = provider;
+		this.mbtiId = 1L;
 	}
 
 	@PrePersist
@@ -81,5 +82,9 @@ public class Member {
 		if (updateMemberDto.getJob() != null) this.job = updateMemberDto.getJob();
 		if (updateMemberDto.getGoal() != null) this.goal = updateMemberDto.getGoal();
 		if (updateMemberDto.getReligion() != null) this.religion = updateMemberDto.getReligion();
+	}
+
+	public void exitMember() {
+		this.exitDate = LocalDateTime.now();
 	}
 }

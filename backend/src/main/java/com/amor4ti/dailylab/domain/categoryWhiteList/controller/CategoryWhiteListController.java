@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.categoryWhiteList.controller;
 
 import com.amor4ti.dailylab.domain.categoryWhiteList.service.CategoryWhiteListService;
 import com.amor4ti.dailylab.global.response.CommonResponse;
+import com.amor4ti.dailylab.global.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,5 +19,12 @@ public class CategoryWhiteListController {
         Long memberId = Long.parseLong(authentication.getName());
 
         return categoryWhiteListService.regist(categoryId, memberId);
+    }
+
+    @GetMapping("")
+    public DataResponse getWhiteListByMemberId(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return categoryWhiteListService.getWhiteListByMemberId(memberId);
     }
 }

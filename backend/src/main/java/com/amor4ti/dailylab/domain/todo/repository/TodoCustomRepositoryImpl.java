@@ -1,10 +1,9 @@
 package com.amor4ti.dailylab.domain.todo.repository;
 
-import com.amor4ti.dailylab.domain.entity.QTodo;
 import com.amor4ti.dailylab.domain.entity.Todo;
-import com.amor4ti.dailylab.domain.entity.category.QCategoryBlackList;
 import com.amor4ti.dailylab.domain.todo.dto.response.*;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -13,10 +12,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public class TodoCustomRepositoryImpl implements TodoCustomRepository {
+import static com.amor4ti.dailylab.domain.entity.QTodo.todo;
+import static com.amor4ti.dailylab.domain.entity.category.QCategoryBlackList.categoryBlackList;
 
-    QTodo qtodo = QTodo.todo;
-    QCategoryBlackList qCategoryBlackList = QCategoryBlackList.categoryBlackList;
+public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -26,12 +25,12 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
     private List<Long> fetchBlackListCategoryIdList(Long memberId) {
         return jpaQueryFactory
-                .select(qCategoryBlackList.id.categoryId)
-                .from(qCategoryBlackList)
+                .select(categoryBlackList.id.categoryId)
+                .from(categoryBlackList)
 
                 // isRemove가 false이면서 블랙리스트 주인이 맞는경우 blacklist의 categoryId에 한해서
-                .where(qCategoryBlackList.isRemove.eq(false)
-                        .and(qCategoryBlackList.id.memberId.eq(memberId)))
+                .where(categoryBlackListIsRemoveEquals(false)
+                        .and(categoryBlackListMemberIdEquals(memberId)))
                 .fetch();
     }
 
@@ -40,10 +39,10 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
         List<Long> blackListCategoryIdList = fetchBlackListCategoryIdList(memberId);
 
         return jpaQueryFactory
-                .selectFrom(qtodo)
-                .where(qtodo.member.memberId.eq(memberId)
-                        .and(qtodo.todoDate.eq(todoDate))
-                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .selectFrom(todo)
+                .where(memberIdEquals(memberId)
+                        .and(todoDateEquals(todoDate))
+                        .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
 
@@ -53,14 +52,14 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
         return jpaQueryFactory
                 .select(new QTodoSmallDto(
-                        qtodo.todoId,
-                        qtodo.content,
+                        todo.todoId,
+                        todo.content,
                         checkedExpression
                 ))
-                .from(qtodo)
-                .where(qtodo.member.memberId.eq(memberId)
-                        .and(qtodo.todoDate.eq(todoDate))
-                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .from(todo)
+                .where(memberIdEquals(memberId)
+                        .and(todoDateEquals(todoDate))
+                        .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
 
@@ -70,23 +69,23 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
         return jpaQueryFactory
                 .select(new QTodoDto(
-                        qtodo.todoId,
-                        qtodo.content,
-                        qtodo.category.categoryId,
-                        qtodo.category.large,
-                        qtodo.category.medium,
-                        qtodo.category.small,
-                        qtodo.todoDate,
-                        qtodo.checkedDate,
+                        todo.todoId,
+                        todo.content,
+                        todo.category.categoryId,
+                        todo.category.large,
+                        todo.category.medium,
+                        todo.category.small,
+                        todo.todoDate,
+                        todo.checkedDate,
                         checkedExpression,
-                        qtodo.isSystem,
-                        qtodo.isDeleted,
-                        qtodo.member.memberId,
-                        qtodo.member.username))
-                .from(qtodo)
-                .where(qtodo.member.memberId.eq(memberId)
-                        .and(qtodo.todoDate.eq(todoDate))
-                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                        todo.isSystem,
+                        todo.isDeleted,
+                        todo.member.memberId,
+                        todo.member.username))
+                .from(todo)
+                .where(memberIdEquals(memberId)
+                        .and(todoDateEquals(todoDate))
+                        .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
 
@@ -95,10 +94,10 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
         List<Long> blackListCategoryIdList = fetchBlackListCategoryIdList(memberId);
 
         return Optional.ofNullable(jpaQueryFactory
-                .selectFrom(qtodo)
-                .where(qtodo.member.memberId.eq(memberId)
-                        .and(qtodo.category.categoryId.eq(categoryId))
-                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .selectFrom(todo)
+                .where(memberIdEquals(memberId)
+                        .and(categoryIdEquals(categoryId))
+                        .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetchOne());
     }
 
@@ -107,11 +106,11 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
         List<Long> blackListCategoryIdList = fetchBlackListCategoryIdList(memberId);
 
         return Optional.ofNullable(jpaQueryFactory
-                .selectFrom(qtodo)
-                .where(qtodo.member.memberId.eq(memberId)
-                        .and(qtodo.category.categoryId.eq(categoryId))
-                        .and(qtodo.todoDate.eq(todoDate))
-                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .selectFrom(todo)
+                .where(todo.member.memberId.eq(memberId)
+                        .and(categoryIdEquals(categoryId))
+                        .and(todoDateEquals(todoDate))
+                        .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetchOne());
     }
 
@@ -121,23 +120,23 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
         return jpaQueryFactory
                 .select(new QTodoDto(
-                                    qtodo.todoId,
-                                    qtodo.content,
-                                    qtodo.category.categoryId,
-                                    qtodo.category.large,
-                                    qtodo.category.medium,
-                                    qtodo.category.small,
-                                    qtodo.todoDate,
-                                    qtodo.checkedDate,
-                                    checkedExpression,
-                                    qtodo.isSystem,
-                                    qtodo.isDeleted,
-                                    qtodo.member.memberId,
-                                    qtodo.member.username
+                        todo.todoId,
+                        todo.content,
+                        todo.category.categoryId,
+                        todo.category.large,
+                        todo.category.medium,
+                        todo.category.small,
+                        todo.todoDate,
+                        todo.checkedDate,
+                        checkedExpression,
+                        todo.isSystem,
+                        todo.isDeleted,
+                        todo.member.memberId,
+                        todo.member.username
                                 ))
-                .from(qtodo)
-                .where(qtodo.member.memberId.eq(memberId)
-                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .from(todo)
+                .where(memberIdEquals(memberId)
+                        .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
 
@@ -147,23 +146,75 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
         TodoRecommendedDto result = jpaQueryFactory
                 .select(new QTodoRecommendedDto(
-                        qtodo.category.categoryId,
-                        qtodo.category.large,
-                        qtodo.category.medium,
-                        qtodo.category.small,
+                        todo.category.categoryId,
+                        todo.category.large,
+                        todo.category.medium,
+                        todo.category.small,
                         checkedExpression
 
                 ))
-                .from(qtodo)
-                .where(qtodo.todoId.eq(todoId)
-                        .and(qtodo.category.categoryId.notIn(blackListCategoryIdList)))
+                .from(todo)
+                .where(todoIdEquals(todoId)
+                        .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetchOne();
 
         return Optional.ofNullable(result);
     }
 
+    @Override
+    public long countMemberTodoByMemberIdAndTodoDate(Long memberId, LocalDate todoDate) {
+
+        return jpaQueryFactory
+                .select(todo.count())
+                .from(todo)
+                .where(memberIdEquals(memberId)
+                        .and(todoDateEquals(todoDate))
+                        .and(isSystemEquals(false)))
+                .fetchCount();
+    }
+
     // checkedDate가 null이면 false, 아니면 true
     Expression<Boolean> checkedExpression = new CaseBuilder()
-            .when(qtodo.checkedDate.isNull()).then(false)
+            .when(todo.checkedDate.isNull()).then(false)
             .otherwise(true);
+
+    /*
+    * where문 공통 코드
+    * */
+    private BooleanExpression notInBlackListCategory(List<Long> blackListCategoryIdList) {
+
+        return todo.category.categoryId.notIn(blackListCategoryIdList);
+    }
+
+    private BooleanExpression todoDateEquals(LocalDate todoDate) {
+
+        return todo.todoDate.eq(todoDate);
+    }
+
+    private BooleanExpression memberIdEquals(Long memberId) {
+
+        return todo.member.memberId.eq(memberId);
+    }
+
+    private BooleanExpression todoIdEquals(Long todoId) {
+
+        return todo.todoId.eq(todoId);
+    }
+
+    private BooleanExpression isSystemEquals(Boolean isSystem) {
+
+        return todo.isSystem.eq(isSystem);
+    }
+
+    private BooleanExpression categoryIdEquals(Long categoryId) {
+        return todo.category.categoryId.eq(categoryId);
+    }
+
+    private BooleanExpression categoryBlackListIsRemoveEquals(Boolean isRemove) {
+        return categoryBlackList.isRemove.eq(isRemove);
+    }
+
+    private BooleanExpression categoryBlackListMemberIdEquals(Long memberId) {
+        return categoryBlackList.id.memberId.eq(memberId);
+    }
 }

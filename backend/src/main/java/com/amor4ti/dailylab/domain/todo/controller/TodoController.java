@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.todo.controller;
 
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.domain.todo.service.TodoService;
@@ -56,7 +57,7 @@ public class TodoController {
         return todoService.registTodo(todoRegistDto, memberId);
     }
 
-    @DeleteMapping("/delete")
+    @PutMapping("/delete")
         public CommonResponse deleteTodo(@RequestBody Map<String, List<Long>> todoIdList, Authentication authentication) {
             Long memberId = Long.parseLong(authentication.getName());
 
@@ -68,6 +69,13 @@ public class TodoController {
         Long memberId = Long.parseLong(authentication.getName());
 
         return todoService.changeCheckTodo(memberId, todoCheckUpdateDto);
+    }
+
+    @PutMapping("/change/content")
+    public CommonResponse changeTodoContent(@RequestBody TodoContentUpdateDto todoContentUpdateDto, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return todoService.changeTodoContent(todoContentUpdateDto, memberId);
     }
 
     @GetMapping("/recommend/{todoDate}")
