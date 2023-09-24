@@ -121,7 +121,7 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
     // Composite.add(world, Matter.Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
     Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#0000000'} }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+160, 1000, 10, {isStatic: true, render: {fillStyle: '#0000000'} }));
+    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+170, 1000, 10, {isStatic: true, render: {fillStyle: '#0000000'} }));
     Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0000000'}  }));
     Composite.add(world, Matter.Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0000000'}  }));
   
