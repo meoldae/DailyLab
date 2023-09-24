@@ -12,14 +12,17 @@ export default defineConfig({
       // srcDir: '/',
       // filename: 'service-worker.js',
       // registerType: "autoUpdate",
-      // injectRegister: null,
+      injectRegister: null,
       // workbox : {
       //   swDest: "service-worker.js"
       // },
-      // devOptions: {
-      //   enabled: true,
-      //   type: "module",
-      // },
+      devOptions: {
+        enabled: true,
+        type: "module",
+      },
+      injectManifest: {
+        injectionPoint: undefined
+      },
       manifest: {
         icons: [
           {
