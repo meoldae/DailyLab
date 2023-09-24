@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Matter from "matter-js";
-import { IChamfer } from 'matter-js';
+// import { IChamfer } from 'matter-js';
 
 const Emotion = () => {
   useEffect(() => {
@@ -26,7 +26,8 @@ const Emotion = () => {
       options: {
         width: window.innerWidth,
         height: window.innerHeight,
-        showAngleIndicator: true
+        wireframes: false,
+        background: 'transparent'
       }
     });
 
@@ -38,49 +39,30 @@ const Emotion = () => {
 
     // add bodies
     const stack = Composites.stack(20, 20, 10, 5, 0, 0, (x: number, y: number) => {
-      const sides = Math.round(Math.random() * 7) + 1;
 
-      // round the edges of some bodies
-      let chamfer: IChamfer | undefined = undefined;
-      if (sides > 2 && Math.random() > 0.7) {
-        chamfer = {
-          radius: 10
-        };
-      }
-
-      switch (Math.round(Math.random())) {
-        case 0:
-          if (Math.random() < 0.8) {
-            return Bodies.rectangle(
-              x,
-              y,
-              Math.random() * 25 + 25,
-              Math.random() * 25 + 25,
-              { chamfer: chamfer }
-            );
-          } else {
-            return Bodies.rectangle(
-              x,
-              y,
-              Math.random() * 40 + 80,
-              Math.random() * 5 + 25,
-              { chamfer: chamfer }
-            );
-          }
-        case 1:
-          return Bodies.polygon(x, y, sides, Math.random() * 25 + 25, {
-            chamfer: chamfer
-          });
-        default:
-          return null;
-      }
+        const textureSize = 467;
+        const circleRadius = 40;
+        return Bodies.circle(
+            x,
+            y,
+            circleRadius,
+            {
+            render: {
+                sprite: {
+                    texture: "./assets/img/emotion/1.png",
+                    xScale: (circleRadius*2)/textureSize,
+                    yScale: (circleRadius*2)/textureSize,
+                },
+            },
+            }
+        );
     });
 
     Composite.add(world, stack);
-    Composite.add(world, Bodies.rectangle(400, 0, 800, 50, { isStatic: true }));
-    Composite.add(world, Bodies.rectangle(400, 600, 800, 50, { isStatic: true }));
-    Composite.add(world, Bodies.rectangle(800, 300, 50, 600, { isStatic: true }));
-    Composite.add(world, Bodies.rectangle(0, 300, 50, 600, { isStatic: true }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#ff00000'} }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth, window.innerHeight+80, 1000, 10, {isStatic: true, render: {fillStyle: '#bbff000'} }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff0'}  }));
+    Composite.add(world, Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff0'}  }));
 
 
     // add gyro control
@@ -142,7 +124,7 @@ const Emotion = () => {
     };
   }, []);
 
-  return null;
+  return null
 };
 
 export default Emotion;
