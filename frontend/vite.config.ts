@@ -14,7 +14,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//,
-            handler: "NetworkFirst",
+            handler: "NetworkOnly",
             options: {
               cacheName: "oauth2-cache",
             },
