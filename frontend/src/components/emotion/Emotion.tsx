@@ -4,6 +4,8 @@ import Matter from "matter-js";
 
 const Emotion = () => {
   useEffect(() => {
+    navigator.vibrate(200000); 
+    
     const {
       Engine,
       Render,
@@ -12,8 +14,11 @@ const Emotion = () => {
       MouseConstraint,
       Mouse,
       Composite,
-      Bodies
+      Bodies,
+      Events 
     } = Matter;
+
+    let hasVibrated = false;
 
     // create engine
     const engine = Engine.create();
@@ -59,10 +64,10 @@ const Emotion = () => {
     });
 
     Composite.add(world, stack);
-    Composite.add(world, Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#ff00000'} }));
-    Composite.add(world, Bodies.rectangle(window.innerWidth, window.innerHeight+80, 1000, 10, {isStatic: true, render: {fillStyle: '#bbff000'} }));
-    Composite.add(world, Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff0'}  }));
-    Composite.add(world, Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff0'}  }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#ff0000'} }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth, window.innerHeight+130, 1000, 10, {isStatic: true, render: {fillStyle: '#535394'} }));
+    Composite.add(world, Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
+    Composite.add(world, Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
 
 
     // add gyro control
@@ -76,17 +81,17 @@ const Emotion = () => {
 
         if(event.gamma !== null && event.beta !== null && event.beta !== null){
             if (orientation === 0) {
-              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(event.beta, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(event.beta, -90), 90) / 40;
             } else if (orientation === 180) {
-              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 40;
             } else if (orientation === 90) {
-              gravity.x = Math.min(Math.max(event.beta, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(event.beta, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 40;
             } else if (orientation === -90) {
-              gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 90;
-              gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 90;
+              gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 40;
+              gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 40;
             }
         }
       };
@@ -117,11 +122,32 @@ const Emotion = () => {
       max: { x: 800, y: 600 }
     });
 
+    // Add an event handler for collision
+    Events.on(engine, 'collisionStart', (event) => {
+    // Iterate through all pairs of collision events
+    event.pairs.forEach((pair) => {
+        // Check if one of the bodies is a circle and the other is a rectangle
+        if (
+        (pair.bodyA.label === 'Circle Body' && pair.bodyB.label === 'Rectangle Body') ||
+        (pair.bodyA.label === 'Rectangle Body' && pair.bodyB.label === 'Circle Body')
+        ) {
+        // Check if vibration has not been triggered yet
+        if (!hasVibrated) {
+            // Trigger vibration
+            console.log("vib")
+            navigator.vibrate(100); // Vibrate for 100ms (adjust as needed)
+            hasVibrated = true; // Set flag to true to prevent repeated vibration
+        }
+        }
+    });
+    });
+
     // Clean up the engine and renderer when component unmounts
     return () => {
       Matter.Render.stop(render);
       Matter.Runner.stop(runner);
     };
+    
   }, []);
 
   return null

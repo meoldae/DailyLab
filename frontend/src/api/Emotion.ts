@@ -10,9 +10,10 @@ const getEmotionList =async (success: (data : {data : ReturnType}) => void, fail
     await HttpJson.get(`emotion`).then(success).catch(fail);
 }
 
-const getDailyData =async (param: object, success: ({data: object}) => void, fail: (error: unknown) => void) => {
+// 23.09.24 강동표
+const getDailyData =async (param: object, success: (data : {data: ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.get(`emotion/date`, { params: param }).then(success).catch(fail);
-}
+} 
 
 const putEmotion = async (param: EmotionData, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.post(`emotion`, JSON.stringify(param)).then(success).catch(fail);

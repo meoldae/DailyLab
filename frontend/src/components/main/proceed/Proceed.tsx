@@ -73,9 +73,10 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
 
     };
     
+    // 23.09.24 강동표
     // 누적된 감정 갯수 조회 
     const getData = async () => {
-        await getDailyData({date : curDate}, ({data}) => {
+        await getDailyData({date : curDate}, (data : any) => {
             setEmotionCnt(() => data.data.length);
         }, (error) => {console.log(error)});
     };

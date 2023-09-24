@@ -18,15 +18,15 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-
+    
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "sw.js", "public/service-worker.js"],
+  "include": ["src", "service-worker.js", "public/service-worker.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
