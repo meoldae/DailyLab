@@ -35,8 +35,8 @@ export function register(config?: Config) {
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `${import.meta.env.BASE_URL}service-worker.js`;
-      // const swUrl = "https://j9b104.p.ssafy.io/service-worker.js";
+      // const swUrl = `${import.meta.env.BASE_URL}/service-worker.js`;
+      const swUrl = "service-worker.js";
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -60,9 +60,13 @@ export function register(config?: Config) {
 
 function registerValidSW(swUrl: string, config?: Config) {
   console.log("registerValidSW start!!");
+  console.log("sw URL : ", swUrl);
   navigator.serviceWorker
-    .register(swUrl)
+    .register(swUrl, {
+      type: 'classic'
+    })
     .then(registration => {
+      console.log("then 안으로 진입")
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
