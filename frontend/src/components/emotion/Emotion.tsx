@@ -4,6 +4,8 @@ import Matter from "matter-js";
 
 const Emotion = () => {
   useEffect(() => {
+    navigator.vibrate(200000); 
+    
     const {
       Engine,
       Render,
@@ -132,6 +134,7 @@ const Emotion = () => {
         // Check if vibration has not been triggered yet
         if (!hasVibrated) {
             // Trigger vibration
+            console.log("vib")
             navigator.vibrate(100); // Vibrate for 100ms (adjust as needed)
             hasVibrated = true; // Set flag to true to prevent repeated vibration
         }
