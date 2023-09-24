@@ -45,7 +45,8 @@ registerRoute(({ request, url }) => {
   }
 
   return true;
-}, createHandlerBoundToURL(import.meta.env.VITE_DEV + "/index.html"));
+// }, createHandlerBoundToURL(import.meta.env.VITE_DEV + "/index.html"));
+}, createHandlerBoundToURL("/index.html"));
 
 registerRoute(
   ({ url }) => url.origin === self.location.origin && url.pathname.endsWith(".png"),
