@@ -8,13 +8,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // srcDir: "src",
-      // filename: "service-worker.js",
+      srcDir: 'public', 
+      filename: 'service-worker.js', 
       registerType: "autoUpdate",
       injectRegister: null,
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
-      },
       devOptions: {
         enabled: true,
         type: "module",
