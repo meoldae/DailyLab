@@ -42,23 +42,23 @@ class todo_report(Base):
     last_recommend_date = Column(Date)
 
 class category_dict(Base):
-    __tablename__ = "category_id"
+    __tablename__ = "category"
 
     category_id = Column(BigInteger, primary_key=True, autoincrement=True)
-    category_large = Column(String)
-    category_medium = Column(String)
-    category_small = Column(String)
+    large = Column(String)
+    medium = Column(String)
+    small = Column(String)
     recommendation_fit = Column(Integer)
 
-class category_blacklist(Base):
-    __tablename__ = "category_blacklist"
+class category_black_list(Base):
+    __tablename__ = "category_black_list"
 
     category_id = Column(BigInteger, ForeignKey('category_dict.category_id'), primary_key=True)
     member_id = Column(BigInteger, ForeignKey('Member.member_id'), primary_key=True)
-    is_removed = Column(Boolean)
+    is_remove = Column(Boolean)
 
-class category_whitelist(Base):
-    __tablename__ = "category_whitelist"
+class category_white_list(Base):
+    __tablename__ = "category_white_list"
 
     category_id = Column(BigInteger, ForeignKey('category_dict.category_id'), primary_key=True)
     member_id = Column(BigInteger, ForeignKey('Member.member_id'), primary_key=True)
