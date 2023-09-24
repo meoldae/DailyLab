@@ -1,6 +1,3 @@
-import string
-from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -17,7 +14,7 @@ router = APIRouter(
 async def makeTodo(member_id: int, db: Session = Depends(get_db)):
     todoResult = todoService.makeTodo(member_id, db)
 
-    if not todoResult.empty :
+    if todoResult is not None and not todoResult.empty and not todoResult.isnull().all():
         return todoResult
     raise HTTPException(status_code=401, detail="no todo")
 
