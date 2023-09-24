@@ -11,21 +11,22 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        navigateFallbackDenylist : [/^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//]
-        // runtimeCaching: [
-        //   {
-        //     urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//,
-        //     handler: "NetworkFirst",
-        //     options: {
-        //       cacheName: "oauth2-cache",
-        //     },
-        //   }]
+        navigateFallbackDenylist : [/^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "oauth2-cache",
+            },
+          }]
       },
       devOptions: {
         enabled: true,
         type: "module",
       },
       injectManifest: {
+        swSrc: path.resolve(__dirname, 'src/service-worker.js'),
         injectionPoint: undefined
       },
       manifest: {
