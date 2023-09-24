@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: "auto",
+      injectRegister: null,
       workbox: {
         // runtimeCaching: [
         // {
@@ -28,8 +28,8 @@ export default defineConfig({
         type: "module",
       },
       injectManifest: {
-        swSrc: 'src/service-worker.js',
-        injectionPoint: undefined
+        swSrc: path.resolve(__dirname, 'src/service-worker.js'),
+        // injectionPoint: undefined
       },
       manifest: {
         icons: [
