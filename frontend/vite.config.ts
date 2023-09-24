@@ -7,16 +7,10 @@ import { viteStaticCopy } from 'vite-plugin-static-copy' // 23.09.24 강동표
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: './service-worker.js', // correct path to this file.
-          dest: './', // root of your output directory
-        },
-      ],
-    }),
     react(),
     VitePWA({
+      srcDir: "src",
+      filename: "service-worker.js",
       registerType: "autoUpdate",
       injectRegister: null,
       devOptions: {
