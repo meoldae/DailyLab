@@ -56,7 +56,14 @@ export default {
         'child',
         (value) => {return `& > ${value}`;}
       );
-    })
+    }),
+    function ({ addUtilities }) {
+      addUtilities({
+        '.webkit-tap-highlight-color': {
+          WebkitTapHighlightColor: 'transparent !important',
+        },
+      }, ['responsive', 'hover'])
+    },
   ],
 }
 

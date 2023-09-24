@@ -31,16 +31,16 @@ const Emotion = () => {
     return (
       <div className="">
         <div className="absolute top-[150px] left-[calc(50%-160px)]">
-        <div className="text-center font-semibold text-3xl">
-            <p className="mb-24">오늘은 어떤 기분이신가요?</p>
-            <div className="relative mb-[250px]">
-                <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src="./assets/img/character/cloe_noface.png" alt="클로에" />
-                <img className="absolute left-1/2 transform mt-[20px] -translate-x-1/2 w-[100px]" src={circleCount === 0 ? `./assets/img/emotion/face/100.png` : `./assets/img/emotion/face/${emotionNo}.png`} alt="표정" />
+            <div className="text-center font-semibold text-3xl">
+                <p className="mb-24">오늘은 어떤 기분이신가요?</p>
+                <div className="relative mb-[250px]">
+                    <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src="./assets/img/character/cloe_noface.png" alt="클로에" />
+                    <img className="absolute left-1/2 transform mt-[20px] -translate-x-1/2 w-[100px]" src={circleCount === 0 ? `./assets/img/emotion/face/100.png` : `./assets/img/emotion/face/${emotionNo}.png`} alt="표정" />
+                </div>
             </div>
-        </div>
-            <div className="w-[320px] m-auto bg_contents_con p-[20px] child-[button]:w-[40px] child-[button]:m-3">
+            <div className="w-[320px] bg_contents_con p-[20px] child-[button]:w-[40px] child-[button]:m-3">
                 {emotionList.length > 0 && emotionList.map((emo, index) => (
-                <button className="transition-transform duration-300 ease-in-out active:scale-125" key={index} onClick={() => {onEmotionClick(emo.emotionId)}}>
+                <button className="transition-transform duration-300 ease-in-out active:scale-125 webkit-tap-highlight-color" key={index} onClick={() => {onEmotionClick(emo.emotionId)}}>
                     <img src={`./assets/img/emotion/${emo.emotionId}.png`} alt={emo.name} />
                     <p className="font-light text-xl p-2 text-text">{emo.name}</p>
                 </button>
