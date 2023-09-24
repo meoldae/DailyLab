@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm-run-all --parallel dev serve-sw",
+    "serve-sw": "vite serve ./src/sw-build.js",
+
   },
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.5.3",
