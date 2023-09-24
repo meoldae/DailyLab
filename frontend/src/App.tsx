@@ -5,9 +5,8 @@ import './tailwind.css';
 import "@/styles/common/fontImport.css";
 
 // PWA
-// import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-// serviceWorkerRegistration.register();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <RecoilRoot>
@@ -15,3 +14,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </RecoilRoot>
 )
 
+serviceWorkerRegistration.register();

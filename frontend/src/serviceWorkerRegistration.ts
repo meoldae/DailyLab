@@ -35,7 +35,9 @@ export function register(config?: Config) {
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `${import.meta.env.BASE_URL}service-worker.js`;
+      // ${import.meta.env.BASE_URL} = 루트 디렉토리
+      console.log("BASE_URL : ", `${import.meta.env.BASE_URL}`);
+      const swUrl = `${import.meta.env.BASE_URL}/service-worker.js`;
       // const swUrl = "service-worker.js";
 
       if (isLocalhost) {
@@ -62,10 +64,8 @@ function registerValidSW(swUrl: string, config?: Config) {
   console.log("registerValidSW start!!");
   console.log("sw URL : ", swUrl);
   navigator.serviceWorker
-    .register(swUrl, {
-      type: 'classic'
-    })
-    .then(registration => {
+    .register(swUrl)
+    .then((registration) => {
       console.log("then 안으로 진입")
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
