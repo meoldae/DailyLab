@@ -55,10 +55,6 @@ self.addEventListener("message", event => {
   }
 });
 
-self.addEventListener("fetch", event => {
-  const checkurl = event.request.url;
-  console.log(checkurl);
-});
 
 // Modified fetch event handler
 self.addEventListener("fetch", event => {
