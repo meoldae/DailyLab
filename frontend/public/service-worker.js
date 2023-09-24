@@ -6,11 +6,24 @@
 // code you'd like.
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
-import { clientsClaim } from "workbox-core";
-import { ExpirationPlugin } from "workbox-expiration";
-import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
-import { registerRoute } from "workbox-routing";
-import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
+// import { clientsClaim } from "workbox-core";
+// import { ExpirationPlugin } from "workbox-expiration";
+// import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+// import { registerRoute } from "workbox-routing";
+// import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
+
+importScripts("workbox-core.js");
+importScripts("workbox-expiration.js");
+importScripts("workbox-precaching.js");
+importScripts("workbox-routing.js");
+importScripts("workbox-strategies.js");
+
+// 가져온 스크립트 파일로 사용
+const { clientsClaim } = workbox.core;
+const { ExpirationPlugin } = workbox.expiration;
+const { precacheAndRoute, createHandlerBoundToURL } = workbox.precaching;
+const { registerRoute } = workbox.routing;
+const { StaleWhileRevalidate, NetworkOnly } = workbox.strategies;
 
 clientsClaim();
 
