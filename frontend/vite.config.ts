@@ -11,21 +11,21 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        // runtimeCaching: [
-        //   {
-        //     urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\/authorization\/(naver|kakao|google)$/,
-        //     handler: "NetworkOnly",
-        //     options: {
-        //       cacheName: "oauth2-cache",
-        //     },
-        //   }]
+        runtimeCaching: [
+        {
+          urlPattern: ({url}) => url.href.includes("oauth2"),
+          handler: "NetworkOnly",
+          options: {
+            cacheName: "oauth2-cache",
+          },
+        }]
       },
       devOptions: {
         enabled: true,
         type: "module",
       },
       injectManifest: {
-        swSrc: path.resolve(__dirname, 'src/service-worker.js'),
+        // swSrc: path.resolve(__dirname, 'src/service-worker.js'),
         injectionPoint: undefined
       },
       manifest: {
