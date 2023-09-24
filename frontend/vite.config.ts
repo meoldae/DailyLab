@@ -11,14 +11,15 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "oauth2-cache",
-            },
-          }]
+        navigateFallbackDenylist : [/^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//]
+        // runtimeCaching: [
+        //   {
+        //     urlPattern: /^https:\/\/j9b104\.p\.ssafy\.io\/dev\/api\/oauth2\//,
+        //     handler: "NetworkFirst",
+        //     options: {
+        //       cacheName: "oauth2-cache",
+        //     },
+        //   }]
       },
       devOptions: {
         enabled: true,
