@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: null,
+      injectRegister: "auto",
       workbox: {
         runtimeCaching: [
           {
@@ -50,12 +50,4 @@ export default defineConfig({
   define: {
     global: "window",
   },
-  //  build: {
-  //   rollupOptions: {
-  //     input: {
-  //       main: "./index.html",
-  //       sw: "public/service-worker.js",
-  //     },
-  //   },
-  // },
 });
