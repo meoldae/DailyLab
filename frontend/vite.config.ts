@@ -10,6 +10,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: null,
+      swSrc: "./service-worker.js",
       devOptions: {
         enabled: true,
       },
