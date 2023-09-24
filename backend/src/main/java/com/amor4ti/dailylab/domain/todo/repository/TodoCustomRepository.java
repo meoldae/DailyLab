@@ -24,4 +24,6 @@ public interface TodoCustomRepository {
     List<TodoDto> findByMemberId(Long memberId);
 
     Optional<TodoRecommendedDto> findTodoRecommendedDtoByMemberIdAndTodoId(Long memberId, Long todoId);
+
+    long countMemberTodoByMemberIdAndTodoDate(Long memberId, LocalDate todoDate);
 }
