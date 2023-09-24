@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      srcDir: 'public', 
+      filename: 'service-worker.js', 
       registerType: "autoUpdate",
       injectRegister: null,
       devOptions: {
@@ -35,12 +37,4 @@ export default defineConfig({
   define: {
     global: "window",
   },
-  // build: {
-  //   rollupOptions: {
-  //     input: {
-  //       main: 'src/App.tsx', 
-  //       sw: 'public/service-worker.js',  
-  //     }
-  //   },
-  // },
 });
