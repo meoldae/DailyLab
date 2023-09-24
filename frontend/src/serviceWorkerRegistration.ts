@@ -35,7 +35,7 @@ export function register(config?: Config) {
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `${import.meta.env.BASE_URL}service-worker.js`;
+      const swUrl = `${import.meta.env.BASE_URL}sw.js`;
       // const swUrl = "https://j9b104.p.ssafy.io/service-worker.js";
 
       if (isLocalhost) {
