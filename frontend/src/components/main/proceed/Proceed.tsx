@@ -52,8 +52,15 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                     </div>
                 </div>
                 {/* 감정 선택 버튼 영역 */}
-                <div>
-                    
+                <div onClick={() => navigate('/emotion')} className='bg_contents_con p-[10px]'>
+                    <div className='flex items-center justify-between'>
+                        <img className='w-[70px]' src="./assets/img/character/cloe_2.png" alt="" />
+                        <div className='text-left'>
+                            <p className='font-light mb-2'>점심은 맛있게 드셨나요?</p>
+                            <p>지금 느끼는 기분을 알려주세요!</p>
+                        </div>
+                        <img className='mr-[10px] w-[25px]' src="./assets/img/icon/arrow_right.png" alt="" />
+                    </div>
                 </div>
                 {/* 버튼 */}
                 <div onClick={handleFinishButton} className='w-72 h-20 bg-text rounded-2xl flex items-center justify-center'>

@@ -5,7 +5,6 @@ import { addHours } from "date-fns";
 
 /*
 --type--
-현재 임의로 넣음 -> 추후 부모페이지에서 props로 내려줄 예정
 1. default : 기본 체크리스트 - 메인페이지, 캘린더페이지 오늘 날짜 선택 시 / 상세입력 클릭 시 inputbox 생김.
 2. defaultLock : 기본 체크리스트이지만 체크 해제/선택 불가능, 추가버튼 없음 - 캘린더페이지 과거 날짜 선택 시
 */
@@ -151,8 +150,6 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
                     };
                 });
                 setCategories(formattedCategories);
-                console.log("cat", categories);
-                console.log(categories[0].medium[0].name)
             },
             (error) => {
                 console.log(error);
@@ -244,7 +241,7 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
                             </div>
                             {/* 여기서 완료 누르면 카테고리 적용되고 content에 상세 내용 넣기 */}
                             <div className="text-right flex">
-                                <input className="w-full p-3 m-1 rounded-xl" type="text" name="" id="" placeholder="상세 내용을 입력해주세요"
+                                <input className="w-full p-3 m-1 rounded-xl bg-primary text-text" type="text" name="" id="" placeholder="상세 내용을 입력해주세요"
                                 value={newTodoContent} onChange={handleInputChange} />
                                 <button
                                     className="w-[30px] ml-4 font-semibold text-text underline underline-offset-4"

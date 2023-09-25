@@ -9,7 +9,36 @@
 */
 
 import { useState } from "react";
+import {
+    LeadingActions,
+    SwipeableList,
+    SwipeableListItem,
+    SwipeAction,
+    TrailingActions,
+  } from 'react-swipeable-list';
+  import 'react-swipeable-list/dist/styles.css';
 
+  const leadingActions = () => (
+    <LeadingActions>
+      <SwipeAction onClick={() => console.info('swipe action triggered')}>
+        <div className='bg-blue'>
+            관심없음
+        </div>
+      </SwipeAction>
+    </LeadingActions>
+  );
+  
+  const trailingActions = () => (
+    <TrailingActions>
+    <SwipeAction destructive={true} onClick={() => console.info('swipe action triggered')}>
+      <div className='bg-red'>
+        Delete
+      </div>
+    </SwipeAction>
+  </TrailingActions>
+  );
+
+  
 interface CheckboxProps {
     todoId: number,
     state: boolean;
@@ -60,49 +89,57 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
     }
 
     return (
-        <div className="w-full p-4 bg-secondary rounded-xl text-xl">
-            <div className="flex items-center justify-between">
-                <div className="flex w-full justify-between">
-                    <div className="w-full mr-10 text-left">
-                        {/* TODO Content */}
-                        {(inputState !== 'input') ? (
-                            <div className="">
-                                <div className="child-[select]:bg-secondary">
-                                    <select name="firstCategory" id="firstCategory">
-                                        <option value="">대분류1</option>
-                                        <option value="">대분류2</option>
-                                    </select>
-                                    <select name="secondCategory" id="secondCategory">
-                                        <option value="">중분류1</option>
-                                        <option value="">중분류2</option>
-                                    </select>
-                                    <select name="thridCategory" id="thridCategory">
-                                        <option value="">소분류1</option>
-                                        <option value="">소분류2</option>
-                                    </select>
-                                </div>
-                                {/* 여기서 완료 누르면 카테고리 적용되고 content에 상세 내용 넣기 */}
-                                <input className="w-full p-3 m-1 rounded-xl" type="text" name="" id="" placeholder="상세 내용을 입력해주세요!!" />
+        <SwipeableList>
+            <SwipeableListItem
+            className='bg-orange'
+            leadingActions={leadingActions()}
+            trailingActions={trailingActions()}
+            >
+                <div className="w-full p-4 bg-secondary rounded-xl text-xl">
+                    <div className="flex items-center justify-between">
+                        <div className="flex w-full justify-between">
+                            <div className="w-full mr-10 text-left">
+                                {/* TODO Content */}
+                                {(inputState !== 'input') ? (
+                                    <div className="">
+                                        <div className="child-[select]:bg-secondary">
+                                            <select name="firstCategory" id="firstCategory">
+                                                <option value="">대분류1</option>
+                                                <option value="">대분류2</option>
+                                            </select>
+                                            <select name="secondCategory" id="secondCategory">
+                                                <option value="">중분류1</option>
+                                                <option value="">중분류2</option>
+                                            </select>
+                                            <select name="thridCategory" id="thridCategory">
+                                                <option value="">소분류1</option>
+                                                <option value="">소분류2</option>
+                                            </select>
+                                        </div>
+                                        {/* 여기서 완료 누르면 카테고리 적용되고 content에 상세 내용 넣기 */}
+                                        <input className="w-full p-3 m-1 rounded-xl" type="text" name="" id="" placeholder="상세 내용을 입력해주세요!!" />
+                                    </div>
+                                    ) : (<div onClick={HandleSetInputState}>{(content === '' || content === '상세내용') ? small : contentText}</div>)
+                                }
                             </div>
-                            ) : (<div onClick={HandleSetInputState}>{(content === '' || content === '상세내용') ? small : contentText}</div>)
-                        }
+                            {/* 체크박스 */}
+                            {type === 'future' ||  inputState === 'input' &&(
+                                // future - 체크박스 보이지 않게 처리
+                                <img onClick={handleCheckState} className="w-[20px]" src={checkState ? "./assets/img/icon/checkbox_fill.png" : "./assets/img/icon/checkbox_empty.png"}  alt="" />
+                            )}
+                        </div>
+                        {/* 우측 버튼 영역 */}
+                        <div className="pr-4 font-extralight" onClick={HandleSetInputState}>
+                            {inputState !== 'input' &&(
+                                <button className="w-[30px] underline underline-offset-4" onClick={() => {handleComplete(); HandleSetInputState();}}>
+                                    완료
+                                </button>
+                            )}
+                        </div>
                     </div>
-                    {/* 체크박스 */}
-                    {type === 'future' ||  inputState === 'input' &&(
-                        // future - 체크박스 보이지 않게 처리
-                        <img onClick={handleCheckState} className="w-[20px]" src={checkState ? "./assets/img/icon/checkbox_fill.png" : "./assets/img/icon/checkbox_empty.png"}  alt="" />
-                    )}
                 </div>
-                {/* 우측 버튼 영역 */}
-                <div className="pr-4 font-extralight" onClick={HandleSetInputState}>
-                    {inputState !== 'input' &&(
-                        <button className="w-[30px] underline underline-offset-4" onClick={() => {handleComplete(); HandleSetInputState();}}>
-                            완료
-                        </button>
-                    )}
-                </div>
-            </div>
-        </div>
+            </SwipeableListItem>
+        </SwipeableList>
     )
 }
 
