@@ -30,6 +30,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 		 + " m.memberId, m.gender, m.birthday, mbti.typeA, mbti.typeB, mbti.typeC, mbti.typeD, m.job, m.religion)"
 		 + "  FROM Member m"
 		 + "  JOIN Mbti mbti ON m.mbtiId = mbti.mbtiId "
-		 + " WHERE m.exitDate IS NOT NULL ")
+		 + " WHERE m.exitDate IS NULL ")
 	List findAllMemberSimilarityDto(LocalDate today);
 }
