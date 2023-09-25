@@ -1,5 +1,6 @@
 package com.amor4ti.dailylab.domain.member.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +33,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 		 + " WHERE m.exitDate IS NULL "
 		 + "   AND m.birthday IS NOT NULL ")
 	List findAllMemberSimilarityDto();
+
+	@Query("SELECT new com.amor4ti.dailylab.domain.member.dto.MemberStatusForCalendarDto(ms.date, ms.status) "
+		+ "  FROM MemberStatus ms "
+		+ " WHERE ms.memberId = :memberId "
+		+ "   AND ms.date BETWEEN :startDay AND :endDay"
+		+ " ORDER BY ms.date ASC ")
+	List findAllStatusByRangeAndMemberId(Long memberId, LocalDate startDay, LocalDate endDay);
 }

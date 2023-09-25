@@ -9,6 +9,7 @@ import com.amor4ti.dailylab.global.response.DataResponse;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 
@@ -52,4 +53,6 @@ public interface MemberService {
     void updateStatusComplete(Long memberId, LocalDate date);
 
     CommonResponse getMemberLocation(MemberLocationDto memberLocationDto, Long memberId);
+
+    DataResponse getMemberStatusByRange(Long memberId, Map<String, String> paramMap);
 }
