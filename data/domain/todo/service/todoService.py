@@ -1,6 +1,7 @@
+import pandas as pd
 from domain.todo.repository import todoRepository
-
 from domain.todo.contents_based_filtering import cbf
+
 
 
 def makeTodo(member_id: int, db):
@@ -19,11 +20,11 @@ def makeTodo(member_id: int, db):
     if topFiveRecords:
         for record in topFiveRecords:
             category_id = record.category_id
-            resultList = resultList + cbf.printSim(str(category_id))
+            resultList = resultList + cbf.printSim(str(category_id-1))
     else:
-        topFiveRecords = [4, 18, 22, 90, 220]
+        topFiveRecords = [4, 18, 22, 90, 290]
         for record in topFiveRecords:
-            resultList = resultList + cbf.printSim(str(record))
+            resultList = resultList + cbf.printSim(str(record-1))
 
     if firstList:
         for remove in firstList:
@@ -42,19 +43,25 @@ def afterListProcess(member_id: int, resultList: list[int], db):
     allRemoveCategory = todoRepository.getAllRemoveCategory(db)
 
     if userWhiteList:
+        print(len(userWhiteList))
         for white in userWhiteList:
             category_id = white.category_id
-            allRemoveCategory = allRemoveCategory.drop(category_id-1)
+            for all in allRemoveCategory:
+                if(all.category_id == category_id):
+                    allRemoveCategory.remove(all)
+                    break
 
     if userBlackList:
         for black in userBlackList:
             category_id = black.category_id
-            resultList = resultList.drop(category_id-1)
+            if category_id-1 in resultList.index:
+                resultList = resultList.drop(category_id - 1)
 
     if allRemoveCategory:
         for remove in allRemoveCategory:
             category_id = remove.category_id
-            resultList = resultList.drop(category_id-1)
+            if category_id-1 in resultList.index:
+                resultList = resultList.drop(category_id - 1)
 
 
     return resultList
