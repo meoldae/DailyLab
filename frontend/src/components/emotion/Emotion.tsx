@@ -11,24 +11,20 @@ const Emotion = () => {
     const handlePause = () => playerRef.current?.pause();
 
     const [circleCount, setCircleCount] = useState(0);
-    const [emotionNo, setEmotionNo] = useState(1); // 이 부분에 emotionNo를 추가하고 초기값을 설정합니다.
-    const [emotionName, setEmotionName] = useState(""); // 이 부분에 emotionNo를 추가하고 초기값을 설정합니다.
-    const [emotionType, setEmotionType] = useState(""); // 이 부분에 emotionNo를 추가하고 초기값을 설정합니다.
+    const [emotionNo, setEmotionNo] = useState(1); 
+    const [emotionName, setEmotionName] = useState(""); 
+    const [emotionType, setEmotionType] = useState(""); 
     const [emotionList, setEmotionList] = useState<EmotionType[]>([]);
     
-    const handleButtonClick = () => {
-      setCircleCount(prevCount => prevCount + 1);
-    };
-  
     const onEmotionClick = (emoId: number, name: string, type: string) => {
-      setEmotionNo(emoId); // 버튼 클릭 시 emotionNo를 변경합니다.
-      setEmotionName(name);
-      setEmotionType(type);
-      void handleButtonClick();
-      handlePlay();
-      setTimeout(() => {
-        handlePause(); // 1초 뒤에 handlePause 실행
-      }, 300); 
+        setEmotionNo(emoId); // 버튼 클릭 시 emotionNo를 변경합니다.
+        setEmotionName(name);
+        setEmotionType(type);
+        setCircleCount(prevCount => prevCount + 1);
+        handlePlay();
+        setTimeout(() => {
+            handlePause(); 
+        }, 300); 
     };
 
     const getList = async () => {
@@ -46,21 +42,23 @@ const Emotion = () => {
       <div className="">
         <div className="absolute top-[100px] left-[calc(50%-150px)] h-[230px]">
             {/* lottie 시험하기 */}
-            <Player
+            {/* <Player
             src="./assets/lottie/sample.json"
             className="players"
             // loop
             // autoplay
             style={{ height: '200px', width: '300px' }}
             ref={playerRef}
-            />
+            /> */}
             <div className="text-center font-semibold text-3xl">
-                {circleCount === 0 ? (
-                    <p className="mb-24 w-[300px] h-[40px]">오늘은 어떤 기분이신가요?</p>
-                ) : (
-                    <p className="mb-24 w-[300px] h-[40px]">이 감정은... {emotionName}!<br/> {emotionType === 'n' ? "안좋은 감정은 제가 대신 가져갈게요!" : "저까지 기분이 좋아지네요!"}</p>
-                )}
-                <div className="relative mb-[250px]">
+                <div className="bg-primary h-[70px] rounded-3xl pt-[10px]">
+                    {circleCount === 0 ? (
+                        <p className="mb-24 w-[300px] h-[40px] pt-[10px]">오늘은 어떤 기분이신가요?</p>
+                    ) : (
+                        <p className="mb-24 w-[300px] h-[40px]">이 감정은... {emotionName}!<br/> {emotionType === 'n' ? "안좋은 감정은 제가 대신 가져갈게요!" : "저까지 기분이 좋아지네요!"}</p>
+                    )}
+                </div>
+                <div className="mt-[50px]">
                     <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src="./assets/img/character/cloe_noface.png" alt="클로에" />
                     <img className="absolute left-1/2 transform mt-[20px] -translate-x-1/2 w-[100px]" src={circleCount === 0 ? `./assets/img/emotion/face/100.png` : `./assets/img/emotion/face/${emotionNo}.png`} alt="표정" />
                 </div>
