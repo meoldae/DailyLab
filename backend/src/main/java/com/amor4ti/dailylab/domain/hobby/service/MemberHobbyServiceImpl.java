@@ -16,6 +16,7 @@ import com.amor4ti.dailylab.global.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -74,5 +75,11 @@ public class MemberHobbyServiceImpl implements MemberHobbyService{
         memberHobbyRepository.delete(memberHobby);
 
         return responseService.successResponse(ResponseStatus.HOBBY_DELETE_SUCCESS);
+    }
+
+    @Override
+    @Transactional
+    public List<Integer> getHobbyIdListByMemberId(Long memberId) {
+        return memberHobbyRepository.findHobbyIdByMemberId(memberId);
     }
 }

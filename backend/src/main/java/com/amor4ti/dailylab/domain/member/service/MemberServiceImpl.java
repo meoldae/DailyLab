@@ -256,4 +256,13 @@ public class MemberServiceImpl implements MemberService {
 
 		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
 	}
+
+	@Override
+	public List getMemberSimilarityList() {
+		List<MemberSimilarityDto> memberSimilarityDtoList = memberRepository.findAllMemberSimilarityDto(LocalDate.now());
+		memberSimilarityDtoList.stream().parallel().forEach(dto ->
+			dto.setHobbyList(memberHobbyService.getHobbyIdListByMemberId(dto.getMemberId()))
+		);
+		return memberSimilarityDtoList;
+	}
 }

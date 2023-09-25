@@ -13,4 +13,5 @@ public interface MemberHobbyService {
     DataResponse getAllHobby();
     CommonResponse registerHobby(Long memberId, Long hobbyId);
     CommonResponse deleteHobby(Long memberId, Long hobbyId);
+    List<Integer> getHobbyIdListByMemberId(Long memberId);
 }
