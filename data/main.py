@@ -53,6 +53,9 @@ async def getLatitudeAndLogitude(location: Location):
 @app.post("/location/{member_id}")
 async def setLocation(member_id: int, location: Location):
     userLocations[member_id] = location
+
+    await get_weather(member_id)
+
     return {"status": "Location set successfully"}
 
 app.include_router(test_router.router)

@@ -1,10 +1,10 @@
+import asyncio
+
 import pandas as pd
 
 from api.weatherAPI import get_weather
 from domain.todo.repository import todoRepository
 from domain.todo.contents_based_filtering import cbf
-
-from tempSave import userLocations
 
 
 def makeTodo(member_id: int, db):
@@ -23,21 +23,22 @@ def makeTodo(member_id: int, db):
     if topFiveRecords:
         for record in topFiveRecords:
             category_id = record.category_id
-            resultList = resultList + cbf.printSim(str(category_id-1))
+            resultList = resultList + cbf.printSim(str(category_id - 1))
     else:
         topFiveRecords = [4, 18, 22, 90, 290]
         for record in topFiveRecords:
-            resultList = resultList + cbf.printSim(str(record-1))
+            resultList = resultList + cbf.printSim(str(record - 1))
 
     if firstList:
         for remove in firstList:
             category_id = remove.category_id
-            resultList = resultList.drop(category_id-1)
+            resultList = resultList.drop(category_id - 1)
 
     resultList = afterListProcess(member_id, resultList, db)
     resultList = resultList.sort_values(ascending=False)
 
     return resultList
+
 
 def afterListProcess(member_id: int, resultList: list[int], db):
     userBlackList = todoRepository.getBlacklist(member_id, db)
@@ -50,29 +51,20 @@ def afterListProcess(member_id: int, resultList: list[int], db):
         for white in userWhiteList:
             category_id = white.category_id
             for all in allRemoveCategory:
-                if(all.category_id == category_id):
+                if (all.category_id == category_id):
                     allRemoveCategory.remove(all)
                     break
 
     if userBlackList:
         for black in userBlackList:
             category_id = black.category_id
-            if category_id-1 in resultList.index:
+            if category_id - 1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
     if allRemoveCategory:
         for remove in allRemoveCategory:
             category_id = remove.category_id
-            if category_id-1 in resultList.index:
+            if category_id - 1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
-
-    weather = get_weather(member_id)
-
-    print("weather : ")
-    print(weather)
-    print("weather.rain : ")
-    print(weather.rain)
-
-    # if(weather.)
 
     return resultList
