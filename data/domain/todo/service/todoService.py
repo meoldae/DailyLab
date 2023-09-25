@@ -1,7 +1,10 @@
 import pandas as pd
+
+from api.weatherAPI import get_weather
 from domain.todo.repository import todoRepository
 from domain.todo.contents_based_filtering import cbf
 
+from tempSave import userLocations
 
 
 def makeTodo(member_id: int, db):
@@ -63,5 +66,6 @@ def afterListProcess(member_id: int, resultList: list[int], db):
             if category_id-1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
+    weather = get_weather(member_id)
 
     return resultList

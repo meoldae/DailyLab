@@ -1,0 +1,3 @@
+userLocations = {}
+
+weatherDict = {}

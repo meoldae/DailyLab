@@ -2,8 +2,10 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 
-from api.weatherAPI import get_ultra_srt_fcst
+from api import weatherAPI
+from api.weatherAPI import get_weather
 from domain.diary import diaryService
+from tempSave import userLocations
 
 import test_router
 from domain.todo.routers import getInfoFromSpring_router, todo
@@ -46,12 +48,17 @@ class Location(BaseModel):
 # Front로부터 위도, 경도 데이터 받기
 @app.post("/weather/location")
 async def getLatitudeAndLogitude(location: Location):
-    return await get_ultra_srt_fcst(location.latitude, location.longitude)
+    return await get_weather(location.latitude, location.longitude)
 
+@app.post("/location/{member_id}")
+async def setLocation(member_id: int, location: Location):
+    userLocations[member_id] = location
+    return {"status": "Location set successfully"}
 
 app.include_router(test_router.router)
 app.include_router(getInfoFromSpring_router.router)
 app.include_router(todo.router)
+app.include_router(weatherAPI.router)
 
 if __name__ == "__main__":
     import uvicorn

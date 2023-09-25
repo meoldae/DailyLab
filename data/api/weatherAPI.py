@@ -1,14 +1,35 @@
+import math
 import time
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, APIRouter
 from datetime import datetime, date, timedelta
 import httpx
 import config
 
+from tempSave import userLocations, weatherDict
+
 app = FastAPI()
 
-@app.get("/getUltraSrtFcst")
-async def get_ultra_srt_fcst(latitude: float, longitude: float):
+# 기초 자료
+RE = 6371.00877  # 지구 반경(km)
+GRID = 5.0  # 격자 간격(km)
+SLAT1 = 30.0  # 투영 위도1(degree)
+SLAT2 = 60.0  # 투영 위도2(degree)
+OLON = 126.0  # 기준점 경도(degree)
+OLAT = 38.0  # 기준점 위도(degree)
+XO = 43  # 기준점 X좌표(GRID)
+YO = 136  # 기1준점 Y좌표(GRID)
+
+router = APIRouter()
+
+@router.get("/weather/{member_id}")
+async def get_weather(member_id: int):
+
+    print(userLocations)
+
+    latitude = userLocations[member_id].latitude
+    longitude = userLocations[member_id].longitude
+
     # 함수 시작 시간 기록
     start_time = time.time()
 
@@ -23,10 +44,7 @@ async def get_ultra_srt_fcst(latitude: float, longitude: float):
     yesterday = y.strftime("%Y%m%d")
 
     # 위도와 경도
-    # nx = latitude
-    # ny = longitude
-    nx = 60
-    ny = 127
+    nx, ny = xy_converter("toXY", latitude, longitude)
 
     # base_time과 base_date 구하기
     if now.minute < 45:
@@ -88,7 +106,10 @@ async def get_ultra_srt_fcst(latitude: float, longitude: float):
         end_time = time.time()
         execution_time = end_time - start_time
 
-        print(f"Execution Time: {execution_time} seconds")
+        print(f"Weather Execution Time: {execution_time} seconds")
+
+        weatherDict[member_id] = weather_dict
+        print(weatherDict[member_id])
 
         return weather_dict
     else:
@@ -104,3 +125,67 @@ def map_sky_condition(fcst_value):
         return "흐림"
     else:
         return "알 수 없음"
+
+
+# 경도 -> x, 위도 -> y 로직
+def xy_converter(code, v1, v2):
+    DEGRAD = math.pi / 180.0
+    RADDEG = 180.0 / math.pi
+
+    re = RE / GRID
+
+    slat1 = SLAT1 * DEGRAD
+    slat2 = SLAT2 * DEGRAD
+
+    olon = OLON * DEGRAD
+    olat = OLAT * DEGRAD
+
+    sn = math.tan(math.pi * 0.25 + slat2 * 0.5) / math.tan(math.pi * 0.25 + slat1 * 0.5)
+    sn = math.log(math.cos(slat1) / math.cos(slat2)) / math.log(sn)
+
+    sf = math.tan(math.pi * 0.25 + slat1 * 0.5)
+    sf = pow(sf, sn) * math.cos(slat1) / sn
+
+    ro = math.tan(math.pi * 0.25 + olat * 0.5)
+    ro = re * sf / pow(ro, sn)
+
+    if code == "toXY":
+        ra = math.tan(math.pi * 0.25 + v1 * DEGRAD * 0.5)
+        ra = re * sf / pow(ra, sn)
+
+        theta = v2 * DEGRAD - olon
+
+        if theta > math.pi: theta -= 2.0 * math.pi
+        if theta < -math.pi: theta += 2.0 * math.pi
+
+        theta *= sn
+
+        x = int(ra * math.sin(theta) + XO + 0.5)
+        y = int(ro - ra * math.cos(theta) + YO + 0.5)
+
+        return x, y
+    else:
+        xn = v1 - XO
+        yn = ro - v2 + YO
+
+        ra = math.sqrt(xn * xn + yn * yn)
+
+        if sn < 0.0: ra = -ra
+
+        alat = pow((re * sf / ra), (1.0 / sn))
+        alat = 2.0 * math.atan(alat) - math.pi * 0.5
+
+        if abs(xn) <= 0.0:
+            theta = 0.0
+        else:
+            if abs(yn) <= 0.0:
+                theta = math.pi * 0.5
+                if xn < 0.0: theta = -theta
+            else:
+                theta = math.atan2(xn, yn)
+
+        alon = theta / sn + olon
+        lat = alat * RADDEG
+        lon = alon * RADDEG
+
+        return lat, lon
