@@ -259,7 +259,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List getMemberSimilarityList() {
-		List<MemberSimilarityDto> memberSimilarityDtoList = memberRepository.findAllMemberSimilarityDto(LocalDate.now());
+		List<MemberSimilarityDto> memberSimilarityDtoList = memberRepository.findAllMemberSimilarityDto();
 		memberSimilarityDtoList.stream().parallel().forEach(dto ->
 			dto.setHobbyList(memberHobbyService.getHobbyIdListByMemberId(dto.getMemberId()))
 		);
