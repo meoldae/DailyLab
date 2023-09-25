@@ -282,4 +282,13 @@ public class MemberServiceImpl implements MemberService {
 
 		return responseService.successResponse(ResponseStatus.ACCESS_MEMBER_PROCEED);
 	}
+
+	@Override
+	public void updateStatusComplete(Long memberId, LocalDate date) {
+		MemberStatus memberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date)
+				.orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+		memberStatus.setStatus("complete");
+		memberStatusRepository.save(memberStatus);
+	}
 }

@@ -121,7 +121,8 @@ public class DiaryServiceImpl implements DiaryService {
                                                                     .content(String.valueOf(response.get("content")))
                                                                     .similarity(0.0)
                                                                     .build());
-                            memberService.updateStatusFinish(memberId, date);
+
+                            memberService.updateStatusComplete(memberId, date);
                         },
                         error -> {
                             new CustomException(ExceptionStatus.DIARY_CANNOT_WRITE);

@@ -51,4 +51,6 @@ public interface MemberService {
     List getMemberSimilarityList();
 
     CommonResponse startMemberStatus(Long memberId, LocalDate date);
+
+    void updateStatusComplete(Long memberId, LocalDate date);
 }
