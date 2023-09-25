@@ -1,5 +1,7 @@
 package com.amor4ti.dailylab.domain.member.repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
@@ -23,4 +25,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m FROM Member m WHERE m.memberId = :memberId")
     Optional<Member> findMemberByMemberId(@Param("memberId") Long memberId);
+
+	@Query("SELECT new com.amor4ti.dailylab.domain.member.dto.MemberSimilarityDto("
+		 + " m.memberId, m.gender, m.birthday, mbti.typeA, mbti.typeB, mbti.typeC, mbti.typeD, m.job, m.religion)"
+		 + "  FROM Member m"
+		 + "  JOIN Mbti mbti ON m.mbtiId = mbti.mbtiId "
+		 + " WHERE m.exitDate IS NOT NULL ")
+	List findAllMemberSimilarityDto(LocalDate today);
 }
