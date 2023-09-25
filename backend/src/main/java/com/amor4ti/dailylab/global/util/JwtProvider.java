@@ -49,16 +49,11 @@ public class JwtProvider {
 			.compact();
 	}
 
-	public String createRefreshToken(Long memberId) {
+	public String createRefreshToken() {
 		Date now = new Date();
 		Date expireDate = new Date(now.getTime() + REFRESH_TOKEN_VALIDATE_TIME);
 
-
-		Map<String, Object> payloads = new HashMap<>();
-		payloads.put("memberId", Long.toString(memberId));
-
 		return Jwts.builder()
-			.setClaims(payloads)
 			.setSubject("refresh")
 			.setIssuedAt(now)
 			.setExpiration(expireDate)
@@ -97,6 +92,19 @@ public class JwtProvider {
 			.getBody();
 
 		return Long.parseLong((String)claims.get(name));
+	}
+
+	public Long getClaimFromExpirationToken(String expirationToken, String name) {
+
+		try {
+			Claims claims = Jwts.parser()
+				.setSigningKey(SECRET_KEY.getBytes())
+				.parseClaimsJws(expirationToken)
+				.getBody();
+			return Long.parseLong((String)claims.get(name));
+		} catch (ExpiredJwtException e) {
+			return Long.parseLong((String)e.getClaims().get(name));
+		}
 	}
 
 	public String getAccessToken(HttpServletRequest request){

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.amor4ti.dailylab.domain.member.service.AuthService;
 import com.amor4ti.dailylab.global.exception.CustomException;
@@ -16,7 +17,7 @@ import com.amor4ti.dailylab.global.util.JwtProvider;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
