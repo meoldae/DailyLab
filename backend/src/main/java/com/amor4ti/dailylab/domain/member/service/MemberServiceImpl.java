@@ -26,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -290,5 +292,32 @@ public class MemberServiceImpl implements MemberService {
 
 		memberStatus.setStatus("complete");
 		memberStatusRepository.save(memberStatus);
+	}
+
+	@Override
+	public DataResponse getMemberStatusByRange(Long memberId, Map<String, String> paramMap) {
+		LocalDate startDay = LocalDate.parse(paramMap.get("startDay"));
+		LocalDate endDay = LocalDate.parse(paramMap.get("endDay"));
+		List<MemberStatusForCalendarDto> allStatusByRangeAndMemberId = memberRepository.findAllStatusByRangeAndMemberId(
+			memberId, startDay, endDay);
+
+		List<MemberStatusForCalendarDto> statusByRange = new ArrayList<>();
+
+		while (!startDay.isAfter(endDay)) {
+			boolean flag = false;
+			for (MemberStatusForCalendarDto member : allStatusByRangeAndMemberId) {
+				if (member.getDate().equals(startDay)) {
+					statusByRange.add(member);
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				statusByRange.add(new MemberStatusForCalendarDto(startDay, "X"));
+			}
+			startDay = startDay.plusDays(1);
+		}
+
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, statusByRange);
 	}
 }
