@@ -3,10 +3,7 @@ package com.amor4ti.dailylab.domain.member.service;
 import javax.servlet.http.HttpServletResponse;
 
 import com.amor4ti.dailylab.domain.entity.Member;
-import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
-import com.amor4ti.dailylab.domain.member.dto.MemberMbtiDto;
-import com.amor4ti.dailylab.domain.member.dto.SignUpDto;
-import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
+import com.amor4ti.dailylab.domain.member.dto.*;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 
@@ -53,4 +50,6 @@ public interface MemberService {
     CommonResponse startMemberStatus(Long memberId, LocalDate date);
 
     void updateStatusComplete(Long memberId, LocalDate date);
+
+    CommonResponse getMemberLocation(MemberLocationDto memberLocationDto, Long memberId);
 }
