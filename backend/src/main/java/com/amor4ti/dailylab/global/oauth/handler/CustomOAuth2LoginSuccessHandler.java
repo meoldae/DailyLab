@@ -51,7 +51,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 					redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
 				} else {
 					String accessToken = jwtProvider.createAccessToken(member.get());
-					String refreshToken = jwtProvider.createRefreshToken();
+					String refreshToken = jwtProvider.createRefreshToken(tempMember.getMemberId());
 
 					Cookie cookie = cookieUtils.createCookie(refreshToken);
 					response.addCookie(cookie);
