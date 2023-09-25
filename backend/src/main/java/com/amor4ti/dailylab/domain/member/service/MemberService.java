@@ -45,4 +45,6 @@ public interface MemberService {
     void updateStatusFinish(Long memberId, LocalDate date);
 
     List getProceedMemberList(LocalDate date);
+
+	CommonResponse exitMember(Long memberId);
 }

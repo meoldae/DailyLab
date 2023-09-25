@@ -2,13 +2,17 @@ package com.amor4ti.dailylab.domain.todo.service;
 
 import com.amor4ti.dailylab.domain.category.repository.CategoryRepository;
 import com.amor4ti.dailylab.domain.categoryBlackList.repository.CategoryBlackListRepository;
+import com.amor4ti.dailylab.domain.categoryWhiteList.repository.CategoryWhiteListRepository;
+import com.amor4ti.dailylab.domain.categoryWhiteList.service.CategoryWhiteListService;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.entity.category.Category;
 import com.amor4ti.dailylab.domain.entity.category.CategoryBlackList;
+import com.amor4ti.dailylab.domain.entity.category.CategoryWhiteList;
 import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
@@ -27,10 +31,14 @@ import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -46,9 +54,11 @@ public class TodoServiceImpl implements TodoService{
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
     private final CategoryBlackListRepository categoryBlackListRepository;
+    private final CategoryWhiteListRepository categoryWhiteListRepository;
 
     private final ResponseService responseService;
     private final TodoReportService todoReportService;
+    private final CategoryWhiteListService categoryWhiteListService;
 
     private final JsonConverter jsonConverter;
 
@@ -91,6 +101,10 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    @Retryable(
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 100L)
+    )
     @Transactional
     public DataResponse registTodo(TodoRegistDto todoRegistDto, Long memberId) {
         Member member = memberRepository.findById(memberId)
@@ -110,11 +124,8 @@ public class TodoServiceImpl implements TodoService{
         if(blackListOptional.isPresent() && !blackListOptional.get().isRemove())
             throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_FALSE);
 
-        Optional<Todo> todayTodoOptional = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, todoRegistDto.getCategoryId(), todoRegistDto.getTodoDate());
-
-        // 이미 오늘 등록한 카테고리의 todo인 경우
-        if(todayTodoOptional.isPresent())
-            throw new CustomException(ExceptionStatus.TODO_ALREADY_REGIST_TODAY);
+        // 화이트 리스트 등록
+        categoryWhiteListService.regist(todoRegistDto.getCategoryId(), memberId);
 
         Todo todo = todoRegistDto.toEntity(member, category);
         todoRepository.save(todo);
@@ -149,8 +160,15 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    @Retryable(
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 100L)
+    )
     @Transactional
     public DataResponse recommendTodo(Long memberId, String todoDate) {
+        // 코드 실행 시작 시간 기록
+        Instant startTime = Instant.now();
+
         log.info("todo 추천 로직 시작");
         
         // 우선 하루 마무리
@@ -177,31 +195,50 @@ public class TodoServiceImpl implements TodoService{
         // 빈 추천 Todo 객체
         List<TodoRecommendedDto> todoRecommendedDtoList = new ArrayList<>();
 
+        // 기존에 등록되어 있던 todo 갯수 세기 (기존에 유저가 등록해 뒀던)
+        long beforeTodoCnt = todoRepository.countMemberTodoByMemberIdAndTodoDate(memberId, LocalDate.parse(todoDate));
+
+        if(beforeTodoCnt >= 7)
+            throw new CustomException(ExceptionStatus.TODO_ALREADY_OVER_SEVEN);
+
         int cnt = 0;
-        
+        int blackListFilteringCnt = 0;
+        int recommendationFitAndWhiteListFiliteringCnt = 0;
+
         for (Long categoryId : CategoryIdList) {
-            // 일단 3개만
-            if(cnt == 3)
+            // 일단 7개만
+            if(cnt == 8 - beforeTodoCnt)
                 break;
 
-            // 블랙리스트 체크 로직
             MemberCategoryId memberCategoryId = MemberCategoryId.builder()
                     .memberId(memberId)
                     .categoryId(categoryId)
                     .build();
 
-            Optional<CategoryBlackList> optionalBlackList = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
-            
-            if(optionalBlackList.isPresent() && !optionalBlackList.get().isRemove())
-                break;
+            // 블랙리스트 체크 로직
+            if(checkBlackList(memberCategoryId)) {
+                blackListFilteringCnt++;
+                continue;
+            }
 
+            Category category = categoryRepository.findByCategoryId(categoryId)
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+
+            // 추천 적합도 체크 로직 및 whiteList 체크 로직
+            if(checkRecommendationFitAndWhiteList(memberCategoryId, category)) {
+                recommendationFitAndWhiteListFiliteringCnt++;
+                continue;
+            }
+
+            // 횟수 증가
             cnt++;
 
             // db에 추천 db 등록 로직
             TodoRegistDto todoRegistDto = TodoRegistDto.builder()
                     .categoryId(categoryId)
-                    .content(null)
+                    .content(category.getSmall())
                     .todoDate(LocalDate.parse(todoDate))
+                    .isSystem(true)
                     .build();
 
             DataResponse dataResponse = registTodo(todoRegistDto, memberId);
@@ -215,15 +252,39 @@ public class TodoServiceImpl implements TodoService{
         }
 
         log.info("추천 todo 개수 : " + todoRecommendedDtoList.size());
+        log.info("블랙리스트에 걸린 횟수 : " + blackListFilteringCnt);
+        log.info("추천 적합도 / 화이트리스트에 걸린 횟수 : " + recommendationFitAndWhiteListFiliteringCnt);
+
+        // 코드 실행 종료 시간 기록
+        Instant endTime = Instant.now();
+
+        log.info("걸린 시간 : " + (Duration.between(startTime, endTime).toNanos()) / 1_000_000_000.0 + "초");
         log.info("todo 추천 로직 종료");
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoRecommendedDtoList);
     }
 
+    @Override
+    public CommonResponse changeTodoContent(TodoContentUpdateDto todoContentUpdateDto, Long memberId) {
+        Todo todo = todoRepository.findByTodoId(todoContentUpdateDto.getTodoId())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+
+        if(todo.getMember().getMemberId() != memberId)
+            throw new CustomException(ExceptionStatus.TODO_UPDATE_REQUEST_BY_OTHER_USER);
+
+        todo.changeContent(todoContentUpdateDto.getContent());
+        todoRepository.save(todo);
+
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
+
+    /*
+    * FastAPI Data Server Communication Logic
+    * */
     private String communicateWithFastAPI(Long memberId, String todoDate) {
         log.info("데이터 서버와 통신 시작");
         // fastAPI 요청 주소
-//        String fastApiUrl = "http://localhost:8181/data/todo";
+//        String fastApiUrl = "http://localhost:8181/todo";
         String fastApiUrl = DATA_SERVER_URL + "/todo";
 
         // RestTemplate 통신
@@ -235,7 +296,30 @@ public class TodoServiceImpl implements TodoService{
         // 통신 결과 (FastAPI에서 반환한 값)
         String response = restTemplate.postForObject(fastApiUrl, data, String.class);
 
+        log.info("response : " + response);
         log.info("데이터 서버와 통신 종료");
         return response;
+    }
+
+    /*
+    * BlackList Check Logic
+    * True : BlackList에 존재 -> 추천 거름
+    * False : BlackList에 존재 X -> 테스트 통과
+    * */
+    private boolean checkBlackList(MemberCategoryId memberCategoryId) {
+        Optional<CategoryBlackList> optionalBlackList = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
+
+        return optionalBlackList.isPresent() && !optionalBlackList.get().isRemove();
+    }
+
+    /*
+    * Recommendation Fit(추천 적합도) Check & WhiteList Check
+    * True : 추천 적합도가 0이고 WhiteList에 없는 경우 -> 추천 거름
+    * False : 추천 적합도가 1이거나 WhiteList에 존재하는 경우 -> 테스트 통과
+    * */
+    private Boolean checkRecommendationFitAndWhiteList(MemberCategoryId memberCategoryId, Category category) {
+        Optional<CategoryWhiteList> optionalWhiteList = categoryWhiteListRepository.findByMemberCategoryId(memberCategoryId);
+
+        return category.getRecommendationFit() == 0 && optionalWhiteList.isEmpty();
     }
 }

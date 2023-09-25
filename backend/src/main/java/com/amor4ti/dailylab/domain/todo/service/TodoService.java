@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.todo.service;
 
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoUpdateDto;
 import com.amor4ti.dailylab.global.response.CommonResponse;
@@ -26,4 +27,6 @@ public interface TodoService {
     CommonResponse changeCheckTodo(Long memberId, TodoCheckUpdateDto todoCheckUpdateDto);
 
     DataResponse recommendTodo(Long memberId, String todoDate);
+
+    CommonResponse changeTodoContent(TodoContentUpdateDto todoContentUpdateDto, Long memberId);
 }
