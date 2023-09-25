@@ -68,4 +68,11 @@ def afterListProcess(member_id: int, resultList: list[int], db):
 
     weather = get_weather(member_id)
 
+    print("weather : ")
+    print(weather)
+    print("weather.rain : ")
+    print(weather.rain)
+
+    # if(weather.)
+
     return resultList
