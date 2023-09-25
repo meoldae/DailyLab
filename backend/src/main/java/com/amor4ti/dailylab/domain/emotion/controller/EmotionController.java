@@ -5,6 +5,7 @@ import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
+import com.amor4ti.dailylab.global.rabbitmq.MessagePublisher;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
@@ -24,6 +25,7 @@ public class EmotionController {
 
     private final ResponseService responseService;
     private final EmotionService emotionService;
+    private final MessagePublisher messagePublisher;
 
     @GetMapping
     private DataResponse findAllEmotion() {
@@ -37,7 +39,8 @@ public class EmotionController {
                                            @RequestBody RegisterMemberEmotionDto requestDto) {
 
         Long memberId = Long.parseLong(authentication.getName());
-        emotionService.registerEmotion(memberId, requestDto);
+        requestDto.setMemberId(memberId);
+        messagePublisher.sendToQueue(requestDto);
 
         return responseService.successResponse(ResponseStatus.REGISTER_EMOTION_SUCCESS);
     }

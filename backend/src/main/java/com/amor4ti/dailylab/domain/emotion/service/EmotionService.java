@@ -11,7 +11,7 @@ import java.util.List;
 public interface EmotionService {
     List<Emotion> getAllEmotion();
 
-    void registerEmotion(Long memberId, RegisterMemberEmotionDto requestDto);
+    void registerEmotion(RegisterMemberEmotionDto requestDto);
 
     List<MemberEmotionDayDto> getDayEmotion(Long memberId, String date);
 

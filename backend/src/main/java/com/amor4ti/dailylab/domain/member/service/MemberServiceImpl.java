@@ -306,7 +306,7 @@ public class MemberServiceImpl implements MemberService {
 		while (!startDay.isAfter(endDay)) {
 			boolean flag = false;
 			for (MemberStatusForCalendarDto member : allStatusByRangeAndMemberId) {
-				if (member.getDate().equals(startDay)) {
+				if (member.getSelectedDate().equals(startDay)) {
 					statusByRange.add(member);
 					flag = true;
 					break;
