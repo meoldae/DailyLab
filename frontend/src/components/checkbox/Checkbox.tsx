@@ -16,12 +16,11 @@ import {
     SwipeAction,
     TrailingActions,
   } from 'react-swipeable-list';
-  import 'react-swipeable-list/dist/styles.css';
 
   const leadingActions = () => (
     <LeadingActions>
       <SwipeAction onClick={() => console.info('swipe action triggered')}>
-        <div className='bg-blue'>
+      <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>
             관심없음
         </div>
       </SwipeAction>
@@ -30,11 +29,11 @@ import {
   
   const trailingActions = () => (
     <TrailingActions>
-    <SwipeAction destructive={true} onClick={() => console.info('swipe action triggered')}>
-      <div className='bg-red'>
-        Delete
-      </div>
-    </SwipeAction>
+        <SwipeAction destructive={false} onClick={() => console.info('swipe action triggered')}>
+        <div className='bg-orange flex justify-center items-center rounded-xl text-white'>
+            삭제하기
+        </div>
+        </SwipeAction>
   </TrailingActions>
   );
 
@@ -91,7 +90,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
     return (
         <SwipeableList>
             <SwipeableListItem
-            className='bg-orange'
+            className=''
             leadingActions={leadingActions()}
             trailingActions={trailingActions()}
             >
