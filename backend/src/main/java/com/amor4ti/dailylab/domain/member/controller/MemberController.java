@@ -1,5 +1,6 @@
 package com.amor4ti.dailylab.domain.member.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -151,6 +152,14 @@ public class MemberController {
 	public DataResponse getMemberStatus(Authentication authentication) {
 		Long memberId = Long.parseLong(authentication.getName());
 		return memberService.getMemberStatus(memberId);
+	}
+
+    @PostMapping("/start/{date}")
+	public CommonResponse startMemberStatus(Authentication authentication,
+											@PathVariable LocalDate date) {
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.startMemberStatus(memberId, date);
+
 	}
 
 	@GetMapping("/similarity")

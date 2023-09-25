@@ -22,6 +22,7 @@ public enum ExceptionStatus {
 	MEMBER_NOT_FOUND("-2000", "회원이 존재하지 않습니다."),
 	MEMBER_SIMILARITY_FAILED("-2001", "회원 유사도 스케쥴링에 실패했습니다."),
 
+	MEMBER_ALREADY_PROCEED("-2002", "이미 하루가 시작된 회원입니다."),
 	TODO_NOT_FOUND("-3000", "Todo가 존재하지 않습니다."),
 	TODO_ALREADY_REGIST_TODAY("-3001", "이미 오늘 등록한 카테고리의 Todo입니다. 하루에 같은 카테고리 두번은 불가능합니다."),
 	TODO_UPDATE_REQUEST_BY_OTHER_USER("-3002", "todo 주인이 아닌 다른 유저가 수정을 시도했습니다."),

@@ -49,4 +49,6 @@ public interface MemberService {
 	CommonResponse exitMember(Long memberId);
 
     List getMemberSimilarityList();
+
+    CommonResponse startMemberStatus(Long memberId, LocalDate date);
 }
