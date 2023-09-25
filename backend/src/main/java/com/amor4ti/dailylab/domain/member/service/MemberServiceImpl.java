@@ -301,19 +301,19 @@ public class MemberServiceImpl implements MemberService {
 		List<MemberStatusForCalendarDto> allStatusByRangeAndMemberId = memberRepository.findAllStatusByRangeAndMemberId(
 			memberId, startDay, endDay);
 
-		List<String> statusByRange = new ArrayList<>();
+		List<MemberStatusForCalendarDto> statusByRange = new ArrayList<>();
 
 		while (!startDay.isAfter(endDay)) {
 			boolean flag = false;
 			for (MemberStatusForCalendarDto member : allStatusByRangeAndMemberId) {
 				if (member.getDate().equals(startDay)) {
-					statusByRange.add(member.getStatus());
+					statusByRange.add(member);
 					flag = true;
 					break;
 				}
 			}
 			if (!flag) {
-				statusByRange.add("X");
+				statusByRange.add(new MemberStatusForCalendarDto(startDay, "X"));
 			}
 			startDay = startDay.plusDays(1);
 		}

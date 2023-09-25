@@ -10,6 +10,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MemberStatusForCalendarDto {
-	private LocalDate date;
+	private LocalDate selectedDate;
 	private String status;
 }
