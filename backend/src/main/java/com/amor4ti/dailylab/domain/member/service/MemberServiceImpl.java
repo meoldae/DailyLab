@@ -308,8 +308,8 @@ public class MemberServiceImpl implements MemberService {
 			backoff = @Backoff(delay = 100L)
 	)
 	public CommonResponse getMemberLocation(MemberLocationDto memberLocationDto, Long memberId) {
-		webClientUtil.post("http://localhost:8181" + "/location/" + memberId, memberLocationDto, Map.class)
-//		webClientUtil.post(DATA_SERVER_URL + "/location/" + memberId, memberLocationDto, Map.class)
+//		webClientUtil.post("http://localhost:8181" + "/location/" + memberId, memberLocationDto, Map.class)
+		webClientUtil.post(DATA_SERVER_URL + "/location/" + memberId, memberLocationDto, Map.class)
 				.subscribe(
 						response -> {
 							log.info("위경도 전송 성공!");
