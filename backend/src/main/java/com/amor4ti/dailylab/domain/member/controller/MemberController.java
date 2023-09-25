@@ -8,9 +8,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.amor4ti.dailylab.domain.member.dto.MemberMbtiDto;
-import com.amor4ti.dailylab.domain.member.dto.MemberSimilarityDto;
-import com.amor4ti.dailylab.domain.member.dto.UpdateMemberDto;
+import com.amor4ti.dailylab.domain.member.dto.*;
 import lombok.Data;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.amor4ti.dailylab.domain.entity.Member;
-import com.amor4ti.dailylab.domain.member.dto.SignUpDto;
 import com.amor4ti.dailylab.domain.member.service.MemberService;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -180,5 +177,12 @@ public class MemberController {
 	public DataResponse getMemberSimilarityList(){
 		List<MemberSimilarityDto> memberSimilarityList = memberService.getMemberSimilarityList();
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, memberSimilarityList);
+	}
+
+	@PostMapping("/weather/location")
+	public CommonResponse getMemberLocation(@RequestBody MemberLocationDto memberLocationDto, Authentication authentication) {
+		Long memberId = Long.parseLong(authentication.getName());
+
+		return memberService.getMemberLocation(memberLocationDto, memberId);
 	}
 }

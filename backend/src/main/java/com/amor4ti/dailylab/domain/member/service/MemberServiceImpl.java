@@ -18,8 +18,12 @@ import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import com.amor4ti.dailylab.global.util.CookieUtils;
 import com.amor4ti.dailylab.global.util.JwtProvider;
+import com.amor4ti.dailylab.global.util.WebClientUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +40,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
+	@Value("${data-server-url}")
+	private String DATA_SERVER_URL;
+
 	private final MemberRepository memberRepository;
 	private final MemberStatusRepository memberStatusRepository;
 
@@ -47,6 +54,8 @@ public class MemberServiceImpl implements MemberService {
 	private final MbtiService mbtiService;
 
 	private final MemberMapper memberMapper;
+
+	private final WebClientUtil webClientUtil;
 
 	@Override
 	@Transactional
@@ -293,6 +302,26 @@ public class MemberServiceImpl implements MemberService {
 		memberStatus.setStatus("complete");
 		memberStatusRepository.save(memberStatus);
 	}
+
+	@Override
+	@Retryable(
+			maxAttempts = 3,
+			backoff = @Backoff(delay = 100L)
+	)
+	public CommonResponse getMemberLocation(MemberLocationDto memberLocationDto, Long memberId) {
+//		webClientUtil.post("http://localhost:8181" + "/location/" + memberId, memberLocationDto, Map.class)
+		webClientUtil.post(DATA_SERVER_URL + "/location/" + memberId, memberLocationDto, Map.class)
+				.subscribe(
+						response -> {
+							log.info("위경도 전송 성공!");
+						},
+						error -> {
+							throw new CustomException(ExceptionStatus.LOCATION_TRANSPORT_FAIL);
+						}
+				);
+
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
 
 	@Override
 	public DataResponse getMemberStatusByRange(Long memberId, Map<String, String> paramMap) {

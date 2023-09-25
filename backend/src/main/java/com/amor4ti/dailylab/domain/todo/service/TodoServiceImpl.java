@@ -90,7 +90,10 @@ public class TodoServiceImpl implements TodoService{
 
         for (Todo todo : todoList) {
             Category category = categoryRepository.findByCategoryId(todo.getCategory().getCategoryId())
-                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+                    .orElseThrow(() -> {
+                        System.out.println("22222");
+                        return new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND);
+                    });
 
             TodoDto todoDto = new TodoDto().toDto(todo, category);
 
@@ -111,7 +114,10 @@ public class TodoServiceImpl implements TodoService{
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
         Category category = categoryRepository.findByCategoryId(todoRegistDto.getCategoryId())
-                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+                .orElseThrow(() -> {
+                    System.out.println("333333");
+                    return new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND);
+                });
 
         MemberCategoryId memberCategoryId = MemberCategoryId.builder()
                         .categoryId(todoRegistDto.getCategoryId())
@@ -210,25 +216,11 @@ public class TodoServiceImpl implements TodoService{
             if(cnt == 8 - beforeTodoCnt)
                 break;
 
-            MemberCategoryId memberCategoryId = MemberCategoryId.builder()
-                    .memberId(memberId)
-                    .categoryId(categoryId)
-                    .build();
-
-            // 블랙리스트 체크 로직
-            if(checkBlackList(memberCategoryId)) {
-                blackListFilteringCnt++;
-                continue;
-            }
-
             Category category = categoryRepository.findByCategoryId(categoryId)
-                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
-
-            // 추천 적합도 체크 로직 및 whiteList 체크 로직
-            if(checkRecommendationFitAndWhiteList(memberCategoryId, category)) {
-                recommendationFitAndWhiteListFiliteringCnt++;
-                continue;
-            }
+                    .orElseThrow(() -> {
+                        System.out.println("111111");
+                        return new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND);
+                    });
 
             // 횟수 증가
             cnt++;
@@ -252,8 +244,6 @@ public class TodoServiceImpl implements TodoService{
         }
 
         log.info("추천 todo 개수 : " + todoRecommendedDtoList.size());
-        log.info("블랙리스트에 걸린 횟수 : " + blackListFilteringCnt);
-        log.info("추천 적합도 / 화이트리스트에 걸린 횟수 : " + recommendationFitAndWhiteListFiliteringCnt);
 
         // 코드 실행 종료 시간 기록
         Instant endTime = Instant.now();
