@@ -11,24 +11,12 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        importScripts: ["service-worker.js"],
-        // runtimeCaching: [
-        // {
-        //   urlPattern: ({url}) => url.href.includes("oauth2"),
-          
-        //   handler: "NetworkOnly",
-        //   options: {
-        //     cacheName: "oauth2-cache",
-
-        //   },
-          
-        // }]
+        importScripts: ["service-worker.js"], // 이게 제일 중요
       },
       devOptions: {
         enabled: true,
       },
       injectManifest: {
-        // swSrc: '/src/service-worker.js',
         injectionPoint: undefined
       },
       manifest: {
