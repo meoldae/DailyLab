@@ -265,4 +265,30 @@ public class MemberServiceImpl implements MemberService {
 		);
 		return memberSimilarityDtoList;
 	}
+
+	@Override
+	public CommonResponse startMemberStatus(Long memberId, LocalDate date) {
+		Optional<MemberStatus> findMemberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date);
+
+		if (findMemberStatus.isPresent()) {
+			throw new CustomException(ExceptionStatus.MEMBER_ALREADY_PROCEED);
+		}
+
+		memberStatusRepository.save(MemberStatus.builder()
+												.memberId(memberId)
+												.date(date)
+												.status("proceed")
+												.build());
+
+		return responseService.successResponse(ResponseStatus.ACCESS_MEMBER_PROCEED);
+	}
+
+	@Override
+	public void updateStatusComplete(Long memberId, LocalDate date) {
+		MemberStatus memberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date)
+				.orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+		memberStatus.setStatus("complete");
+		memberStatusRepository.save(memberStatus);
+	}
 }

@@ -16,6 +16,9 @@ public enum ResponseStatus {
     CREATE_PREDICT_DIARY("201", "일기작성 요청을 확인했습니다."),
     CREATE_CONFIRM_DIARY("201", "마무리 일기작성 요청을 확인했습니다"),
     /* Member */
+
+    ACCESS_MEMBER_PROCEED("201", "하루 시작 요청이 정상적으로 수행되었습니다."),
+    ACCESS_MEMBER_FINISH("201", "하루 마무리 요청이 정상적으로 수행되었습니다."),
     ACCESS_TOKEN_REFRESHED("1001", "액세스 토큰이 재 발급되었습니다"),
 
     SIGNUP_SUCCESS("2000", "회원 가입이 완료 되었습니다."),
