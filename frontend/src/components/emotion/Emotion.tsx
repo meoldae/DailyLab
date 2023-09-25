@@ -59,6 +59,12 @@ const Emotion = () => {
   
     return (
       <div className="">
+        <div className="absolute ml-8">
+            <div className="flex items-center">
+                <img className="w-[30px] transform scale-x-[-1]" src="./assets/img/icon/arrow_right.png" alt="" />
+                <p className="text-2xl font-semibold">돌아가기</p>
+            </div>
+        </div>
         <div className="absolute top-[100px] left-[calc(50%-150px)] h-[230px]">
             {/* lottie 시험하기 */}
             {/* <Player

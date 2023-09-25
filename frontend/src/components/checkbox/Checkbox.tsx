@@ -16,10 +16,11 @@ import {
     SwipeAction,
     TrailingActions,
   } from 'react-swipeable-list';
+  import 'react-swipeable-list/dist/styles.css';
 
   const leadingActions = () => (
     <LeadingActions>
-      <SwipeAction onClick={() => console.info('swipe action triggered')}>
+      <SwipeAction onClick={() => console.info('관심없어용')}>
       <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>
             관심없음
         </div>
@@ -29,7 +30,7 @@ import {
   
   const trailingActions = () => (
     <TrailingActions>
-        <SwipeAction destructive={false} onClick={() => console.info('swipe action triggered')}>
+        <SwipeAction destructive={false} onClick={() => console.info('삭제할랭')}>
         <div className='bg-orange flex justify-center items-center rounded-xl text-white'>
             삭제하기
         </div>
