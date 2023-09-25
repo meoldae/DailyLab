@@ -156,10 +156,17 @@ public class MemberController {
 
     @PostMapping("/start/{date}")
 	public CommonResponse startMemberStatus(Authentication authentication,
-											@PathVariable LocalDate date) {
+											@PathVariable("date") LocalDate date) {
 		Long memberId = Long.parseLong(authentication.getName());
 		return memberService.startMemberStatus(memberId, date);
+	}
 
+	@PostMapping("/end/{date}")
+	public CommonResponse endMemberStatus(Authentication authentication,
+										  @PathVariable("date") LocalDate date) {
+		Long memberId = Long.parseLong(authentication.getName());
+		memberService.updateStatusFinish(memberId, date);
+		return responseService.successResponse(ResponseStatus.ACCESS_MEMBER_FINISH);
 	}
 
 	@GetMapping("/similarity")

@@ -111,7 +111,7 @@ public class DiaryServiceImpl implements DiaryService {
                         .build())
                 .collect(Collectors.toList());
 
-        webClientUtil.post(DATA_SERVER_URL + "/diary/confirm", RequestDiaryDto.of(member, tasks), Map.class)
+        webClientUtil.post(DATA_SERVER_URL + "/diary/default", RequestDiaryDto.of(member, tasks), Map.class)
                 .subscribe(
                         response -> {
                             diaryHistoryRepository.save(DiaryHistory.builder()
