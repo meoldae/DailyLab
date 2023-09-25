@@ -5,7 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from api import weatherAPI
 from api.weatherAPI import get_weather
 from domain.diary import diaryService
-from tempSave import userLocations
+from tempSave import userLocations, weatherDict
 
 import test_router
 from domain.todo.routers import getInfoFromSpring_router, todo
@@ -43,12 +43,6 @@ async def createDiary(param: dict):
 class Location(BaseModel):
     latitude: float
     longitude: float
-
-
-# Front로부터 위도, 경도 데이터 받기
-@app.post("/weather/location")
-async def getLatitudeAndLogitude(location: Location):
-    return await get_weather(location.latitude, location.longitude)
 
 @app.post("/location/{member_id}")
 async def setLocation(member_id: int, location: Location):

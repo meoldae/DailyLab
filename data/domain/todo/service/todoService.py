@@ -6,6 +6,7 @@ from api.weatherAPI import get_weather
 from domain.todo.repository import todoRepository
 from domain.todo.contents_based_filtering import cbf
 
+from tempSave import userLocations, weatherDict
 
 def makeTodo(member_id: int, db):
     # todo 수행일 기준 미리 저장되어있는 todo 가져옴
@@ -66,5 +67,21 @@ def afterListProcess(member_id: int, resultList: list[int], db):
             category_id = remove.category_id
             if category_id - 1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
+
+    if weatherDict[member_id].rain != "강수없음":
+        print("날씨가 안좋아요.")
+
+        # csv 파일 읽기 - main 기준 파일 path
+        ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
+
+        # 11열의 값이 1인 행의 인덱스를 뽑기 (날씨)
+        condition = ds.iloc[:, 11] == 1
+        # 카테고리 ID - 1
+        filtered_indices = (ds.index[condition]).tolist()
+
+        # resultList의 인덱스와 카테고리 ID - 1가 같을 때 drop
+        resultList = resultList[~resultList.index.isin(filtered_indices)]
+
+    print(resultList)
 
     return resultList

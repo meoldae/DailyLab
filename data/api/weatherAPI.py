@@ -4,9 +4,11 @@ import time
 from fastapi import FastAPI, HTTPException, APIRouter
 from datetime import datetime, date, timedelta
 import httpx
+from pydantic import BaseModel
+
 import config
 
-from tempSave import userLocations, weatherDict
+from tempSave import userLocations, weatherDict, DefaultWeatherDict
 
 app = FastAPI()
 
@@ -22,9 +24,16 @@ YO = 136  # 기1준점 Y좌표(GRID)
 
 router = APIRouter()
 
+
+class Weather(BaseModel):
+    rain: str
+    sky: str
+    temperature: int
+    humidity: int
+
+
 @router.get("/weather/{member_id}")
 async def get_weather(member_id: int):
-
     print(userLocations)
 
     latitude = userLocations[member_id].latitude
@@ -108,8 +117,11 @@ async def get_weather(member_id: int):
 
         print(f"Weather Execution Time: {execution_time} seconds")
 
-        weatherDict[member_id] = weather_dict
-        print(weatherDict[member_id])
+        weatherDict[member_id] = DefaultWeatherDict()
+        weatherDict[member_id].rain = weather_dict['rain']
+        weatherDict[member_id].sky = weather_dict['sky']
+        weatherDict[member_id].temperature = weather_dict['temperature']
+        weatherDict[member_id].humidity = weather_dict['humidity']
 
         return weather_dict
     else:
