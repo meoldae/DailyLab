@@ -5,7 +5,9 @@ import java.util.List;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 public class MemberSimilarityDto {
 	private Long memberId;
@@ -29,23 +31,26 @@ public class MemberSimilarityDto {
 		this.mbtiC = mbtiC;
 		this.mbtiD = mbtiD;
 
-		switch (job) {
-			case "학생": this.job = 1;
-			case "무직": this.job = 2;
-			case "직장인": this.job = 3;
-			default: this.job = 0;
-		}
 
-		switch (religion) {
-			case "무교": this.religion = 1;
-			case "기독교": this.religion = 2;
-			case "불교": this.religion = 3;
-			case "천주교": this.religion = 4;
-			case "이슬람교": this.religion = 5;
-			case "힌두교": this.religion = 6;
-			case "원불교": this.religion = 7;
-			default: this.religion = 0;
-		}
+		if (job != null) {
+			switch (job) {
+				case "학생": this.job = 1; break;
+				case "무직": this.job = 2; break;
+				case "직장인": this.job = 3; break;
+			}
+		}else this.job = 0;
+
+		if (religion != null) {
+			switch (religion) {
+				case "무교": this.religion = 1; break;
+				case "기독교": this.religion = 2; break;
+				case "불교": this.religion = 3; break;
+				case "천주교": this.religion = 4; break;
+				case "이슬람교": this.religion = 5; break;
+				case "힌두교": this.religion = 6; break;
+				case "원불교": this.religion = 7; break;
+			}
+		}else this.religion = 0;
 	}
 
 	public int getAgeGroup(LocalDate birthday) {
