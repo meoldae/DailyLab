@@ -15,7 +15,9 @@ import com.amor4ti.dailylab.global.util.CookieUtils;
 import com.amor4ti.dailylab.global.util.JwtProvider;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
@@ -29,7 +31,7 @@ public class AuthServiceImpl implements AuthService{
 
 		// 만료 X
 		if (!jwtProvider.isExpired(refreshToken)) {
-			Long memberId = jwtProvider.getClaimFromToken(accessToken, "memberId");
+			Long memberId = jwtProvider.getClaimFromToken(refreshToken, "memberId");
 			Member findMember = memberRepository.findById(memberId).orElseThrow(
 				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 			);

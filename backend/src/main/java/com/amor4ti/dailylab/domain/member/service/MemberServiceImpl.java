@@ -72,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		String accessToken = jwtProvider.createAccessToken(findMember);
 
-		String refreshToken = jwtProvider.createRefreshToken();
+		String refreshToken = jwtProvider.createRefreshToken(findMember.getMemberId());
 		Cookie cookie = cookieUtils.createCookie(refreshToken);
 		response.addCookie(cookie);
 

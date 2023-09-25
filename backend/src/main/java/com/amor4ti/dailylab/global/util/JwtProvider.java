@@ -49,11 +49,16 @@ public class JwtProvider {
 			.compact();
 	}
 
-	public String createRefreshToken() {
+	public String createRefreshToken(Long memberId) {
 		Date now = new Date();
 		Date expireDate = new Date(now.getTime() + REFRESH_TOKEN_VALIDATE_TIME);
 
+
+		Map<String, Object> payloads = new HashMap<>();
+		payloads.put("memberId", Long.toString(memberId));
+
 		return Jwts.builder()
+			.setClaims(payloads)
 			.setSubject("refresh")
 			.setIssuedAt(now)
 			.setExpiration(expireDate)
