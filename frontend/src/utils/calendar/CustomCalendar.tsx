@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { GetMode } from "@/atom/modeAtom";
 import leftArrowImgLight from './assets/img/custom_calendar_month_arrow_left_light.png';
 import leftArrowImgDark from './assets/img/custom_calendar_month_arrow_left_dark.png';
@@ -17,8 +17,9 @@ interface CalendarProps {
 const CustomCalendar = (props : CalendarProps) => {
     const isLight = GetMode() == 'light';
 
-
-    for(let i=props.firstDate.getDay(); i > 1; i--) props.dateContents.unshift(<div></div>);
+    useEffect(() => {
+        for(let i=props.firstDate.getDay(); i > 1; i--) props.dateContents.unshift(<div></div>);
+    }, []);
 
     return (   
         <div>

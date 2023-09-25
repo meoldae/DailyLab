@@ -1,55 +1,66 @@
 import { useState, useEffect } from 'react';
 import CustomCalendar from '@/utils/calendar/CustomCalendar';
-import { toStringByFormatting } from '@/utils/date/DateFormatter';
+import { getMonthFirstDate, getMonthLastDate, toStringByFormatting } from '@/utils/date/DateFormatter';
+import { getMonthScheduleList } from '@/api/Schedule';
+import { ScheduleType } from '@/type/ScheduleType';
 import ScheduleItem from './item/ScheduleItem';
+import ScheduleView from './ScheduleView';
 
 const Schedule = () => {
 
     const [curDate, setCurDate] = useState<Date>(new Date());
+    const [selectedDate, setSelectedDate] = useState("");
     const [curMonth, setCurMonth] = useState<number>(curDate.getMonth() + 1);
     const [firstDate, setFirstDate] = useState<Date>(new Date(curDate.getFullYear(), curDate.getMonth(), 1));
     const [lastDate, setLastDate] = useState<Date>(new Date(curDate.getFullYear(), curDate.getMonth() + 1, 0));
-    const [dateList, setDateList] = useState<JSX.Element[]>([]);
+    const [dateContentsList, setDateContentsList] = useState<JSX.Element[]>([]);
 
-    const getDateList = async () => {
-        const result:JSX.Element[] = [];
-        const tempFirstDate = new Date(firstDate);
-        const tempLastDate = new Date(lastDate);
-        while(tempFirstDate.getTime() != tempLastDate.getTime()){
-            result.push(<ScheduleItem dateText={tempFirstDate.getDate()}/>);
-            tempFirstDate.setDate(tempFirstDate.getDate() + 1);
-        }
-        result.push(<ScheduleItem dateText={tempLastDate.getDate()}/>);
-        setDateList(() => result);
+    const getDateConentsList = async () => {
+        await getMonthScheduleList(
+            {startDay : toStringByFormatting(firstDate), endDay : toStringByFormatting(lastDate)},
+            ({data}) => {
+                const elementList:JSX.Element[] = [];
+                const dataList:ScheduleType[] = data.data as ScheduleType[];
+                dataList.map((item) => {
+                    const clickStatus = item.status === "finish";
+                    elementList.push(<ScheduleItem dateText={item.selectedDate} clickStatus={clickStatus} clickEvent={selectDateClickEvent} />);
+                });
+                setDateContentsList(() => elementList);
+            }, (error) => console.log(error));
+    }
+
+    function selectDateClickEvent(selectDate: string) {
+        setSelectedDate(() => selectDate);
     }
 
     useEffect(() => {
         setCurMonth(() => curDate.getMonth() + 1);
-        const initDateYear = curDate.getFullYear();
-        const initDateMonth = curDate.getMonth();
-        setFirstDate(() => new Date(initDateYear, initDateMonth, 1));
-        setLastDate(() => new Date(initDateYear, initDateMonth + 1, 0));
+        setFirstDate(() => getMonthFirstDate(curDate));
+        setLastDate(() => getMonthLastDate(curDate));
     }, [curDate]);
 
     useEffect(() => {
-        getDateList();
+        getDateConentsList();
     },[firstDate, lastDate]);
 
     function prevMonthEvent(){
         const prevMonth = new Date(curDate);
         prevMonth.setMonth(prevMonth.getMonth() - 1);
         setCurDate(() => prevMonth);
+        setSelectedDate(() => "");
     }
 
     function nextMonthEvent(){
         const nextMonth = new Date(curDate);
         nextMonth.setMonth(nextMonth.getMonth() + 1);
         setCurDate(() => nextMonth);
+        setSelectedDate(() => "");
     }
 
     return (
         <>
-            <CustomCalendar curMonth={curMonth!} firstDate={firstDate!} lastDate={lastDate!} dateContents={dateList} prevMonthEvent={prevMonthEvent} nextMonthEvent={nextMonthEvent} />
+            <CustomCalendar curMonth={curMonth!} firstDate={firstDate!} lastDate={lastDate!} dateContents={dateContentsList} prevMonthEvent={prevMonthEvent} nextMonthEvent={nextMonthEvent} />
+            {selectedDate != "" ? <ScheduleView selectedDate={selectedDate} /> : null}
         </>
     )
 }
