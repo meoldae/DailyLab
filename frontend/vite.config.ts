@@ -11,7 +11,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        importScripts: ["servcie-worker.js"],
+        importScripts: ["service-worker.js"],
         // runtimeCaching: [
         // {
         //   urlPattern: ({url}) => url.href.includes("oauth2"),
@@ -26,7 +26,6 @@ export default defineConfig({
       },
       devOptions: {
         enabled: true,
-        type: "module",
       },
       injectManifest: {
         // swSrc: '/src/service-worker.js',
