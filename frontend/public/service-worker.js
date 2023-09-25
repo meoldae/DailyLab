@@ -6,11 +6,11 @@
 // code you'd like.
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
-import { clientsClaim } from "workbox-core";
-import { ExpirationPlugin } from "workbox-expiration";
-import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
-import { registerRoute } from "workbox-routing";
-import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
+// import { clientsClaim } from "workbox-core";
+// import { ExpirationPlugin } from "workbox-expiration";
+// import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+// import { registerRoute } from "workbox-routing";
+// import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
 
 // importScripts("workbox-core.js");
 // importScripts("workbox-expiration.js");
@@ -25,43 +25,43 @@ import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
 // const { registerRoute } = workbox.routing;
 // const { StaleWhileRevalidate, NetworkOnly } = workbox.strategies;
 
-clientsClaim();
+// clientsClaim();
 
-precacheAndRoute(self.__WB_MANIFEST);
+// precacheAndRoute(self.__WB_MANIFEST);
 
-const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
+// const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
 
-registerRoute(({ request, url }) => {
-  if (request.mode !== "navigate") {
-    return false;
-  }
+// registerRoute(({ request, url }) => {
+//   if (request.mode !== "navigate") {
+//     return false;
+//   }
 
-  if (url.pathname.startsWith("/_")) {
-    return false;
-  }
+//   if (url.pathname.startsWith("/_")) {
+//     return false;
+//   }
 
-  if (url.pathname.match(fileExtensionRegexp)) {
-    return false;
-  }
+//   if (url.pathname.match(fileExtensionRegexp)) {
+//     return false;
+//   }
 
-  return true;
-}, createHandlerBoundToURL(import.meta.env.VITE_DEV + "/index.html"));
-// }, createHandlerBoundToURL("/index.html"));
+//   return true;
+// }, createHandlerBoundToURL(import.meta.env.VITE_DEV + "/index.html"));
+// // }, createHandlerBoundToURL("/index.html"));
 
-registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith(".png"),
-  new StaleWhileRevalidate({
-    cacheName: "images",
-    plugins: [new ExpirationPlugin({ maxEntries: 50 })],
-  })
-);
+// registerRoute(
+//   ({ url }) => url.origin === self.location.origin && url.pathname.endsWith(".png"),
+//   new StaleWhileRevalidate({
+//     cacheName: "images",
+//     plugins: [new ExpirationPlugin({ maxEntries: 50 })],
+//   })
+// );
 
-registerRoute(
-  ({ url }) => url.href.includes("/oauth2"),
-  new NetworkOnly({
-    cacheName: "oauth2-cache",
-  })
-);
+// registerRoute(
+//   ({ url }) => url.href.includes("/oauth2"),
+//   new NetworkOnly({
+//     cacheName: "oauth2-cache",
+//   })
+// );
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
