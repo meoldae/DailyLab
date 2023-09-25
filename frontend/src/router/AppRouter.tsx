@@ -29,6 +29,7 @@ const AppRouter = () => {
                     <Route path="/statistics" element={<AppStatistics />} />
                     <Route path="/mypage" element={<AppMyPage />} />
                     <Route path="/loading" element={<AppLoading />} />
+                    <Route path="/emotion" element={<AppEmotion/>}/>
                 </Route>
                 <Route element={<AuthRoute authentication="NotUser"/>}>    
                     <Route path="/login" element={<AppLogin />} />
@@ -37,7 +38,6 @@ const AppRouter = () => {
                 <Route path="/intro" element={<AppIntro />} />
                 <Route path="/memberInfo" element={<AppSignUp />} />
                 <Route path="/*" element={<AppNotFound/>}/>
-                <Route path="/emotion" element={<AppEmotion/>}/>
             </Routes>
         </BrowserRouter>
     )
