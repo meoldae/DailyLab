@@ -7,41 +7,42 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig({
   plugins: [
     react(),
-    // VitePWA({
-    //   registerType: "autoUpdate",
-    //   injectRegister: "auto",
-    //   workbox: {
-    //     // runtimeCaching: [
-    //     // {
-    //     //   urlPattern: ({url}) => url.href.includes("oauth2"),
+    VitePWA({
+      registerType: "autoUpdate",
+      injectRegister: "auto",
+      workbox: {
+        importScripts: ["servcie-worker.js"],
+        // runtimeCaching: [
+        // {
+        //   urlPattern: ({url}) => url.href.includes("oauth2"),
           
-    //     //   handler: "NetworkOnly",
-    //     //   options: {
-    //     //     cacheName: "oauth2-cache",
+        //   handler: "NetworkOnly",
+        //   options: {
+        //     cacheName: "oauth2-cache",
 
-    //     //   },
+        //   },
           
-    //     // }]
-    //   },
-    //   devOptions: {
-    //     enabled: true,
-    //     type: "module",
-    //   },
-    //   injectManifest: {
-    //     swSrc: 'src/service-worker.js',
-    //     injectionPoint: undefined
-    //   },
-    //   manifest: {
-    //     icons: [
-    //       {
-    //         src: "icons/coco_icon.png",
-    //         sizes: "192x192",
-    //         type: "image/png",
-    //         purpose: "any maskable",
-    //       },
-    //     ],
-    //   },
-    // }),
+        // }]
+      },
+      devOptions: {
+        enabled: true,
+        type: "module",
+      },
+      injectManifest: {
+        // swSrc: '/src/service-worker.js',
+        injectionPoint: undefined
+      },
+      manifest: {
+        icons: [
+          {
+            src: "icons/coco_icon.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any maskable",
+          },
+        ],
+      },
+    }),
   ],
   resolve: {
     alias: [
