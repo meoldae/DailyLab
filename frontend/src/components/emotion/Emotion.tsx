@@ -4,12 +4,14 @@ import { getEmotionList, putEmotion } from "@/api/Emotion";
 import { EmotionType } from "@/type/EmotionType";
 import { Player } from '@lottiefiles/react-lottie-player';
 import { addHours } from "date-fns";
+import { useNavigate } from "react-router";
 
 const Emotion = () => {
     const playerRef = useRef<Player | null>(null);
     const handlePlay = () => playerRef.current?.play();
 //  const handleStop = () => playerRef.current.stop();
     const handlePause = () => playerRef.current?.pause();
+    const navigate = useNavigate();
 
     const [circleCount, setCircleCount] = useState(0);
     const [emotionNo, setEmotionNo] = useState(1); 
@@ -60,7 +62,7 @@ const Emotion = () => {
     return (
       <div className="">
         <div className="absolute ml-8">
-            <div className="flex items-center">
+            <div onClick={() => navigate('/')} className="flex items-center">
                 <img className="w-[30px] transform scale-x-[-1]" src="./assets/img/icon/arrow_right.png" alt="" />
                 <p className="text-2xl font-semibold">돌아가기</p>
             </div>
