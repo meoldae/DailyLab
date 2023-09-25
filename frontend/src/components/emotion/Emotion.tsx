@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import EmotionMatter from "./EmotionMatter";
-import { getEmotionList } from "@/api/Emotion";
+import { getEmotionList, putEmotion } from "@/api/Emotion";
 import { EmotionType } from "@/type/EmotionType";
 import { Player } from '@lottiefiles/react-lottie-player';
+import { addHours } from "date-fns";
 
 const Emotion = () => {
     const playerRef = useRef<Player | null>(null);
@@ -20,11 +21,29 @@ const Emotion = () => {
         setEmotionNo(emoId); // 버튼 클릭 시 emotionNo를 변경합니다.
         setEmotionName(name);
         setEmotionType(type);
+        updateEmotion(emoId);
         setCircleCount(prevCount => prevCount + 1);
         handlePlay();
         setTimeout(() => {
             handlePause(); 
         }, 300); 
+    };
+
+    const updateEmotion = async (emotionId : number) => {
+        const now = new Date();
+        const newDate = addHours(now, 9);
+        const formattedDateTime = newDate.toISOString().slice(0, 16).replace("T", " ");
+
+        console.log(emotionId, formattedDateTime)
+        const emotionData = {
+            emotionId: emotionId,
+            timeStamp: formattedDateTime
+        };
+
+        await putEmotion(emotionData,({ data }) => {
+            console.log(data);
+        }, (error) => {console.log(error)});
+
     };
 
     const getList = async () => {
