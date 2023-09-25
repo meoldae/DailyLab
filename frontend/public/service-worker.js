@@ -16,7 +16,6 @@ self.addEventListener("message", event => {
 // Modified fetch event handler
 self.addEventListener("fetch", event => {
   const checkurl = event.request.url;
-  console.log(checkurl);
 
   if (checkurl.includes("/oauth2")) {
     event.respondWith(fetch(event.request));
