@@ -14,15 +14,6 @@ public class MemberEmotionDayDto {
 
     private int emotionId;
     private String type;
-    private String date;
     private String timeStamp;
 
-    public static MemberEmotionDayDto of(MemberEmotion memberEmotion) {
-        return MemberEmotionDayDto.builder()
-                            .emotionId(memberEmotion.getEmotionId())
-                            .type(memberEmotion.getType())
-                            .date(memberEmotion.getDate())
-                            .timeStamp(memberEmotion.getTimestamp())
-                            .build();
-    }
 }
