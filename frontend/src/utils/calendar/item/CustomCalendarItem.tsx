@@ -1,11 +1,11 @@
 interface CalendarItemProps {
-    selectDate : string
+    selectDate? : string
 }
 
 const CustomCalendarItem = (props : CalendarItemProps) => {
     return (
         <div>
-            {Number(props.selectDate.split('-')[2]) > 0 ? Number(props.selectDate.split('-')[2]) : ""}
+            {props.selectDate != null && props.selectDate != "" ? Number(props.selectDate.split('-')[2]) : null}
         </div>
     )
 }

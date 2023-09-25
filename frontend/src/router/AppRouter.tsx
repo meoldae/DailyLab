@@ -12,6 +12,7 @@ import AppSignUp from "@/pages/AppSignUp";
 import AppRedirect from "@/pages/AppRedirect";
 import AppNotFound from "@/error/AppNotFound";
 import AppLoading from "@/pages/AppLoading";
+import AppLogout from "@/pages/AppLogout";
 import AppEmotion from "@/pages/AppEmotion";
 // import { SetAccessToken } from "@/atom/UserAtom";
 
@@ -29,6 +30,7 @@ const AppRouter = () => {
                     <Route path="/statistics" element={<AppStatistics />} />
                     <Route path="/mypage" element={<AppMyPage />} />
                     <Route path="/loading" element={<AppLoading />} />
+                    <Route path="/logout" element={<AppLogout />} />
                 </Route>
                 <Route element={<AuthRoute authentication="NotUser"/>}>    
                     <Route path="/login" element={<AppLogin />} />

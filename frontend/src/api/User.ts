@@ -9,4 +9,8 @@ const getStatus = async (success: (data : {data : ReturnType}) => void, fail: (e
     await HttpJson.get(`member/status`).then(success).catch(fail);
 }
 
-export { UpdateSignUp, getStatus };
+const refreshToken = async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.post(`auth/refresh`).then(success).catch(fail);
+}
+
+export { UpdateSignUp, getStatus, refreshToken };
