@@ -37,18 +37,18 @@ public class EmotionServiceImpl implements EmotionService {
         return emotionRepository.findAll();
     }
 
-    public void registerEmotion(Long memberId, RegisterMemberEmotionDto requestDto) {
+    public void registerEmotion(RegisterMemberEmotionDto requestDto) {
         String[] dates = requestDto.getTimeStamp().split(" ");
 
         String date = dates[0];
         String timestamp = dates[1];
 
         // 해당 memberId와 date에 해당하는 도큐먼트 조회
-        Optional<MemberEmotion> memberEmotionDay = memberEmotionRepository.findByMemberIdAndDate(memberId, date);
+        Optional<MemberEmotion> memberEmotionDay = memberEmotionRepository.findByMemberIdAndDate(requestDto.getMemberId(), date);
 
         if (!memberEmotionDay.isPresent()) {
             // 도큐먼트가 없는 경우, 새로운 도큐먼트 생성
-            MemberEmotion newEmotionDay = MemberEmotion.build(memberId, date, new ArrayList<>());
+            MemberEmotion newEmotionDay = MemberEmotion.build(requestDto.getMemberId(), date, new ArrayList<>());
 
             newEmotionDay.getEmotions().add(new EmotionDetail(requestDto.getEmotionId(), timestamp));
             memberEmotionRepository.save(newEmotionDay);
