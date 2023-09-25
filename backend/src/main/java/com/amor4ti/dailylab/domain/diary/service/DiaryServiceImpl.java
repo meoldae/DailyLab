@@ -111,7 +111,7 @@ public class DiaryServiceImpl implements DiaryService {
                         .build())
                 .collect(Collectors.toList());
 
-        webClientUtil.post(DATA_SERVER_URL + "/diary/confirm", RequestDiaryDto.of(member, tasks), Map.class)
+        webClientUtil.post(DATA_SERVER_URL + "/diary/default", RequestDiaryDto.of(member, tasks), Map.class)
                 .subscribe(
                         response -> {
                             diaryHistoryRepository.save(DiaryHistory.builder()
@@ -121,7 +121,8 @@ public class DiaryServiceImpl implements DiaryService {
                                                                     .content(String.valueOf(response.get("content")))
                                                                     .similarity(0.0)
                                                                     .build());
-                            memberService.updateStatusFinish(memberId, date);
+
+                            memberService.updateStatusComplete(memberId, date);
                         },
                         error -> {
                             new CustomException(ExceptionStatus.DIARY_CANNOT_WRITE);

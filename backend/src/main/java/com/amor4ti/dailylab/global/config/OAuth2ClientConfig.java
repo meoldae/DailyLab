@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.global.config;
 
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.global.exception.CustomAuthenticationEntryPoint;
 import com.amor4ti.dailylab.global.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 
@@ -59,6 +60,8 @@ public class OAuth2ClientConfig {
 		http.authorizeRequests()
 			.antMatchers(ignoredUrls).permitAll()
 			.anyRequest().authenticated()
+			.and()
+			.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 			.and()
 			.addFilterBefore(new CustomAuthenticationFilter(jwtProvider, memberRepository), UsernamePasswordAuthenticationFilter.class);
 
