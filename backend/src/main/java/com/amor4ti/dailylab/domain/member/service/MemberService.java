@@ -12,6 +12,7 @@ import com.amor4ti.dailylab.global.response.DataResponse;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 
@@ -53,4 +54,6 @@ public interface MemberService {
     CommonResponse startMemberStatus(Long memberId, LocalDate date);
 
     void updateStatusComplete(Long memberId, LocalDate date);
+
+    DataResponse getMemberStatusByRange(Long memberId, Map<String, String> paramMap);
 }

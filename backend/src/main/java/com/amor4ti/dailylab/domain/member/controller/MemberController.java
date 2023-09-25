@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.member.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -167,6 +168,12 @@ public class MemberController {
 		Long memberId = Long.parseLong(authentication.getName());
 		memberService.updateStatusFinish(memberId, date);
 		return responseService.successResponse(ResponseStatus.ACCESS_MEMBER_FINISH);
+	}
+
+	@PostMapping("/calendar")
+	public DataResponse getMemberStatusByRange(Authentication authentication, @RequestBody Map<String, String> paramMap) {
+		Long memberId = Long.parseLong(authentication.getName());
+		return memberService.getMemberStatusByRange(memberId, paramMap);
 	}
 
 	@GetMapping("/similarity")
