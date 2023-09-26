@@ -23,7 +23,7 @@ public class ForceCompleteScheduler {
 	private final TodoService todoService;
 	private final MemberService memberService;
 
-	@Scheduled(cron = "30 0 0 * * *")
+	@Scheduled(cron = "30 * * * * *")
 	@Transactional
 	public void forceCompleteDay() {
 		LocalDate today = LocalDate.now().minusDays(1);
