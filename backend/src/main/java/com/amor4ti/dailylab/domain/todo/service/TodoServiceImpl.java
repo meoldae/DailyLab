@@ -216,6 +216,8 @@ public class TodoServiceImpl implements TodoService{
             if(cnt == 8 - beforeTodoCnt)
                 break;
 
+            log.info("categoryId : " + categoryId);
+
             Category category = categoryRepository.findByCategoryId(categoryId)
                     .orElseThrow(() -> {
                         System.out.println("111111");
