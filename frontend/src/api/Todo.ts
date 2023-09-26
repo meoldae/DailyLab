@@ -44,7 +44,7 @@ const getDefaultTodoList = async (todoDate: string, success: (data : {data : Ret
     await HttpJson.get(`todo/${todoDate}`).then(success).catch(fail);
 }
 
-const getPlanTodoList = async (todoDate: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+const getTodoList = async (todoDate: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.get(`todo/full/${todoDate}`).then(success).catch(fail);
 }
 
@@ -78,4 +78,4 @@ const blackTodoItems = async (param: ListIdxType, success: (data : {data : Retur
     await HttpJson.post(`category/blacklist/black`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export { addTodoItem, getDefaultTodoList, checkUpdateTodoItem, blackTodoItems, setStatusProceed, setStatusFinish, getCategoryList, getPlanTodoList, makePlanTodoList, deleteTodoItems };
+export { addTodoItem, getDefaultTodoList, checkUpdateTodoItem, blackTodoItems, setStatusProceed, setStatusFinish, getCategoryList, getTodoList, makePlanTodoList, deleteTodoItems };
