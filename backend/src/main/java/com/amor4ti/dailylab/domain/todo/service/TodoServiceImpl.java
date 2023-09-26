@@ -192,11 +192,13 @@ public class TodoServiceImpl implements TodoService{
 
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             // 카테고리 ID (랭킹)
-            CategoryIdList.add(Long.parseLong(entry.getKey()));
+            CategoryIdList.add(Long.parseLong(entry.getKey()) - 1);
             
             // 점수 (랭킹)
             ScoreList.add(entry.getValue().getAsDouble());
         }
+
+        log.info(CategoryIdList.toString());
 
         // 빈 추천 Todo 객체
         List<TodoRecommendedDto> todoRecommendedDtoList = new ArrayList<>();
@@ -217,6 +219,9 @@ public class TodoServiceImpl implements TodoService{
                 break;
 
             log.info("categoryId : " + categoryId);
+
+            if(categoryId == 0)
+                continue;
 
             Category category = categoryRepository.findByCategoryId(categoryId)
                     .orElseThrow(() -> {
