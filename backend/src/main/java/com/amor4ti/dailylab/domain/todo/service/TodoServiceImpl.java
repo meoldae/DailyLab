@@ -192,7 +192,7 @@ public class TodoServiceImpl implements TodoService{
 
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             // 카테고리 ID (랭킹)
-            CategoryIdList.add(Long.parseLong(entry.getKey()) - 1);
+            CategoryIdList.add(Long.parseLong(entry.getKey()) + 1);
             
             // 점수 (랭킹)
             ScoreList.add(entry.getValue().getAsDouble());
