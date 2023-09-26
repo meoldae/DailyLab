@@ -65,7 +65,7 @@ const BarChart = ({emotionResultList, emotionList} : {emotionResultList: Emotion
     return (
       <div className="text-right">
         <button onClick={toggleHorizontal}>
-          <div className="mr-8 w-[50px] h-[25px] rounded-xl flex items-center justify-center bg-gray text-primary font-semibold text-xl">
+          <div className="-mb-[50px] mr-8 w-[50px] h-[25px] rounded-xl flex items-center justify-center bg-gray text-primary font-semibold text-xl">
             {horizontal ? "시간" : "개수"}
           </div>
         </button>

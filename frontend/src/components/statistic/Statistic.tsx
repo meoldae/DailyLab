@@ -32,8 +32,8 @@ const Statistic = () => {
                 </div>
                 {/* 감정 통계 */}
                 <div className="pt-[30px]">
-                    <div className="text-center font-semibold text-2xl mb-4">
-                        이번 달은 분노를 가장 많이 느꼈어요
+                    <div className="text-center font-semibold text-2xl mb-8">
+                        이번 달은 가장 많이 느낀 감정은 황당이에요
                     </div>
                     <DailyChart selectDate='2023-09-26' />
                 </div>

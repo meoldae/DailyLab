@@ -7,7 +7,7 @@ const TasteChart = () => {
       type: 'donut',
       fontFamily:'pretendard',
       foreColor: '#acacac',
-      
+      width: 100,
       animations: {
         enabled: true,
         easing: 'easeinout',
@@ -21,6 +21,9 @@ const TasteChart = () => {
             speed: 350
         }
         },
+    },
+    legend: {
+      position: 'top', // 이 부분을 추가하여 legend의 위치를 설정합니다.
     },
     stroke: {
         colors: ['#6666660']
@@ -37,17 +40,6 @@ const TasteChart = () => {
           offsetY: 10
         }
     },
-    responsive: [{
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 300,
-        },
-        legend: {
-            position: 'top',
-        }
-      }
-    }],
     labels: ['단맛', '쓴맛', '짠맛', '신맛', '매운맛'],
     colors: ['#ff3251e1', '#ffa640', '#ffe70e', '#63c23d', '#2cb0ee'],
     dataLabels: {
@@ -56,7 +48,7 @@ const TasteChart = () => {
   };
 
   return (
-    <div className='flex justify-center items-center'>
+    <div className='flex h-[300px] justify-center items-center'>
       <ReactApexChart options={options} series={series} type="donut" />
     </div>
   );
