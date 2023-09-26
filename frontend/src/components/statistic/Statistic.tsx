@@ -1,5 +1,3 @@
-import SetPeriod from "./SetPeriod";
-
 const Statistic = () => {
     return (
         <>
@@ -8,7 +6,6 @@ const Statistic = () => {
                 <p className="-mt-4 text-2xl font-semibold">마르코의 연구결과에요</p>
             </div>
             <div className="bg_contents_con p-[20px] -mt-[30px] relative">
-                <SetPeriod />
             </div>
         </>
     )
