@@ -10,4 +10,20 @@ function toStringByFormatting(selectDate: Date, delimiter: string="-") {
     return [year, month, day].join(delimiter);
 }
 
-export {leftPad, toStringByFormatting};
+function getMonthFirstDate(selectDate: Date){
+    const initDateYear = selectDate.getFullYear();
+    const initDateMonth = selectDate.getMonth();
+    return new Date(initDateYear, initDateMonth, 1);
+}
+
+function getMonthLastDate(selectDate: Date){
+    const initDateYear = selectDate.getFullYear();
+    const initDateMonth = selectDate.getMonth();
+    return new Date(initDateYear, initDateMonth + 1, 0);
+}
+
+function fromStringtoDate(stringDate: string) {
+    return new Date(stringDate);
+}
+
+export {leftPad, toStringByFormatting, getMonthFirstDate, getMonthLastDate, fromStringtoDate};
