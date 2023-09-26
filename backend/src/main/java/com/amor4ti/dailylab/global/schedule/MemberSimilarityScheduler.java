@@ -37,7 +37,7 @@ public class MemberSimilarityScheduler {
 	)
 	public void MemberSimilaritySchedule() {
 		List<MemberSimilarityDto> memberSimilarityList = memberService.getMemberSimilarityList();
-		webClientUtil.post(DATA_SERVER_URL + "/member", memberSimilarityList, List.class)
+		webClientUtil.post(DATA_SERVER_URL + "/member/make", memberSimilarityList, List.class)
 			.subscribe(
 				response -> {
 					log.info("Member Similarity 전송 완료");
