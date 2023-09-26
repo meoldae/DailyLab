@@ -69,6 +69,7 @@ public class CategoryServiceImpl implements CategoryService{
             categoryConverter.addCategoryToResult(result, large, medium, small, categoryId);
         }
 
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) result.get("list");
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, dataList);
     }
 }
