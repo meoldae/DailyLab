@@ -1,8 +1,10 @@
 package com.amor4ti.dailylab.domain.emotion.service;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionAggregateCount;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.ResponseEmotionAggregate;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
 
 import java.time.LocalDate;
@@ -17,5 +19,5 @@ public interface EmotionService {
 
     List<MemberEmotionPeriodDto> getEmotionsBetweenDates(Long memberId, String startDate, String endDate);
 
-    void getEmotionsAggregate(String date);
+    List<ResponseEmotionAggregate> getEmotionsAggregate(Long memberId, LocalDate startDate, LocalDate endDate);
 }

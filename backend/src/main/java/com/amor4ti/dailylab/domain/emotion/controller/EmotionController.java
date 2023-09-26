@@ -1,8 +1,10 @@
 package com.amor4ti.dailylab.domain.emotion.controller;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionAggregateCount;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.ResponseEmotionAggregate;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
 import com.amor4ti.dailylab.global.rabbitmq.MessagePublisher;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -64,10 +67,12 @@ public class EmotionController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
-    @GetMapping("/test/{date}")
-    private CommonResponse findTestData(Authentication authentication,
-                                      @PathVariable("date") String date) {
-        emotionService.getEmotionsAggregate(date);
-        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    @GetMapping("/aggregate")
+    private DataResponse findAggregateEmotion(Authentication authentication,
+                                              @RequestParam("startdate") LocalDate startDate,
+                                              @RequestParam("enddate") LocalDate endDate) {
+        Long memberId = Long.parseLong(authentication.getName());
+        List<ResponseEmotionAggregate> result = emotionService.getEmotionsAggregate(memberId, startDate, endDate);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 }

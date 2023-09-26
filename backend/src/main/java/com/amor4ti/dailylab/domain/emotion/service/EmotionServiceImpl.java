@@ -12,6 +12,8 @@ import com.amor4ti.dailylab.domain.emotion.mongorepo.MemberEmotionRepository;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.member.dto.EmotionMemberDto;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.global.exception.CustomException;
+import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.mongodb.BasicDBObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -169,27 +171,28 @@ public class EmotionServiceImpl implements EmotionService {
     }
 
     @Override
-    public void getEmotionsAggregate(String date) {
-        // 1. 오늘의 Emotion Value 전부 가져오기
-        Query query = new Query();
-        query.addCriteria(Criteria.where("date").is(date));
-        List<EmotionAggregateDto> memberEmotions = mongoTemplate.find(query, EmotionAggregateDto.class, "member_emotion");
+    public List<ResponseEmotionAggregate> getEmotionsAggregate(Long memberId, LocalDate startDate, LocalDate endDate) {
+        Member member = memberRepository.findMemberByMemberId(memberId).
+                        orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
-        // 2. 단일 조회로 전체 회원 정보 가져오기
-        List<Long> memberIds = memberEmotions.stream()
-                                             .map(EmotionAggregateDto::getMemberId)
-                                             .collect(Collectors.toList());
+        int ageId = Period.between(member.getBirthday(), LocalDate.now()).getYears() / 10;
+        String gender = member.getGender();
 
-        List<Member> findMembers = memberRepository.findAllById(memberIds);
+        List<EmotionAggregate> aggregates =
+                emotionAggregateRepository.findByAgeIdAndGenderAndDateBetween(ageId, gender, startDate, endDate)
+                                          .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AGGREGATE));
 
-        List<EmotionMemberDto> membersInfo = findMembers.stream()
-                                                        .map(EmotionMemberDto::of)
-                                                        .collect(Collectors.toList());
+        List<ResponseEmotionAggregate> result = new ArrayList<>();
 
-        Map<String, Integer> aggregateData = aggregateData(memberEmotions, membersInfo);
+        for (EmotionAggregate aggregate : aggregates) {
+            ResponseEmotionAggregate emotions = ResponseEmotionAggregate.builder()
+                                                                        .date(aggregate.getDate())
+                                                                        .emotions(EmotionAggregateCount.of(aggregate))
+                                                                        .build();
+            result.add(emotions);
+        }
 
-        // 3. 집계된 데이터 DB에 PUSH
-        saveAggregatedData(aggregateData, date);
+        return result;
     }
 
     /**

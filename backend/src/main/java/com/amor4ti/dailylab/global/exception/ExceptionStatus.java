@@ -15,6 +15,9 @@ public enum ExceptionStatus {
 	DIARY_CANNOT_WRITE("-400", "일기 작성아 실패했습니다."),
 	DIARY_DAY_NOT_EXIST("-400", "오늘 작성된 일기가 없습니다."),
 
+	/* Emotion */
+	NOT_FOUND_AGGREGATE("-4000", "조회 가능한 데이터가 없습니다"),
+
 	TOKEN_EXPIRED("-1000", "토큰이 만료되었습니다."),
 	REFRESH_TOKEN_EXPIRED("-1001", "토큰이 만료되었습니다."),
 	TOKEN_NOT_FOUND_IN_COOKIE("-1002", "토큰이 없습니다."),
