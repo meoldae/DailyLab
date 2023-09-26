@@ -41,7 +41,7 @@ class CategoryChart extends React.Component {
           },
         plotOptions: {
           bar: {
-            barHeight: '100%',
+            barHeight: '80%',
             distributed: true,
             horizontal: true,
             dataLabels: {
@@ -49,6 +49,7 @@ class CategoryChart extends React.Component {
             },
           }
         },
+        // colors: ['#12ab48a4', '#b2b2b294', '#12ab48a4', '#b2b2b294', '#12ab48a4', '#b2b2b294'],
         colors: ['#ff3251e1', '#ffa640', '#ffe70e', '#63c23d', '#2cb0ee', '#702cee'],
         dataLabels: {
           enabled: false,
