@@ -1,5 +1,12 @@
-import { getCategoryList } from "@/api/Todo";
+import { addTodoItem, getCategoryList } from "@/api/Todo";
 import { useEffect, useState } from "react";
+
+interface NewTodo{
+	categoryId : number,
+	content : string,
+	todoDate : string,
+	isSystem : number,
+}
 
 interface SmallCategory {
     name: string;
@@ -33,9 +40,10 @@ interface CheckboxProps {
     setInputState: () => void,
 }
 
-const CheckboxCategory: React.FC<Partial<CheckboxProps>> = ({ todoId, content, large, medium, small, setInputState }) => {
+const CheckboxCategory: React.FC<Partial<CheckboxProps>> = ({ todoId, content, large, medium, small, setInputState, categoryId }) => {
     const [newTodoContent, setNewTodoContent] = useState(content === null ? '' : content);
     const [categories, setCategories] = useState<LargeCategory[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState(categoryId)
     const [selectedCategories, setSelectedCategories] = useState({
         firstCategory: '',
         secondCategory: '',
@@ -76,18 +84,59 @@ const CheckboxCategory: React.FC<Partial<CheckboxProps>> = ({ todoId, content, l
     
     const handleCategoryChange = (e) => {
         const { name, value } = e.target;
+    
+        if (name === "thirdCategory") {
+            const selectedSmallCategory = categories
+                .find(category => category.name === selectedCategories.firstCategory)
+                ?.medium
+                .find(mediumCategory => mediumCategory.name === selectedCategories.secondCategory)
+                ?.small
+                .find(smallCategory => smallCategory.name === value);
+    
+            if (selectedSmallCategory) {
+                setSelectedCategory(selectedSmallCategory.categoryId);
+    
+                // categoryId 변수에 선택된 소분류의 categoryId를 저장합니다.
+                // 이후 필요한 곳에서 사용할 수 있습니다.
+            }
+        }
+    
         setSelectedCategories({
-          ...selectedCategories,
-          [name]: value
+            ...selectedCategories,
+            [name]: value
         });
     }
+    
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewTodoContent(e.target.value);  // 입력창에 입력할때마다 할일내용 갱신
     }
 
+    const addNewTodo = async () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+        const day = String(today.getDate()).padStart(2, '0'); // 일자를 가져옵니다.
+
+        const formattedDate = `${year}-${month}-${day}`;
+
+        const todoItem: NewTodo = {
+            categoryId : selectedCategory !== undefined ? selectedCategory : -1,
+            content : newTodoContent !== undefined ? newTodoContent : "",
+            todoDate : formattedDate,
+            isSystem : 0,
+        }
+
+        console.log(todoItem);
+    
+        await addTodoItem(todoItem, ({ data }) => {
+            window.location.reload();
+        }, (error) => {alert('카테고리를 설정해주세요!')});
+    }
+
     const handleAddTodo = () => {
         // TODO 리스트 추가하는 API 호출
+        addNewTodo();
         setNewTodoContent(''); // 입력내용 초기화
     }
 

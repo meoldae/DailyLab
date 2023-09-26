@@ -44,7 +44,7 @@ interface CheckboxProps {
     onCheckboxChange: (todoId: number, isChecked: boolean) => void;
   }
 
-const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, large, medium, small }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, large, medium, small, categoryId }) => {
     const [checkState, setCheckState] = useState(state);
     const [inputState, setInputState] = useState('input');
     const [contentText, setContentText] = useState(content);
@@ -64,7 +64,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
 
     const leadingActions = () => (
         <LeadingActions>
-          <SwipeAction destructive={true} onClick={() => {console.info('관심없어용'); blackTodo();}}>
+          <SwipeAction destructive={true} onClick={() => {console.info('관심없어용',todoId); blackTodo();}}>
           <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>
                 관심없음
             </div>
@@ -116,7 +116,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
                             <div className="w-full mr-10 text-left">
                                 {/* TODO Content */}
                                 {(inputState !== 'input') ? (
-                                    <CheckboxCategory setInputState={HandleSetInputState} todoId={todoId} large={large} medium={medium} small={small} content={content} />
+                                    <CheckboxCategory setInputState={HandleSetInputState} todoId={todoId} large={large} medium={medium} small={small} content={content} categoryId={categoryId}/>
                                     ) : (<div onClick={HandleSetInputState}>{(content === '' || content === '상세내용') ? small : contentText}</div>)
                                 }
                             </div>
