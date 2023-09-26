@@ -30,7 +30,7 @@ const DailyChart = ({selectDate} : {selectDate: string}) => {
 
     return (
         <div>
-            <LineChart emotionResultList={emotionResultList} />
+            {/* <LineChart emotionResultList={emotionResultList} /> */}
             <BarChart emotionResultList={emotionResultList} emotionList={emotionList} />
             <TotalEmotion emotionResultList={emotionResultList} emotionList={emotionList} />
         </div>
