@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -62,5 +63,13 @@ public class EmotionController {
         Long memberId = Long.parseLong(authentication.getName());
         List<MemberEmotionPeriodDto> result = emotionService.getEmotionsBetweenDates(memberId, startDate, endDate);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+    }
+
+    @GetMapping("/taste")
+    private DataResponse getTasteByDate(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        String taste = emotionService.getSelectTaste(memberId, LocalDate.now());
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, taste);
+
     }
 }
