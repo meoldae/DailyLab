@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { addHours } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { postTodayDiary } from '@/api/diary';
 
 
 const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}) => {
@@ -12,16 +13,19 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     // const [todayDiary, setTodayDiary] = useState<DiaryType>();
 
     const handleDiaryContents = () => {
-        
         setIsOpen(!isOpen);
+    }
+
+    const getNewDiary = async () => {
+        await postTodayDiary(curDate ,({ data }) => {
+        console.log(data);
+        }, (error) => {console.log(error)});
     }
 
     const handleFinishButton = () => {
         // 하루 마무리
-        // //추천 TODO List 생성 -> 보고서 화면에서 하루시작 눌렀을때 가는걸로!!!!!!
-        // getRecommendTodo();
         //오늘 일기 생성
-        // getNewDiary();
+        getNewDiary();
         navigate('/loading');
     }
     

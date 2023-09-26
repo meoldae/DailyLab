@@ -42,6 +42,16 @@ const makePlanTodoList = async (todoDate: string, success: (data : {data : Retur
     await HttpJson.get(`todo/recommend/${todoDate}`).then(success).catch(fail);
 }
 
+// 상태 proceed로 바꾸기
+const setStatusProceed = async (date: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.post(`member/start/${date}`).then(success).catch(fail);
+}
+
+// 상태 finish로 바꾸기
+const setStatusFinish = async (date: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.post(`member/end/${date}`).then(success).catch(fail);
+}
+
 const checkUpdateTodoItem = async (param: TodoData, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.put(`todo/change/check`, JSON.stringify(param)).then(success).catch(fail);
 }
@@ -51,7 +61,7 @@ const getCategoryList = async (success: (data : {data : CategoryData}) => void, 
 }
 
 const deleteTodoItems = async (param: ListIdxType, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.put(`api/todo/delete`, JSON.stringify(param)).then(success).catch(fail);
+    await HttpJson.put(`todo/delete`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export { getDefaultTodoList, checkUpdateTodoItem, getCategoryList, getPlanTodoList, makePlanTodoList, deleteTodoItems };
+export { getDefaultTodoList, checkUpdateTodoItem, setStatusProceed, setStatusFinish, getCategoryList, getPlanTodoList, makePlanTodoList, deleteTodoItems };
