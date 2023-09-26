@@ -18,6 +18,14 @@ async def makeTodo(member_id: int, db: Session = Depends(get_db)):
         return todoResult
     raise HTTPException(status_code=401, detail="no todo")
 
+@router.get("/recommend/{member_id}")
+async def makeTodo(member_id: int, db: Session = Depends(get_db)):
+    otherUserList = todoService.specialTodo(member_id, db)
+
+    if otherUserList is not None and not otherUserList.empty and not otherUserList.isnull().all():
+        return otherUserList
+    raise HTTPException(status_code=401, detail="no todo")
+
 @router.post("/todo")
 async def makeTodoByPost(request: schemas.todoReq, db: Session = Depends(get_db)):
     todoResult =  todoService.makeTodo(request.memberId, db)
