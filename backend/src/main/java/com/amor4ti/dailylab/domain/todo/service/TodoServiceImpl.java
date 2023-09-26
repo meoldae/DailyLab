@@ -134,9 +134,30 @@ public class TodoServiceImpl implements TodoService{
         categoryWhiteListService.regist(todoRegistDto.getCategoryId(), memberId);
 
         Todo todo = todoRegistDto.toEntity(member, category);
+
+        boolean check = todo.getCheckedDate() != null;
+
         todoRepository.save(todo);
 
-        return responseService.successDataResponse(ResponseStatus.TODO_REGIST_SUCCESS, todo.getTodoId());
+        TodoDto todoDto = TodoDto.builder()
+                .todoId(todo.getTodoId())
+                .todoDate(todo.getTodoDate())
+                .checkedDate(todo.getCheckedDate())
+                .categoryId(todo.getCategory().getCategoryId())
+                .large(todo.getCategory().getLarge())
+                .medium(todo.getCategory().getMedium())
+                .small(todo.getCategory().getSmall())
+                .content(todo.getContent())
+                .check(check)
+                .isDeleted(todo.isDeleted())
+                .isSystem(todo.isSystem())
+                .memberId(memberId)
+                .username(member.getUsername())
+                .build();
+
+        DataResponse<?> dataResponse = responseService.successDataResponse(ResponseStatus.TODO_REGIST_SUCCESS, todoDto);
+
+        return dataResponse;
     }
 
     @Override
@@ -158,7 +179,6 @@ public class TodoServiceImpl implements TodoService{
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
         todo.checkTodo(todoCheckUpdateDto.getCheckedDate());
-        todoRepository.save(todo);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
@@ -236,9 +256,10 @@ public class TodoServiceImpl implements TodoService{
 
             DataResponse dataResponse = registTodo(todoRegistDto, memberId);
 
-            Long newTodoId = (Long) dataResponse.getData();
+            Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, categoryId, LocalDate.parse(todoDate))
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-            TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, newTodoId)
+            TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, todo.getTodoId())
                     .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION));
 
             todoRecommendedDtoList.add(todoRecommendedDto);
