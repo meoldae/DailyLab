@@ -22,7 +22,7 @@ public interface TodoService {
 
     DataResponse registTodo(TodoRegistDto todoRegistDto, Long memberId);
 
-    CommonResponse deleteTodo(Long memberId, List<Long> todoIdList);
+    CommonResponse deleteTodo(Long memberId, Long todoId);
 
     CommonResponse changeCheckTodo(Long memberId, TodoCheckUpdateDto todoCheckUpdateDto);
 
