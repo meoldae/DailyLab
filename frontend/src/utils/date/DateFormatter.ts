@@ -1,3 +1,5 @@
+import { addHours } from "date-fns";
+
 function leftPad(value: number) {
     if (value >= 10) return value;
     else return `0${value}`;
@@ -8,6 +10,11 @@ function toStringByFormatting(selectDate: Date, delimiter: string="-") {
     const month = leftPad(selectDate.getMonth() + 1);
     const day = leftPad(selectDate.getDate());
     return [year, month, day].join(delimiter);
+}
+
+function toStringByFormattingIncludeTime(selectDate: Date) {
+    const newDate = addHours(selectDate, 9);
+    return newDate.toISOString().slice(0, 16).replace("T", " ");
 }
 
 function getMonthFirstDate(selectDate: Date){
@@ -26,4 +33,4 @@ function fromStringtoDate(stringDate: string) {
     return new Date(stringDate);
 }
 
-export {leftPad, toStringByFormatting, getMonthFirstDate, getMonthLastDate, fromStringtoDate};
+export {leftPad, toStringByFormatting, toStringByFormattingIncludeTime, getMonthFirstDate, getMonthLastDate, fromStringtoDate};

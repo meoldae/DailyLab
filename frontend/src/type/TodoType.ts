@@ -6,9 +6,19 @@ export type TodoType = {
     large: string;
     medium: string;
     small: string;
+    system: boolean;
+    deleted: boolean;
+    updateStatus?: boolean;
     todoDate?: string;
     checkedDate?: string;
     memberId?: number;
-    system: boolean;
-    deleted: boolean;
+}
+
+export type TodoParamType = {
+    todoId? : number;
+    checkedDate?: string;
+    categoryId? : number;
+    content? : string;
+    todoDate? : string;
+    isSystem? : number;
 }

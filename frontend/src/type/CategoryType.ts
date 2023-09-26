@@ -1,8 +1,12 @@
 export type CategoryType = {
     name: string;
+    categoryId? : number;
 }
 
 export type CategoryTreeType = {
-    category : string;
-    list : CategoryType[];
+    name : string;
+    list : [{
+        name : string;
+        list : CategoryType[];
+    }]
 }

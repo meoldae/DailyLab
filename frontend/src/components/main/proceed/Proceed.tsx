@@ -1,4 +1,4 @@
-import TodoList from '@/components/todo/TodoList';
+import Todo from '@/components/todo/Todo';
 import { diegoImg, ianImg, cloe2Img } from '@/components/character/Character';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -45,7 +45,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                         <img className='w-[90px]' src={ianImg} alt="이안" />
                     </div>
                     <div className='relative -mt-12'>
-                        <TodoList type='default' date={curDate}/>
+                        <Todo type="current" date={curDate}/>
                     </div>
                 </div>
                 {/* 감정 선택 버튼 영역 */}
