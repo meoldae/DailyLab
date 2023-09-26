@@ -30,11 +30,8 @@ const AppRouter = () => {
                     <Route path="/statistics" element={<AppStatistics />} />
                     <Route path="/mypage" element={<AppMyPage />} />
                     <Route path="/loading" element={<AppLoading />} />
-<<<<<<< HEAD
                     <Route path="/logout" element={<AppLogout />} />
-=======
                     <Route path="/emotion" element={<AppEmotion/>}/>
->>>>>>> a1f0504279873d8d2e76f25e8b41526eff8ff04b
                 </Route>
                 <Route element={<AuthRoute authentication="NotUser"/>}>    
                     <Route path="/login" element={<AppLogin />} />
