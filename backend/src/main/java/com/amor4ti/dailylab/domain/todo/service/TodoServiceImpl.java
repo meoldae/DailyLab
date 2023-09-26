@@ -198,8 +198,6 @@ public class TodoServiceImpl implements TodoService{
             ScoreList.add(entry.getValue().getAsDouble());
         }
 
-        log.info(CategoryIdList.toString());
-
         // 빈 추천 Todo 객체
         List<TodoRecommendedDto> todoRecommendedDtoList = new ArrayList<>();
 
@@ -217,8 +215,6 @@ public class TodoServiceImpl implements TodoService{
             // 일단 7개만
             if(cnt == 8 - beforeTodoCnt)
                 break;
-
-            log.info("categoryId : " + categoryId);
 
             if(categoryId == 0)
                 continue;
