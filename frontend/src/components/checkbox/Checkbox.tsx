@@ -74,7 +74,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
       
       const trailingActions = () => (
         <TrailingActions>
-            <SwipeAction destructive={false} onClick={() => {console.info('삭제할랭'); deleteTodo();}}>
+            <SwipeAction destructive={true} onClick={() => {console.info('삭제할랭'); deleteTodo();}}>
             <div className='bg-orange flex justify-center items-center rounded-xl text-white'>
                 삭제하기
             </div>
