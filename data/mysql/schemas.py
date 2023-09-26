@@ -18,3 +18,7 @@ class member(BaseModel):
     job: int
     religion: int
     hobbyList: list
+
+class specialTodo(BaseModel):
+    memberId: int
+    period: int
