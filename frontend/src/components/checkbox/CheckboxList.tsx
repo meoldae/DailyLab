@@ -86,7 +86,6 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
     //     await deleteTodoItems({todoIdList: todoItems.todoIdList },({ data }) => {
     //         console.log(data);
     //     }, (error) => {console.log(error)});
-
     // }
 
     const handleAddButton = () => {
@@ -96,10 +95,9 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewTodoContent(e.target.value);  // 입력창에 입력할때마다 할일내용 갱신
     }
-
-    const handleAddTodo = () => {
-        // TODO 리스트 추가하는 API 호출
-        setShowInput(false); // 입력창 숨기기
+    
+    const HandleSetInputState = () => {
+        setShowInput(false);
         setNewTodoContent(''); // 입력내용 초기화
     }
 
@@ -190,7 +188,7 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
                 onCheckboxChange={handleCheckboxChange}/>
             ))}
             {showInput && (
-                <CheckboxCategory/>
+                <CheckboxCategory setInputState={HandleSetInputState}/>
             )}
             {type == 'default' && (
                 <div className="text-right text-xl text-primary">

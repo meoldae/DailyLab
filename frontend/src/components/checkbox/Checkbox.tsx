@@ -18,26 +18,9 @@ import {
   } from 'react-swipeable-list';
   import 'react-swipeable-list/dist/styles.css';
 import CheckboxCategory from "./CheckboxCategory";
+import { blackTodoItems, deleteTodoItems } from "@/api/Todo";
 
-  const leadingActions = () => (
-    <LeadingActions>
-      <SwipeAction onClick={() => console.info('관심없어용')}>
-      <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>
-            관심없음
-        </div>
-      </SwipeAction>
-    </LeadingActions>
-  );
   
-  const trailingActions = () => (
-    <TrailingActions>
-        <SwipeAction destructive={false} onClick={() => console.info('삭제할랭')}>
-        <div className='bg-orange flex justify-center items-center rounded-xl text-white'>
-            삭제하기
-        </div>
-        </SwipeAction>
-  </TrailingActions>
-  );
 
   
 interface CheckboxProps {
@@ -61,7 +44,7 @@ interface CheckboxProps {
     onCheckboxChange: (todoId: number, isChecked: boolean) => void;
   }
 
-const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, large, medium, small }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, large, medium, small, categoryId }) => {
     const [checkState, setCheckState] = useState(state);
     const [inputState, setInputState] = useState('input');
     const [contentText, setContentText] = useState(content);
@@ -79,6 +62,47 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
         onCheckboxChange(todoId, !checkState);
     }
 
+    const leadingActions = () => (
+        <LeadingActions>
+          <SwipeAction destructive={true} onClick={() => {console.info('관심없어용',todoId); blackTodo();}}>
+          <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>
+                관심없음
+            </div>
+          </SwipeAction>
+        </LeadingActions>
+      );
+      
+      const trailingActions = () => (
+        <TrailingActions>
+            <SwipeAction destructive={true} onClick={() => {console.info('삭제할랭', todoId); deleteTodo();}}>
+            <div className='bg-orange flex justify-center items-center rounded-xl text-white'>
+                삭제하기
+            </div>
+            </SwipeAction>
+      </TrailingActions>
+      );
+    
+      
+      const blackTodo = async () => {
+        const todoItem = [todoId]
+    
+        await blackTodoItems({todoIdList: todoItem },({ data }) => {
+            console.log(data);
+            alert("관심없음 처리")
+            deleteTodo();
+        }, (error) => {console.log(error)});
+    }
+
+      const deleteTodo = async () => {
+        // checkedItems를 삭제하는 API 함수 호출하고 리스트 받아오는 API다시 요청하기
+        const todoItem = [todoId]
+    
+        await deleteTodoItems({todoIdList: todoItem },({ data }) => {
+            console.log(data);
+        }, (error) => {console.log(error)});
+    }
+
+
     return (
         <SwipeableList>
             <SwipeableListItem
@@ -92,7 +116,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
                             <div className="w-full mr-10 text-left">
                                 {/* TODO Content */}
                                 {(inputState !== 'input') ? (
-                                    <CheckboxCategory setInputState={HandleSetInputState} todoId={todoId} large={large} medium={medium} small={small} content={content} />
+                                    <CheckboxCategory setInputState={HandleSetInputState} todoId={todoId} large={large} medium={medium} small={small} content={content} categoryId={categoryId}/>
                                     ) : (<div onClick={HandleSetInputState}>{(content === '' || content === '상세내용') ? small : contentText}</div>)
                                 }
                             </div>

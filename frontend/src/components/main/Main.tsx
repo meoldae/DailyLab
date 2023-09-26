@@ -5,6 +5,7 @@ import MainWaiting from "./waiting/Waiting";
 import { useEffect, useState } from "react";
 import { getStatus } from "@/api/User";
 import MainResult from "./Result";
+import { setStatusProceed } from "@/api/Todo";
 
 /*
  * 사용자의 status를 세가지 경우로 나누어 분기처리 
@@ -19,40 +20,40 @@ interface StatusType {
   }
 
 const Main = () => {
-    const [status, setStatus] = useState('proceed');
+    const [status, setStatus] = useState("proceed");
     const [getDate, setGetDate] = useState('');
     // const comp = 'result';
     const curDate = toStringByFormatting(new Date());
-
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
             setStatus(() => nowState.status);
-            if(nowState.status !== 'init'){
-                setGetDate(() => nowState.date);
-                getDateDiff();
-            }
+            setGetDate(() => nowState.date);
+            
         }, (error) => {
             console.log(error)
         });
-        
-        //임의로 추가함!!!!!!!!!!!!!!!!!
-        setStatus('proceed');
     }
-    
+
     const getDateDiff = () => {
         const curDate2: Date = new Date(curDate);
         const getDate2: Date = new Date(getDate);
+        
         const timeDifference: number = (curDate2.getDate() - getDate2.getDate());
 
-        if(timeDifference >= 1){
-            setStatus('proceed');
-        }
+        if(timeDifference >= 1) setNewStatus(curDate);
     }
-    
+
     useEffect(() => {
         void nowStatus();
-    },)
+        getDateDiff();
+    }, [getDate]);
+
+    const setNewStatus = async (date : string) => {
+        await setStatusProceed(date, ({data}) => {
+            setStatus(() => "proceed");
+        }, (error) => {console.log(error)})
+    }
     
     return (
         <>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Matter from "matter-js";
+import { redirect } from "react-router-dom";
 
 interface EmotionMatterProps {
   circleCount: number;
@@ -99,10 +100,10 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+160, 1000, 10, {isStatic: true, render: {fillStyle: '#535394'} }));
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
     // Composite.add(world, Matter.Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#ff0000'} }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+180, 2000, 100, {isStatic: true, render: {fillStyle: '#535394'} }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
-    Composite.add(world, Matter.Bodies.rectangle(0, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
+    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 100, { isStatic: true, render: {fillStyle: '#ff00000'} }));
+    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+180, 2000, 100, {isStatic: true, render: {fillStyle: '#ff00000'} }));
+    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#ff00000'}  }));
+    Composite.add(world, Matter.Bodies.rectangle(0, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#ff00000'}  }));
   
     // keep the mouse in sync with rendering
     render.mouse = mouse;
@@ -115,10 +116,19 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
     
     // Clean up the engine and renderer when component unmounts
     return () => {
-      Matter.Render.stop(render);
-      Matter.Runner.stop(runner);
-    };
+      if (newEngine) {
+        Matter.Render.stop(render);
+        Matter.Runner.stop(runner);
+        Matter.Engine.clear(newEngine);
 
+        if(render.canvas){
+          render.canvas.remove();
+        }
+        if(render.canvas.parentNode){
+          render.canvas.parentNode.removeChild(render.canvas);
+        }
+      }
+    };
 
   }, []);
 
