@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Checkbox from "./Checkbox";
 import { checkUpdateTodoItem, getCategoryList, getPlanTodoList } from "@/api/Todo";
 import { addHours } from "date-fns";
+import CheckboxCategory from "./CheckboxCategory";
 
 /*
 --type--
@@ -189,70 +190,7 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ type, date }) => {
                 onCheckboxChange={handleCheckboxChange}/>
             ))}
             {showInput && (
-                <div className="w-full p-4 bg-secondary rounded-xl text-xl">
-                    <div className="flex items-center justify-between">
-                        <div className="w-full mr-10 text-left">
-                            <div className="child-[select]:bg-secondary w-[300px]">
-                                <select
-                                    name="firstCategory" 
-                                    id="firstCategory" 
-                                    value={selectedCategories.firstCategory}
-                                    onChange={handleCategoryChange}
-                                >
-                                    <option value="" disabled selected>대분류</option>
-                                    {categories.map(category => (
-                                        <option key={category.name} value={category.name}>{category.name}</option>
-                                    ))}
-                                </select>
-                                <select 
-                                    name="secondCategory" 
-                                    id="secondCategory" 
-                                    value={selectedCategories.secondCategory}
-                                    onChange={handleCategoryChange}
-                                >
-                                    <option value=""  disabled selected>중분류</option>
-                                    {selectedCategories.firstCategory && 
-                                        categories.find(category => category.name === selectedCategories.firstCategory)
-                                            ?.medium
-                                            .map(mediumCategory => mediumCategory.name)
-                                            .map((name, index) => (
-                                                <option key={index} value={name}>{name}</option>
-                                            ))
-                                    }
-                                </select>
-                                <select
-                                    name="thirdCategory" 
-                                    id="thirdCategory" 
-                                    value={selectedCategories.thirdCategory}
-                                    onChange={handleCategoryChange}
-                                >
-                                    <option value="" disabled selected>소분류</option>
-                                    {selectedCategories.firstCategory && selectedCategories.secondCategory &&
-                                        categories.find(category => category.name === selectedCategories.firstCategory)
-                                            ?.medium
-                                            .find(mediumCategory => mediumCategory.name === selectedCategories.secondCategory)
-                                            ?.small
-                                            .map(smallCategory => smallCategory.name)
-                                            .map((name, index) => (
-                                                <option key={index} value={name}>{name}</option>
-                                            ))
-                                    }
-                                </select>
-                            </div>
-                            {/* 여기서 완료 누르면 카테고리 적용되고 content에 상세 내용 넣기 */}
-                            <div className="text-right flex">
-                                <input className="w-full p-3 m-1 rounded-xl bg-primary text-text" type="text" name="" id="" placeholder="상세 내용을 입력해주세요"
-                                value={newTodoContent} onChange={handleInputChange} />
-                                <button
-                                    className="w-[30px] ml-4 font-semibold text-text underline underline-offset-4"
-                                    onClick={handleAddTodo}
-                                    >
-                                    확인
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <CheckboxCategory/>
             )}
             {type == 'default' && (
                 <div className="text-right text-xl text-primary">

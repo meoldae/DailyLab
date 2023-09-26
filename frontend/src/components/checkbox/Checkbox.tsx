@@ -17,6 +17,7 @@ import {
     TrailingActions,
   } from 'react-swipeable-list';
   import 'react-swipeable-list/dist/styles.css';
+import CheckboxCategory from "./CheckboxCategory";
 
   const leadingActions = () => (
     <LeadingActions>
@@ -60,7 +61,7 @@ interface CheckboxProps {
     onCheckboxChange: (todoId: number, isChecked: boolean) => void;
   }
 
-const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, small }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, large, medium, small }) => {
     const [checkState, setCheckState] = useState(state);
     const [inputState, setInputState] = useState('input');
     const [contentText, setContentText] = useState(content);
@@ -68,16 +69,6 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
 
     const HandleSetInputState = () => {
         setInputState(inputState === 'input' ? 'submit' : 'input');
-    }
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
-    }
-
-    const handleComplete = () => {
-        const trimmedInputValue = inputValue.trim();
-        if(trimmedInputValue !== '')
-            setContentText(trimmedInputValue);
     }
 
     // 체크박스 선택
@@ -101,24 +92,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
                             <div className="w-full mr-10 text-left">
                                 {/* TODO Content */}
                                 {(inputState !== 'input') ? (
-                                    <div className="">
-                                        <div className="child-[select]:bg-secondary">
-                                            <select name="firstCategory" id="firstCategory">
-                                                <option value="">대분류1</option>
-                                                <option value="">대분류2</option>
-                                            </select>
-                                            <select name="secondCategory" id="secondCategory">
-                                                <option value="">중분류1</option>
-                                                <option value="">중분류2</option>
-                                            </select>
-                                            <select name="thridCategory" id="thridCategory">
-                                                <option value="">소분류1</option>
-                                                <option value="">소분류2</option>
-                                            </select>
-                                        </div>
-                                        {/* 여기서 완료 누르면 카테고리 적용되고 content에 상세 내용 넣기 */}
-                                        <input className="w-full p-3 m-1 rounded-xl" type="text" name="" id="" placeholder="상세 내용을 입력해주세요!!" />
-                                    </div>
+                                    <CheckboxCategory setInputState={HandleSetInputState} todoId={todoId} large={large} medium={medium} small={small} content={content} />
                                     ) : (<div onClick={HandleSetInputState}>{(content === '' || content === '상세내용') ? small : contentText}</div>)
                                 }
                             </div>
@@ -126,14 +100,6 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
                             {type === 'future' ||  inputState === 'input' &&(
                                 // future - 체크박스 보이지 않게 처리
                                 <img onClick={handleCheckState} className="w-[20px]" src={checkState ? "./assets/img/icon/checkbox_fill.png" : "./assets/img/icon/checkbox_empty.png"}  alt="" />
-                            )}
-                        </div>
-                        {/* 우측 버튼 영역 */}
-                        <div className="pr-4 font-extralight" onClick={HandleSetInputState}>
-                            {inputState !== 'input' &&(
-                                <button className="w-[30px] underline underline-offset-4" onClick={() => {handleComplete(); HandleSetInputState();}}>
-                                    완료
-                                </button>
                             )}
                         </div>
                     </div>
