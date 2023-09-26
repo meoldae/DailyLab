@@ -94,7 +94,6 @@ const CheckboxCategory: React.FC<Partial<CheckboxProps>> = ({ todoId, content, l
       useEffect(() => {
         // todo 리스트 불러오기
         getCategory();
-        console.log("-----",todoId)
     }, []);
 
     return (
@@ -108,7 +107,7 @@ const CheckboxCategory: React.FC<Partial<CheckboxProps>> = ({ todoId, content, l
                             value={selectedCategories.firstCategory}
                             onChange={handleCategoryChange}
                         >
-                            {large === null ? (<option value="" disabled selected>대분류</option>) : (<option value={large} selected>{large}</option>)}
+                            {large === undefined ? (<option value="" disabled selected>대분류</option>) : (<option value={large} selected>{large}</option>)}
                             {categories.map(category => (
                                 <option key={category.name} value={category.name}>{category.name}</option>
                             ))}
@@ -119,7 +118,7 @@ const CheckboxCategory: React.FC<Partial<CheckboxProps>> = ({ todoId, content, l
                             value={selectedCategories.secondCategory}
                             onChange={handleCategoryChange}
                         >
-                            {large === null ? (<option value="" disabled selected>중분류</option>) : (<option value={medium} selected>{medium}</option>)}
+                            {large === undefined ? (<option value="" disabled selected>중분류</option>) : (<option value={medium} selected>{medium}</option>)}
                             {selectedCategories.firstCategory && 
                                 categories.find(category => category.name === selectedCategories.firstCategory)
                                     ?.medium
@@ -135,7 +134,7 @@ const CheckboxCategory: React.FC<Partial<CheckboxProps>> = ({ todoId, content, l
                             value={selectedCategories.thirdCategory}
                             onChange={handleCategoryChange}
                         >
-                            {large === null ? (<option value="" disabled selected>소분류</option>) : (<option value={small} selected>{small}</option>)}
+                            {large === undefined ? (<option value="" disabled selected>소분류</option>) : (<option value={small} selected>{small}</option>)}
                             {selectedCategories.firstCategory && selectedCategories.secondCategory &&
                                 categories.find(category => category.name === selectedCategories.firstCategory)
                                     ?.medium

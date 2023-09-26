@@ -1,6 +1,5 @@
 import CheckboxList from '@/components/checkbox/CheckboxList';
 import { useEffect, useState } from 'react';
-import { addHours } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { postTodayDiary } from '@/api/diary';
