@@ -42,18 +42,27 @@ def makeTodo(member_id: int, db):
 
     return resultList
 
-def specialTodo(member_id: int, db):
+def specialTodo(member_id: int, day: int, db):
     similar = filtering.findBest(member_id)
+    # similar = similar[:len(similar)/10]
+    similar = similar[:6]
 
-    category = [0] * 290
+    category = {}
     for similarMember in similar:
         if similarMember == member_id:
             continue
+        otherUserTodo = todoRepository.getRecommendedList(similarMember, day, db)
+        if otherUserTodo:
+            for todo in otherUserTodo:
+                count = todoRepository.getTodoCount(similarMember, day, db)
+                if todo.category_id in category:
+                    category[todo.category_id] += count
+                else:
+                    category[todo.category_id] = count
+    if category:
+        category = dict(sorted(category.items(), key=lambda item: item[1], reverse=True))
 
-
-
-
-    return similar
+    return category
 
 
 def afterListProcess(member_id: int, resultList: list[int], db):
