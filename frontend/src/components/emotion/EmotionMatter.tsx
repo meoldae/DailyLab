@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Matter from "matter-js";
+import { redirect } from "react-router-dom";
 
 interface EmotionMatterProps {
   circleCount: number;
@@ -115,10 +116,19 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
     
     // Clean up the engine and renderer when component unmounts
     return () => {
-      Matter.Render.stop(render);
-      Matter.Runner.stop(runner);
-    };
+      if (newEngine) {
+        Matter.Render.stop(render);
+        Matter.Runner.stop(runner);
+        Matter.Engine.clear(newEngine);
 
+        if(render.canvas){
+          render.canvas.remove();
+        }
+        if(render.canvas.parentNode){
+          render.canvas.parentNode.removeChild(render.canvas);
+        }
+      }
+    };
 
   }, []);
 
