@@ -9,7 +9,37 @@
 */
 
 import { useState } from "react";
+import {
+    LeadingActions,
+    SwipeableList,
+    SwipeableListItem,
+    SwipeAction,
+    TrailingActions,
+  } from 'react-swipeable-list';
+  import 'react-swipeable-list/dist/styles.css';
+import CheckboxCategory from "./CheckboxCategory";
 
+  const leadingActions = () => (
+    <LeadingActions>
+      <SwipeAction onClick={() => console.info('관심없어용')}>
+      <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>
+            관심없음
+        </div>
+      </SwipeAction>
+    </LeadingActions>
+  );
+  
+  const trailingActions = () => (
+    <TrailingActions>
+        <SwipeAction destructive={false} onClick={() => console.info('삭제할랭')}>
+        <div className='bg-orange flex justify-center items-center rounded-xl text-white'>
+            삭제하기
+        </div>
+        </SwipeAction>
+  </TrailingActions>
+  );
+
+  
 interface CheckboxProps {
     todoId: number,
     state: boolean;
@@ -31,7 +61,7 @@ interface CheckboxProps {
     onCheckboxChange: (todoId: number, isChecked: boolean) => void;
   }
 
-const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, small }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onCheckboxChange, large, medium, small }) => {
     const [checkState, setCheckState] = useState(state);
     const [inputState, setInputState] = useState('input');
     const [contentText, setContentText] = useState(content);
@@ -39,16 +69,6 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
 
     const HandleSetInputState = () => {
         setInputState(inputState === 'input' ? 'submit' : 'input');
-    }
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
-    }
-
-    const handleComplete = () => {
-        const trimmedInputValue = inputValue.trim();
-        if(trimmedInputValue !== '')
-            setContentText(trimmedInputValue);
     }
 
     // 체크박스 선택
@@ -60,69 +80,32 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
     }
 
     return (
-        <div className="w-full p-4 bg-secondary rounded-xl text-xl">
-            <div className="flex items-center justify-between">
-                <div className="flex">
-                    {/* 체크박스 */}
-                    {type !== 'future' && (
-                        // future - 체크박스 보이지 않게 처리
-                        <img onClick={handleCheckState} className="mr-4 w-[20px]" src={checkState ? "./assets/img/icon/checkbox_fill.png" : "./assets/img/icon/checkbox_empty.png"}  alt="" />
-                    )}
-                    {/* TODO Content */}
-                    {type !== 'plan' ? (
-                        <div className={checkState ? "font-medium line-through" : "font-medium"}>
-                            {contentText}
-                        </div>
-                    ) : (
-                        inputState === 'input' ?(
-                            <div>
-                                {small}
+        <SwipeableList>
+            <SwipeableListItem
+            className=''
+            leadingActions={leadingActions()}
+            trailingActions={trailingActions()}
+            >
+                <div className="w-full p-4 bg-secondary rounded-xl text-xl">
+                    <div className="flex items-center justify-between">
+                        <div className="flex w-full justify-between">
+                            <div className="w-full mr-10 text-left">
+                                {/* TODO Content */}
+                                {(inputState !== 'input') ? (
+                                    <CheckboxCategory setInputState={HandleSetInputState} todoId={todoId} large={large} medium={medium} small={small} content={content} />
+                                    ) : (<div onClick={HandleSetInputState}>{(content === '' || content === '상세내용') ? small : contentText}</div>)
+                                }
                             </div>
-                        ) : (
-                        <div className="child-[select]:bg-secondary">
-                            <select name="firstCategory" id="firstCategory">
-                                <option value="">대분류1</option>
-                                <option value="">대분류2</option>
-                            </select>
-                            <select name="secondCategory" id="secondCategory">
-                                <option value="">중분류1</option>
-                                <option value="">중분류2</option>
-                            </select>
-                            <select name="thridCategory" id="thridCategory">
-                                <option value="">소분류1</option>
-                                <option value="">소분류2</option>
-                            </select>
+                            {/* 체크박스 */}
+                            {type === 'future' ||  inputState === 'input' &&(
+                                // future - 체크박스 보이지 않게 처리
+                                <img onClick={handleCheckState} className="w-[20px]" src={checkState ? "./assets/img/icon/checkbox_fill.png" : "./assets/img/icon/checkbox_empty.png"}  alt="" />
+                            )}
                         </div>
-                        )
-                    )}
+                    </div>
                 </div>
-                {/* 우측 버튼 영역 */}
-                <div className="pr-4 font-extralight" onClick={HandleSetInputState}>
-                    {type === 'plan' && (inputState === 'input' ?(
-                        // plan - 수정/완료 버튼 보임
-                        <button>
-                            수정
-                        </button>
-                    ):(
-                        <button className="underline underline-offset-4" onClick={handleComplete}>
-                            완료
-                        </button>
-                    ))}
-                    {type === 'future' && (
-                        <button>
-                            <img className="w-[15px]" src="./assets/img/icon/x.png" alt="X" />
-                        </button>
-                    )}
-                </div>
-            </div>
-            {/* 상세내용 입력 input */}
-            {type === 'plan' &&  inputState === 'submit' &&(
-                <div className="mt-4 p-3 bg-primary placeholder:text-gray text-text font-extralight rounded-xl">
-                    <input className="w-full bg-primary" type="text" onChange={handleInputChange} name="contentText" id="contentText" placeholder="상세내용을 입력해주세요"/>
-                </div>
-            )}
-
-        </div>
+            </SwipeableListItem>
+        </SwipeableList>
     )
 }
 

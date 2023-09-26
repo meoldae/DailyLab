@@ -26,8 +26,6 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
       Events,
     } = Matter;
 
-    let hasVibrated = false;
-
     // create engine
     const newEngine = Engine.create();
     setEngine(newEngine);
@@ -51,26 +49,6 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
     const runner = Runner.create();
     Runner.run(runner, newEngine);
 
-    // Add an event handler for collision
-    Events.on(newEngine, 'collisionStart', (event) => {
-      // Iterate through all pairs of collision events
-      event.pairs.forEach((pair) => {
-        // Check if one of the bodies is a circle and the other is a rectangle
-        if (
-          (pair.bodyA.label === 'Circle Body' && pair.bodyB.label === 'Rectangle Body') ||
-          (pair.bodyA.label === 'Rectangle Body' && pair.bodyB.label === 'Circle Body')
-        ) {
-          // Check if vibration has not been triggered yet
-          if (!hasVibrated) {
-            // Trigger vibration
-            console.log("vib");
-            navigator.vibrate(100); // Vibrate for 100ms (adjust as needed)
-            hasVibrated = true; // Set flag to true to prevent repeated vibration
-          }
-        }
-      });
-    });
-
     // add gyro control
     if (typeof window !== "undefined") {
       const updateGravity = (event: DeviceOrientationEvent) => {
@@ -86,17 +64,17 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
           event.beta !== null
         ) {
           if (orientation === 0) {
-            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
-            gravity.y = Math.min(Math.max(event.beta, -90), 90) / 40;
+            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 10;
+            gravity.y = Math.min(Math.max(event.beta, -90), 90) / 10;
           } else if (orientation === 180) {
-            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 40;
-            gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 40;
+            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 10;
+            gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 10;
           } else if (orientation === 90) {
-            gravity.x = Math.min(Math.max(event.beta, -90), 90) / 40;
-            gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 40;
+            gravity.x = Math.min(Math.max(event.beta, -90), 90) / 10;
+            gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 10;
           } else if (orientation === -90) {
-            gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 40;
-            gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 40;
+            gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 10;
+            gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 10;
           }
         }
       };
@@ -121,12 +99,11 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+160, 1000, 10, {isStatic: true, render: {fillStyle: '#535394'} }));
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
     // Composite.add(world, Matter.Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#0000000'} }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+170, 1000, 10, {isStatic: true, render: {fillStyle: '#0000000'} }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0000000'}  }));
-    Composite.add(world, Matter.Bodies.rectangle(0, 300, 10, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0000000'}  }));
+    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 10, { isStatic: true, render: {fillStyle: '#ff0000'} }));
+    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+180, 2000, 100, {isStatic: true, render: {fillStyle: '#535394'} }));
+    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
+    Composite.add(world, Matter.Bodies.rectangle(0, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
   
-
     // keep the mouse in sync with rendering
     render.mouse = mouse;
 

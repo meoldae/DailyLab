@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import EmotionMatter from "./EmotionMatter";
-import { getEmotionList } from "@/api/Emotion";
+import { getEmotionList, putEmotion } from "@/api/Emotion";
 import { EmotionType } from "@/type/EmotionType";
 import { Player } from '@lottiefiles/react-lottie-player';
+import { addHours } from "date-fns";
+import { useNavigate } from "react-router";
 
 const Emotion = () => {
     const playerRef = useRef<Player | null>(null);
     const handlePlay = () => playerRef.current?.play();
 //  const handleStop = () => playerRef.current.stop();
     const handlePause = () => playerRef.current?.pause();
+    const navigate = useNavigate();
 
     const [circleCount, setCircleCount] = useState(0);
     const [emotionNo, setEmotionNo] = useState(1); 
@@ -20,11 +23,29 @@ const Emotion = () => {
         setEmotionNo(emoId); // 버튼 클릭 시 emotionNo를 변경합니다.
         setEmotionName(name);
         setEmotionType(type);
+        updateEmotion(emoId);
         setCircleCount(prevCount => prevCount + 1);
         handlePlay();
         setTimeout(() => {
             handlePause(); 
         }, 300); 
+    };
+
+    const updateEmotion = async (emotionId : number) => {
+        const now = new Date();
+        const newDate = addHours(now, 9);
+        const formattedDateTime = newDate.toISOString().slice(0, 16).replace("T", " ");
+
+        console.log(emotionId, formattedDateTime)
+        const emotionData = {
+            emotionId: emotionId,
+            timeStamp: formattedDateTime
+        };
+
+        await putEmotion(emotionData,({ data }) => {
+            console.log(data);
+        }, (error) => {console.log(error)});
+
     };
 
     const getList = async () => {
@@ -40,6 +61,12 @@ const Emotion = () => {
   
     return (
       <div className="">
+        <div className="absolute ml-8">
+            <div onClick={() => navigate('/')} className="flex items-center">
+                <img className="w-[30px] transform scale-x-[-1]" src="./assets/img/icon/arrow_right.png" alt="" />
+                <p className="text-2xl font-semibold">돌아가기</p>
+            </div>
+        </div>
         <div className="absolute top-[100px] left-[calc(50%-150px)] h-[230px]">
             {/* lottie 시험하기 */}
             {/* <Player

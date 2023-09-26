@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { GetMode } from "@/atom/modeAtom";
 import leftArrowImgLight from './assets/img/custom_calendar_month_arrow_left_light.png';
 import leftArrowImgDark from './assets/img/custom_calendar_month_arrow_left_dark.png';
@@ -17,9 +17,9 @@ interface CalendarProps {
 const CustomCalendar = (props : CalendarProps) => {
     const isLight = GetMode() == 'light';
 
-    useEffect(() => {
-        for(let i=props.firstDate.getDay(); i > 1; i--) props.dateContents.unshift(<div></div>);
-    }, []);
+    const dateContents:JSX.Element[] = [...props.dateContents];
+
+    for(let i=props.firstDate.getDay(); i > 1; i--) dateContents.unshift(<div></div>);
 
     return (   
         <div>
@@ -41,7 +41,7 @@ const CustomCalendar = (props : CalendarProps) => {
             </div>
             <div className="w-full">
                 <div className="overflow-hidden -mb-[20px] w-[calc(100% + 13px)] -ml-[13px]  child-[div]:float-left child-[div]:w-[14.285%] child-[div]:pl-[13px] child-[div]:mb-[20px]">
-                    {props.dateContents.map((component, index) => (
+                    {dateContents.map((component, index) => (
                         <React.Fragment key={index}>
                             {component}
                         </React.Fragment>

@@ -39,9 +39,7 @@ const Schedule = () => {
         setLastDate(() => getMonthLastDate(curDate));
     }, [curDate]);
 
-    useEffect(() => {
-        getDateConentsList();
-    },[firstDate, lastDate]);
+    useEffect(() => {void getDateConentsList();},[firstDate, lastDate]);
 
     function prevMonthEvent(){
         const prevMonth = new Date(curDate);
