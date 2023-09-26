@@ -6,14 +6,16 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class TodoContentUpdateDto {
+public class TodoContentAndCategoryUpdateDto {
 
     private Long todoId;
     private String content;
+    private Long categoryId;
 
     @Builder
-    public TodoContentUpdateDto(Long todoId, String content) {
+    public TodoContentAndCategoryUpdateDto(Long todoId, String content, Long categoryId) {
         this.todoId = todoId;
         this.content = content;
+        this.categoryId = categoryId;
     }
 }

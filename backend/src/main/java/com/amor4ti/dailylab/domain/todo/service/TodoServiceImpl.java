@@ -12,7 +12,7 @@ import com.amor4ti.dailylab.domain.entity.category.CategoryWhiteList;
 import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
-import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentUpdateDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentAndCategoryUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
@@ -256,15 +256,18 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public CommonResponse changeTodoContent(TodoContentUpdateDto todoContentUpdateDto, Long memberId) {
-        Todo todo = todoRepository.findByTodoId(todoContentUpdateDto.getTodoId())
+    @Transactional
+    public CommonResponse changeTodoContentAndCategory(TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Long memberId) {
+        Todo todo = todoRepository.findByTodoId(todoContentAndCategoryUpdateDto.getTodoId())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-        if(todo.getMember().getMemberId() != memberId)
+        if(!Objects.equals(todo.getMember().getMemberId(), memberId))
             throw new CustomException(ExceptionStatus.TODO_UPDATE_REQUEST_BY_OTHER_USER);
 
-        todo.changeContent(todoContentUpdateDto.getContent());
-        todoRepository.save(todo);
+        Category category = categoryRepository.findByCategoryId(todoContentAndCategoryUpdateDto.getCategoryId())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+
+        todo.changeContentAndCategory(todoContentAndCategoryUpdateDto.getContent(), category);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
