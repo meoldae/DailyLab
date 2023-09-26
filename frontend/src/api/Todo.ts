@@ -64,4 +64,8 @@ const deleteTodoItems = async (param: ListIdxType, success: (data : {data : Retu
     await HttpJson.put(`todo/delete`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export { getDefaultTodoList, checkUpdateTodoItem, setStatusProceed, setStatusFinish, getCategoryList, getPlanTodoList, makePlanTodoList, deleteTodoItems };
+const blackTodoItems = async (param: ListIdxType, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.post(`category/blacklist/black`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+export { getDefaultTodoList, checkUpdateTodoItem, blackTodoItems, setStatusProceed, setStatusFinish, getCategoryList, getPlanTodoList, makePlanTodoList, deleteTodoItems };

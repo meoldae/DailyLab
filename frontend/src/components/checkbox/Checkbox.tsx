@@ -18,7 +18,7 @@ import {
   } from 'react-swipeable-list';
   import 'react-swipeable-list/dist/styles.css';
 import CheckboxCategory from "./CheckboxCategory";
-import { deleteTodoItems } from "@/api/Todo";
+import { blackTodoItems, deleteTodoItems } from "@/api/Todo";
 
   
 
@@ -64,7 +64,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
 
     const leadingActions = () => (
         <LeadingActions>
-          <SwipeAction onClick={() => {console.info('관심없어용')}}>
+          <SwipeAction destructive={true} onClick={() => {console.info('관심없어용'); blackTodo();}}>
           <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>
                 관심없음
             </div>
@@ -74,7 +74,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
       
       const trailingActions = () => (
         <TrailingActions>
-            <SwipeAction destructive={true} onClick={() => {console.info('삭제할랭'); deleteTodo();}}>
+            <SwipeAction destructive={true} onClick={() => {console.info('삭제할랭', todoId); deleteTodo();}}>
             <div className='bg-orange flex justify-center items-center rounded-xl text-white'>
                 삭제하기
             </div>
@@ -83,8 +83,17 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
       );
     
       
+      const blackTodo = async () => {
+        const todoItem = [todoId]
+    
+        await blackTodoItems({todoIdList: todoItem },({ data }) => {
+            console.log(data);
+            alert("관심없음 처리")
+            deleteTodo();
+        }, (error) => {console.log(error)});
+    }
+
       const deleteTodo = async () => {
-        console.log('deleteTodo', todoId)
         // checkedItems를 삭제하는 API 함수 호출하고 리스트 받아오는 API다시 요청하기
         const todoItem = [todoId]
     
