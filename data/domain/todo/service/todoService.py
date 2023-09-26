@@ -1,7 +1,7 @@
 import pandas as pd
 from domain.todo.repository import todoRepository
 from domain.todo.contents_based_filtering import cbf
-
+from domain.member.filtering import filtering
 
 
 def makeTodo(member_id: int, db):
@@ -35,6 +35,20 @@ def makeTodo(member_id: int, db):
     resultList = resultList.sort_values(ascending=False)
 
     return resultList
+
+def specialTodo(member_id: int, db):
+    similar = filtering.findBest(member_id)
+
+    category = [0] * 290
+    for similarMember in similar:
+        if similarMember == member_id:
+            continue
+
+
+
+
+    return similar
+
 
 def afterListProcess(member_id: int, resultList: list[int], db):
     userBlackList = todoRepository.getBlacklist(member_id, db)
