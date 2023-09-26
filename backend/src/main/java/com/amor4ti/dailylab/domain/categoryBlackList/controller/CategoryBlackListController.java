@@ -18,11 +18,11 @@ public class CategoryBlackListController {
 
     private final CategoryBlackListService categoryBlackListService;
 
-    @PostMapping("/black")
-    public CommonResponse black(@RequestBody Map<String, List<Long>> todoIdList, Authentication authentication) {
+    @PostMapping("/black/{todoId}")
+    public CommonResponse black(@PathVariable Long todoId, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
-        return categoryBlackListService.black(todoIdList.get("todoIdList"), memberId);
+        return categoryBlackListService.black(todoId, memberId);
     }
 
     @DeleteMapping("/cancel/{categoryId}")

@@ -57,11 +57,11 @@ public class TodoController {
         return todoService.registTodo(todoRegistDto, memberId);
     }
 
-    @PutMapping("/delete")
-        public CommonResponse deleteTodo(@RequestBody Map<String, List<Long>> todoIdList, Authentication authentication) {
+    @PutMapping("/delete/{todoId}")
+        public CommonResponse deleteTodo(@PathVariable Long todoId, Authentication authentication) {
             Long memberId = Long.parseLong(authentication.getName());
 
-            return todoService.deleteTodo(memberId, todoIdList.get("todoIdList"));
+            return todoService.deleteTodo(memberId, todoId);
     }
 
     @PutMapping("/change/check")
