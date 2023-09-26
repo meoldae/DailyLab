@@ -63,4 +63,11 @@ public class EmotionController {
         List<MemberEmotionPeriodDto> result = emotionService.getEmotionsBetweenDates(memberId, startDate, endDate);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
+
+    @GetMapping("/test/{date}")
+    private CommonResponse findTestData(Authentication authentication,
+                                      @PathVariable("date") String date) {
+        emotionService.getEmotionsAggregate(date);
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+    }
 }
