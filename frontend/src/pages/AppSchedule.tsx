@@ -1,14 +1,14 @@
 import Header from '@/components/inc/Header';
 import Footer from '@/components/inc/Footer';
-import CustomCalendar from '@/utils/calendar/CustomCalendar';
+import Schedule from '@/components/schedule/Schedule';
+
 
 export default function AppSchedule() {
     return (
         <>
             <Header />
-                <div className='h-screen'>
-                    스케줄 페이지
-                    <CustomCalendar initDate="2023-09-14" showOverDate={false} />
+                <div className="contents_wrap">
+                    <Schedule />
                 </div>
             <Footer />
         </>

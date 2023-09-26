@@ -44,7 +44,7 @@ const CustomHobby = () => {
 
     return (
         <div>
-            <div className="-mt-[30px] relative bg_contents_con p-[20px]">
+            <div className="relative bg_contents_con p-[20px]">
                 <div className="text-[15px] mb-[10px] font-semibold">관심사가 궁금해요</div>
                 <CustomHobbyList handleInsert={handleInsertMode} insertStatus={insertMode} myHobbyList={myHobbyList} handleHobby={handleHobby}/>
             </div>

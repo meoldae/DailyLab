@@ -14,7 +14,7 @@ const Info = () => {
                 <img className="w-[90px]" src="./assets/img/character/marco_2.png" alt="마르코"/>
                 <p className="-mt-4 text-2xl font-semibold">마르코에게 알려주세요</p>
             </div>
-            <div className="mb-[20px]">
+            <div className="mb-[20px] -mt-[30px]">
                 <CustomHobby />
             </div>
             <div className="relative bg_contents_con p-[20px] mb-[20px]">
