@@ -5,7 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from api.weatherAPI import get_ultra_srt_fcst
 from domain.diary import diaryService
 
-import test_router
+from domain.member.router import member
 from domain.todo.routers import getInfoFromSpring_router, todo
 
 app = FastAPI()
@@ -49,9 +49,9 @@ async def getLatitudeAndLogitude(location: Location):
     return await get_ultra_srt_fcst(location.latitude, location.longitude)
 
 
-app.include_router(test_router.router)
 app.include_router(getInfoFromSpring_router.router)
 app.include_router(todo.router)
+app.include_router(member.router)
 
 if __name__ == "__main__":
     import uvicorn
