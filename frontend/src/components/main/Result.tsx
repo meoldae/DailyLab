@@ -16,9 +16,6 @@ const MainResult = ({getDate, curDate} : {getDate : string, curDate : string}) =
         }else{
             setIsActiveButton(true)
         }
-        
-        // 카테고리는 checkboxList에서 받아오게 바꾸기
-        // void getCategory();
     },[])
     
     return (

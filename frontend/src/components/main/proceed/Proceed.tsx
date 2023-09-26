@@ -11,6 +11,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     const navigate = useNavigate();
     // const [emotionCnt, setEmotionCnt] = useState(0);
     // const [todayDiary, setTodayDiary] = useState<DiaryType>();
+    const formattedDate = formatDate(curDate);
 
     const handleDiaryContents = () => {
         setIsOpen(!isOpen);
@@ -28,10 +29,13 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
         getNewDiary();
         navigate('/loading');
     }
-    
-    useEffect(() => {
-    
-    }, []);
+
+    function formatDate(curDate) {
+        const [year, month, day] = curDate.split('-');
+        const date = new Date(year, month - 1, day);
+        const formattedDate = `${date.getMonth() + 1}월 ${date.getDate()}일`;
+        return formattedDate;
+      }
 
     return (
         <div className='contents_wrap'>
@@ -42,7 +46,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                  <div>
                     <img className='w-[90px] m-auto' src="./assets/img/character/diego.png" alt="디에고" />
                     <div onClick={handleDiaryContents} className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
-                           <p>{curDate}을 연구중이에요(포맷바꾸기)</p>
+                           <p>{formattedDate}의 연구를 진행중이에요</p>
                     </div>
                 </div>
                 {/* TODO영역 */}
