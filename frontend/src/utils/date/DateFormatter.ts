@@ -22,4 +22,8 @@ function getMonthLastDate(selectDate: Date){
     return new Date(initDateYear, initDateMonth + 1, 0);
 }
 
-export {leftPad, toStringByFormatting, getMonthFirstDate, getMonthLastDate};
+function fromStringtoDate(stringDate: string) {
+    return new Date(stringDate);
+}
+
+export {leftPad, toStringByFormatting, getMonthFirstDate, getMonthLastDate, fromStringtoDate};
