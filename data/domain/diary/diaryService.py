@@ -6,20 +6,33 @@ openai.api_key = config.OPENAI_API_KEY
 
 def createDiary(param, gpt_model):
     builder = DiaryContentBuilder(param)
-    content = builder.build()
+    user_info = builder.build()
 
     todo_list = build_todo_list(param["todos"], gpt_model)
-
-    user_content = (
-        "오늘 할 일\n" + 
-        "\n".join(todo_list) + "\n\n" +
-        "너에게 주어진 역할을 참고해서 할 일을 했을 때, 다음의 양식으로 1인칭 시점의 일기를 한글로 작성해줘. \n" +
-        "1. 생년월일을 일기에 작성하지마. \n"
-        "2. 읽고 싶게 자극적인 기사처럼 제목을 작성해줘. \n" +
-        "title: \n" +
-        "content: \n" 
+    
+    content = (
+        "당신은 한 사람의 완벽한 하루를 위해 연구하는 연구원이야. 주어진 내용을 토대로 관찰일지를 작성해줘"
     )
 
+    user_content = (
+        user_info + "\n" + 
+        "오늘 할 일\n" + 
+        "\n".join(todo_list) + "\n\n" +
+
+        "너에게 주어진 역할을 기반으로, 다음의 양식으로 관찰일지를 작성해줘. \n" +
+        "1. 읽고 싶게 자극적인 기사처럼 제목을 작성해줘. \n"
+        "2. 오늘 할 일의 수행 여부, 감정 상태에 따라 관찰일지를 작성해줘. 단, 시간은 분 단위는 사용하지마. \n"
+        "3. 성별, 나이, 생년월일은 보고서에 직접 사용 하지마. \n" +
+        
+        "title: \n" +
+        "content: \n" +
+        # "재료: 관찰일지에 사용된 할 일, 감정들을 기술합니다. \n" + 
+        "관찰 내용: 할 일과 감정을 기반으로 관찰 결과를 기술합니다. \n" +
+        "결론: 관찰 및 분석 결과를 기술합니다. \n" + 
+        "조언 및 추천: 관찰 결론을 기반으로 관찰 대상에게 향후 방향성에 대해 추천하고 기술 합니다. "
+    )
+
+    print(user_content)
     response = openai.ChatCompletion.create(
         model=gpt_model,
             messages=[
@@ -57,7 +70,7 @@ def build_todo_list(todos, gpt_model):
     for todo in sorted_todos:
         todo_str = todo['task']
         
-        if gpt_model != "gpt-3.5-turbo-16k":
+        if gpt_model == "gpt-3.5-turbo-16k":
             if todo["date"] is None:
                 date_status = "(수행 하지 않음)"
             else:
@@ -72,7 +85,7 @@ def build_todo_list(todos, gpt_model):
 class DiaryContentBuilder:
     def __init__(self, param):
         self.param = param
-        self.content = "당신은 다음과 같은 특징을 가진 사람이야\n"
+        self.content = "오늘 관찰일지 보고서를 작성할 사람은 다음과 같아. \n"
 
     def _add_gender(self):
         gender_map = {
