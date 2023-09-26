@@ -42,6 +42,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .selectFrom(todo)
                 .where(memberIdEquals(memberId)
                         .and(todoDateEquals(todoDate))
+                        .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
@@ -59,6 +60,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .from(todo)
                 .where(memberIdEquals(memberId)
                         .and(todoDateEquals(todoDate))
+                        .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
@@ -85,6 +87,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .from(todo)
                 .where(memberIdEquals(memberId)
                         .and(todoDateEquals(todoDate))
+                        .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
@@ -97,6 +100,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .selectFrom(todo)
                 .where(memberIdEquals(memberId)
                         .and(categoryIdEquals(categoryId))
+                        .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetchOne());
     }
@@ -110,6 +114,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .where(todo.member.memberId.eq(memberId)
                         .and(categoryIdEquals(categoryId))
                         .and(todoDateEquals(todoDate))
+                        .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetchOne());
     }
@@ -136,6 +141,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                                 ))
                 .from(todo)
                 .where(memberIdEquals(memberId)
+                        .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetch();
     }
@@ -155,6 +161,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 ))
                 .from(todo)
                 .where(todoIdEquals(todoId)
+                        .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
                 .fetchOne();
 
@@ -169,6 +176,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 .from(todo)
                 .where(memberIdEquals(memberId)
                         .and(todoDateEquals(todoDate))
+                        .and(isDeletedEquals(false))
                         .and(isSystemEquals(false)))
                 .fetchCount();
     }
@@ -216,5 +224,9 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
     private BooleanExpression categoryBlackListMemberIdEquals(Long memberId) {
         return categoryBlackList.id.memberId.eq(memberId);
+    }
+
+    private BooleanExpression isDeletedEquals(boolean isDelete) {
+        return todo.isDeleted.eq(isDelete);
     }
 }
