@@ -3,7 +3,7 @@ import { TodoType, TodoParamType } from "@/type/TodoType";
 import { getTodoList, getCategoryList, blackTodoItem, deleteTodoItem, updateTodoItem, checkTodoItem } from "@/api/Todo"; 
 import TodoHandleItem from "./item/TodoHandleItem";
 import TodoList from "./TodoList";
-import { CategoryTreeType } from "@/type/CategoryType";
+import { CategoryType } from "@/type/CategoryType";
 
 interface props {
     type : string; //1. current, 2. prev, 3. future
@@ -18,10 +18,10 @@ const Todo = (props: props) => {
         }, (error) => console.log(error));
     }, []);
 
-    const [categoryList, setCategoryList] = useState<CategoryTreeType[]>([]);
+    const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
     useEffect(() => {
         getCategoryList(({data}) => {
-            setCategoryList(() => data.data as CategoryTreeType[]);
+            setCategoryList(() => data.data as CategoryType[]);
         }, (error) => console.log(error));
     }, []);
 

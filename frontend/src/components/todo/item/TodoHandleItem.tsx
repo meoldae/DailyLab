@@ -1,77 +1,87 @@
 import { useEffect } from 'react';
-import { CategoryTreeType, CategoryType } from "@/type/CategoryType";
+import { CategoryType } from "@/type/CategoryType";
 import { TodoParamType, TodoType } from "@/type/TodoType";
 import { useState } from "react";
 
 interface props {
     mode : string
     info? : TodoType
-    categoryList : CategoryTreeType[]
+    categoryList : CategoryType[]
     insertItem? : (param: TodoParamType) => void
     changeInsertMode? : () => void
     updateItem? : (param: TodoParamType) => void
     changeTodoUpdateMode? : (todoId: number, status: boolean) => void
 }
 
-interface categoryValue {
-    [key: string]: string;
-    firstCategory: string;
-    secondCategory: string;
-    thirdCategory: string;
-}
-
 const TodoHandleItem = (props : props) => {
     const [content, setContent] = useState("");
     const [selectedCategoryId, setSelectedCategoryId] = useState(props.info?.categoryId);
-    const [selectedCategories, setSelectedCategories] = useState<categoryValue>({firstCategory: "", secondCategory: "", thirdCategory: ""});
+    const [selectedFirstCategory, setSelectedFirstCategory] = useState("");
+    const [selectedSecondCategory, setSelectedSecondCategory] = useState("");
+    const [selectedThirdCategory, setSelectedThirdCategory] = useState("");
     const [secondCategoryList, setSecondCategoryList] = useState<CategoryType[]>([]);
     const [thirdCategoryList, setThirdCategoryList] = useState<CategoryType[]>([]);
 
     useEffect(() => {
         setContent(() => props.info?.content as string);
         if(props.info != null && props.info != undefined){
-            const result = Object.assign(selectedCategories, {});
-            result.firstCategory = props.info.large;
-            result.secondCategory = props.info.medium;
-            result.thirdCategory = props.info.small;
-            setSelectedCategories(() => result);
+            setSelectedFirstCategory(() => props.info!.large);
+            setSelectedSecondCategory(() => props.info!.medium);
+            setSelectedThirdCategory(() => props.info!.small);
         }
     }, [props]);
 
     useEffect(() => {
-        if(selectedCategories.firstCategory != ""){
-            const secondResult:CategoryType[] = props.categoryList.find((category) => category.name == selectedCategories.firstCategory)!.list;
-            setSecondCategoryList(() => secondResult);
-            if(selectedCategories.secondCategory != ""){
-                const thirdResult:CategoryType[] = props.categoryList.find((category) => category.name == selectedCategories.firstCategory)!.list
-                .find((category) => category.name == selectedCategories.secondCategory)!.list;
-                setThirdCategoryList(() => thirdResult);
-            } else setThirdCategoryList(() => []);
-        } else setSecondCategoryList(() => []);
-    }, [selectedCategories])
+        if(selectedFirstCategory != ""){
+            const result:CategoryType[] = props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!;
+            setSecondCategoryList(() => result);
+        }
+    }, [selectedFirstCategory]);
+
+    useEffect(() => {
+        if(selectedSecondCategory != ""){
+            const result:CategoryType[] = props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory)!.list!;
+            setThirdCategoryList(() => result);
+        }
+    }, [selectedSecondCategory]);
+
+    useEffect(() => {
+        if(selectedSecondCategory != "" && props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list != undefined && props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory) != undefined){
+            const result:CategoryType[] = props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory)!.list!;
+            setThirdCategoryList(() => result);
+        } else setThirdCategoryList(() => []);
+
+    }, [secondCategoryList]);
+
+    useEffect(() => {
+        if(selectedThirdCategory != ""){
+            const result:number = props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory)!.list!.find((category3) => category3.name == selectedThirdCategory)!.categoryId!;
+            setSelectedCategoryId(() => result);
+        }
+    }, [selectedThirdCategory]);
 
     function handleContent(e: React.ChangeEvent<HTMLInputElement>){setContent(() => e.target.value);}
 
     function handleSelectChage(e: React.ChangeEvent<HTMLSelectElement>){
         const { name, value } = e.target;
-        const result = JSON.parse(JSON.stringify(selectedCategories));
-        result[name] = value;
-        setSelectedCategories(() => result);
+        if(name == "firstCategory") setSelectedFirstCategory(() => value);
+        if(name == "secondCategory") setSelectedSecondCategory(() => value);
+        if(name == "thirdCategory") setSelectedThirdCategory(() => value);
     }
 
     return (
         <div className="w-full p-4 bg-secondary rounded-xl text-xl">
             <div>
-                <select name="firstCategory" id="firstCategory" value={selectedCategories.firstCategory} onChange={handleSelectChage}>
-                    {props.mode == "insert" || selectedCategories.firstCategory == "" ? <option value="" disabled selected>대분류</option> : <option value="" disabled>대분류</option>}
+                <select name="firstCategory" id="firstCategory" value={selectedFirstCategory} onChange={handleSelectChage}>
+                    {props.mode == "insert" || selectedFirstCategory == "" ? <option value="">대분류</option> : <option value="">대분류</option>}
                     {props.categoryList.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)}
                 </select>
-                <select name="secondCategory" id="secondCategory" value={selectedCategories.secondCategory} onChange={handleSelectChage}>
-                    {props.mode == "insert" || selectedCategories.secondCategory == "" ? <option value="" disabled selected>중분류</option> : <option value="" disabled>중분류</option>}
+                <select name="secondCategory" id="secondCategory" value={selectedSecondCategory} onChange={handleSelectChage}>
+                    {props.mode == "insert" || selectedSecondCategory == "" ? <option value="">중분류</option> : <option value="">중분류</option>}
                     {secondCategoryList.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)}
                 </select>
-                <select name="thirdCategory" id="thirdCategory" value={selectedCategories.thirdCategory} onChange={handleSelectChage}>
-                    {props.mode == "insert" || selectedCategories.thirdCategory == "" ? <option value="" disabled selected>소분류</option> : <option value="" disabled>소분류</option>}
+                <select name="thirdCategory" id="thirdCategory" value={selectedThirdCategory} onChange={handleSelectChage}>
+                    {props.mode == "insert" || selectedThirdCategory == "" ? <option value="">소분류</option> : <option value="">소분류</option>}
                     {thirdCategoryList.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)}
                 </select>
             </div>
