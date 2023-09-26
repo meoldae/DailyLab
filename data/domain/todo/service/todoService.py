@@ -8,7 +8,7 @@ def makeTodo(member_id: int, db):
     # todo 수행일 기준 미리 저장되어있는 todo 가져옴
     firstList = todoRepository.getUserTodo(member_id, db)
     # 최근 7일치 중 가장 많이 등록된 category를 5개만 가져옴
-    topFiveRecords = todoRepository.getRecommendedList(member_id, db)
+    topFiveRecords = todoRepository.getRecommendedList(member_id, 7, db)
     if topFiveRecords:
         # topFiveRecords 리스트를 fail_count와 success_count의 합을 기준으로 내림차순 정렬
         topFiveRecords = sorted(topFiveRecords, key=lambda x: x.fail_count + x.success_count, reverse=True)
