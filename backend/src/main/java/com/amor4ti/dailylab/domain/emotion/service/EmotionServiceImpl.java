@@ -104,41 +104,52 @@ public class EmotionServiceImpl implements EmotionService {
                         )
         );
 
-        // 2. emotion 컬렉션과 조인
-        LookupOperation lookupOperation =
-                Aggregation.lookup("emotion", "emotionId", "emotionId", "emotionInfo");
+        // 2. Unwind operation to flatten the emotions array
+        UnwindOperation unwindOperation = Aggregation.unwind("emotions");
 
-        // 3. 조인된 결과와 함께 각 날짜 및 감정별로 그룹화
-        GroupOperation firstGroupOperation = Aggregation.group("date", "emotionId")
-                                                        .first("emotionInfo.type")
-                                                        .as("type")
-                                                        .count().as("count");
+        // 3. emotion 컬렉션과 조인
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("emotion")
+                .localField("emotions.emotionId")
+                .foreignField("emotionId")
+                .as("emotionInfo");
 
-        // 4. 각 날짜별로 재그룹화하며 감정 정보 포함
+        // 3.5 Unwind operation to flatten the emotionInfo array
+        UnwindOperation unwindOperation2 = Aggregation.unwind("emotionInfo");
+
+        // 4. 조인된 결과와 함께 각 날짜 및 감정별로 그룹화
+        GroupOperation firstGroupOperation = Aggregation.group("date", "emotions.emotionId")
+                .first("emotionInfo.type")
+                .as("type")
+                .count().as("count");
+
+        // 5. 각 날짜별로 재그룹화하며 감정 정보 포함
         GroupOperation secondGroupOperation = Aggregation.group("_id.date")
-                                                         .push(new BasicDBObject("emotionId", "$_id.emotionId")
-                                                         .append("count", "$count")
-                                                         .append("type", "$type"))
-                                                         .as("emotions");
+                .push(new BasicDBObject("emotionId", "$_id.emotionId")
+                        .append("count", "$count")
+                        .append("type", "$type"))
+                .as("emotions");
 
-        // 5. 날짜 필드를 직접 설정
+        // 6. 날짜 필드를 직접 설정
         ProjectionOperation projectionOperation = Aggregation.project()
-                                                             .andExpression("_id").as("date")
-                                                             .and("emotions").as("emotions");
+                .andExpression("_id").as("date")
+                .and("emotions").as("emotions");
 
-        // 6. 날짜별로 정렬
+        // 7. 날짜별로 정렬
         SortOperation sortOperation = Aggregation.sort(Sort.by(Sort.Order.asc("date")));
 
         Aggregation aggregation = Aggregation.newAggregation(
-                                              matchOperation,
-                                              lookupOperation,
-                                              firstGroupOperation,
-                                              secondGroupOperation,
-                                              projectionOperation,
-                                              sortOperation
+                matchOperation,
+                unwindOperation,
+                lookupOperation,
+                unwindOperation2,
+                firstGroupOperation,
+                secondGroupOperation,
+                projectionOperation,
+                sortOperation
         );
 
-        // 7. 집계 연산 수행
+        // 8. 집계 연산 수행
         AggregationResults<MemberEmotionPeriodDto> results = mongoTemplate.aggregate(
                 aggregation, "member_emotion", MemberEmotionPeriodDto.class
         );
