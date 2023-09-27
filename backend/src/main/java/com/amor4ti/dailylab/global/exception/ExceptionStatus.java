@@ -41,7 +41,8 @@ public enum ExceptionStatus {
 	MEMBER_HOBBY_IS_ALREADY_PRESENT("-8008", "이미 등록된 관심사입니다."),
 	MBTI_NOT_FOUND("-9000", "MBTI가 존재하지 않습니다"),
 
-	LOCATION_TRANSPORT_FAIL("-10000", "사용자 위경도 전송에 실패했습니다.");
+	LOCATION_TRANSPORT_FAIL("-10000", "사용자 위경도 전송에 실패했습니다."),
+	FASTAPI_CONNECTION_FAIL("-11111", "FastAPI 서버와 연결을 실패했습니다");
 
 	private final String code;
 	private final String message;
