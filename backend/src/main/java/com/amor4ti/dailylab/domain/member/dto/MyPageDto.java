@@ -13,4 +13,5 @@ public class MyPageDto {
     private String username;
     private String gender;
     private LocalDate birthday;
+    private String provider;
 }
