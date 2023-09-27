@@ -376,4 +376,22 @@ public class MemberServiceImpl implements MemberService {
 
 
 	}
+
+	@Override
+	public DataResponse getMembership(Long memberId) {
+		String[] result = {""};
+		memberRepository.findById(memberId).ifPresentOrElse(
+				findMember -> {
+					if (findMember.getBirthday() != null) {
+						result[0] = "Member";
+					}else {
+						result[0] = "tempMember";
+					}
+				},
+				() -> {
+					result[0] = "notMember";
+				}
+		);
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result[0]);
+	}
 }
