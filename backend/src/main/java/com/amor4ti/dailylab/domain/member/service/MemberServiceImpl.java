@@ -274,6 +274,15 @@ public class MemberServiceImpl implements MemberService {
 		memberSimilarityDtoList.stream().parallel().forEach(dto ->
 			dto.setHobbyList(memberHobbyService.getHobbyIdListByMemberId(dto.getMemberId()))
 		);
+		webClientUtil.post(DATA_SERVER_URL + "/member/make", memberSimilarityDtoList, List.class)
+			.subscribe(
+				response -> {
+					log.info("성공!!!! : {}", response.toString());
+				},
+				error -> {
+					log.info("실패 !!");
+				}
+			);
 		return memberSimilarityDtoList;
 	}
 
