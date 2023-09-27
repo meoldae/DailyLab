@@ -65,11 +65,4 @@ public class EmotionController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
-    @GetMapping("/taste")
-    private DataResponse getTasteByDate(Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
-        String taste = emotionService.getSelectTaste(memberId, LocalDate.now());
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, taste);
-
-    }
 }

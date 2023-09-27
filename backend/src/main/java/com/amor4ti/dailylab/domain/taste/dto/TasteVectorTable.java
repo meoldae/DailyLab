@@ -1,4 +1,4 @@
-package com.amor4ti.dailylab.domain.emotion.dto.response;
+package com.amor4ti.dailylab.domain.taste.dto;
 
 public class TasteVectorTable {
 
