@@ -1,4 +1,5 @@
 .datepicker_input_btn{width: 100%; padding-left: 7px; padding-right: 7px; border: 1px solid #F1F1F1; overflow: hidden; height: 39px; background-color: #fff; font-size: 17px; font-size: 1.7rem; line-height: 23px; line-height: 2.3rem; font-weight: 400; letter-spacing: -0.02em; color: #17181d; text-align: left; outline: none;}
+.react-datepicker__input-container{border: 1px solid #B2B2B2; border-radius: 5px; padding: 7px;}
 .react-datepicker-wrapper{float: left; width: 100%; display: block; position: relative;}
 .react-datepicker{border: 0px none; border-radius: 8px;}
 .react-datepicker__header{background-color: #FFDF2B; border: 0px none; border-top-left-radius: 8px; border-top-right-radius: 8px; }

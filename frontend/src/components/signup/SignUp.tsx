@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { SetAccessToken } from "@/atom/UserAtom";
 import { UpdateSignUp } from "@/api/User";
 import CustomDatePicker from "@/utils/CustomDatePicker";
 
@@ -13,19 +12,21 @@ const SignUp = () => {
     function birthChange(selectDate: string){setBirth(() => selectDate)}
     function genderChange(e: React.ChangeEvent<HTMLInputElement>){setGender(() => e.target.value);}
 
-    const doSignUp = async () => {
+    async function doSignUp() {
+        if(birth == undefined || birth == ""){
+            alert("생년월일을 선택해주세요");
+            return;
+        }
         const param = {memberId: id, gender: gender, birthDay: birth};
-        console.log(param);
-        /*await UpdateSignUp(param, ({data}) => {
-            SetAccessToken(data.data as string);
-            navigate('/');
-        }, (error) => {console.log(error)});*/
+        await UpdateSignUp(param, ({data}) => {
+            navigate(`/oauth2/redirect?token=${data.data as string}`);
+        }, (error) => {console.log(error)});
     };
     
     return (
         <div className="bg_contents_con p-[20px] text-2xl child-[div:not(:last-child)]:mb-[30px]">
             <div>
-                <div className="float-left min-w-[100px] text-[15px]">생년월일 : </div>
+                <div className="float-left mt-[6px] min-w-[100px] text-[15px]">생년월일 : </div>
                 <div className="overflow-hidden">
                     <CustomDatePicker setData={birthChange} placeholder="생년월일을 선택해주세요" maxDate={new Date()}/>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './css/DatePicker.css';
@@ -18,7 +18,8 @@ interface DatePickerProps {
 
 const CustomDatePicker = (Props : DatePickerProps) => {
   const [selectDate, setSelectDate] = useState<Date>(Props.settingDate as Date);
-  const customInput = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {if(Props.settingDate != undefined) setSelectDate(() => Props.settingDate!);}, [Props]);
 
   const changeDate = (date : Date) => {
     Props.setData(toStringByFormatting(date));
@@ -29,7 +30,8 @@ const CustomDatePicker = (Props : DatePickerProps) => {
 		<DatePicker
       locale={ko}
       dateFormat="yyyy-MM-dd"
-      minDate={Props.minDate ? Props.minDate : selectDate}
+      minDate={Props.minDate}
+      maxDate={Props.maxDate}
       selected={selectDate}
       onChange={(date: Date) => changeDate(date)}
       placeholderText={Props.placeholder}
