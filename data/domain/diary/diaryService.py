@@ -9,27 +9,31 @@ def createDiary(param, gpt_model):
     user_info = builder.build()
 
     todo_list = build_todo_list(param["todos"], gpt_model)
-    
+    emotion_count_str = build_emotion_count_per_hour(param["emotionCountPerHour"])
     content = (
-        "당신은 한 사람의 완벽한 하루를 위해 연구하는 연구원이야. 주어진 내용을 토대로 관찰일지를 작성해줘"
+        "당신은 한 사람의 완벽한 하루를 위해 연구하고 분석하는 연구원이야. 주어진 내용을 토대로 관찰일지를 작성해줘"
     )
 
     user_content = (
         user_info + "\n" + 
         "오늘 할 일\n" + 
         "\n".join(todo_list) + "\n\n" +
+        
+        "시간대별 감정\n" +
+        emotion_count_str + "\n\n" + 
 
-        "너에게 주어진 역할을 기반으로, 다음의 양식으로 관찰일지를 작성해줘. \n" +
+        "오늘 할 일과 시간대별 감정 기반으로 다음의 양식을 지켜서 관찰자 시점의 하루 보고서를 작성해줘. \n" +
+        
         "1. 읽고 싶게 자극적인 기사처럼 제목을 작성해줘. \n"
-        "2. 오늘 할 일의 수행 여부, 감정 상태에 따라 관찰일지를 작성해줘. 단, 시간은 분 단위는 사용하지마. \n"
-        "3. 성별, 나이, 생년월일은 보고서에 직접 사용 하지마. \n" +
+        "2. 오늘 할 일의 수행 여부, 감정 상태에 따라 관찰일지를 작성해줘. 시간의 분 단위는 작성하지마. \n"
+        "3. 절대로 성별, 나이, 생년월일은 보고서에 직접 사용 하지마. \n" +
         
         "title: \n" +
         "content: \n" +
-        # "재료: 관찰일지에 사용된 할 일, 감정들을 기술합니다. \n" + 
-        "관찰 내용: 할 일과 감정을 기반으로 관찰 결과를 기술합니다. \n" +
-        "결론: 관찰 및 분석 결과를 기술합니다. \n" + 
-        "조언 및 추천: 관찰 결론을 기반으로 관찰 대상에게 향후 방향성에 대해 추천하고 기술 합니다. "
+        "관찰 내용: 할 일과 감정을 기반으로 관찰한 하루를 기술합니다. \n" +
+        "관찰 결론: 관찰한 내용을 기반으올 분석 결과 및 느낀점을 기술합니다. \n" + 
+        "조언 및 추천: 관찰 결론을 기반으로 관찰 대상에게 향후 방향성에 대해 추천하고 기술 합니다. \n "
+        "평가 점수: 전체적인 하루 성적을 A+ 부터 D 평가"
     )
 
     print(user_content)
@@ -81,6 +85,12 @@ def build_todo_list(todos, gpt_model):
         todo_list.append(todo_str)
 
     return todo_list
+
+def build_emotion_count_per_hour(emotion_count_per_hour):
+    emotion_list = []
+    for time_range, emotion in emotion_count_per_hour.items():
+        emotion_list.append(f"{time_range}: {emotion}")
+    return "\n".join(emotion_list)
 
 class DiaryContentBuilder:
     def __init__(self, param):
