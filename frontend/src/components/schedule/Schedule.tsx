@@ -58,7 +58,7 @@ const Schedule = () => {
     return (
         <>
             <CustomCalendar curMonth={curMonth!} firstDate={firstDate!} lastDate={lastDate!} dateContents={dateContentsList} prevMonthEvent={prevMonthEvent} nextMonthEvent={nextMonthEvent} />
-            {selectedDate != "" ? <ScheduleView selectedDate={selectedDate} /> : null}
+            {selectedDate != "" ? <div className="mt-[20px]"><ScheduleView selectedDate={selectedDate} /></div> : null}
         </>
     )
 }

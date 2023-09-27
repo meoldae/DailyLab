@@ -4,6 +4,7 @@ import Mbti from './mbti/Mbti';
 import Job from './job/Job';
 import Religion from './religion/Religion';
 import Goal from './goal/Goal';
+import { marco2Img } from '../character/Character';
 
 
 const Info = () => {
@@ -11,7 +12,7 @@ const Info = () => {
     return (
         <>
             <div className="flex justify-start items-center pr-[10px]">
-                <img className="w-[90px]" src="./assets/img/character/marco_2.png" alt="마르코"/>
+                <img className="w-[90px]" src={marco2Img} alt="마르코"/>
                 <p className="-mt-4 text-2xl font-semibold">마르코에게 알려주세요</p>
             </div>
             <div className="mb-[20px] -mt-[30px]">

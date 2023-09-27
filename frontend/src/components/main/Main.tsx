@@ -5,7 +5,7 @@ import MainWaiting from "./waiting/Waiting";
 import { useEffect, useState } from "react";
 import { getStatus } from "@/api/User";
 import MainResult from "./Result";
-import { setStatusProceed } from "@/api/Todo";
+import { setStatusProceed } from "@/api/Status";
 
 /*
  * 사용자의 status를 세가지 경우로 나누어 분기처리 

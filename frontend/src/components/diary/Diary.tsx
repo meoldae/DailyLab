@@ -1,5 +1,6 @@
 import { getTodayDiary } from "@/api/diary";
 import { useEffect, useState } from "react";
+import { diego2Img } from "@/components/character/Character";
 
 interface DiaryProps {
     date : string;
@@ -29,7 +30,7 @@ const Diary: React.FC<DiaryProps> = ({ date }) => {
         <div>
             {/* 캐릭터 영역*/}
             <div className='flex items-center'>
-                <img className='w-[90px] mr-4' src="./assets/img/character/diego_2.png" alt="디에고" />
+                <img className='w-[90px] mr-4' src={diego2Img} alt="디에고" />
                 <div className="-mt-4 text-2xl font-semibold">오늘의 일기를 써봤어요</div>
             </div>
             {/* 일기 내용 */}

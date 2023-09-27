@@ -1,4 +1,4 @@
-import { setStatusFinish } from "@/api/Todo";
+import { setStatusFinish } from "@/api/Status";
 import { getStatus } from "@/api/User";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
