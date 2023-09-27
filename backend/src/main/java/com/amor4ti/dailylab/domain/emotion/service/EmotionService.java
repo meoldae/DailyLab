@@ -18,5 +18,4 @@ public interface EmotionService {
 
     List<MemberEmotionPeriodDto> getEmotionsBetweenDates(Long memberId, String startDate, String endDate);
 
-	String getSelectTaste(Long memberId, LocalDate now);
 }
