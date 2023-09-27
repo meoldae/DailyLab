@@ -20,4 +20,6 @@ public interface EmotionService {
     List<MemberEmotionPeriodDto> getEmotionsBetweenDates(Long memberId, String startDate, String endDate);
 
     List<ResponseEmotionAggregate> getEmotionsAggregate(Long memberId, LocalDate startDate, LocalDate endDate);
+
+    void updateEmotionsAggregate(String date);
 }

@@ -195,6 +195,31 @@ public class EmotionServiceImpl implements EmotionService {
         return result;
     }
 
+    @Override
+    public void updateEmotionsAggregate(String date) {
+        // 1. 오늘의 Emotion Value 전부 가져오기
+        Query query = new Query();
+        query.addCriteria(Criteria.where("date").is(date));
+        List<EmotionAggregateDto> memberEmotions = mongoTemplate.find(query, EmotionAggregateDto.class, "member_emotion");
+
+        // 2. 단일 조회로 전체 회원 정보 가져오기
+        List<Long> memberIds = memberEmotions.stream()
+                                             .map(EmotionAggregateDto::getMemberId)
+                                             .collect(Collectors.toList());
+
+        List<Member> findMembers = memberRepository.findAllById(memberIds);
+
+        List<EmotionMemberDto> membersInfo = findMembers.stream()
+                                                        .map(EmotionMemberDto::of)
+                                                        .collect(Collectors.toList());
+
+        Map<String, Integer> aggregateData = aggregateData(memberEmotions, membersInfo);
+
+        // 3. 집계된 데이터 DB에 PUSH
+        saveAggregatedData(aggregateData, date);
+    }
+
+
     /**
      * 회원을 순회 하면서 Emotion Count
      * @return 연령_성별_EmotionId, 개수로 반환
