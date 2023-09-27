@@ -1,6 +1,6 @@
 import { getTodayDiary } from "@/api/diary";
 import { useEffect, useState } from "react";
-import { diego2Img } from "../character/Character";
+import { diego2Img } from "@/components/character/Character";
 
 interface DiaryProps {
     date : string;

@@ -6,13 +6,13 @@ import TodoList from "./TodoList";
 import { CategoryType } from "@/type/CategoryType";
 
 interface props {
-    type : string; //1. current, 2. prev, 3. future
+    mode : string; //1. current, 2. prev, 3. future
     date : string;
 }
 
 const Todo = (props: props) => {
     const [contentsList, setContentsList] = useState<TodoType[]>([]);
-    useEffect(() => {getTodoList(props.date, ({data}) => {setContentsList(() => data.data as TodoType[]);}, (error) => console.log(error));}, []);
+    useEffect(() => {getTodoList(props.date, ({data}) => {setContentsList(() => data.data as TodoType[]);}, (error) => console.log(error));}, [props]);
 
     const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
     useEffect(() => {getCategoryList(({data}) => {setCategoryList(() => data.data as CategoryType[]);}, (error) => console.log(error));}, []);
@@ -67,10 +67,10 @@ const Todo = (props: props) => {
     return (
         <>
             <div className="bg-primary rounded-2xl px-5 py-8">
-                <TodoList type={props.type} contents={contentsList} blackItem={blackTodo} deleteItem={deleteTodo} checkItem={checkTodo} updateItem={updateTodo} changeItemUpdateMode={changeTodoUpdateMode}  categoryList={categoryList}/>
+                <TodoList type={props.mode} contents={contentsList} blackItem={blackTodo} deleteItem={deleteTodo} checkItem={checkTodo} updateItem={updateTodo} changeItemUpdateMode={changeTodoUpdateMode}  categoryList={categoryList}/>
                 {insertMode ? <div className="mt-4"><TodoHandleItem insertItem={insertTodo} mode="insert" categoryList={categoryList} changeInsertMode={handleInsertMode} /></div> : null}
 
-                {props.type != "prev" && !insertMode ?
+                {props.mode != "prev" && !insertMode ?
                     <div className="text-right text-xl text-primary mt-4">
                         <button onClick={handleInsertMode} className="mr-4 w-28 h-10 bg-text rounded-xl ">
                             추가
