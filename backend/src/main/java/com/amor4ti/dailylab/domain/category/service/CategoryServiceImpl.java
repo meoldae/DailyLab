@@ -72,4 +72,12 @@ public class CategoryServiceImpl implements CategoryService{
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) result.get("list");
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, dataList);
     }
+
+    @Override
+    public String getCategoryName(Long categroyId) {
+        Category category = categoryRepository.findByCategoryId(categroyId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+        log.info("찾은 카테고리 이름: {}", category.getSmall());
+        return category.getSmall();
+    }
 }
