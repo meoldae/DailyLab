@@ -67,7 +67,6 @@ public class EmotionController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
-<<<<<<< HEAD
     @GetMapping("/aggregate")
     private DataResponse findAggregateEmotion(Authentication authentication,
                                               @RequestParam("startdate") LocalDate startDate,
@@ -76,6 +75,4 @@ public class EmotionController {
         List<ResponseEmotionAggregate> result = emotionService.getEmotionsAggregate(memberId, startDate, endDate);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
-=======
->>>>>>> 8e2f38efb5bc86817e4d1d5872210020af8b9fd3
 }
