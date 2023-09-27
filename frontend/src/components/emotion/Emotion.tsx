@@ -5,6 +5,7 @@ import { EmotionType } from "@/type/EmotionType";
 import { Player } from '@lottiefiles/react-lottie-player';
 import { addHours } from "date-fns";
 import { useNavigate } from "react-router";
+import { cloeNoFaceImg } from "@/components/character/Character";
 
 const Emotion = () => {
     const playerRef = useRef<Player | null>(null);
@@ -86,7 +87,7 @@ const Emotion = () => {
                     )}
                 </div>
                 <div className="mt-[50px]">
-                    <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src="./assets/img/character/cloe_noface.png" alt="클로에" />
+                    <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src={cloeNoFaceImg} alt="클로에" />
                     <img className="absolute left-1/2 transform mt-[20px] -translate-x-1/2 w-[100px]" src={circleCount === 0 ? `./assets/img/emotion/face/100.png` : `./assets/img/emotion/face/${emotionNo}.png`} alt="표정" />
                 </div>
             </div>
