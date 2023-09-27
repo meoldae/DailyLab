@@ -8,7 +8,7 @@ from domain.diary import diaryService
 from tempSave import userLocations, weatherDict
 
 from domain.member.router import member
-from domain.todo.routers import getInfoFromSpring_router, todo
+from domain.todo.routers import todo
 
 app = FastAPI()
 
