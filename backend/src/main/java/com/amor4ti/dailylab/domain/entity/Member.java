@@ -78,10 +78,8 @@ public class Member {
 	}
 
 	public void updateMember(UpdateMemberDto updateMemberDto){
-		if (updateMemberDto.getMbtiId() != 0) this.mbtiId = updateMemberDto.getMbtiId();
-		if (updateMemberDto.getJob() != null) this.job = updateMemberDto.getJob();
-		if (updateMemberDto.getGoal() != null) this.goal = updateMemberDto.getGoal();
-		if (updateMemberDto.getReligion() != null) this.religion = updateMemberDto.getReligion();
+		if (updateMemberDto.getGender() != null) this.gender = updateMemberDto.getGender();
+		if (updateMemberDto.getBirthday() != null) this.birthday = updateMemberDto.getBirthday();
 	}
 
 	public void exitMember() {
