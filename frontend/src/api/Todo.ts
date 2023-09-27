@@ -1,26 +1,8 @@
 import ReturnType from "@/type/ReturnType";
 import { HttpJson } from "./Http";
 
-const getDefaultTodoList = async (todoDate: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.get(`todo/${todoDate}`).then(success).catch(fail);
-}
-
 const getTodoList = async (todoDate: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.get(`todo/full/${todoDate}`).then(success).catch(fail);
-}
-
-const makePlanTodoList = async (todoDate: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.get(`todo/recommend/${todoDate}`).then(success).catch(fail);
-}
-
-// 상태 proceed로 바꾸기
-const setStatusProceed = async (date: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.post(`member/start/${date}`).then(success).catch(fail);
-}
-
-// 상태 finish로 바꾸기
-const setStatusFinish = async (date: string, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.post(`member/end/${date}`).then(success).catch(fail);
 }
 
 const getCategoryList = async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
@@ -47,4 +29,4 @@ const blackTodoItem = async (todoId: number, success: (data : {data : ReturnType
     await HttpJson.post(`category/blacklist/black/${todoId}`).then(success).catch(fail);
 }
 
-export { getDefaultTodoList, insertTodoItem, checkTodoItem, blackTodoItem, updateTodoItem, setStatusProceed, setStatusFinish, getCategoryList, getTodoList, makePlanTodoList, deleteTodoItem };
+export { getCategoryList, getTodoList, insertTodoItem, checkTodoItem, blackTodoItem, updateTodoItem, deleteTodoItem };
