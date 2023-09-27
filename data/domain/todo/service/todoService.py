@@ -7,7 +7,7 @@ from sqlalchemy import BigInteger
 
 from domain.todo.repository import todoRepository
 from domain.todo.contents_based_filtering import cbf
-from mysql.models import Member
+from mysql.models import Member, mbti
 
 from tempSave import userLocations, weatherDict
 from domain.member.filtering import filtering
@@ -133,28 +133,41 @@ def afterListProcess(member_id: int, resultList: list[int], db):
         print("해당 member가 존재하지 않아요.")
         return None
 
+    mbti_info = db.query(mbti).filter(mbti.mbti_id == member.mbti_id).first()
+    if not mbti:
+        print("해당 유저의 mbti id가 세팅되지 않았습니다.")
+        return None
+
     # member 객체를 사용하여 MemberResponse 객체를 생성합니다.
     member_response = MemberResponse(
         memberId=member.member_id,
         birthday=member.birthday,
         gender=member.gender,
         mbtiId=member.mbti_id,
-        mbtiA=member.mbti.type_a,
-        mbtiB=member.mbti.type_b,
-        mbtiC=member.mbti.type_c,
-        mbtiD=member.mbti.type_d,
+        mbtiA=mbti_info.typea,
+        mbtiB=mbti_info.typeb,
+        mbtiC=mbti_info.typec,
+        mbtiD=mbti_info.typed,
         job=member.job,
         religion=member.religion,
     )
 
     ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
-    condition = ds.iloc[:, 4].isin([4, 5])
+
+    condition = ds.iloc[:, 4].isin([3, 4, 5])
     filtered_indices = (ds.index[condition]).tolist()
+    mbtiEList = [0] * 290
+    mbtiEList = resultList[resultList.index.isin(filtered_indices)]
 
-    tempList = [0] * 290
-    tempList = resultList[~resultList.index.isin(filtered_indices)]
+    condition = ds.iloc[:, 4].isin([1, 2, 3])
+    filtered_indices = (ds.index[condition]).tolist()
+    mbtiIList = [0] * 290
+    mbtiIList = resultList[resultList.index.isin(filtered_indices)]
 
-    print("tempList!!")
-    print(tempList)
+    print(len(mbtiEList))
+    print(mbtiEList)
+
+    print(len(mbtiIList))
+    print(mbtiIList)
 
     return resultList  # 또는 필요에 따라 member_response 객체를 반환할 수도 있습니다.

@@ -56,7 +56,6 @@ async def setLocation(member_id: int, location: Location):
 # async def getMemberInfo(member_id: int, memberInfo: MemberInfo):
 #     return {"status" : ""}
 
-app.include_router(getInfoFromSpring_router.router)
 app.include_router(todo.router)
 app.include_router(member.router)
 app.include_router(weatherAPI.router)

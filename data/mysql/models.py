@@ -15,8 +15,7 @@ class Member(Base):
     join_date = Column(DateTime)
     exit_date = Column(DateTime)
     provider = Column(String)
-    mbti_id = Column(SmallInteger, ForeignKey('mbti.mbti_id'))
-    mbti = relationship("mbti")
+    mbti_id = Column(SmallInteger)
     job = Column(String)
     goal = Column(String)
     religion = Column(String)
@@ -26,12 +25,10 @@ class mbti(Base):
     __tablename__ = 'mbti'
 
     mbti_id = Column(BigInteger, primary_key=True, autoincrement=True)
-    type_a = Column(String)
-    type_b = Column(String)
-    type_c = Column(String)
-    type_d = Column(String)
-
-
+    typea = Column(Integer)
+    typeb = Column(Integer)
+    typec = Column(Integer)
+    typed = Column(Integer)
 
 
 class todo(Base):
