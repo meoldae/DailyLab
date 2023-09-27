@@ -185,4 +185,9 @@ public class MemberController {
 
 		return memberService.getMemberLocation(memberLocationDto, memberId);
 	}
+
+	@GetMapping("membership/{memberId}")
+	public DataResponse getMembership(@PathVariable Long memberId){
+		return memberService.getMembership(memberId);
+	}
 }

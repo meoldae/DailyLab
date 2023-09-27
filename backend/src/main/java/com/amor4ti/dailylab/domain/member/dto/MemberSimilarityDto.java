@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberSimilarityDto {
 	private Long memberId;
 	private int ageGroup;
-	private String gender;
+	private int gender;
 	private int mbtiA;
 	private int mbtiB;
 	private int mbtiC;
@@ -25,12 +25,15 @@ public class MemberSimilarityDto {
 	public MemberSimilarityDto(Long memberId, String gender, LocalDate birthday, int mbtiA, int mbtiB, int mbtiC, int mbtiD, String job, String religion) {
 		this.memberId = memberId;
 		this.ageGroup = getAgeGroup(birthday);
-		this.gender = gender;
 		this.mbtiA = mbtiA;
 		this.mbtiB = mbtiB;
 		this.mbtiC = mbtiC;
 		this.mbtiD = mbtiD;
 
+		switch (gender){
+			case "F": this.gender = 1; break;
+			case "M": this.gender = 2; break;
+		}
 
 		if (job != null) {
 			switch (job) {

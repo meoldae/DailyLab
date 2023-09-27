@@ -57,4 +57,6 @@ public interface MemberService {
     DataResponse getMemberStatusByRange(Long memberId, Map<String, String> paramMap);
 
     void sendMemberInfotoFastAPI(Long memberId);
+
+    DataResponse getMembership(Long memberId);
 }

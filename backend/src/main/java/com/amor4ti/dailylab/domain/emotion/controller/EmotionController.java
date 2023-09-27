@@ -1,8 +1,10 @@
 package com.amor4ti.dailylab.domain.emotion.controller;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionAggregateCount;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.ResponseEmotionAggregate;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
 import com.amor4ti.dailylab.global.rabbitmq.MessagePublisher;
@@ -65,4 +67,12 @@ public class EmotionController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
 
+    @GetMapping("/aggregate")
+    private DataResponse findAggregateEmotion(Authentication authentication,
+                                              @RequestParam("startdate") LocalDate startDate,
+                                              @RequestParam("enddate") LocalDate endDate) {
+        Long memberId = Long.parseLong(authentication.getName());
+        List<ResponseEmotionAggregate> result = emotionService.getEmotionsAggregate(memberId, startDate, endDate);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+    }
 }

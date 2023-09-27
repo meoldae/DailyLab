@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService{
+public class  CategoryServiceImpl implements CategoryService{
 
     private final ResponseService responseService;
     private final CategoryRepository categoryRepository;
