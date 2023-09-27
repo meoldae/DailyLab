@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { TodoType, TodoParamType } from "@/type/TodoType";
-import { getTodoList, getCategoryList, blackTodoItem, deleteTodoItem, updateTodoItem, checkTodoItem } from "@/api/Todo"; 
+import { getTodoList, getCategoryList, blackTodoItem, deleteTodoItem, updateTodoItem, checkTodoItem, insertTodoItem } from "@/api/Todo"; 
 import TodoHandleItem from "./item/TodoHandleItem";
 import TodoList from "./TodoList";
 import { CategoryType } from "@/type/CategoryType";
@@ -12,18 +12,10 @@ interface props {
 
 const Todo = (props: props) => {
     const [contentsList, setContentsList] = useState<TodoType[]>([]);
-    useEffect(() => {
-        getTodoList(props.date, ({data}) => {
-            setContentsList(() => data.data as TodoType[]);
-        }, (error) => console.log(error));
-    }, []);
+    useEffect(() => {getTodoList(props.date, ({data}) => {setContentsList(() => data.data as TodoType[]);}, (error) => console.log(error));}, []);
 
     const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
-    useEffect(() => {
-        getCategoryList(({data}) => {
-            setCategoryList(() => data.data as CategoryType[]);
-        }, (error) => console.log(error));
-    }, []);
+    useEffect(() => {getCategoryList(({data}) => {setCategoryList(() => data.data as CategoryType[]);}, (error) => console.log(error));}, []);
 
     const [insertMode, setInsertMode] = useState(false);
     function handleInsertMode() {setInsertMode((prev) => !prev);}
@@ -43,7 +35,7 @@ const Todo = (props: props) => {
     }
 
     async function insertTodo(param: TodoParamType){
-        await updateTodoItem(param, ({data}) => {
+        await insertTodoItem(param, ({data}) => {
             const result = [...contentsList];
             result.push(data.data as TodoType);
             setContentsList(() => result);
@@ -52,8 +44,9 @@ const Todo = (props: props) => {
 
     async function updateTodo(param: TodoParamType){
         await updateTodoItem(param, ({data}) => {
-            //const result = contentsList.filter(contents => contents.todoId != todoId);
-            //setContentsList(() => result);
+            const updateData = data.data as TodoType;
+            const result = contentsList.map((todo) => todo.todoId === updateData.todoId ? updateData : todo);
+            setContentsList(() => result);
         }, (error) => console.log(error));
     }
 
@@ -74,7 +67,7 @@ const Todo = (props: props) => {
     return (
         <>
             <div className="bg-primary rounded-2xl px-5 py-8">
-                <TodoList type={props.type} contents={contentsList} blackItem={blackTodo} deleteItem={deleteTodo} checkItem={checkTodo} changeItemUpdateMode={changeTodoUpdateMode}  categoryList={categoryList}/>
+                <TodoList type={props.type} contents={contentsList} blackItem={blackTodo} deleteItem={deleteTodo} checkItem={checkTodo} updateItem={updateTodo} changeItemUpdateMode={changeTodoUpdateMode}  categoryList={categoryList}/>
                 {insertMode ? <div className="mt-4"><TodoHandleItem insertItem={insertTodo} mode="insert" categoryList={categoryList} changeInsertMode={handleInsertMode} /></div> : null}
 
                 {props.type != "prev" && !insertMode ?
