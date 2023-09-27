@@ -20,9 +20,9 @@ interface StatusType {
   }
 
 const Main = () => {
-    const [status, setStatus] = useState("proceed");
+    // const [status, setStatus] = useState("proceed");
+    const [status, setStatus] = useState("wait");
     const [getDate, setGetDate] = useState('');
-    // const comp = 'result';
     const curDate = toStringByFormatting(new Date());
     const nowStatus = async () => {
         await getStatus(({data}) => {
@@ -44,10 +44,10 @@ const Main = () => {
         if(timeDifference >= 1) setNewStatus(curDate);
     }
 
-    useEffect(() => {
-        void nowStatus();
-        getDateDiff();
-    }, [getDate]);
+    // useEffect(() => {
+    //     void nowStatus();
+    //     getDateDiff();
+    // }, [getDate]);
 
     const setNewStatus = async (date : string) => {
         await setStatusProceed(date, ({data}) => {

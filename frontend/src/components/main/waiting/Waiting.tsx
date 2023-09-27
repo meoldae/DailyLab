@@ -2,6 +2,7 @@ import { setStatusFinish } from "@/api/Todo";
 import { getStatus } from "@/api/User";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import WaitingMatter from "./WaitingMatter";
 
 interface StatusType {
     date: string;
@@ -9,8 +10,23 @@ interface StatusType {
   }
 
 const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) => {
-    const [status, setStatus] = useState('');
+    // const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('complete');
+    const [imgName, setImgName] = useState('./assets/img/character/cloe.png');
+    const [clickCount, setClickCount] = useState(0);
     const navigator = useNavigate();
+    const imgNameList = [
+        './assets/img/character/cloe.png',
+        './assets/img/character/marco.png',
+        './assets/img/character/diego.png',
+        './assets/img/character/ian.png',
+        './assets/img/character/coco.png',
+        './assets/img/character/cloe_2.png',
+        './assets/img/character/marco_2.png',
+        './assets/img/character/diego_2.png',
+        './assets/img/character/ian_2.png',
+        './assets/img/character/coco_2.png',
+    ];
 
     const nowStatus = async () => {
         await getStatus(({data}) => {
@@ -28,26 +44,52 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
             navigator('/');
         }, (error) => {console.log(error)})
     }
-    
-    useEffect(() => {
-        // 2초마다 상태 확인, 상태 finished이면 새로고침
-        const interval = setInterval(() => {
-            nowStatus();
-          }, 2000);
 
-          return () => clearInterval(interval);
-    },[])
+    const handleClick = () => {
+        setClickCount(prevCount => prevCount + 1);
+        setImgName(imgNameList[Math.floor(Math.random() * imgNameList.length)]);
+    }
+
+    const handleButton = () => {
+        console.log("보고서보러가기")
+    }
+    
+    // useEffect(() => {
+    //     // 2초마다 상태 확인, 상태 finished이면 새로고침
+    //     const interval = setInterval(() => {
+    //         nowStatus();
+    //       }, 2000);
+
+    //       return () => clearInterval(interval);
+    // },[])
     
     return (
-        <div>
-            {curDate} 의 일기를 작성하고 있어요
+        <div className="text-center">
+            <div className="mt-[80px] font-semibold text-3xl">
+            {status === 'wait' ? (
+                "보고서를 작성중이에요! 조금만 기다려 주세요"):
+                ("보고서가 완성되었어요!")}
+            </div>
+            <div onClick={handleClick}>
+            {status === 'wait' ? (
+                <img className="absolute left-[calc(50%-75px)] w-[150px] z-10" src="./assets/img/character/loading_diary.gif" alt="" />
+                ):(
+                <img className="absolute left-[calc(50%-75px)] w-[150px] z-10" src="./assets/img/character/loading_diary.gif" alt="" />
+            )}
+            </div>
             {status === 'complete' && (
-                <div>
-                    <button onClick={() => {handleFinish(curDate)}}>
-                        보고서 확인하기
+                <div className="top-[calc(100%-200px)] left-[calc(50%-100px)] absolute z-10">
+                    {/* <button onClick={() => {handleFinish(curDate)}}> */}
+                    <button onClick={() => {handleButton()}}>
+                        <div className='w-[200px] h-[50px] bg-text rounded-2xl flex items-center justify-center'>
+                            <p className='text-primary text-2xl'>보고서 보러가기</p>
+                        </div>
                     </button>
                 </div>
             )}
+            <div id="matterCanvasCon" className="absolute top-[50px] z-1">
+                <WaitingMatter clickCount={clickCount} imgName={imgName} />
+            </div>
         </div>
     )
 }
