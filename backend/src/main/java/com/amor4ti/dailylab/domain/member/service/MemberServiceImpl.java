@@ -277,7 +277,7 @@ public class MemberServiceImpl implements MemberService {
 		webClientUtil.post(DATA_SERVER_URL + "/member/make", memberSimilarityDtoList, List.class)
 			.subscribe(
 				response -> {
-					log.info("성공!!!! : {}", response.toString());
+					log.info("성공!!!! : {}", response);
 				},
 				error -> {
 					log.info("실패 !!");
