@@ -109,8 +109,6 @@ public class MemberServiceImpl implements MemberService {
 		// Dirty Checking 이상으로 Save 호출
 		memberRepository.save(findMember);
 
-
-		
 		return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
 	}
 
