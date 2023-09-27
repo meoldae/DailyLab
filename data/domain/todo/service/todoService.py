@@ -7,12 +7,14 @@ from domain.todo.repository import todoRepository
 from domain.todo.contents_based_filtering import cbf
 
 from tempSave import userLocations, weatherDict
+from domain.member.filtering import filtering
+
 
 def makeTodo(member_id: int, db):
     # todo 수행일 기준 미리 저장되어있는 todo 가져옴
     firstList = todoRepository.getUserTodo(member_id, db)
     # 최근 7일치 중 가장 많이 등록된 category를 5개만 가져옴
-    topFiveRecords = todoRepository.getRecommendedList(member_id, db)
+    topFiveRecords = todoRepository.getRecommendedList(member_id, 7, db)
     if topFiveRecords:
         # topFiveRecords 리스트를 fail_count와 success_count의 합을 기준으로 내림차순 정렬
         topFiveRecords = sorted(topFiveRecords, key=lambda x: x.fail_count + x.success_count, reverse=True)
@@ -24,21 +26,43 @@ def makeTodo(member_id: int, db):
     if topFiveRecords:
         for record in topFiveRecords:
             category_id = record.category_id
-            resultList = resultList + cbf.printSim(str(category_id - 1))
+            resultList = resultList + cbf.printSim(str(category_id-1))
     else:
         topFiveRecords = [4, 18, 22, 90, 290]
         for record in topFiveRecords:
-            resultList = resultList + cbf.printSim(str(record - 1))
+            resultList = resultList + cbf.printSim(str(record-1))
 
     if firstList:
         for remove in firstList:
             category_id = remove.category_id
-            resultList = resultList.drop(category_id - 1)
+            resultList = resultList.drop(category_id-1)
 
     resultList = afterListProcess(member_id, resultList, db)
     resultList = resultList.sort_values(ascending=False)
 
     return resultList
+
+def specialTodo(member_id: int, day: int, db):
+    similar = filtering.findBest(member_id)
+    # similar = similar[:len(similar)/10]
+    similar = similar[:6]
+
+    category = {}
+    for similarMember in similar:
+        if similarMember == member_id:
+            continue
+        otherUserTodo = todoRepository.getRecommendedList(similarMember, day, db)
+        if otherUserTodo:
+            for todo in otherUserTodo:
+                count = todoRepository.getTodoCount(similarMember, day, db)
+                if todo.category_id in category:
+                    category[todo.category_id] += count
+                else:
+                    category[todo.category_id] = count
+    if category:
+        category = dict(sorted(category.items(), key=lambda item: item[1], reverse=True))
+
+    return category
 
 
 def afterListProcess(member_id: int, resultList: list[int], db):
@@ -52,20 +76,20 @@ def afterListProcess(member_id: int, resultList: list[int], db):
         for white in userWhiteList:
             category_id = white.category_id
             for all in allRemoveCategory:
-                if (all.category_id == category_id):
+                if(all.category_id == category_id):
                     allRemoveCategory.remove(all)
                     break
 
     if userBlackList:
         for black in userBlackList:
             category_id = black.category_id
-            if category_id - 1 in resultList.index:
+            if category_id-1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
     if allRemoveCategory:
         for remove in allRemoveCategory:
             category_id = remove.category_id
-            if category_id - 1 in resultList.index:
+            if category_id-1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
     if weatherDict[member_id].rain != "강수없음":

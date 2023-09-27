@@ -10,12 +10,28 @@ router = APIRouter(
     # prefix="/data",
 )
 
-@router.get("/{member_id}")
-async def makeTodo(member_id: int, db: Session = Depends(get_db)):
-    todoResult = todoService.makeTodo(member_id, db)
+@router.get("/{memberId}")
+async def makeTodo(memberId: int, db: Session = Depends(get_db)):
+    todoResult = todoService.makeTodo(memberId, db)
 
     if todoResult is not None and not todoResult.empty and not todoResult.isnull().all():
         return todoResult
+    raise HTTPException(status_code=401, detail="no todo")
+
+@router.get("/recommend/{memberId}")
+async def makeTodo(memberId: int, db: Session = Depends(get_db)):
+    otherUserList = todoService.specialTodo(memberId, 7, db)
+
+    if otherUserList:
+        return otherUserList
+    raise HTTPException(status_code=401, detail="no todo")
+
+@router.post("/recommend")
+async def makeTodo(request: schemas.specialTodo , db: Session = Depends(get_db)):
+    otherUserList = todoService.specialTodo(request.memberId, request.period, db)
+
+    if otherUserList:
+        return otherUserList
     raise HTTPException(status_code=401, detail="no todo")
 
 @router.post("/todo")
