@@ -100,12 +100,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Transactional
 	@Override
-	public CommonResponse updateMemberInfo(Long memberId, UpdateMemberDto updateMemberDto) {
+	public CommonResponse updateMemberInfo(Long memberId, UpdateMemberBasicDto updateMemberBasicDto) {
 		Member findMember = memberRepository.findById(memberId).orElseThrow(
 				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
 
-		findMember.updateMember(updateMemberDto);
+		findMember.updateMember(updateMemberBasicDto);
 		// Dirty Checking 이상으로 Save 호출
 		memberRepository.save(findMember);
 
