@@ -7,8 +7,8 @@ from api.weatherAPI import get_weather
 from domain.diary import diaryService
 from tempSave import userLocations, weatherDict
 
-import test_router
-from domain.todo.routers import getInfoFromSpring_router, todo
+from domain.member.router import member
+from domain.todo.routers import todo
 
 app = FastAPI()
 
@@ -52,9 +52,8 @@ async def setLocation(member_id: int, location: Location):
 
     return {"status": "Location set successfully"}
 
-app.include_router(test_router.router)
-app.include_router(getInfoFromSpring_router.router)
 app.include_router(todo.router)
+app.include_router(member.router)
 app.include_router(weatherAPI.router)
 
 if __name__ == "__main__":

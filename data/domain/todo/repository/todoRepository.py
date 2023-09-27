@@ -27,9 +27,9 @@ def getBlacklist(member_id: int, db: Session):
     else:
         return blacklist
 
-def getRecommendedList(member_id: int, db: Session):
+def getRecommendedList(member_id: int, day: int, db: Session):
     recommendedList = db.query(models.todo_report).filter(models.todo_report.member_id == member_id)\
-    .filter(models.todo_report.last_recommend_date >= datetime.now().date()-timedelta(days=7))\
+    .filter(models.todo_report.last_recommend_date >= datetime.now().date()-timedelta(days=day))\
     .all()
 
     if not recommendedList:
@@ -40,3 +40,10 @@ def getAllRemoveCategory(db: Session):
     removeCategory = db.query(models.category_dict).filter(models.category_dict.recommendation_fit == 0).all()
 
     return removeCategory
+
+def getTodoCount(member_id: int, day: int, db: Session):
+    todoCount = db.query(models.todo).filter(models.todo.member_id == member_id)\
+    .filter(models.todo.todo_date >= datetime.now().date()-timedelta(days=day))\
+    .filter(models.todo.is_deleted == 0).count()
+
+    return todoCount
