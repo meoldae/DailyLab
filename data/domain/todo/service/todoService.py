@@ -1,13 +1,30 @@
-import asyncio
+import string
+from datetime import date
 
 import pandas as pd
+from pydantic import BaseModel
+from sqlalchemy import BigInteger
 
-from api.weatherAPI import get_weather
 from domain.todo.repository import todoRepository
 from domain.todo.contents_based_filtering import cbf
+from mysql.models import Member
 
 from tempSave import userLocations, weatherDict
 from domain.member.filtering import filtering
+from mysql import schemas
+
+
+class MemberResponse(BaseModel):
+    memberId: int
+    birthday: date
+    gender: str
+    mbtiId: int
+    mbtiA: int
+    mbtiB: int
+    mbtiC: int
+    mbtiD: int
+    job: str
+    religion: str
 
 
 def makeTodo(member_id: int, db):
@@ -26,21 +43,22 @@ def makeTodo(member_id: int, db):
     if topFiveRecords:
         for record in topFiveRecords:
             category_id = record.category_id
-            resultList = resultList + cbf.printSim(str(category_id-1))
+            resultList = resultList + cbf.printSim(str(category_id - 1))
     else:
         topFiveRecords = [4, 18, 22, 90, 290]
         for record in topFiveRecords:
-            resultList = resultList + cbf.printSim(str(record-1))
+            resultList = resultList + cbf.printSim(str(record - 1))
 
     if firstList:
         for remove in firstList:
             category_id = remove.category_id
-            resultList = resultList.drop(category_id-1)
+            resultList = resultList.drop(category_id - 1)
 
     resultList = afterListProcess(member_id, resultList, db)
     resultList = resultList.sort_values(ascending=False)
 
     return resultList
+
 
 def specialTodo(member_id: int, day: int, db):
     similar = filtering.findBest(member_id)
@@ -65,6 +83,9 @@ def specialTodo(member_id: int, day: int, db):
     return category
 
 
+# def firstTodo()
+
+
 def afterListProcess(member_id: int, resultList: list[int], db):
     userBlackList = todoRepository.getBlacklist(member_id, db)
     userWhiteList = todoRepository.getWhitelist(member_id, db)
@@ -76,20 +97,20 @@ def afterListProcess(member_id: int, resultList: list[int], db):
         for white in userWhiteList:
             category_id = white.category_id
             for all in allRemoveCategory:
-                if(all.category_id == category_id):
+                if (all.category_id == category_id):
                     allRemoveCategory.remove(all)
                     break
 
     if userBlackList:
         for black in userBlackList:
             category_id = black.category_id
-            if category_id-1 in resultList.index:
+            if category_id - 1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
     if allRemoveCategory:
         for remove in allRemoveCategory:
             category_id = remove.category_id
-            if category_id-1 in resultList.index:
+            if category_id - 1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
     if weatherDict[member_id].rain != "강수없음":
@@ -100,7 +121,6 @@ def afterListProcess(member_id: int, resultList: list[int], db):
 
         # 11열의 값이 1인 행의 인덱스를 뽑기 (날씨)
         condition = ds.iloc[:, 11] == 1
-        # 카테고리 ID - 1
         filtered_indices = (ds.index[condition]).tolist()
 
         # resultList의 인덱스와 카테고리 ID - 1가 같을 때 drop
@@ -108,4 +128,33 @@ def afterListProcess(member_id: int, resultList: list[int], db):
 
     print(resultList)
 
-    return resultList
+    member = db.query(Member).filter(Member.member_id == member_id).first()  # 이 부분은 SQLAlchemy 쿼리로 member 객체를 가져옵니다.
+    if not member:
+        print("해당 member가 존재하지 않아요.")
+        return None
+
+    # member 객체를 사용하여 MemberResponse 객체를 생성합니다.
+    member_response = MemberResponse(
+        memberId=member.member_id,
+        birthday=member.birthday,
+        gender=member.gender,
+        mbtiId=member.mbti_id,
+        mbtiA=member.mbti.type_a,
+        mbtiB=member.mbti.type_b,
+        mbtiC=member.mbti.type_c,
+        mbtiD=member.mbti.type_d,
+        job=member.job,
+        religion=member.religion,
+    )
+
+    ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
+    condition = ds.iloc[:, 4].isin([4, 5])
+    filtered_indices = (ds.index[condition]).tolist()
+
+    tempList = [0] * 290
+    tempList = resultList[~resultList.index.isin(filtered_indices)]
+
+    print("tempList!!")
+    print(tempList)
+
+    return resultList  # 또는 필요에 따라 member_response 객체를 반환할 수도 있습니다.

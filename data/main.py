@@ -52,6 +52,10 @@ async def setLocation(member_id: int, location: Location):
 
     return {"status": "Location set successfully"}
 
+# @app.post("/info/{member_id}")
+# async def getMemberInfo(member_id: int, memberInfo: MemberInfo):
+#     return {"status" : ""}
+
 app.include_router(getInfoFromSpring_router.router)
 app.include_router(todo.router)
 app.include_router(member.router)
