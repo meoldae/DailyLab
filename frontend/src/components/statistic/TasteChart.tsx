@@ -1,6 +1,6 @@
 import ReactApexChart from 'react-apexcharts';
 
-const TasteChart = () => {
+const TasteChart = ({state, period, startDate, endDate}: {state:string, period:string, startDate:string, endDate:string}) => {
   const series = [44, 55, 41, 17, 15];
   const options = {
     chart: {
