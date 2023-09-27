@@ -9,6 +9,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -21,7 +22,10 @@ public class RequestDiaryDto {
     private String religion;
 
     private List<DiaryTodos> todos;
-    public static RequestDiaryDto of(Member member, List<DiaryTodos> todos) {
+    private Map<String, String> emotionCountPerHour;
+    public static RequestDiaryDto of(Member member,
+                                     List<DiaryTodos> todos,
+                                     Map<String, String> emotionCountPerHour) {
 
         return RequestDiaryDto.builder()
                               .gender(member.getGender())
@@ -30,6 +34,7 @@ public class RequestDiaryDto {
                               .goal(member.getGoal())
                               .religion(member.getReligion())
                               .todos(todos)
+                              .emotionCountPerHour(emotionCountPerHour)
                               .build();
     }
 }

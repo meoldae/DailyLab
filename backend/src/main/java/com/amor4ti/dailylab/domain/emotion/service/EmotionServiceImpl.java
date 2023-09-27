@@ -90,6 +90,7 @@ public class EmotionServiceImpl implements EmotionService {
 
                     return emotions.stream().map(emotion -> {
                         Integer emotionId = emotion.getInteger("emotionId");
+
                         Document matchedEmotionInfo = emotionInfoList.stream()
                                                                      .filter(e -> e.getInteger("emotionId").equals(emotionId))
                                                                      .findFirst()
