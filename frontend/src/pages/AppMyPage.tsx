@@ -1,10 +1,12 @@
+import Header from '@/components/inc/Header';
+import Footer from '@/components/inc/Footer';
 
-
-const AppMyPage = () => {
+export default function AppMyPage() {
     return (
-        <div>
-        </div>
+        <>
+            <Header />
+            <div className='h-screen'>마이페이지</div>
+            <Footer />
+        </>
     )
 }
-
-export default AppMyPage;
