@@ -274,6 +274,15 @@ public class MemberServiceImpl implements MemberService {
 		memberSimilarityDtoList.stream().parallel().forEach(dto ->
 			dto.setHobbyList(memberHobbyService.getHobbyIdListByMemberId(dto.getMemberId()))
 		);
+		webClientUtil.post(DATA_SERVER_URL + "/member/make", memberSimilarityDtoList, List.class)
+			.subscribe(
+				response -> {
+					log.info("성공!!!! : {}", response.toString());
+				},
+				error -> {
+					log.info("실패 !!");
+				}
+			);
 		return memberSimilarityDtoList;
 	}
 
@@ -348,5 +357,23 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, statusByRange);
+	}
+
+	@Override
+	public void sendMemberInfotoFastAPI(Long memberId) {
+		MemberInfoDto memberInfoDtoByMemberId = memberRepository.findMemberInfoDtoByMemberId(memberId);
+
+		//		webClientUtil.post("http://localhost:8181" + "/location/" + memberId, memberLocationDto, Map.class)
+		webClientUtil.post(DATA_SERVER_URL + "/" + memberId, memberInfoDtoByMemberId, Map.class)
+				.subscribe(
+						response -> {
+							log.info("유저 정보 FastAPI로 전송 성공!");
+						},
+						error -> {
+							throw new CustomException(ExceptionStatus.MEMBER_INFO_TRANSPORT_FAIL);
+						}
+				);
+
+
 	}
 }

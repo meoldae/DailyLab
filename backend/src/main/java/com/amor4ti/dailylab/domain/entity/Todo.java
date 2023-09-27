@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.entity;
 
 import com.amor4ti.dailylab.domain.entity.category.Category;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentAndCategoryUpdateDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -59,7 +60,9 @@ public class Todo {
             this.checkedDate = null;
     }
 
-    public void changeContent(String content) {
+    public void changeContentAndCategory(String content, Category category) {
         this.content = content;
+        this.category = category;
+        this.isSystem = true;
     }
 }

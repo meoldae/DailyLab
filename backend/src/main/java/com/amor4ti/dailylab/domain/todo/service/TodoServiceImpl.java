@@ -12,7 +12,7 @@ import com.amor4ti.dailylab.domain.entity.category.CategoryWhiteList;
 import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
-import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentUpdateDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentAndCategoryUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
@@ -134,21 +134,40 @@ public class TodoServiceImpl implements TodoService{
         categoryWhiteListService.regist(todoRegistDto.getCategoryId(), memberId);
 
         Todo todo = todoRegistDto.toEntity(member, category);
+
+        boolean check = todo.getCheckedDate() != null;
+
         todoRepository.save(todo);
 
-        return responseService.successDataResponse(ResponseStatus.TODO_REGIST_SUCCESS, todo.getTodoId());
+        TodoDto todoDto = TodoDto.builder()
+                .todoId(todo.getTodoId())
+                .todoDate(todo.getTodoDate())
+                .checkedDate(todo.getCheckedDate())
+                .categoryId(todo.getCategory().getCategoryId())
+                .large(todo.getCategory().getLarge())
+                .medium(todo.getCategory().getMedium())
+                .small(todo.getCategory().getSmall())
+                .content(todo.getContent())
+                .check(check)
+                .isDeleted(todo.isDeleted())
+                .isSystem(todo.isSystem())
+                .memberId(memberId)
+                .username(member.getUsername())
+                .build();
+
+        DataResponse<?> dataResponse = responseService.successDataResponse(ResponseStatus.TODO_REGIST_SUCCESS, todoDto);
+
+        return dataResponse;
     }
 
     @Override
     @Transactional
-    public CommonResponse deleteTodo(Long memberId, List<Long> todoIdList) {
-        for (Long todoId : todoIdList) {
-            Todo todo = todoRepository.findByTodoId(todoId)
-                    .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+    public CommonResponse deleteTodo(Long memberId, Long todoId) {
 
-            todo.deleteTodo();
-            todoRepository.save(todo);
-        }
+        Todo todo = todoRepository.findByTodoId(todoId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+
+        todo.deleteTodo();
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
@@ -160,7 +179,6 @@ public class TodoServiceImpl implements TodoService{
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
         todo.checkTodo(todoCheckUpdateDto.getCheckedDate());
-        todoRepository.save(todo);
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
@@ -193,7 +211,7 @@ public class TodoServiceImpl implements TodoService{
 
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             // 카테고리 ID (랭킹)
-            CategoryIdList.add(Long.parseLong(entry.getKey()));
+            CategoryIdList.add(Long.parseLong(entry.getKey()) + 1);
             
             // 점수 (랭킹)
             ScoreList.add(entry.getValue().getAsDouble());
@@ -217,6 +235,9 @@ public class TodoServiceImpl implements TodoService{
             if(cnt == 8 - beforeTodoCnt)
                 break;
 
+            if(categoryId == 0)
+                continue;
+
             Category category = categoryRepository.findByCategoryId(categoryId)
                     .orElseThrow(() -> {
                         System.out.println("111111");
@@ -236,9 +257,10 @@ public class TodoServiceImpl implements TodoService{
 
             DataResponse dataResponse = registTodo(todoRegistDto, memberId);
 
-            Long newTodoId = (Long) dataResponse.getData();
+            Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, categoryId, LocalDate.parse(todoDate))
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-            TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, newTodoId)
+            TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, todo.getTodoId())
                     .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION));
 
             todoRecommendedDtoList.add(todoRecommendedDto);
@@ -256,17 +278,42 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public CommonResponse changeTodoContent(TodoContentUpdateDto todoContentUpdateDto, Long memberId) {
-        Todo todo = todoRepository.findByTodoId(todoContentUpdateDto.getTodoId())
+    @Transactional
+    public DataResponse changeTodoContentAndCategory(TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Long memberId) {
+        Todo todo = todoRepository.findByTodoId(todoContentAndCategoryUpdateDto.getTodoId())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-        if(todo.getMember().getMemberId() != memberId)
+        if(!Objects.equals(todo.getMember().getMemberId(), memberId))
             throw new CustomException(ExceptionStatus.TODO_UPDATE_REQUEST_BY_OTHER_USER);
 
-        todo.changeContent(todoContentUpdateDto.getContent());
+        Category category = categoryRepository.findByCategoryId(todoContentAndCategoryUpdateDto.getCategoryId())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+
+        todo.changeContentAndCategory(todoContentAndCategoryUpdateDto.getContent(), category);
+        // 강제 적용
         todoRepository.save(todo);
 
-        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+        boolean check = todo.getCheckedDate() != null;
+        Member member = memberRepository.findMemberByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+        TodoDto todoDto = TodoDto.builder()
+                .todoId(todo.getTodoId())
+                .todoDate(todo.getTodoDate())
+                .checkedDate(todo.getCheckedDate())
+                .categoryId(todo.getCategory().getCategoryId())
+                .large(todo.getCategory().getLarge())
+                .medium(todo.getCategory().getMedium())
+                .small(todo.getCategory().getSmall())
+                .content(todo.getContent())
+                .check(check)
+                .isDeleted(todo.isDeleted())
+                .isSystem(todo.isSystem())
+                .memberId(memberId)
+                .username(member.getUsername())
+                .build();
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoDto);
     }
 
     /*

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { Navigate, Outlet } from 'react-router';
-import { GetUserIdx } from '@/atom/UserAtom';
+import { GetAccessToken } from '@/atom/UserAtom';
 
 /**
  * 접근한 페이지에 맞는 권한을 가지고 있는지 판단
@@ -19,7 +19,7 @@ interface AuthRouteProps {
 export default function AuthRoute({ authentication } : AuthRouteProps) {
     const authText = authentication;
     //로그인되었는지
-    const isLogin = GetUserIdx() != -1 ? true : false;
+    const isLogin = GetAccessToken() != "" ? true : false;
     if(authText.indexOf('Not') == -1){ //로그인이 필요한 곳을 접근하려고 할 때
         if(isLogin) return <Outlet />; //로그인이 되어있을 때
         else return <Navigate to={redirect(true, authText)} />;

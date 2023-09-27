@@ -38,44 +38,43 @@ public class CategoryBlackListServiceImpl implements CategoryBlackListService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public CommonResponse black(List<Long> todoIdList, Long memberId) {
+    public CommonResponse black(Long todoId, Long memberId) {
         // todo삭제
-        todoService.deleteTodo(memberId, todoIdList);
+        todoService.deleteTodo(memberId, todoId);
 
-        for (Long todoId : todoIdList) {
-            Todo todo = todoRepository.findByTodoId(todoId)
-                    .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
+        Todo todo = todoRepository.findByTodoId(todoId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-            // 복합키
-            MemberCategoryId memberCategoryId = MemberCategoryId.builder()
-                    .memberId(memberId)
-                    .categoryId(todo.getCategory().getCategoryId())
-                    .build();
+        // 복합키
+        MemberCategoryId memberCategoryId = MemberCategoryId.builder()
+                .memberId(memberId)
+                .categoryId(todo.getCategory().getCategoryId())
+                .build();
 
-            Optional<CategoryBlackList> byMemberCategoryId = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
+        Optional<CategoryBlackList> byMemberCategoryId = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
 
-            // 이미 블랙리스트에 해당 Row가 존재한다면
-            if(byMemberCategoryId.isPresent()) {
-                // 이전에 블랙리스트에서 해방시킨 적이 있다면
-                if(byMemberCategoryId.get().isRemove()) {
-                    byMemberCategoryId.get().reBlack();
-
-                    // 등록
-                    categoryBlackListRepository.save(byMemberCategoryId.get());
-                }
-                else
-                    throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_TRUE);
-            }
-            else {
-                CategoryBlackList categoryBlackList = CategoryBlackList.builder()
-                        .id(memberCategoryId)
-                        .isRemove(false)
-                        .build();
+        // 이미 블랙리스트에 해당 Row가 존재한다면
+        if(byMemberCategoryId.isPresent()) {
+            // 이전에 블랙리스트에서 해방시킨 적이 있다면
+            if(byMemberCategoryId.get().isRemove()) {
+                byMemberCategoryId.get().reBlack();
 
                 // 등록
-                categoryBlackListRepository.save(categoryBlackList);
+                categoryBlackListRepository.save(byMemberCategoryId.get());
             }
+            else
+                throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_TRUE);
         }
+        else {
+            CategoryBlackList categoryBlackList = CategoryBlackList.builder()
+                    .id(memberCategoryId)
+                    .isRemove(false)
+                    .build();
+
+            // 등록
+            categoryBlackListRepository.save(categoryBlackList);
+        }
+
 
         return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }

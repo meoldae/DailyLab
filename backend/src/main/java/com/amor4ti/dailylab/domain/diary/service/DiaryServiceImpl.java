@@ -13,6 +13,7 @@ import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.member.service.MemberService;
+import com.amor4ti.dailylab.domain.taste.service.TasteService;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -48,6 +49,8 @@ public class DiaryServiceImpl implements DiaryService {
     private final DiaryPredictRepository diaryPredictRepository;
     private final DiaryHistoryRepository diaryHistoryRepository;
     private final MemberRepository memberRepository;
+    private final TasteService tasteService;
+
     @Override
     @Retryable(
             maxAttempts = 3,
@@ -137,7 +140,6 @@ public class DiaryServiceImpl implements DiaryService {
                 );
     }
 
-    @Override
     public ResponseDiaryDto getDiaryOnToday(Long memberId, LocalDate date) {
         DiaryPredict diaryPredict = diaryPredictRepository.findByMemberIdAndDiaryDate(memberId, date)
                                                           .orElseThrow(() -> new CustomException(ExceptionStatus.DIARY_DAY_NOT_EXIST));
