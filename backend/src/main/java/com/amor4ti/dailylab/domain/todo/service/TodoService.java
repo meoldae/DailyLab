@@ -26,5 +26,5 @@ public interface TodoService {
 
     DataResponse recommendTodo(Long memberId, String todoDate);
 
-    CommonResponse changeTodoContentAndCategory(TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Long memberId);
+    DataResponse changeTodoContentAndCategory(TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Long memberId);
 }

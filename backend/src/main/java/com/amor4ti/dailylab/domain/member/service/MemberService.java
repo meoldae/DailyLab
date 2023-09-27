@@ -55,4 +55,6 @@ public interface MemberService {
     CommonResponse getMemberLocation(MemberLocationDto memberLocationDto, Long memberId);
 
     DataResponse getMemberStatusByRange(Long memberId, Map<String, String> paramMap);
+
+    void sendMemberInfotoFastAPI(Long memberId);
 }

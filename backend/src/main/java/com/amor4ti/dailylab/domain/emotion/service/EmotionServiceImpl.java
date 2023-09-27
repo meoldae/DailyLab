@@ -5,7 +5,7 @@ import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionCount;
 import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionDetail;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
-import com.amor4ti.dailylab.domain.emotion.dto.response.TasteVectorTable;
+import com.amor4ti.dailylab.domain.taste.dto.TasteVectorTable;
 import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
 import com.amor4ti.dailylab.domain.emotion.mongorepo.EmotionRepository;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -164,36 +163,5 @@ public class EmotionServiceImpl implements EmotionService {
 		return results.getMappedResults();
 	}
 
-	@Override
-	public String getSelectTaste(Long memberId, LocalDate now) {
-		List<MemberEmotionPeriodDto> queryResult = getEmotionsBetweenDates(memberId, now.toString(),
-			now.toString());
 
-		int[] result = new int[15];
-
-		MemberEmotionPeriodDto data = queryResult.get(0);
-		// TODO 통계를 위한 날짜
-        LocalDate date = LocalDate.parse(data.getDate());
-
-		List<EmotionCount> emotions = data.getEmotions();
-		emotions.stream().forEach(emotion -> {
-				int emotionId = Integer.parseInt(emotion.getEmotionId()) - 1;
-				int count = emotion.getCount().intValue();
-
-				for (int i = 0; i < TasteVectorTable.tasteVectorTable[emotionId].length; i++) {
-                    result[i] += TasteVectorTable.tasteVectorTable[emotionId][i] * count;
-				}
-			}
-		);
-		int maxValue = 0;
-		int tasteIndex = 0;
-		for (int i = result.length - 1; i >= 0; i--) {
-			if (result[i] > maxValue) {
-				maxValue = result[i];
-				tasteIndex = i;
-			}
-
-		}
-		return TasteVectorTable.tasteList[tasteIndex];
-	}
 }

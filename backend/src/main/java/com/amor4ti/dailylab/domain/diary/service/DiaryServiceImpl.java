@@ -12,6 +12,7 @@ import com.amor4ti.dailylab.domain.entity.MemberStatus;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.member.repository.MemberStatusRepository;
 import com.amor4ti.dailylab.domain.member.service.MemberService;
+import com.amor4ti.dailylab.domain.taste.service.TasteService;
 import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -50,6 +51,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final DiaryHistoryRepository diaryHistoryRepository;
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
+    private final TasteService tasteService;
 
     @Retryable(
         maxAttempts = 3,
@@ -123,6 +125,7 @@ public class DiaryServiceImpl implements DiaryService {
                                                                     .build());
 
                             memberService.updateStatusComplete(memberId, date);
+                            tasteService.updateTasteSummary(memberId);
                         },
                         error -> {
                             new CustomException(ExceptionStatus.DIARY_CANNOT_WRITE);

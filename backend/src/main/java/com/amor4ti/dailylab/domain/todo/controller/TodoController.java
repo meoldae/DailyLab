@@ -68,7 +68,7 @@ public class TodoController {
     }
 
     @PutMapping("/change")
-    public CommonResponse changeTodoContentAndCategory(@RequestBody TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Authentication authentication) {
+    public DataResponse changeTodoContentAndCategory(@RequestBody TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
         return todoService.changeTodoContentAndCategory(todoContentAndCategoryUpdateDto, memberId);
