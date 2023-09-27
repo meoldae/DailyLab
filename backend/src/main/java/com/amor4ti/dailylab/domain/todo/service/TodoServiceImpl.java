@@ -197,7 +197,7 @@ public class TodoServiceImpl implements TodoService{
         
         // 우선 하루 마무리
         // 마무리는 언제 추천 요청을 하든 간에 추천 todo 수행일 -1에 실행된다.
-        todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
+//        todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
 
         // FastAPI와 통신
         String response = communicateWithFastAPI(memberId, todoDate);
@@ -278,7 +278,7 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     @Transactional
-    public CommonResponse changeTodoContentAndCategory(TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Long memberId) {
+    public DataResponse changeTodoContentAndCategory(TodoContentAndCategoryUpdateDto todoContentAndCategoryUpdateDto, Long memberId) {
         Todo todo = todoRepository.findByTodoId(todoContentAndCategoryUpdateDto.getTodoId())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
@@ -289,8 +289,30 @@ public class TodoServiceImpl implements TodoService{
                 .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
 
         todo.changeContentAndCategory(todoContentAndCategoryUpdateDto.getContent(), category);
+        // 강제 적용
+        todoRepository.save(todo);
 
-        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
+        boolean check = todo.getCheckedDate() != null;
+        Member member = memberRepository.findMemberByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+        TodoDto todoDto = TodoDto.builder()
+                .todoId(todo.getTodoId())
+                .todoDate(todo.getTodoDate())
+                .checkedDate(todo.getCheckedDate())
+                .categoryId(todo.getCategory().getCategoryId())
+                .large(todo.getCategory().getLarge())
+                .medium(todo.getCategory().getMedium())
+                .small(todo.getCategory().getSmall())
+                .content(todo.getContent())
+                .check(check)
+                .isDeleted(todo.isDeleted())
+                .isSystem(todo.isSystem())
+                .memberId(memberId)
+                .username(member.getUsername())
+                .build();
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoDto);
     }
 
     /*
