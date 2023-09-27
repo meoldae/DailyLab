@@ -188,6 +188,7 @@ public class TodoServiceImpl implements TodoService{
             maxAttempts = 3,
             backoff = @Backoff(delay = 100L)
     )
+
     @Transactional
     public DataResponse recommendTodo(Long memberId, String todoDate) {
         // 코드 실행 시작 시간 기록
@@ -197,7 +198,7 @@ public class TodoServiceImpl implements TodoService{
         
         // 우선 하루 마무리
         // 마무리는 언제 추천 요청을 하든 간에 추천 todo 수행일 -1에 실행된다.
-        todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
+//         todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
 
         // FastAPI와 통신
         String response = communicateWithFastAPI(memberId, todoDate);

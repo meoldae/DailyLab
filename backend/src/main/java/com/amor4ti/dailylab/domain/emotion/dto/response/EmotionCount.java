@@ -7,4 +7,8 @@ public class EmotionCount {
     private String emotionId;
     private String type;
     private Long count;
+
+    public void increment() {
+        this.count++;
+    }
 }
