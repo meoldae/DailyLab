@@ -6,12 +6,12 @@ import TotalEmotion from "./TotalEmotion";
 import { EmotionType, EmotionResultType } from '@/type/EmotionType';
 import { getEmotionList } from '@/api/Emotion';
 
-const DailyChart = ({selectDate} : {selectDate: string}) => {
+const DailyChart = ({state, period, startDate, endDate}: {state:string, period:string, startDate:string, endDate:string}) => {
     const [ emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
     const [ emotionList, setEmontionList ] = useState<EmotionType[]>([]);
 
     const getData = async () => {
-        await getDailyData({date : selectDate}, ({data}) => {
+        await getDailyData({date : endDate}, ({data}) => {
             setEmontionResultList(() => data.data as EmotionResultType[]);
         }, (error) => {console.log(error)});
     };

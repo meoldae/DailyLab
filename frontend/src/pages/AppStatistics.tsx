@@ -1,14 +1,12 @@
 import Header from '@/components/inc/Header';
-import Statistic from '@/components/statistic/Statistic';
 import Footer from '@/components/inc/Footer';
+import Statistic from '@/components/statistic/Statistic';
 
 export default function AppStatistics() {
     return (
         <>
             <Header />
-            <div className="contents_wrap">
-                <Statistic />
-            </div>
+            <Statistic />
             <Footer />
         </>
     )

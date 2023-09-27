@@ -1,53 +1,50 @@
-import DailyChart from "../chart/emotion/daily/DailyChart";
-import CategoryChart from "./CategoryChart";
-import TasteChart from "./TasteChart";
+import Tab, {TabType} from '@/utils/tab/Tab';
+import StatisticContainer from './StatisticContainer';
+import { useEffect, useState } from 'react';
+import { toStringByFormatting } from '@/utils/date/DateFormatter';
+import { subDays } from 'date-fns';
+
 
 const Statistic = () => {
+    const initIdx = 0;
+    const TabContents = [] as TabType[];
+    const [period, setPeriod] = useState('month');
+    const [startDate, setStartDate] = useState(toStringByFormatting(subDays(new Date(), 30)));
+    const [endDate, setEndDate] = useState(toStringByFormatting(new Date()));
+    
+    TabContents.push({title : "개인", contents: <StatisticContainer state="personal" period={period} startDate={startDate} endDate={endDate}/>});
+    TabContents.push({title : "연령대", contents: <StatisticContainer state="ageGender" period={period} startDate={startDate} endDate={endDate}/>});
+    TabContents.push({title : "전체", contents:<StatisticContainer state="total" period={period} startDate={startDate} endDate={endDate}/>});
+
+
+    const handlePeriod = () => {
+        setPeriod(period === 'month' ? 'week' : 'month');
+    }
+
+    useEffect(() => {
+        period === 'month' ?
+        setStartDate(toStringByFormatting(subDays(new Date(), 30))) :
+        setStartDate(toStringByFormatting(subDays(new Date(), 7)))
+    },[period])
+    
     return (
-        <>
+        <div className='contents_wrap'>
             <div className="text-center">
-                <div className="">
-                    <p className="text-3xl font-semibold mb-4">월간 보고서</p>
-                    <div className="text-right">
-                        <button>
-                            <div className="-mt-4 mb-8 mr-8 px-4 h-[25px] rounded-xl flex items-center justify-center bg-gray text-primary font-semibold text-xl">
-                                주간 전환
-                            </div>
-                        </button>
-                    </div>
-                </div>
-                <p className="text-xl font-light">지영님과 비슷한 성향의 사용자들을 연구했어요</p>
-                <p className="text-xl font-light mb-4">연구대상 : 20대 여성 / 내향적 / 감각적 / 사고적 / 인식적</p>
-            </div>
-            <div className="bg_contents_con p-[20px] child-[div:not(:last-child)]:mb-[40px]">
-                {/* 소통 통계 (바 차트) */}
-                <div className="mt-[20px]">
-                    <div className="text-center font-semibold text-2xl -mb-4">
-                        이번 달은 <p className="inline-block text-green">소통</p>에 관한 일이 많았어요
-                    </div>
-                    <CategoryChart/>
-                </div>
-                {/* 맛 통계 (도넛 차트) */}
-                <div>
-                    <div className="text-center font-semibold text-2xl mb-4">
-                        이번 달은 <p className="inline-block text-green">단맛</p>이 많이 검출되었어요
-                    </div>
-                    <TasteChart/>
-                    <img className="p-4 w-[120px] -mt-[170px] m-auto" src="./assets/img/taste/sweet/strawberryParfait.png" alt="" />
-                    <div className="text-center font-light text-2xl">
-                        그중에서도 많이 검출된 맛은<br/>
-                        <p className="font-semibold inline-block">딸기파르페맛</p> 이에요!
-                    </div>
-                </div>
-                {/* 감정 통계 */}
-                <div className="pt-[30px]">
-                    <div className="text-center font-semibold text-2xl mb-8">
-                        이번 달은 가장 많이 느낀 감정은 <p className="inline-block text-green">황당</p>이에요
-                    </div>
-                    <DailyChart selectDate='2023-09-26' />
+                <p className="text-3xl font-semibold mb-4">
+                {period === 'month' ? '월간 보고서' : '주간 보고서'}
+                </p>
+                <div className="text-right">
+                    <button onClick={handlePeriod}>
+                        <div className="-mt-4 mb-8 mr-8 px-4 h-[25px] rounded-xl flex items-center justify-center bg-gray text-primary font-semibold text-xl">
+                            {period === 'month' ? '주간 변경' : '월간 변경'}
+                        </div>
+                    </button>
                 </div>
             </div>
-        </>
+            <div className="bg_contents_con p-[20px]">
+                <Tab initIdx={initIdx} TabList={TabContents}/>
+            </div>
+        </div>
     )
 }
 

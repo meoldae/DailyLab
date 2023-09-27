@@ -35,7 +35,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                  <div>
                     <img className='w-[90px] m-auto' src={diegoImg} alt="디에고" />
                     <div onClick={handleDiaryContents} className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
-                           <p>{`${Number(curDate.split('-')[1])}월 ${Number(curDate.split('-')[2])}일`}의 연구를 진행중이에요</p>
+                           <p>{`${Number(getDate.split('-')[1])}월 ${Number(getDate.split('-')[2])}일`}의 연구를 진행중이에요</p>
                     </div>
                 </div>
                 {/* TODO영역 */}
@@ -61,7 +61,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                 </div>
                 {/* 버튼 */}
                 <div onClick={handleFinish} className='w-72 h-20 bg-text rounded-2xl flex items-center justify-center'>
-                    <p className='text-primary'>오늘 하루 마무리</p>
+                    <p className='text-primary'>하루 마무리</p>
                 </div>
             </div>
         </div>
