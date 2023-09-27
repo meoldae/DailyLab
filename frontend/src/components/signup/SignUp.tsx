@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { SetAccessToken } from "@/atom/UserAtom";
 import { UpdateSignUp } from "@/api/User";
-import { makePlanTodoList } from "@/api/Todo";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
 const SignUp = () => {
