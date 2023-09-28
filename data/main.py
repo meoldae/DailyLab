@@ -30,6 +30,7 @@ app.add_middleware(
 @app.post("/diary/default")
 async def createDiary(param: dict):
     data = diaryService.createDiary(param, "gpt-3.5-turbo-16k")
+    # data = diaryService.createDiary(param, "gpt-4")
     return data
 
 
