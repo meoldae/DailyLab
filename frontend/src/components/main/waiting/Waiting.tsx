@@ -41,7 +41,7 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
 
     const handleFinish = async (date : string) => {
         await setStatusFinish(date, ({data}) => {
-            navigator('/');
+            window.location.reload();
         }, (error) => {console.log(error)})
     }
 
@@ -51,17 +51,17 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
     }
 
     const handleButton = () => {
-        console.log("보고서보러가기")
+        handleFinish(getDate);
     }
     
-    // useEffect(() => {
-    //     // 2초마다 상태 확인, 상태 finished이면 새로고침
-    //     const interval = setInterval(() => {
-    //         nowStatus();
-    //       }, 2000);
+    useEffect(() => {
+        // 2초마다 상태 확인, 상태 finished이면 새로고침
+        const interval = setInterval(() => {
+            nowStatus();
+          }, 2000);
 
-    //       return () => clearInterval(interval);
-    // },[])
+          return () => clearInterval(interval);
+    },[])
     
     return (
         <div className="text-center">
@@ -82,7 +82,7 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
                     {/* <button onClick={() => {handleFinish(curDate)}}> */}
                     <button onClick={() => {handleButton()}}>
                         <div className='w-[200px] h-[50px] bg-text rounded-2xl flex items-center justify-center'>
-                            <p className='text-primary text-2xl'>보고서 보러가기</p>
+                            <p className='text-primary text-2xl'>연구 결과 확인하기</p>
                         </div>
                     </button>
                 </div>
