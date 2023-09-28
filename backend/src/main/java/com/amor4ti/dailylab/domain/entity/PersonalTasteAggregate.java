@@ -71,4 +71,8 @@ public class PersonalTasteAggregate {
 	public void setDate(LocalDate date){
 		this.date = date;
 	}
+
+	public void setMemberId(Long memberId) {
+		this.memberId = memberId;
+	}
 }

@@ -99,20 +99,20 @@ public class TasteServiceImpl implements TasteService {
 	@Override
 	public void updatePersonalTasteSummary(Long memberId) {
 		LocalDate today = LocalDate.now();
-		Member findMember = memberRepository.findById(memberId).orElseThrow(
-			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-		);
 		int selectTasteIndex = getSelectTaste(memberId, today);
 		personalTasteRepository.findByIdAndDate(memberId, today)
 			.ifPresentOrElse(
 				personalTaste -> {
+					log.info("=== personal Taste 있음!!");
 					int tasteValue = personalTaste.getTasteValue(selectTasteIndex);
 					personalTaste.setTasteValue(selectTasteIndex, tasteValue + 1);
 				},
 				() -> {
+					log.info("=== personal Taste 없음!!");
 					PersonalTasteAggregate personalTasteAggregate = new PersonalTasteAggregate();
 					personalTasteAggregate.setTasteValue(selectTasteIndex, 1);
 					personalTasteAggregate.setDate(today);
+					personalTasteAggregate.setMemberId(memberId);
 					personalTasteRepository.save(personalTasteAggregate);
 				}
 			);
