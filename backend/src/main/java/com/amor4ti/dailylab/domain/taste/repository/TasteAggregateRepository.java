@@ -11,14 +11,13 @@ import org.springframework.stereotype.Repository;
 import com.amor4ti.dailylab.domain.entity.TasteAggregate;
 
 @Repository
-public interface TasteRepository extends JpaRepository<TasteAggregate, Long> {
+public interface TasteAggregateRepository extends JpaRepository<TasteAggregate, Long> {
 
 	@Query(" SELECT ta"
 		 + "   FROM TasteAggregate ta"
 		 + "  WHERE ta.date = :date"
 		 + "    AND ta.gender = :gender"
 		 + "    AND ta.ageGroup = :ageGroup"
-
 	)
 	Optional<TasteAggregate> findByDateAndGenderAndAgeGroup(LocalDate date, String gender, String ageGroup);
 
