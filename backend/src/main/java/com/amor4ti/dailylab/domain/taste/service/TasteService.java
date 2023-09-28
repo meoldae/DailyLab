@@ -13,5 +13,5 @@ public interface TasteService {
 	@Transactional
 	void updateTasteSummary(Long memberId);
 
-	TasteStatisticsDto getTasteSummary(Long memberId, LocalDate startDate, LocalDate endDate);
+	TasteStatisticsDto getTasteSummary(Long memberId, String state, LocalDate startDate, LocalDate endDate);
 }

@@ -6,9 +6,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.amor4ti.dailylab.domain.entity.TasteAggregate;
 
+@Repository
 public interface TasteRepository extends JpaRepository<TasteAggregate, Long> {
 
 	@Query(" SELECT ta"
@@ -26,4 +28,9 @@ public interface TasteRepository extends JpaRepository<TasteAggregate, Long> {
 		+ "    AND ta.ageGroup = :ageGroup"
 	    + "    AND ta.date BETWEEN :startDate AND :endDate")
 	List findAllByGenderAndAgeGroupBetweenDate(String gender, String ageGroup, LocalDate startDate, LocalDate endDate);
+
+	@Query(" SELECT ta"
+		 + "   FROM TasteAggregate ta"
+		 + "  WHERE ta.date BETWEEN :startDate AND :endDate")
+	List findAllByBetweenDate(LocalDate startDate, LocalDate endDate);
 }

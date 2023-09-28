@@ -1,6 +1,7 @@
 package com.amor4ti.dailylab.domain.taste.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.amor4ti.dailylab.domain.entity.TasteAggregate;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.taste.dto.TasteStatisticsDto;
 import com.amor4ti.dailylab.domain.taste.dto.TasteVectorTable;
+import com.amor4ti.dailylab.domain.taste.repository.PersonalTasteRepository;
 import com.amor4ti.dailylab.domain.taste.repository.TasteRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
@@ -29,6 +31,7 @@ public class TasteServiceImpl implements TasteService {
 	private final EmotionService emotionService;
 	private final MemberRepository memberRepository;
 	private final TasteRepository tasteRepository;
+	private final PersonalTasteRepository personalTasteRepository;
 
 	@Override
 	@Transactional
@@ -92,13 +95,21 @@ public class TasteServiceImpl implements TasteService {
 	}
 
 	@Override
-	public TasteStatisticsDto getTasteSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
+	public TasteStatisticsDto getTasteSummary(Long memberId, String state, LocalDate startDate, LocalDate endDate) {
 		Member findMember = memberRepository.findById(memberId).orElseThrow(
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
 		int[] result = new int[15];
-		List<TasteAggregate> tasteSummaryByRange = tasteRepository.findAllByGenderAndAgeGroupBetweenDate(
-			findMember.getGender(), getAgeGroup(findMember.getBirthday()), startDate, endDate);
+		List<TasteAggregate> tasteSummaryByRange = new ArrayList<>();
+		if ("personal".equals(state)){
+			tasteSummaryByRange = personalTasteRepository.findAllByIdAndBetweenDate(memberId, startDate, endDate);
+		}else if ("ageGender".equals(state)) {
+			tasteSummaryByRange	= tasteRepository.findAllByGenderAndAgeGroupBetweenDate(
+				findMember.getGender(), getAgeGroup(findMember.getBirthday()), startDate, endDate);
+		}else if ("total".equals(state)){
+			tasteSummaryByRange	= tasteRepository.findAllByBetweenDate(startDate, endDate);
+		}
+
 		tasteSummaryByRange.stream().forEach(
 			tasteSummary -> {
 				int[] tasteSummaryList = tasteSummary.getTasteAggregateList();
