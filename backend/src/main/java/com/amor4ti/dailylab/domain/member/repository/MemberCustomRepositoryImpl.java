@@ -3,12 +3,12 @@ package com.amor4ti.dailylab.domain.member.repository;
 import com.amor4ti.dailylab.domain.member.dto.MemberInfoDto;
 import com.amor4ti.dailylab.domain.member.dto.QMemberInfoDto;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static com.amor4ti.dailylab.domain.entity.QMbti.mbti;
 import static com.amor4ti.dailylab.domain.entity.QMember.member;
@@ -20,6 +20,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
     public MemberCustomRepositoryImpl(EntityManager em) {
         this.jpaQueryFactory = new JPAQueryFactory(em);
     }
+
 
 
     @Override
@@ -35,6 +36,16 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                 .on(member.mbtiId.eq(mbti.mbtiId))
                 .where(memberIdEquals(memberId))
                 .fetchOne();
+    }
+
+    @Override
+    public List<Long> findMemberByGenderAndAge(String gender, Integer currentYear, Integer age) {
+        return jpaQueryFactory
+                .select(member.memberId)
+                .from(member)
+                .where(member.gender.eq(gender)
+                .and((member.birthday.year().subtract(currentYear)).abs().divide(10).floor().eq(age)))
+                .fetch();
     }
 
     private final Expression<String> mbtiTypeAExpression = new CaseBuilder()

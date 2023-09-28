@@ -1,15 +1,14 @@
 package com.amor4ti.dailylab.domain.member.service;
 
-import com.amor4ti.dailylab.domain.entity.Hobby;
-import com.amor4ti.dailylab.domain.entity.Mbti;
-import com.amor4ti.dailylab.domain.entity.Member;
-import com.amor4ti.dailylab.domain.entity.MemberStatus;
+import com.amor4ti.dailylab.domain.entity.*;
 import com.amor4ti.dailylab.domain.hobby.service.MemberHobbyService;
 import com.amor4ti.dailylab.domain.member.dto.*;
 import com.amor4ti.dailylab.domain.member.mapper.MbtiMapper;
 import com.amor4ti.dailylab.domain.member.mapper.MemberMapper;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.member.repository.MemberStatusRepository;
+import com.amor4ti.dailylab.domain.todo.service.TodoService;
+import com.amor4ti.dailylab.domain.todoReport.service.TodoReportService;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.response.CommonResponse;
@@ -52,7 +51,8 @@ public class MemberServiceImpl implements MemberService {
 	private final ResponseService responseService;
 	private final MemberHobbyService memberHobbyService;
 	private final MbtiService mbtiService;
-
+	private final TodoService todoService;
+	private final TodoReportService todoReportService;
 	private final MemberMapper memberMapper;
 
 	private final WebClientUtil webClientUtil;
@@ -64,6 +64,8 @@ public class MemberServiceImpl implements MemberService {
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
 
+		findMember.setJoinDate();
+		findMember.reSignUp();
 		findMember.setBirthday(signUpDto.getBirthDay());
 		findMember.setGender(signUpDto.getGender());
 
@@ -215,8 +217,8 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public DataResponse getMemberStatus(Long memberId) {
 		MemberStatusDto res = memberStatusRepository.findFirstByMemberIdOrderByDateDesc(memberId)
-				.map(MemberStatusDto::of)
-				.orElse(new MemberStatusDto(null, "init"));
+													.map(MemberStatusDto::of)
+													.orElse(new MemberStatusDto(null, "init"));
 
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, res);
 	}
@@ -228,6 +230,8 @@ public class MemberServiceImpl implements MemberService {
 												.date(date)
 												.status("proceed")
 												.build());
+
+
 	}
 
 	@Override
@@ -242,7 +246,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updateStatusFinish(Long memberId, LocalDate date) {
 		MemberStatus memberStatus = memberStatusRepository.findByMemberIdAndDate(memberId, date)
-				.orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+														  .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
 		memberStatus.setStatus("finish");
 		memberStatusRepository.save(memberStatus);
@@ -297,6 +301,8 @@ public class MemberServiceImpl implements MemberService {
 												.date(date)
 												.status("proceed")
 												.build());
+
+		todoService.recommendTodo(memberId, date.toString());
 
 		return responseService.successResponse(ResponseStatus.ACCESS_MEMBER_PROCEED);
 	}
@@ -391,5 +397,10 @@ public class MemberServiceImpl implements MemberService {
 				}
 		);
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result[0]);
+	}
+
+	@Override
+	public List getMemberListByGenderAndAge(String gender, Integer age) {
+		return memberRepository.findMemberByGenderAndAge(gender, LocalDate.now().getYear(), age);
 	}
 }
