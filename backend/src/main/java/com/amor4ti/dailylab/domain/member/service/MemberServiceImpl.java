@@ -398,4 +398,9 @@ public class MemberServiceImpl implements MemberService {
 		);
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result[0]);
 	}
+
+	@Override
+	public List getMemberListByGenderAndAge(String gender, Integer age) {
+		return memberRepository.findMemberByGenderAndAge(gender, LocalDate.now().getYear(), age);
+	}
 }
