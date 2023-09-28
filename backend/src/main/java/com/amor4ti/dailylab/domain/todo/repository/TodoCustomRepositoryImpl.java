@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.todo.repository;
 
 import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.todo.dto.response.*;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -179,6 +180,29 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                         .and(isDeletedEquals(false))
                         .and(isSystemEquals(false)))
                 .fetchCount();
+    }
+
+    @Override
+    public List<Tuple> getStatistics(LocalDate startDate, LocalDate endDate, List<Long> IdList) {
+        Expression<Integer> successCount =
+                new CaseBuilder()
+                        .when(todo.checkedDate.isNotNull()).then(1)
+                        .otherwise(0)
+                        .sum()
+                        .as("success_count");
+
+        return jpaQueryFactory
+                .select(todo.count(), successCount, todo.category.large)
+                .from(todo)
+                .where(todo.todoDate.between(startDate, endDate)
+                        .and(todo.isDeleted.eq(false))
+                        .and(idIn(IdList)))
+                .groupBy(todo.category.large)
+                .fetch();
+    }
+
+    private static BooleanExpression idIn(List<Long> IdList) {
+        return IdList != null? todo.member.memberId.in(IdList) : null;
     }
 
     // checkedDate가 null이면 false, 아니면 true

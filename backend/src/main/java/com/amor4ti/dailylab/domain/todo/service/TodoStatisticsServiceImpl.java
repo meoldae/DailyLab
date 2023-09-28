@@ -3,13 +3,18 @@ package com.amor4ti.dailylab.domain.todo.service;
 import com.amor4ti.dailylab.domain.category.service.CategoryService;
 import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
+import com.amor4ti.dailylab.domain.member.service.MemberService;
 import com.amor4ti.dailylab.domain.todo.dto.response.OtherTodoDto;
+import com.amor4ti.dailylab.domain.todo.dto.response.TodoStatisticsDto;
+import com.amor4ti.dailylab.domain.todo.mapper.TodoMapper;
+import com.amor4ti.dailylab.domain.todo.repository.TodoRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import com.amor4ti.dailylab.global.util.WebClientUtil;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +34,9 @@ public class TodoStatisticsServiceImpl implements TodoStatisticsService {
     private final ResponseService responseService;
     private final CategoryService categoryService;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final TodoRepository todoRepository;
+    private final TodoMapper todoMapper;
 
     @Override
     public DataResponse getOtherList(Long memberId) {
@@ -54,15 +62,93 @@ public class TodoStatisticsServiceImpl implements TodoStatisticsService {
     }
 
     @Override
-    public DataResponse getTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
+    public DataResponse getGroupTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
         int memberAge = (LocalDate.now().getYear() - findMember.getBirthday().getYear())/10;
         String gender = findMember.getGender();
 
+        List<Long> memberIdList = memberService.getMemberListByGenderAndAge(gender, memberAge);
+        List<Tuple> list = todoRepository.getStatistics(startDate, endDate, memberIdList);
 
-        return null;
+        Long[] allCount = {0l, 0l, 0l, 0l, 0l, 0l};
+        Map<String, Integer> map = new HashMap<>();
+        map.put("소통", 0);
+        map.put("성장", 1);
+        map.put("일상", 2);
+        map.put("과업", 3);
+        map.put("여가", 4);
+        map.put("기타", 5);
+
+        long all = 0l, success = 0l;
+        for(Tuple i : list) {
+            long a = i.get(0, Long.class);
+            allCount[map.get(i.get(2, String.class))] = a;
+            all += a;
+            success += i.get(1, Integer.class).longValue();
+        }
+
+        double percent = ((double)success/(double)all) * 100.0;
+        TodoStatisticsDto todoStatisticsDto = todoMapper.todoToTodoStatisticsDto(allCount, Math.round(percent*100)/100.0);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoStatisticsDto);
+    }
+
+    @Override
+    public DataResponse getPersonalTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+        List<Long> memberIdList = new LinkedList<>();
+        memberIdList.add(findMember.getMemberId());
+        List<Tuple> list = todoRepository.getStatistics(startDate, endDate, memberIdList);
+
+        Long[] allCount = {0l, 0l, 0l, 0l, 0l, 0l};
+        Map<String, Integer> map = new HashMap<>();
+        map.put("소통", 0);
+        map.put("성장", 1);
+        map.put("일상", 2);
+        map.put("과업", 3);
+        map.put("여가", 4);
+        map.put("기타", 5);
+
+        long all = 0l, success = 0l;
+        for(Tuple i : list) {
+            long a = i.get(0, Long.class);
+            allCount[map.get(i.get(2, String.class))] = a;
+            all += a;
+            success += i.get(1, Integer.class).longValue();
+        }
+
+        double percent = ((double)success/(double)all) * 100.0;
+        TodoStatisticsDto todoStatisticsDto = todoMapper.todoToTodoStatisticsDto(allCount, Math.round(percent*100)/100.0);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoStatisticsDto);
+    }
+
+    @Override
+    public DataResponse getAllTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
+        List<Tuple> list = todoRepository.getStatistics(startDate, endDate, null);
+
+        Long[] allCount = {0l, 0l, 0l, 0l, 0l, 0l};
+        Map<String, Integer> map = new HashMap<>();
+        map.put("소통", 0);
+        map.put("성장", 1);
+        map.put("일상", 2);
+        map.put("과업", 3);
+        map.put("여가", 4);
+        map.put("기타", 5);
+
+        long all = 0l, success = 0l;
+        for(Tuple i : list) {
+            long a = i.get(0, Long.class);
+            allCount[map.get(i.get(2, String.class))] = a;
+            all += a;
+            success += i.get(1, Integer.class).longValue();
+        }
+
+        double percent = ((double)success/(double)all) * 100.0;
+        TodoStatisticsDto todoStatisticsDto = todoMapper.todoToTodoStatisticsDto(allCount, Math.round(percent*100)/100.0);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoStatisticsDto);
     }
 
     @Override

@@ -12,18 +12,36 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/todo")
+@RequestMapping("/todo/statistics")
 @RequiredArgsConstructor
 public class TodoStatisticsController {
 
     private final TodoStatisticsService todoStatisticsService;
 
-    @GetMapping("/statistics")
-    public DataResponse getUserList(Authentication authentication,
+    @GetMapping("/personal")
+    public DataResponse getPersonalSummary(Authentication authentication,
+                                        @RequestParam("startDate") LocalDate startDate,
+                                        @RequestParam("endDate") LocalDate endDate){
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return todoStatisticsService.getPersonalTodoSummary(memberId, startDate, endDate);
+    }
+
+    @GetMapping("/group")
+    public DataResponse getGroupSummary(Authentication authentication,
                                     @RequestParam("startDate") LocalDate startDate,
                                     @RequestParam("endDate") LocalDate endDate){
         Long memberId = Long.parseLong(authentication.getName());
 
-        return todoStatisticsService.getOtherList(memberId);
+        return todoStatisticsService.getGroupTodoSummary(memberId, startDate, endDate);
+    }
+
+    @GetMapping("/all")
+    public DataResponse getAllSummary(Authentication authentication,
+                                        @RequestParam("startDate") LocalDate startDate,
+                                        @RequestParam("endDate") LocalDate endDate){
+        Long memberId = Long.parseLong(authentication.getName());
+
+        return todoStatisticsService.getAllTodoSummary(memberId, startDate, endDate);
     }
 }
