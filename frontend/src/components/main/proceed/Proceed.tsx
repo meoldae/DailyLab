@@ -20,7 +20,6 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
         setEmotionMode((prev) => !prev);
     }
 
-
     function handleFinish() {
         // 하루 마무리
         //오늘 일기 생성

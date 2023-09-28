@@ -22,7 +22,6 @@ interface StatusType {
 const Main = () => {
     const [status, setStatus] = useState("proceed");
     const [getDate, setGetDate] = useState('');
-    // const comp = 'result';
     const curDate = toStringByFormatting(new Date());
     const nowStatus = async () => {
         await getStatus(({data}) => {
