@@ -4,21 +4,23 @@ import { getEmotionList, putEmotion } from "@/api/Emotion";
 import { EmotionType } from "@/type/EmotionType";
 import { Player } from '@lottiefiles/react-lottie-player';
 import { addHours } from "date-fns";
-import { useNavigate } from "react-router";
 import { cloeNoFaceImg } from "@/components/character/Character";
 
-const Emotion = () => {
-    const playerRef = useRef<Player | null>(null);
-    const handlePlay = () => playerRef.current?.play();
-//  const handleStop = () => playerRef.current.stop();
-    const handlePause = () => playerRef.current?.pause();
-    const navigate = useNavigate();
+interface props {
+    changeMode : () => void
+}
 
+const Emotion = (props: props) => {
     const [circleCount, setCircleCount] = useState(0);
     const [emotionNo, setEmotionNo] = useState(1); 
     const [emotionName, setEmotionName] = useState(""); 
     const [emotionType, setEmotionType] = useState(""); 
     const [emotionList, setEmotionList] = useState<EmotionType[]>([]);
+    useEffect(() => {
+        getEmotionList(({data}) => {
+            setEmotionList(data.data as EmotionType[]);
+        }, (error) => {console.log(error)});
+    }, []);
     
     const onEmotionClick = (emoId: number, name: string, type: string) => {
         setEmotionNo(emoId); // 버튼 클릭 시 emotionNo를 변경합니다.
@@ -26,10 +28,6 @@ const Emotion = () => {
         setEmotionType(type);
         updateEmotion(emoId);
         setCircleCount(prevCount => prevCount + 1);
-        handlePlay();
-        setTimeout(() => {
-            handlePause(); 
-        }, 300); 
     };
 
     const updateEmotion = async (emotionId : number) => {
@@ -48,22 +46,11 @@ const Emotion = () => {
         }, (error) => {console.log(error)});
 
     };
-
-    const getList = async () => {
-        await getEmotionList(({data}) => {
-            console.log(data)
-            setEmotionList(data.data as EmotionType[])
-        }, (error) => {console.log(error)});
-    };
-
-    useEffect(() => {
-        void getList();
-    }, []);
   
     return (
       <div className="">
         <div className="absolute ml-8">
-            <div onClick={() => navigate('/')} className="flex items-center">
+            <div onClick={props.changeMode} className="flex items-center">
                 <img className="w-[30px] transform scale-x-[-1]" src="./assets/img/icon/arrow_right.png" alt="" />
                 <p className="text-2xl font-semibold">돌아가기</p>
             </div>
