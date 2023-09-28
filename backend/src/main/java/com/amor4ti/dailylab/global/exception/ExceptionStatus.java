@@ -45,7 +45,8 @@ public enum ExceptionStatus {
 	MBTI_NOT_FOUND("-9000", "MBTI가 존재하지 않습니다"),
 
 	LOCATION_TRANSPORT_FAIL("-10000", "사용자 위경도를 FastAPI로 전송하는데 실패했습니다."),
-	MEMBER_INFO_TRANSPORT_FAIL("-10001", "사용자 정보를 FastAPI로 전송하는데 실패했습니다.");
+	MEMBER_INFO_TRANSPORT_FAIL("-10001", "사용자 정보를 FastAPI로 전송하는데 실패했습니다."),
+	FASTAPI_CONNECTION_FAIL("-11111", "FastAPI 서버와 연결을 실패했습니다");
 
 	private final String code;
 	private final String message;
