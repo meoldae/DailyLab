@@ -103,7 +103,7 @@ public class TasteServiceImpl implements TasteService {
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
 		int selectTasteIndex = getSelectTaste(memberId, today);
-		personalTasteRepository.findbyIdAndDate(memberId, today)
+		personalTasteRepository.findByIdAndDate(memberId, today)
 			.ifPresentOrElse(
 				personalTaste -> {
 					int tasteValue = personalTaste.getTasteValue(selectTasteIndex);
