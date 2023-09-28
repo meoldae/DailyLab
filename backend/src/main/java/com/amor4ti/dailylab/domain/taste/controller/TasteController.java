@@ -35,10 +35,11 @@ public class TasteController {
 
 	@GetMapping("/statistics")
 	private DataResponse getTasteSummary(Authentication authentication,
+									@RequestParam("state") String state,
 									@RequestParam("startDate") LocalDate startDate,
 									@RequestParam("endDate") LocalDate endDate) {
 		Long memberId = Long.parseLong(authentication.getName());
-		TasteStatisticsDto tasteSummary = tasteService.getTasteSummary(memberId, startDate, endDate);
+		TasteStatisticsDto tasteSummary = tasteService.getTasteSummary(memberId, state, startDate, endDate);
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, tasteSummary);
 	}
 }
