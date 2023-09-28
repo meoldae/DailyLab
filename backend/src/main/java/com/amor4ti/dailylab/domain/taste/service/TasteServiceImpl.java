@@ -11,6 +11,7 @@ import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionCount;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.entity.Member;
+import com.amor4ti.dailylab.domain.entity.PersonalTasteAggregate;
 import com.amor4ti.dailylab.domain.entity.TasteAggregate;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.taste.dto.TasteStatisticsDto;
@@ -77,15 +78,16 @@ public class TasteServiceImpl implements TasteService {
 		Member findMember = memberRepository.findById(memberId).orElseThrow(
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
-		int selectTasteIndex = getSelectTaste(memberId, LocalDate.now());
-		tasteRepository.findByDateAndGenderAndAgeGroup(today, findMember.getGender(), getAgeGroup(findMember.getBirthday())).ifPresentOrElse(
+		int selectTasteIndex = getSelectTaste(memberId, today);
+		tasteRepository.findByDateAndGenderAndAgeGroup(today, findMember.getGender(),
+			getAgeGroup(findMember.getBirthday())).ifPresentOrElse(
 			tasteAggregate -> {
 				int tasteValue = tasteAggregate.getTasteValue(selectTasteIndex);
 				tasteAggregate.setTasteValue(selectTasteIndex, tasteValue + 1);
 			},
 			() -> {
 				TasteAggregate tasteAggregate = new TasteAggregate();
-				tasteAggregate.setDate(LocalDate.now());
+				tasteAggregate.setDate(today);
 				tasteAggregate.setAgeGroup(getAgeGroup(findMember.getBirthday()));
 				tasteAggregate.setGender(findMember.getGender());
 				tasteAggregate.setTasteValue(selectTasteIndex, 1);
@@ -95,19 +97,41 @@ public class TasteServiceImpl implements TasteService {
 	}
 
 	@Override
+	public void updatePersonalTasteSummary(Long memberId) {
+		LocalDate today = LocalDate.now();
+		Member findMember = memberRepository.findById(memberId).orElseThrow(
+			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		);
+		int selectTasteIndex = getSelectTaste(memberId, today);
+		personalTasteRepository.findbyIdAndDate(memberId, today)
+			.ifPresentOrElse(
+				personalTaste -> {
+					int tasteValue = personalTaste.getTasteValue(selectTasteIndex);
+					personalTaste.setTasteValue(selectTasteIndex, tasteValue + 1);
+				},
+				() -> {
+					PersonalTasteAggregate personalTasteAggregate = new PersonalTasteAggregate();
+					personalTasteAggregate.setTasteValue(selectTasteIndex, 1);
+					personalTasteAggregate.setDate(today);
+					personalTasteRepository.save(personalTasteAggregate);
+				}
+			);
+	}
+
+	@Override
 	public TasteStatisticsDto getTasteSummary(Long memberId, String state, LocalDate startDate, LocalDate endDate) {
 		Member findMember = memberRepository.findById(memberId).orElseThrow(
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
 		int[] result = new int[15];
 		List<TasteAggregate> tasteSummaryByRange = new ArrayList<>();
-		if ("personal".equals(state)){
+		if ("personal".equals(state)) {
 			tasteSummaryByRange = personalTasteRepository.findAllByIdAndBetweenDate(memberId, startDate, endDate);
-		}else if ("ageGender".equals(state)) {
-			tasteSummaryByRange	= tasteRepository.findAllByGenderAndAgeGroupBetweenDate(
+		} else if ("ageGender".equals(state)) {
+			tasteSummaryByRange = tasteRepository.findAllByGenderAndAgeGroupBetweenDate(
 				findMember.getGender(), getAgeGroup(findMember.getBirthday()), startDate, endDate);
-		}else if ("total".equals(state)){
-			tasteSummaryByRange	= tasteRepository.findAllByBetweenDate(startDate, endDate);
+		} else if ("total".equals(state)) {
+			tasteSummaryByRange = tasteRepository.findAllByBetweenDate(startDate, endDate);
 		}
 
 		tasteSummaryByRange.stream().forEach(
@@ -134,9 +158,9 @@ public class TasteServiceImpl implements TasteService {
 
 	public String getAgeGroup(LocalDate birthday) {
 		int ageGroup = (LocalDate.now().getYear() - birthday.getYear());
-		if (ageGroup < 10){
+		if (ageGroup < 10) {
 			return "미성년자";
-		}else {
+		} else {
 			return ((ageGroup / 10) * 10) + "대";
 		}
 	}

@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.taste.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,7 @@ public interface PersonalTasteRepository extends JpaRepository<PersonalTasteAggr
 		 + "  WHERE pta.memberId = :memberId"
 		 + "    AND pta.date BETWEEN :startDate AND :endDate")
 	List findAllByIdAndBetweenDate(Long memberId, LocalDate startDate, LocalDate endDate);
+
+	@Query(" ")
+	Optional<PersonalTasteAggregate> findbyIdAndDate(Long memberId, LocalDate today);
 }

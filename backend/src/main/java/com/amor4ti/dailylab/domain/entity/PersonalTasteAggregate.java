@@ -8,7 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PersonalTasteAggregate {
 
 	@Id
@@ -59,5 +66,9 @@ public class PersonalTasteAggregate {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			return 0;
 		}
+	}
+
+	public void setDate(LocalDate date){
+		this.date = date;
 	}
 }
