@@ -10,9 +10,13 @@ import headerMenuLightIconDark from 'public/assets/img/header/header_light_mode_
 import headerMenuDarkIconLight from 'public/assets/img/header/header_dark_mode_icon_light.png';
 import headerMenuDarkIconDark from 'public/assets/img/header/header_dark_mode_icon_dark.png';
 import { useSetRecoilState } from "recoil";
+import { GetProgressStatus } from "@/atom/ProgressAtom";
+import Progress from "@/components/progress/Progress";
 
 
 export default function Header() {
+
+    const isProgress = GetProgressStatus();
     const changeMode = useSetRecoilState(modeAtom);
     const isLight = GetMode() == 'light';
 
@@ -62,7 +66,7 @@ export default function Header() {
                         </li>
                     </ul>
             </div>
-            
+            {!isProgress ? <Progress /> : null}           
         </header>
     )
 }
