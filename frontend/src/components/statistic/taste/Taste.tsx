@@ -17,7 +17,7 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
     const [mostTaste, setMostTaste] = useState<String>();
 
     useEffect(() =>{
-        getTasteStatistics(startDate, endDate, ({data}) => {
+        getTasteStatistics(state, startDate, endDate, ({data}) => {
           const temp = data.data as tasteResultprop;
           const result:number[] = [
             temp.sweet,
