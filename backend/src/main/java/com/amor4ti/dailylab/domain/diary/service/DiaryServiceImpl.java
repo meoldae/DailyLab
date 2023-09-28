@@ -91,6 +91,7 @@ public class DiaryServiceImpl implements DiaryService {
 
                                 memberService.updateStatusComplete(memberId, date);
                                 tasteService.updateTasteSummary(memberId);
+                                tasteService.updatePersonalTasteSummary(memberId);
                             },
                             error -> {
                                 new CustomException(ExceptionStatus.DIARY_CANNOT_WRITE);
