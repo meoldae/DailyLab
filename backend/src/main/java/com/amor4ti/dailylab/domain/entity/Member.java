@@ -93,4 +93,8 @@ public class Member {
 	public void exitMember() {
 		this.exitDate = LocalDateTime.now();
 	}
+
+	public void reSignUp() {
+		this.exitDate = null;
+	}
 }

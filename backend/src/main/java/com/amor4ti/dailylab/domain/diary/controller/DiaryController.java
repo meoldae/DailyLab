@@ -3,6 +3,7 @@ package com.amor4ti.dailylab.domain.diary.controller;
 import com.amor4ti.dailylab.domain.diary.dto.response.ResponseDiaryDto;
 import com.amor4ti.dailylab.domain.diary.service.DiaryService;
 import com.amor4ti.dailylab.domain.member.service.MemberService;
+import com.amor4ti.dailylab.domain.todoReport.service.TodoReportService;
 import com.amor4ti.dailylab.global.response.CommonResponse;
 import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
@@ -22,6 +23,7 @@ public class DiaryController {
 
     private final DiaryService diaryService;
     private final MemberService memberService;
+    private final TodoReportService todoReportService;
     private final ResponseService responseService;
 
     @PostMapping("/predict")
@@ -41,6 +43,8 @@ public class DiaryController {
                                              @RequestParam("date") LocalDate date) {
 
         Long memberId = Long.parseLong(authentication.getName());
+
+        todoReportService.finishToday(memberId, date); // 할 일 청산
         memberService.updateStatusWait(memberId, date);
         diaryService.createConfirmDiary(memberId, date);
 

@@ -46,18 +46,24 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 
 		member.ifPresentOrElse(
 			tempMember -> {
-				if (tempMember.getBirthday() == null) {
-					log.info("============ 생년월일 없음 {} ============", tempMember.getMemberId());
+				if (tempMember.getExitDate() != null) {
+					log.info("=== 탈퇴한 회원입니다. 가입 페이지로 리다이렉트 합니다. ===");
 					redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
-				} else {
-					String accessToken = jwtProvider.createAccessToken(member.get());
-					String refreshToken = jwtProvider.createRefreshToken();
 
-					Cookie cookie = cookieUtils.createCookie(refreshToken);
-					response.addCookie(cookie);
+				}else {
+					if (tempMember.getBirthday() == null) {
+						log.info("============ 생년월일 없음 {} ============", tempMember.getMemberId());
+						redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
+					} else {
+						String accessToken = jwtProvider.createAccessToken(member.get());
+						String refreshToken = jwtProvider.createRefreshToken();
 
-					log.info("============ 기존 회원 {} ============", tempMember.getMemberId());
-					redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken;
+						Cookie cookie = cookieUtils.createCookie(refreshToken);
+						response.addCookie(cookie);
+
+						log.info("============ 기존 회원 {} ============", tempMember.getMemberId());
+						redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken;
+					}
 				}
 			},
 			() -> {
