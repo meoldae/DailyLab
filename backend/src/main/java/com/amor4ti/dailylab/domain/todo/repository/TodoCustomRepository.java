@@ -19,7 +19,7 @@ public interface TodoCustomRepository {
 
     Optional<Todo> findByMemberIdAndCategoryId(Long memberId, Long categoryId);
 
-    Optional<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate);
+    List<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate);
 
     List<TodoDto> findByMemberId(Long memberId);
 
