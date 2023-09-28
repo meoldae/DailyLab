@@ -86,7 +86,9 @@ public class DiaryServiceImpl implements DiaryService {
                                         .memberId(memberId)
                                         .title(String.valueOf(response.get("title")))
                                         .content(String.valueOf(response.get("content")))
-                                        .similarity(0.0)
+                                        .conclusion(String.valueOf(response.get("conclusion")))
+                                        .advice(String.valueOf(response.get("advice")))
+                                        .score(String.valueOf(response.get("score")))
                                         .build());
 
                                 memberService.updateStatusComplete(memberId, date);
