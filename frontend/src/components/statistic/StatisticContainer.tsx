@@ -1,6 +1,7 @@
 import DailyChart from "../chart/emotion/daily/DailyChart";
 import CategoryChart from "./CategoryChart";
-import TasteChart from "./TasteChart";
+// import TasteChart from "./TasteChart";
+import Taste from './taste/Taste';
 
 const StatisticContainer = ({state, period, startDate, endDate}: {state:string, period:string, startDate:string, endDate:string}) => {
     console.log(state, startDate, endDate);
@@ -15,17 +16,7 @@ const StatisticContainer = ({state, period, startDate, endDate}: {state:string, 
                     <CategoryChart state={state} period={period} startDate={startDate} endDate={endDate}/>
                 </div>
                 {/* 맛 통계 (도넛 차트) */}
-                <div>
-                    <div className="text-center font-semibold text-2xl mb-4">
-                        이번 {period === 'month' ? '달은' : '주는'} <p className="inline-block font-black">단맛</p>이 많이 검출되었어요
-                    </div>
-                    <TasteChart state={state} period={period} startDate={startDate} endDate={endDate}/>
-                    <img className="p-4 w-[120px] -mt-[170px] m-auto" src="./assets/img/taste/sweet/strawberryParfait.png" alt="" />
-                    <div className="text-center font-light text-2xl">
-                        그중에서도 많이 검출된 맛은<br/>
-                        <p className="font-semibold inline-block">딸기파르페맛</p> 이에요!
-                    </div>
-                </div>
+                <Taste state={state} period={period} startDate={startDate} endDate={endDate}/>
                 {/* 감정 통계 */}
                 <div className="pt-[40px]">
                     <div className="text-center font-semibold text-2xl mb-8">

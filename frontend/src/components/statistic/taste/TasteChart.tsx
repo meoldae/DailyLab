@@ -1,7 +1,6 @@
 import ReactApexChart from 'react-apexcharts';
 
-const TasteChart = ({state, period, startDate, endDate}: {state:string, period:string, startDate:string, endDate:string}) => {
-  const series = [44, 55, 41, 17, 15];
+const TasteChart = (chartInfo : { chartInfo : number[]}) => {
   const options = {
     chart: {
       type: 'donut',
@@ -40,16 +39,18 @@ const TasteChart = ({state, period, startDate, endDate}: {state:string, period:s
           offsetY: 10
         }
     },
-    labels: ['매운맛', '단맛', '신맛', '쓴맛', '짠맛'],
+    labels: ['단맛', '신맛', '짠맛', '매운맛', '쓴맛'],
     colors: ['#ff3251e1', '#ffa640', '#ffe70e', '#63c23d', '#2cb0ee'],
     dataLabels: {
         enabled: false // 숫자 표시를 비활성화
     },
   };
 
+
+
   return (
     <div className='flex h-[300px] justify-center items-center'>
-      <ReactApexChart options={options} series={series} type="donut" />
+      <ReactApexChart options={options} series={chartInfo.chartInfo} type="donut" />
     </div>
   );
 }
