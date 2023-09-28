@@ -19,7 +19,8 @@ public class DiaryHistory {
     private Long memberId;
     private String title;
     private String content;
+    private String conclusion;
+    private String advice;
+    private String score;
     private LocalDate diaryDate;
-
-    private Double similarity;
 }

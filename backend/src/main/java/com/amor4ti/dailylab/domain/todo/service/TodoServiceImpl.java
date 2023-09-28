@@ -216,6 +216,8 @@ public class TodoServiceImpl implements TodoService{
             ScoreList.add(entry.getValue().getAsDouble());
         }
 
+        log.info("0000");
+
         // 빈 추천 Todo 객체
         List<TodoRecommendedDto> todoRecommendedDtoList = new ArrayList<>();
 
@@ -238,10 +240,7 @@ public class TodoServiceImpl implements TodoService{
                 continue;
 
             Category category = categoryRepository.findByCategoryId(categoryId)
-                    .orElseThrow(() -> {
-                        System.out.println("111111");
-                        return new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND);
-                    });
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
 
             // 횟수 증가
             cnt++;
@@ -256,13 +255,15 @@ public class TodoServiceImpl implements TodoService{
 
             DataResponse dataResponse = registTodo(todoRegistDto, memberId);
 
-            Todo todo = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, categoryId, LocalDate.parse(todoDate))
-                    .orElseThrow(() -> new CustomException(ExceptionStatus.TODO_NOT_FOUND));
 
-            TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, todo.getTodoId())
-                    .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION));
+            List<Todo> todoList = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, categoryId, LocalDate.parse(todoDate));
 
-            todoRecommendedDtoList.add(todoRecommendedDto);
+            for (Todo todo : todoList) {
+                TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, todo.getTodoId())
+                        .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION));
+
+                todoRecommendedDtoList.add(todoRecommendedDto);
+            }
         }
 
         log.info("추천 todo 개수 : " + todoRecommendedDtoList.size());

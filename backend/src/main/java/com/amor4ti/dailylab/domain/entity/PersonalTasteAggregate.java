@@ -9,24 +9,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TasteAggregate {
+public class PersonalTasteAggregate {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	private Long memberId;
 	private LocalDate date;
-	private String ageGroup;
-	private String gender;
 	private int taste0;
 	private int taste1;
 	private int taste2;
@@ -49,27 +45,7 @@ public class TasteAggregate {
 
 	public int[] getTasteAggregateList(){
 		return new int[]{this.taste0, this.taste1, this.taste2, this.taste3, this.taste4, this.taste5, this.taste6, this.taste7,
-						this.taste8, this.taste9, this.taste10, this.taste11, this.taste12, this.taste13, this.taste14};
-	}
-
-	@Builder
-	public TasteAggregate(int taste0, int taste1, int taste2, int taste3, int taste4, int taste5, int taste6, int taste7, int taste8, int taste9, int taste10, int taste11, int taste12, int taste13, int taste14, LocalDate date){
-		this.taste0 = taste0;
-		this.taste1 = taste1;
-		this.taste2 = taste2;
-		this.taste3 = taste3;
-		this.taste4 = taste4;
-		this.taste5 = taste5;
-		this.taste6 = taste6;
-		this.taste7 = taste7;
-		this.taste8 = taste8;
-		this.taste9 = taste9;
-		this.taste10 = taste10;
-		this.taste11 = taste11;
-		this.taste12 = taste12;
-		this.taste13 = taste13;
-		this.taste14 = taste14;
-		this.date = date;
+			this.taste8, this.taste9, this.taste10, this.taste11, this.taste12, this.taste13, this.taste14};
 	}
 
 	public void setTasteValue(int index, int value) {
@@ -90,5 +66,13 @@ public class TasteAggregate {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			return 0;
 		}
+	}
+
+	public void setDate(LocalDate date){
+		this.date = date;
+	}
+
+	public void setMemberId(Long memberId) {
+		this.memberId = memberId;
 	}
 }

@@ -107,17 +107,17 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
     }
 
     @Override
-    public Optional<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate) {
+    public List<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate) {
         List<Long> blackListCategoryIdList = fetchBlackListCategoryIdList(memberId);
 
-        return Optional.ofNullable(jpaQueryFactory
+        return jpaQueryFactory
                 .selectFrom(todo)
                 .where(todo.member.memberId.eq(memberId)
                         .and(categoryIdEquals(categoryId))
                         .and(todoDateEquals(todoDate))
                         .and(isDeletedEquals(false))
                         .and(notInBlackListCategory(blackListCategoryIdList)))
-                .fetchOne());
+                .fetch();
     }
 
     @Override
