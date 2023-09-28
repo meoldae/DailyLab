@@ -115,7 +115,6 @@ public class TodoServiceImpl implements TodoService{
 
         Category category = categoryRepository.findByCategoryId(todoRegistDto.getCategoryId())
                 .orElseThrow(() -> {
-                    System.out.println("333333");
                     return new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND);
                 });
 
@@ -249,11 +248,11 @@ public class TodoServiceImpl implements TodoService{
 
             // db에 추천 db 등록 로직
             TodoRegistDto todoRegistDto = TodoRegistDto.builder()
-                    .categoryId(categoryId)
-                    .content(category.getSmall())
-                    .todoDate(LocalDate.parse(todoDate))
-                    .isSystem(true)
-                    .build();
+                                                       .categoryId(categoryId)
+                                                       .content(category.getSmall())
+                                                       .todoDate(LocalDate.parse(todoDate))
+                                                       .isSystem(true)
+                                                       .build();
 
             DataResponse dataResponse = registTodo(todoRegistDto, memberId);
 
