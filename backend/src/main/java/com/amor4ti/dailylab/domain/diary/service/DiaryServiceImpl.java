@@ -90,6 +90,7 @@ public class DiaryServiceImpl implements DiaryService {
                                         .build());
 
                                 memberService.updateStatusComplete(memberId, date);
+                                tasteService.updateTasteSummary(memberId);
                             },
                             error -> {
                                 new CustomException(ExceptionStatus.DIARY_CANNOT_WRITE);
