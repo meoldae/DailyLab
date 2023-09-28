@@ -22,21 +22,17 @@ def createDiary(param, gpt_model):
         "시간대별 감정\n" +
         emotion_count_str + "\n\n" + 
 
-        "오늘 할 일과 시간대별 감정 기반으로 다음의 양식을 지켜서 관찰자 시점의 하루 보고서를 작성해줘. \n" +
+        "오늘 할 일과 시간대별 감정 기반으로 다음의 양식을 반드시 지켜서 3인칭 관찰자 시점의 하루 보고서를 작성해줘. \n" +
+        "절대로 성별, 나이, 생년월일 등 특징은 보고서에 직접 사용 하지마. \n" +
         
-        "1. 읽고 싶게 자극적인 기사처럼 제목을 작성해줘. \n"
-        "2. 오늘 할 일의 수행 여부, 감정 상태에 따라 관찰일지를 작성해줘. 시간의 분 단위는 작성하지마. \n"
-        "3. 절대로 성별, 나이, 생년월일은 보고서에 직접 사용 하지마. \n" +
-        
-        "title: \n" +
-        "content: \n" +
-        "관찰 내용: 할 일과 감정을 기반으로 관찰한 하루를 기술합니다. \n" +
-        "관찰 결론: 관찰한 내용을 기반으올 분석 결과 및 느낀점을 기술합니다. \n" + 
-        "조언 및 추천: 관찰 결론을 기반으로 관찰 대상에게 향후 방향성에 대해 추천하고 기술 합니다. \n "
-        "평가 점수: 전체적인 하루 성적을 A+ 부터 D 평가"
+        "title: 읽고 싶게 자극적인 제목을 기술합니다.\n" +
+        "content: 오늘 할 일과 시간대별 감정을 토대로 관찰한 하루를 자세하게 보고서 문체로 기술합니다. 단, 자세한 시간은 (몇시 몇분, 14:00 ~ 15:00 등)보고서에 작성하지 않습니다. \n" +
+        "conclusion: 관찰한 내용을 기반으올 분석 결과 및 느낀점을 자세하게 기술합니다. \n" + 
+        "advice: 관찰 결론을 기반으로 관찰 대상에게 발전할 수 있도록 향후 방향성에 대해 자세하게 조언, 추천합니다. \n"
+        "score: 전체적인 하루 성적을 A+, A, B, C, D 5가지로 평가합니다" 
     )
 
-    print(user_content)
+    
     response = openai.ChatCompletion.create(
         model=gpt_model,
             messages=[
@@ -45,27 +41,26 @@ def createDiary(param, gpt_model):
             }, 
         ], 
 
-        temperature=0.8, # 상상력
+        temperature=1, # 상상력
         max_tokens=1500, # 반환 받을 문장 size => 비용
-        top_p=0.8, # 답변의 무작위성, 낮을 수록 답변이 정확하고, 높을 수록 창의적
+        top_p=1, # 답변의 무작위성, 낮을 수록 답변이 정확하고, 높을 수록 창의적
         frequency_penalty=0.0, # 특정 단어나 phrase 를 포함하지 않도록. -2~2 까지 조정 가능한테, 2에 가까울수록 penalty 가 커진다
         presence_penalty=0.0, # 반복적이지 않은 텍스트를 생성하도록 유도. 반복되며 penalty 부여되며 2에 가까울수록 penalty 가 커진다
     )
     data = response['choices'][0]['message']['content']
 
     clean_data = data.replace('\n', ' ')
-    title_start = clean_data.find("title: ") + len("title: ")
-    content_start = clean_data.find("content: ")
 
-    title = clean_data[title_start:content_start].strip()
-    content = clean_data[content_start + len("content: "):].strip()
+    sections = ['title:', 'content:', 'conclusion:', 'advice:', 'score:']
+    result_dict = {}
+    
+    for i, section in enumerate(sections):
+        start_idx = clean_data.find(section) + len(section)
+        end_idx = clean_data.find(sections[i + 1]) if i + 1 < len(sections) else len(clean_data)
+        result_dict[section.strip(':')] = clean_data[start_idx:end_idx].strip()
 
-    res = {
-        "title": title,
-        "content": content
-    }
-
-    return res
+    print(result_dict)
+    return result_dict
 
 def build_todo_list(todos, gpt_model):
     todo_list = []
