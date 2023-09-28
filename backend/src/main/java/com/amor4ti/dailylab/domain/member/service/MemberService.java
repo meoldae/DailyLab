@@ -59,4 +59,6 @@ public interface MemberService {
     void sendMemberInfotoFastAPI(Long memberId);
 
     DataResponse getMembership(Long memberId);
+
+    List getMemberListByGenderAndAge(String gender, Integer age);
 }
