@@ -26,9 +26,9 @@ public class TasteController {
 	private final TasteService tasteService;
 
 	@GetMapping
-	private DataResponse getTasteByDate(Authentication authentication) {
+	private DataResponse getTasteByDate(Authentication authentication, @RequestParam("date") LocalDate date) {
 		Long memberId = Long.parseLong(authentication.getName());
-		int tasteIndex = tasteService.getSelectTaste(memberId, LocalDate.now());
+		int tasteIndex = tasteService.getSelectTaste(memberId, date);
 		String taste = TasteVectorTable.tasteList[tasteIndex];
 		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, taste);
 	}
