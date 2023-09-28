@@ -36,9 +36,9 @@ const AppRouter = () => {
                 <Route element={<AuthRoute authentication="NotUser"/>}>    
                     <Route path="/login" element={<AppLogin />} />
                     <Route path="/oauth2/redirect" element={<AppRedirect />} />
+                    <Route path="/memberInfo" element={<AppSignUp />} />
                 </Route>
                 <Route path="/intro" element={<AppIntro />} />
-                <Route path="/memberInfo" element={<AppSignUp />} />
                 <Route path="/*" element={<AppNotFound/>}/>
             </Routes>
         </BrowserRouter>

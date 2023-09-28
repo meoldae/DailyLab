@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Matter from "matter-js";
-import { redirect } from "react-router-dom";
 
 interface EmotionMatterProps {
   circleCount: number;
@@ -9,12 +8,7 @@ interface EmotionMatterProps {
 
 const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
-  const [imgSrc, setImgSrc] = useState("");
-  
-  
-  useEffect(() => {
-    setImgSrc(`./assets/img/emotion/${emotionNo}.png`);
-  },[emotionNo])
+  const imgSrc = `./assets/img/emotion/${emotionNo}.png`;
   
   useEffect(() => {
     const {
@@ -24,7 +18,6 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
       MouseConstraint,
       Mouse,
       Composite,
-      Events,
     } = Matter;
 
     // create engine
@@ -153,7 +146,7 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
   
   useEffect(() => {
     addCircle();
-  },[circleCount])
+  },[circleCount]);
 
   return null;
 };
