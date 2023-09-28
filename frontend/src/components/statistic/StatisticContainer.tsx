@@ -1,10 +1,16 @@
+import React, { useState } from 'react';
 import DailyChart from "../chart/emotion/daily/DailyChart";
 import CategoryChart from "./CategoryChart";
 // import TasteChart from "./TasteChart";
 import Taste from './taste/Taste';
 
 const StatisticContainer = ({state, period, startDate, endDate}: {state:string, period:string, startDate:string, endDate:string}) => {
-    console.log(state, startDate, endDate);
+    const [mostFrequentEmotion, setMostFrequentEmotion] = useState<string | null>(null);
+    
+    const handleMostFrequentEmotion = (emotion: string) => {
+        setMostFrequentEmotion(emotion);
+    };
+
     return (
         <>
             <div className="pt-1 child-[div]:mb-[30px]">
@@ -20,9 +26,9 @@ const StatisticContainer = ({state, period, startDate, endDate}: {state:string, 
                 {/* 감정 통계 */}
                 <div className="pt-[40px]">
                     <div className="text-center font-semibold text-2xl mb-8">
-                        이번 {period === 'month' ? '달의' : '주의'} 가장 많이 느낀 감정은 <p className="inline-block font-black">황당</p>이에요
+                        이번 {period === 'month' ? '달의' : '주의'} 가장 많이 느낀 감정은 <p className="inline-block font-black">{mostFrequentEmotion || '계산중..'}</p> 이에요
                     </div>
-                    <DailyChart state={state} period={period} startDate={startDate} endDate={endDate}/>
+                    <DailyChart state={state} period={period} startDate={startDate} endDate={endDate} onMostFrequentEmotion={handleMostFrequentEmotion}/>
                 </div>
             </div>
         </>

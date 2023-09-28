@@ -11,3 +11,14 @@ export type EmotionResultType = {
     timeStamp : string,
     type : string,
 }
+
+export type EmotionPeriodType = {
+    date: string;
+    emotions: EmotionCountType[];
+}
+    
+export type EmotionCountType = {
+    emotionId: number,
+    type: string,
+    count: number;
+}
