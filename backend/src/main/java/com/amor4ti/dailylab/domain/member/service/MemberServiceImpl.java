@@ -64,6 +64,8 @@ public class MemberServiceImpl implements MemberService {
 			() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
 		);
 
+		findMember.setJoinDate();
+		findMember.reSignUp();
 		findMember.setBirthday(signUpDto.getBirthDay());
 		findMember.setGender(signUpDto.getGender());
 
