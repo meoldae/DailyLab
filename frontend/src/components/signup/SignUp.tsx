@@ -1,68 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { SetAccessToken } from "@/atom/UserAtom";
-import { UpdateSignUp } from "@/api/User";
-import { toStringByFormatting } from "@/utils/date/DateFormatter";
+import { CheckUserStatus, UpdateSignUp } from "@/api/User";
+import CustomDatePicker from "@/utils/CustomDatePicker";
 
 const SignUp = () => {
-    const id = new URLSearchParams(window.location.search).get("id");
-    const [birth, setBirth] = useState("");
-    const [gender, setGender] = useState("M");
     const navigate = useNavigate(); 
     
-    const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setGender(e.target.value);
-    };
+    const id = new URLSearchParams(window.location.search).get("id");
 
-    const getRecommendTodo = async () =>{
-        const curDate = toStringByFormatting(new Date());
-        await makePlanTodoList(curDate, ({data}) => {
-            console.log(data.data)
-        }, (error) => {console.log(error)})
-    }
+    useEffect(() => {
+        CheckUserStatus(Number(id), ({data}) => {
+            const result = data.data as string;
+            if(result == "Member"){
+                alert("정회원입니다.");
+                navigate('/');
+            } else if(result == "notMember"){
+                alert("회원이 아닙니다.");
+                navigate('/');
+            }
+        }, (error) => console.log(error));
+    }, []);
 
-    const doSignUp = async () => {
+    const [birth, setBirth] = useState("");
+    const [gender, setGender] = useState("M");
+    
+    
+    function birthChange(selectDate: string){setBirth(() => selectDate)}
+    function genderChange(e: React.ChangeEvent<HTMLInputElement>){setGender(() => e.target.value);}
+
+    async function doSignUp() {
+        if(birth == undefined || birth == ""){
+            alert("생년월일을 선택해주세요");
+            return;
+        }
         const param = {memberId: id, gender: gender, birthDay: birth};
         await UpdateSignUp(param, ({data}) => {
-            SetAccessToken(data.data as string);
+            navigate(`/oauth2/redirect?token=${data.data as string}`);
         }, (error) => {console.log(error)});
-    };
-
-    const handleSignUp = () => {
-        doSignUp();
-        getRecommendTodo();
-        navigate('/');        
     };
     
     return (
-        <div className="text-center m-8 p-8 text-2xl mt-10 border border-text rounded-2xl">
-            <div className="mb-8">
-                <label className="mr-4" htmlFor="birthDate">생년월일 : </label>
-                <input type="date" name="birthDate" id="birthDate" value={birth} onChange={(e) => setBirth(e.target.value)}  />
-            </div>
-            <div className="m-auto w-60 flex justify-between">
-                <p>성별 : </p>
-                <div className="">
-                    <input className="opacity-0 peer/gender"  type='radio' name="gender" id="male" value="M"
-                        checked={gender === "M"} // gender 상태와 비교하여 checked 상태를 설정합니다.
-                        onChange={handleGenderChange} />
-                    <label className="pl-[30px] relative peer-checked/gender:after:opacity-100
-                    before:content-[''] before:border-[2px] before:border-gray before:rounded-full before:w-[22px] before:h-[22px] before:inline-block before:absolute before:top-[1px] before:left-0
-                    after:content-[''] after:opacity-0 after:bg-green after:rounded-full after:absolute after:top-[6px] after:left-[5px] after:w-[12px] after:h-[12px] after:inline-block" htmlFor='male'
-                    >남</label>
-                </div>
-                <div className="">
-                    <input className="opacity-0 peer/gender"  type='radio' name="gender" id="female"  value="F"
-                        checked={gender === "F"} // gender 상태와 비교하여 checked 상태를 설정합니다.
-                        onChange={handleGenderChange}/>
-                    <label className="pl-[30px] relative peer-checked/gender:after:opacity-100
-                    before:content-[''] before:border-[2px] before:border-gray before:rounded-full before:w-[22px] before:h-[22px] before:inline-block before:absolute before:top-[1px] before:left-0
-                    after:content-[''] after:opacity-0 after:bg-green after:rounded-full after:absolute after:top-[6px] after:left-[5px] after:w-[12px] after:h-[12px] after:inline-block" htmlFor='female'>여</label>
+        <div className="bg_contents_con p-[20px] text-2xl child-[div:not(:last-child)]:mb-[30px]">
+            <div>
+                <div className="float-left mt-[6px] min-w-[100px] text-[15px]">생년월일 : </div>
+                <div className="overflow-hidden">
+                    <CustomDatePicker setData={birthChange} placeholder="생년월일을 선택해주세요" maxDate={new Date()}/>
                 </div>
             </div>
-            <button onClick={handleSignUp} className="mt-10 w-32 h-10 bg-text text-primary rounded-xl">
-                회원가입
-            </button>
+            <div>
+                <div className="float-left min-w-[100px] text-[15px]">성별 : </div>
+                <div className="overflow-hidden child-[div]:inline-block child-[div:not(:last-child)]:mr-[10px]">
+                    <div>
+                        <input className="opacity-0 peer/gender"  type='radio' name="gender" id="male" value="M"
+                            checked={gender === "M"} // gender 상태와 비교하여 checked 상태를 설정합니다.
+                            onChange={genderChange} />
+                        <label className="pl-[30px] relative peer-checked/gender:after:opacity-100 inline-block pt-[1px] pb-[2px]
+                        before:border-box before:content-[''] before:border-[2px] before:border-gray before:rounded-full before:w-[22px] before:h-[22px] before:inline-block before:absolute before:top-[1px] before:left-0
+                        after:content-[''] after:opacity-0 after:bg-green after:rounded-full after:absolute after:top-[6px] after:left-[5px] after:w-[12px] after:h-[12px] after:inline-block" htmlFor='male'
+                        >남</label>
+                    </div>
+                    <div>
+                        <input className="opacity-0 peer/gender"  type='radio' name="gender" id="female"  value="F"
+                            checked={gender === "F"} // gender 상태와 비교하여 checked 상태를 설정합니다.
+                            onChange={genderChange}/>
+                        <label className="pl-[30px] relative peer-checked/gender:after:opacity-100 inline-block pt-[1px] pb-[2px]
+                        before:border-box before:content-[''] before:border-[2px] before:border-gray before:rounded-full before:w-[22px] before:h-[22px] before:inline-block before:absolute before:top-[1px] before:left-0
+                        after:content-[''] after:opacity-0 after:bg-green after:rounded-full after:absolute after:top-[6px] after:left-[5px] after:w-[12px] after:h-[12px] after:inline-block" htmlFor='female'>여</label>
+                    </div>
+                </div>
+            </div>
+            <div className="text-center">
+                <button onClick={doSignUp} className="py-4 px-10 bg-text text-[21px] text-primary rounded-xl">회원가입</button>
+            </div>
+            
         </div>
     )
 }

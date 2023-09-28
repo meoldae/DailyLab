@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './css/DatePicker.css';
@@ -9,40 +9,32 @@ import {toStringByFormatting} from '@/utils/date/DateFormatter';
 
 interface DatePickerProps {
   setData : (value: string) => void;
+  placeholder : string;
   settingDate? : Date;
   minDate? : Date;
   maxDate? : Date;
-}
-
-interface CustomInputProps {
-  value : string,
-  onClick : () => void,
+  
 }
 
 const CustomDatePicker = (Props : DatePickerProps) => {
   const [selectDate, setSelectDate] = useState<Date>(Props.settingDate as Date);
+
+  useEffect(() => {if(Props.settingDate != undefined) setSelectDate(() => Props.settingDate!);}, [Props]);
 
   const changeDate = (date : Date) => {
     Props.setData(toStringByFormatting(date));
     setSelectDate(date);
   }
 
-  const ExampleCustomInput = forwardRef((Props: CustomInputProps) => (
-    <button type='button' className="datepicker_input_btn" onClick={Props.onClick}>
-      {Props.value}
-    </button>
-  ));
-
 	return (
 		<DatePicker
       locale={ko}
-      dateFormat="yyyy.MM.dd"
-      minDate={Props.minDate ? Props.minDate : selectDate}
+      dateFormat="yyyy-MM-dd"
+      minDate={Props.minDate}
+      maxDate={Props.maxDate}
       selected={selectDate}
       onChange={(date: Date) => changeDate(date)}
-      customInput={<ExampleCustomInput value={''} onClick={function (): void {
-        throw new Error('Function not implemented.');
-      } } />}
+      placeholderText={Props.placeholder}
       renderCustomHeader={({ // custom header 만들어주기
         monthDate,
         decreaseMonth,

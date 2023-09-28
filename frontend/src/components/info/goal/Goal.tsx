@@ -22,7 +22,7 @@ const Goal = () => {
             className="bg-secondary flex-1 mr-[20px] py-[6px] px-[12px] text-[15px] font-normal"
             type="text" value={myGoal || ''} onChange={(e) => setMyGoal(e.target.value)}
             onKeyDown={(e) => {if(e.key === 'Enter') handleGoal();}}/>
-            <button type="button" className="bg-gray py-[6px] px-[14px] text-[13px] text-white font-bold" onClick={handleGoal}>확인</button>
+            <button type="button" className="bg-gray py-[6px] px-[14px] text-[13px] text-white font-bold break-keep" onClick={handleGoal}>확인</button>
         </div>
     )
 }
