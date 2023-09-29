@@ -403,4 +403,11 @@ public class MemberServiceImpl implements MemberService {
 	public List getMemberListByGenderAndAge(String gender, Integer age) {
 		return memberRepository.findMemberByGenderAndAge(gender, LocalDate.now().getYear(), age);
 	}
+
+	@Override
+	public LocalDate getJoinDateByMemberId(Long memberId) {
+		return memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		).getJoinDate().toLocalDate();
+	}
 }
