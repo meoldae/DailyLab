@@ -13,12 +13,12 @@ class Member(Base):
     gender = Column(String)
     birthday = Column(Date)
     join_date = Column(DateTime)
-    exit_date = Column(DateTime)
+    exit_date = Column(DateTime, nullable=True)
     provider = Column(String)
     mbti_id = Column(SmallInteger)
-    job = Column(String)
-    goal = Column(String)
-    religion = Column(String)
+    job = Column(String, nullable=True)
+    goal = Column(String, nullable=True)
+    religion = Column(String, nullable=True)
 
 
 class mbti(Base):

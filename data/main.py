@@ -5,7 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from api import weatherAPI
 from api.weatherAPI import get_weather
 from domain.diary import diaryService
-from tempSave import userLocations, weatherDict
+from tempSave import userLocations
 
 from domain.member.router import member
 from domain.todo.routers import todo
@@ -66,5 +66,5 @@ if __name__ == "__main__":
 
     # from [module_name] import app # FastAPI 객체 가져오기
 
-    # 8081 포트번호에서 FastAPI 어플리케이션 수신 대기
+    # 8181 포트번호에서 FastAPI 어플리케이션 수신 대기
     uvicorn.run(app, host="0.0.0.0", port=8181)
