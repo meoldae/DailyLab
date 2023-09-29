@@ -19,7 +19,7 @@ import com.amor4ti.dailylab.domain.taste.dto.TasteSummaryDto;
 import com.amor4ti.dailylab.domain.taste.dto.TasteVectorTable;
 import com.amor4ti.dailylab.domain.taste.repository.PersonalTasteRepository;
 import com.amor4ti.dailylab.domain.taste.repository.TasteAggregateRepository;
-import com.amor4ti.dailylab.domain.taste.repository.TasterRepository;
+import com.amor4ti.dailylab.domain.taste.repository.TasteRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 
@@ -33,7 +33,7 @@ public class TasteServiceImpl implements TasteService {
 
 	private final EmotionService emotionService;
 	private final MemberRepository memberRepository;
-	private final TasterRepository tasterRepository;
+	private final TasteRepository tasteRepository;
 	private final TasteAggregateRepository tasteAggregateRepository;
 	private final PersonalTasteRepository personalTasteRepository;
 
@@ -109,7 +109,7 @@ public class TasteServiceImpl implements TasteService {
 			}
 		}
 
-		return tasterRepository.findById(tasteIndex + 1).orElseThrow(
+		return tasteRepository.findById(tasteIndex + 1).orElseThrow(
 			() -> new CustomException(ExceptionStatus.EXCEPTION)
 		);
 	}
@@ -195,7 +195,11 @@ public class TasteServiceImpl implements TasteService {
 			}
 			major[i / 3] += result[i];
 		}
-		TasteStatisticsDto tasteStatisticsDto = new TasteStatisticsDto(major, TasteVectorTable.tasteList[maxIndex]);
+
+		TasteSummaryDto tasteSummaryDto = tasteRepository.findById(maxIndex + 1).orElseThrow(
+				() -> new CustomException(ExceptionStatus.EXCEPTION)
+		);
+		TasteStatisticsDto tasteStatisticsDto = new TasteStatisticsDto(major, TasteVectorTable.tasteList[maxIndex], tasteSummaryDto.getImgSrc());
 		return tasteStatisticsDto;
 	}
 
