@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import './css/DatePicker.css';
+import './css/DatePicker2.css';
 import LeftArrow from './img/left_arrow.png';
 import RightArrow from './img/right_arrow.png';
 import { ko } from 'date-fns/esm/locale';
@@ -26,17 +26,21 @@ const CustomDatePicker = (Props : DatePickerProps) => {
     setSelectDate(date);
   }
 
+  const years = Array.from(new Array(80), (val, index) => (new Date().getFullYear() - index).toString()); 
+
 	return (
 		<DatePicker
       locale={ko}
       dateFormat="yyyy-MM-dd"
+      showYearDropdown
       minDate={Props.minDate}
       maxDate={Props.maxDate}
       selected={selectDate}
       onChange={(date: Date) => changeDate(date)}
       placeholderText={Props.placeholder}
       renderCustomHeader={({ // custom header 만들어주기
-        monthDate,
+        date,
+        changeYear,
         decreaseMonth,
         increaseMonth,
         prevMonthButtonDisabled,
@@ -47,7 +51,18 @@ const CustomDatePicker = (Props : DatePickerProps) => {
             <img src={LeftArrow} alt="왼쪽 화살표 아이콘" />
           </button>
           <div>
-            {monthDate.getFullYear()}년 {monthDate.getMonth() + 1}월
+            <select
+            className='bg-green'
+            value={date.getFullYear().toString()}
+            onChange={({ target: { value } }) => changeYear(Number(value))}
+          >
+            {years.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <span> {date.getMonth() + 1}월</span>
           </div>
           <button type='button' onClick={() => increaseMonth()} style={{width: '8px'}} disabled={nextMonthButtonDisabled}>
             <img src={RightArrow} alt="오른쪽 화살표 아이콘" />

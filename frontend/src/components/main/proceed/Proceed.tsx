@@ -11,6 +11,25 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     const [proceedText, setProceedText] = useState("");
     const [emotionMode, setEmotionMode] = useState(false);
 
+    // 현재 시간을 구하는 함수
+    const getCurrentHour = () => {
+        const currentHour = new Date().getHours();
+        return currentHour;
+    }
+
+    // 시간대에 따른 메시지를 반환하는 함수
+    const getTimeBasedGreeting = () => {
+        const hour = getCurrentHour();
+        console.log(hour);
+        if (hour >= 5 && hour < 12) {
+            return '아침은 드셨나요?';
+        } else if (hour >= 12 && hour < 18) {
+            return '점심은 맛있게 드셨나요?';
+        } else {
+            return '어떤 저녁을 보내고 계신가요?';
+        }
+    }
+    
     const getNewDiary = async () => {
         await postTodayDiary(curDate ,({ data }) => {
         console.log(data);
@@ -57,7 +76,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                         <div className='flex items-center justify-between'>
                             <img className='w-[70px]' src={cloe2Img} alt="클로에" />
                             <div className='text-left'>
-                                <p className='font-light mb-2'>점심은 맛있게 드셨나요?</p>
+                                <p className='font-light mb-2'>{getTimeBasedGreeting()}</p>
                                 <p>지금 느끼는 기분을 알려주세요!</p>
                             </div>
                             <img className='mr-[10px] w-[25px]' src="./assets/img/icon/arrow_right.png" alt="" />

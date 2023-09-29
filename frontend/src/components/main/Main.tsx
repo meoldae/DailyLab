@@ -29,6 +29,7 @@ const Main = () => {
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
+
             if(nowState.status === 'init'){
                 navigator('/tutorial');
             }
