@@ -192,12 +192,12 @@ public class TasteServiceImpl implements TasteService {
 			major[i / 3] += result[i];
 		}
 		// 최대 대분류 중에서 최대 항목
-		int maxMajorValue = 0;
+		int maxMajorValue = Arrays.stream(major).max().getAsInt();
 		int maxMajorIndex = 0;
 		for (int i = 0; i < major.length; i++) {
-			if (maxMajorValue <= major[i]) {
+			if (maxMajorValue == major[i]) {
 				maxMajorIndex = i;
-				maxMajorValue = major[i];
+				break;
 			}
 		}
 
