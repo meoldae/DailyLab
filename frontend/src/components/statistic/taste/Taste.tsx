@@ -20,11 +20,11 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
         getTasteStatistics(state, startDate, endDate, ({data}) => {
           const temp = data.data as tasteResultprop;
           const result:number[] = [
+            temp.spicy,
             temp.sweet,
             temp.sour,
-            temp.salty,
-            temp.spicy,
             temp.bitter,
+            temp.salty,
           ];
           setMostDetailTaste(temp.mostTaste);
           setChartInfo(result);

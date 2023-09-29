@@ -39,7 +39,7 @@ const TasteChart = (chartInfo : { chartInfo : number[]}) => {
           offsetY: 10
         }
     },
-    labels: ['단맛', '신맛', '짠맛', '매운맛', '쓴맛'],
+    labels: ['매운맛', '단맛', '신맛', '쓴맛', '짠맛'],
     colors: ['#ff3251e1', '#ffa640', '#ffe70e', '#63c23d', '#2cb0ee'],
     dataLabels: {
         enabled: false // 숫자 표시를 비활성화
