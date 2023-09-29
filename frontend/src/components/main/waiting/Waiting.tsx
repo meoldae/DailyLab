@@ -1,7 +1,6 @@
 import { setStatusFinish } from "@/api/Status";
 import { getStatus } from "@/api/User";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import WaitingMatter from "./WaitingMatter";
 
 interface StatusType {
@@ -11,10 +10,9 @@ interface StatusType {
 
 const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) => {
     // const [status, setStatus] = useState('');
-    const [status, setStatus] = useState('complete');
+    const [status, setStatus] = useState('wait');
     const [imgName, setImgName] = useState('./assets/img/character/cloe.png');
     const [clickCount, setClickCount] = useState(0);
-    const navigator = useNavigate();
     const imgNameList = [
         './assets/img/character/cloe.png',
         './assets/img/character/marco.png',
