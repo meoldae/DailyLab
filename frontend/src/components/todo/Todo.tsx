@@ -8,6 +8,7 @@ import { CategoryType } from "@/type/CategoryType";
 interface props {
     mode : string; //1. current, 2. prev, 3. future
     date : string;
+    setText? : (selectText: string) => void
 }
 
 const Todo = (props: props) => {
@@ -39,6 +40,7 @@ const Todo = (props: props) => {
             const result = [...contentsList];
             result.push(data.data as TodoType);
             setContentsList(() => result);
+            setInsertMode((prev) => !prev);
         }, (error) => console.log(error));
     }
 
@@ -60,6 +62,8 @@ const Todo = (props: props) => {
         await checkTodoItem(param, ({data}) => {
             const result = [...contentsList];
             result.find(contents => contents.todoId == param.todoId)!.check = param.checkedDate != "";
+            if(param.checkedDate != "") props.setText!(param.content!);
+            else props.setText!("");
             setContentsList(() => result);
         }, (error) => console.log(error));
     }
@@ -67,8 +71,8 @@ const Todo = (props: props) => {
     return (
         <>
             <div className="bg-primary rounded-2xl px-5 py-8">
-                <TodoList type={props.mode} contents={contentsList} blackItem={blackTodo} deleteItem={deleteTodo} checkItem={checkTodo} updateItem={updateTodo} changeItemUpdateMode={changeTodoUpdateMode}  categoryList={categoryList}/>
-                {insertMode ? <div className="mt-4"><TodoHandleItem insertItem={insertTodo} mode="insert" categoryList={categoryList} changeInsertMode={handleInsertMode} /></div> : null}
+                <TodoList type={props.mode} contents={contentsList} selectToDate={props.date} blackItem={blackTodo} deleteItem={deleteTodo} checkItem={checkTodo} updateItem={updateTodo} changeItemUpdateMode={changeTodoUpdateMode}  categoryList={categoryList}/>
+                {insertMode ? <div className="mt-4"><TodoHandleItem selectToDate={props.date} insertItem={insertTodo} mode="insert" categoryList={categoryList} changeInsertMode={handleInsertMode} /></div> : null}
 
                 {props.mode != "prev" && !insertMode ?
                     <div className="text-right text-xl text-primary mt-4">

@@ -11,7 +11,7 @@ interface props {
     info? : TodoType
     categoryList : CategoryType[]
     insertItem? : (param: TodoParamType) => void
-    futureToDate? : string
+    selectToDate : string
     changeInsertMode? : () => void
     updateItem? : (param: TodoParamType) => void
     changeTodoUpdateMode? : (todoId: number, status: boolean) => void
@@ -98,7 +98,7 @@ const TodoHandleItem = (props : props) => {
         const param:TodoParamType = {
             categoryId : selectedCategoryId,
             content : content !== undefined ? content : "",
-            todoDate : props.futureToDate !== undefined ? props.futureToDate : toStringByFormatting(new Date()),
+            todoDate : props.selectToDate,
             isSystem : 0,
         };
         props.insertItem!(param);

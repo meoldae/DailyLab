@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getStatus } from "@/api/User";
+import UseInterval from "@/utils/useInterval/UseInterval";
+import { useNavigate } from "react-router-dom";
 
 interface StatusType {
     date: string;
@@ -7,12 +9,14 @@ interface StatusType {
 }
 
 const Progress = () => {
-    const [status, setStatus] = useState('');
+    const navigator = useNavigate();
+    const [status, setStatus] = useState("complete");
+    const [isRunning, setIsRunning] = useState(true);
+    const [percent, setPercent] = useState(0);
 
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            console.log('현재 상태 : ', nowState)
             setStatus(nowState.status);
         }, (error) => {
             console.log(error)
@@ -20,15 +24,19 @@ const Progress = () => {
     }
 
     useEffect(() => {
-        const checkStatus = setInterval(() => {
-            nowStatus();
-        }, 2000);
-        return () => clearInterval(checkStatus);
-    }, []);
+        nowStatus();
+    }, [percent]);
+
+    UseInterval(() => setPercent((prev) => prev + 2), isRunning ? 1000 : null);
+
+    useEffect(() => {
+        if(status == "finish" || (status == "complete" && percent > 95) ) setIsRunning(() => false);
+    }, [percent]);
 
     return (
-        <div className="fixed w-[calc(100% - 40px)] top-[20px] left-[40px]">
-            프로그레스바
+        <div className="fixed w-[calc(100%-100px)] box-border top-[15px] left-[50px] bg_contents_con p-[7px]">
+            {status == 'finish' ? <button type="button" onClick={() => navigator('/')}>이동</button>
+            : <div className="rounded-[3px] overflow-hidden w-full bg-secondary text-0"><div style={{width: (percent + "%")}} className={`w-0 inline-block bg-reverse-primary py-[3px] transition-all`}></div></div>}
         </div>
     )
 }

@@ -66,7 +66,7 @@ export default function Header() {
                         </li>
                     </ul>
             </div>
-            {!isProgress ? <Progress /> : null}           
+            {isProgress ? <Progress /> : null}           
         </header>
     )
 }
