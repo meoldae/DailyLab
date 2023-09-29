@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.taste.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -185,15 +186,28 @@ public class TasteServiceImpl implements TasteService {
 				}
 			}
 		);
-		int maxValue = 0;
-		int maxIndex = 0;
+
 		int[] major = new int[5];
 		for (int i = 0; i < result.length; i++) {
-			if (result[i] > maxValue) {
-				maxValue = result[i];
-				maxIndex = i;
-			}
 			major[i / 3] += result[i];
+		}
+		// 최대 대분류 중에서 최대 항목
+		int maxMajorValue = 0;
+		int maxMajorIndex = 0;
+		for (int i = 0; i < major.length; i++) {
+			if (maxMajorValue <= major[i]) {
+				maxMajorIndex = i;
+				maxMajorValue = major[i];
+			}
+		}
+
+		int maxIndex = maxMajorIndex;
+		int maxValue = 0;
+		for (int i = 0; i < 3; i++) {
+			if (maxValue <= result[i + (maxMajorIndex*3)]) {
+				maxValue = result[i + (maxMajorIndex*3)];
+				maxIndex = i + (maxMajorIndex*3);
+			}
 		}
 
 		TasteSummaryDto tasteSummaryDto = tasteRepository.findById(maxIndex + 1).orElseThrow(
