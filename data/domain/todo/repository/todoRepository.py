@@ -1,10 +1,11 @@
 from sqlalchemy.orm import Session
 from mysql import models
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
-def getUserTodo(member_id: int, db: Session):
+
+def getUserTodo(member_id: int, todo_date:date, db: Session):
     todoList = db.query(models.todo).filter(models.todo.member_id == member_id) \
-    .filter(models.todo.todo_date == datetime.now().date() + timedelta(days=1)) \
+    .filter(models.todo.todo_date == todo_date) \
     .all()
 
     if not todoList: return 0

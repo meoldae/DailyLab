@@ -10,6 +10,7 @@ router = APIRouter(
     # prefix="/data",
 )
 
+
 @router.get("/{memberId}")
 async def makeTodo(memberId: int, db: Session = Depends(get_db)):
     todoResult = todoService.makeTodo(memberId, db)
@@ -17,6 +18,7 @@ async def makeTodo(memberId: int, db: Session = Depends(get_db)):
     if todoResult is not None and not todoResult.empty and not todoResult.isnull().all():
         return todoResult
     raise HTTPException(status_code=401, detail="no todo")
+
 
 @router.get("/recommend/{memberId}")
 async def makeTodo(memberId: int, db: Session = Depends(get_db)):
@@ -26,19 +28,20 @@ async def makeTodo(memberId: int, db: Session = Depends(get_db)):
         return otherUserList
     raise HTTPException(status_code=401, detail="no todo")
 
+
 @router.post("/recommend")
-async def makeTodo(request: schemas.specialTodo , db: Session = Depends(get_db)):
+async def makeTodo(request: schemas.specialTodo, db: Session = Depends(get_db)):
     otherUserList = todoService.specialTodo(request.memberId, request.period, db)
 
     if otherUserList:
         return otherUserList
     raise HTTPException(status_code=401, detail="no todo")
 
+
 @router.post("/todo")
 async def makeTodoByPost(request: schemas.todoReq, db: Session = Depends(get_db)):
-    todoResult =  todoService.makeTodo(request.memberId, db)
+    todoResult = todoService.makeTodo(request.memberId, request.todoDate, db)
 
-    # todoResult가 none이 아니고, todoResult가 비어있지 않고, todoResult 내부 값 중 null 값이 하나도 없을 때
-    if todoResult is not None and not todoResult.empty and not todoResult.isnull().all():
+    if todoResult is not None:
         return todoResult
     raise HTTPException(status_code=401, detail="todo Result에서 에러 뜸!")
