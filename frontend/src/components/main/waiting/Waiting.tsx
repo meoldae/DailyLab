@@ -10,7 +10,6 @@ interface StatusType {
   }
 
 const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) => {
-    // const [status, setStatus] = useState('');
     const [status, setStatus] = useState('wait');
     const [imgName, setImgName] = useState('./assets/img/character/cloe.png');
     const [clickCount, setClickCount] = useState(0);
@@ -30,7 +29,7 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            // setStatus(nowState.status);
+            setStatus(nowState.status);
         }, (error) => {
             console.log(error)
         });
@@ -75,10 +74,10 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
                 ):
                 ("보고서가 완성되었어요!")}
             </div>
-            <div onClick={handleClick}>
+            <div>
             {status === 'wait' ? (
                 <div className="absolute left-[calc(50%-75px)] w-[150px] z-10"
-                onClick={handleButtonClick}>
+                onClick={() => {handleButtonClick(); handleClick();}}>
                     <Player
                     src="./assets/lottie/todo.json"
                     className="players"
@@ -89,7 +88,7 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
                     />
                 </div>
                 ):(
-                <img className="absolute left-[calc(50%-75px)] w-[150px] z-10" src="./assets/img/character/loading_diary.gif" alt="" />
+                <img className="absolute left-[calc(50%-75px)] w-[150px] z-10" src="./assets/img/character/complete.gif" alt="" />
             )}
             </div>
             {status === 'complete' && (
