@@ -20,7 +20,6 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
         setEmotionMode((prev) => !prev);
     }
 
-
     function handleFinish() {
         // 하루 마무리
         //오늘 일기 생성
@@ -41,7 +40,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                     {/* TODO영역 */}
                     <div>
                         <div className='flex items-center justify-end'>
-                            <p>당신을 위한 오늘의 할일...</p>
+                            <p>오늘은 이런 일 어떨까요?</p>
                             <img className='w-[90px]' src={ianImg} alt="이안" />
                         </div>
                         <div className='relative -mt-12'>

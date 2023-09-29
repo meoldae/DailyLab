@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getStatus } from "@/api/User";
 import MainResult from "./Result";
 import { setStatusProceed } from "@/api/Status";
+import { useNavigate } from "react-router";
 
 /*
  * 사용자의 status를 세가지 경우로 나누어 분기처리 
@@ -22,11 +23,15 @@ interface StatusType {
 const Main = () => {
     const [status, setStatus] = useState("proceed");
     const [getDate, setGetDate] = useState('');
-    // const comp = 'result';
     const curDate = toStringByFormatting(new Date());
+    const navigator = useNavigate();
+
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
+            if(nowState.status === 'init'){
+                navigator('/tutorial');
+            }
             setStatus(() => nowState.status);
             setGetDate(() => nowState.date);
             

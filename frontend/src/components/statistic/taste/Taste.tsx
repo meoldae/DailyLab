@@ -17,14 +17,14 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
     const [mostTaste, setMostTaste] = useState<String>();
 
     useEffect(() =>{
-        getTasteStatistics(startDate, endDate, ({data}) => {
+        getTasteStatistics(state, startDate, endDate, ({data}) => {
           const temp = data.data as tasteResultprop;
           const result:number[] = [
+            temp.spicy,
             temp.sweet,
             temp.sour,
-            temp.salty,
-            temp.spicy,
             temp.bitter,
+            temp.salty,
           ];
           setMostDetailTaste(temp.mostTaste);
           setChartInfo(result);
@@ -47,7 +47,7 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
           setMostTaste(mostTaste);
           
         }, (error) => console.log(error));
-      }, []);
+      }, [state, period]);
 
     return (
         <div>
