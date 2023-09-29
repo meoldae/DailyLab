@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -69,10 +70,22 @@ public class EmotionController {
 
     @GetMapping("/aggregate")
     private DataResponse findAggregateEmotion(Authentication authentication,
+                                              @RequestParam(value = "state") String state,
                                               @RequestParam("startdate") LocalDate startDate,
                                               @RequestParam("enddate") LocalDate endDate) {
         Long memberId = Long.parseLong(authentication.getName());
-        List<ResponseEmotionAggregate> result = emotionService.getEmotionsAggregate(memberId, startDate, endDate);
+        List<ResponseEmotionAggregate> result = new ArrayList<>();
+        if ("ageGender".equals(state)) {
+            result = emotionService.getEmotionsAggregate(memberId, startDate, endDate);
+        } else if ("total".equals(state)) {
+            result = emotionService.getEmotionsTotalAggregate(memberId, startDate, endDate);
+        }
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+    }
+
+    @PostMapping("/test")
+    private CommonResponse test(@RequestParam("date") String date) {
+        emotionService.updateEmotionsAggregate(date);
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 }

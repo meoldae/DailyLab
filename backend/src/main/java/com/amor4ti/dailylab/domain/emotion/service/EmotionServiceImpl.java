@@ -3,11 +3,9 @@ package com.amor4ti.dailylab.domain.emotion.service;
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.*;
 import com.amor4ti.dailylab.domain.emotion.entity.EmotionAggregate;
-import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionCount;
 import com.amor4ti.dailylab.domain.emotion.dto.response.EmotionDetail;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
 import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
-import com.amor4ti.dailylab.domain.taste.dto.TasteVectorTable;
 import com.amor4ti.dailylab.domain.emotion.entity.MemberEmotion;
 import com.amor4ti.dailylab.domain.emotion.repository.EmotionAggregateRepository;
 import com.amor4ti.dailylab.domain.emotion.mongorepo.EmotionRepository;
@@ -209,6 +207,25 @@ public class EmotionServiceImpl implements EmotionService {
     }
 
     @Override
+    public List<ResponseEmotionAggregate> getEmotionsTotalAggregate(Long memberId, LocalDate startDate, LocalDate endDate) {
+        List<EmotionTotalAggregate> aggregates =
+                emotionAggregateRepository.getEmotionsTotalAggregate(startDate, endDate)
+                                          .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AGGREGATE));
+
+        List<ResponseEmotionAggregate> result = new ArrayList<>();
+
+        for (EmotionTotalAggregate aggregate : aggregates) {
+            ResponseEmotionAggregate emotions = ResponseEmotionAggregate.builder()
+                                                                        .date(aggregate.getDate())
+                                                                        .emotions(EmotionAggregateCount.ofTotal(aggregate))
+                                                                        .build();
+            result.add(emotions);
+        }
+
+        return result;
+    }
+
+    @Override
     public void updateEmotionsAggregate(String date) {
         // 1. 오늘의 Emotion Value 전부 가져오기
         Query query = new Query();
@@ -231,6 +248,7 @@ public class EmotionServiceImpl implements EmotionService {
         // 3. 집계된 데이터 DB에 PUSH
         saveAggregatedData(aggregateData, date);
     }
+
 
 
     /**
