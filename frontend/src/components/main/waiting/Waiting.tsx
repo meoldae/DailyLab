@@ -1,8 +1,8 @@
 import { setStatusFinish } from "@/api/Status";
 import { getStatus } from "@/api/User";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import WaitingMatter from "./WaitingMatter";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 interface StatusType {
     date: string;
@@ -10,11 +10,9 @@ interface StatusType {
   }
 
 const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) => {
-    // const [status, setStatus] = useState('');
-    const [status, setStatus] = useState('complete');
+    const [status, setStatus] = useState('wait');
     const [imgName, setImgName] = useState('./assets/img/character/cloe.png');
     const [clickCount, setClickCount] = useState(0);
-    const navigator = useNavigate();
     const imgNameList = [
         './assets/img/character/cloe.png',
         './assets/img/character/marco.png',
@@ -31,7 +29,6 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            console.log('현재 상태 : ', nowState)
             setStatus(nowState.status);
         }, (error) => {
             console.log(error)
@@ -62,19 +59,36 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
 
           return () => clearInterval(interval);
     },[])
+
+    const lottieRef = useRef();
+
+    const handleButtonClick = () => {
+      lottieRef.current.play(); // Start animation on button click
+    };
     
     return (
         <div className="text-center">
             <div className="mt-[80px] font-semibold text-3xl">
             {status === 'wait' ? (
-                "보고서를 작성중이에요! 조금만 기다려 주세요"):
+                <p>보고서를 작성중이에요<br/>연구원을 클릭해서 자료를 넘겨주세요!</p>
+                ):
                 ("보고서가 완성되었어요!")}
             </div>
-            <div onClick={handleClick}>
+            <div>
             {status === 'wait' ? (
-                <img className="absolute left-[calc(50%-75px)] w-[150px] z-10" src="./assets/img/character/loading_diary.gif" alt="" />
+                <div className="absolute left-[calc(50%-75px)] w-[150px] z-10"
+                onClick={() => {handleButtonClick(); handleClick();}}>
+                    <Player
+                    src="./assets/lottie/todo.json"
+                    className="players"
+                    // loop
+                    // autoplay
+                    style={{ width: '150px' }}
+                    ref={lottieRef}
+                    />
+                </div>
                 ):(
-                <img className="absolute left-[calc(50%-75px)] w-[150px] z-10" src="./assets/img/character/loading_diary.gif" alt="" />
+                <img className="absolute left-[calc(50%-75px)] w-[150px] z-10" src="./assets/img/character/complete.gif" alt="" />
             )}
             </div>
             {status === 'complete' && (
