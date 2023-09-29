@@ -28,6 +28,7 @@ import com.amor4ti.dailylab.global.response.ResponseStatus;
 import com.amor4ti.dailylab.global.util.JsonConverter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -119,9 +120,9 @@ public class TodoServiceImpl implements TodoService{
                 });
 
         MemberCategoryId memberCategoryId = MemberCategoryId.builder()
-                        .categoryId(todoRegistDto.getCategoryId())
-                        .memberId(memberId)
-                        .build();
+                .categoryId(todoRegistDto.getCategoryId())
+                .memberId(memberId)
+                .build();
 
         Optional<CategoryBlackList> blackListOptional = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
 
@@ -194,7 +195,7 @@ public class TodoServiceImpl implements TodoService{
         Instant startTime = Instant.now();
 
         log.info("todo 추천 로직 시작");
-        
+
         // 우선 하루 마무리
         // 마무리는 언제 추천 요청을 하든 간에 추천 todo 수행일 -1에 실행된다.
 //         todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
@@ -203,20 +204,20 @@ public class TodoServiceImpl implements TodoService{
         String response = communicateWithFastAPI(memberId, todoDate);
 
         // String -> JSON
-        JsonObject jsonObject = jsonConverter.converter(response);
+//        JsonObject jsonObject = jsonConverter.converter(response);
+        JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
 
         List<Long> CategoryIdList = new ArrayList<>();
         List<Double> ScoreList = new ArrayList<>();
 
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             // 카테고리 ID (랭킹)
+            log.info("입력 categoryId : " + Long.parseLong(entry.getKey()) + 1);
             CategoryIdList.add(Long.parseLong(entry.getKey()) + 1);
-            
+
             // 점수 (랭킹)
             ScoreList.add(entry.getValue().getAsDouble());
         }
-
-        log.info("0000");
 
         // 빈 추천 Todo 객체
         List<TodoRecommendedDto> todoRecommendedDtoList = new ArrayList<>();
@@ -228,16 +229,16 @@ public class TodoServiceImpl implements TodoService{
             throw new CustomException(ExceptionStatus.TODO_ALREADY_OVER_SEVEN);
 
         int cnt = 0;
-        int blackListFilteringCnt = 0;
-        int recommendationFitAndWhiteListFiliteringCnt = 0;
 
         for (Long categoryId : CategoryIdList) {
             // 일단 7개만
-            if(cnt == 8 - beforeTodoCnt)
+            if(cnt == 7 - beforeTodoCnt)
                 break;
 
             if(categoryId == 0)
                 continue;
+
+            log.info("최종 categoryId : " + categoryId);
 
             Category category = categoryRepository.findByCategoryId(categoryId)
                     .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
@@ -247,11 +248,11 @@ public class TodoServiceImpl implements TodoService{
 
             // db에 추천 db 등록 로직
             TodoRegistDto todoRegistDto = TodoRegistDto.builder()
-                                                       .categoryId(categoryId)
-                                                       .content(category.getSmall())
-                                                       .todoDate(LocalDate.parse(todoDate))
-                                                       .isSystem(true)
-                                                       .build();
+                    .categoryId(categoryId)
+                    .content(category.getSmall())
+                    .todoDate(LocalDate.parse(todoDate))
+                    .isSystem(true)
+                    .build();
 
             DataResponse dataResponse = registTodo(todoRegistDto, memberId);
 
@@ -317,8 +318,8 @@ public class TodoServiceImpl implements TodoService{
     }
 
     /*
-    * FastAPI Data Server Communication Logic
-    * */
+     * FastAPI Data Server Communication Logic
+     * */
     private String communicateWithFastAPI(Long memberId, String todoDate) {
         log.info("데이터 서버와 통신 시작");
         // fastAPI 요청 주소
@@ -340,10 +341,10 @@ public class TodoServiceImpl implements TodoService{
     }
 
     /*
-    * BlackList Check Logic
-    * True : BlackList에 존재 -> 추천 거름
-    * False : BlackList에 존재 X -> 테스트 통과
-    * */
+     * BlackList Check Logic
+     * True : BlackList에 존재 -> 추천 거름
+     * False : BlackList에 존재 X -> 테스트 통과
+     * */
     private boolean checkBlackList(MemberCategoryId memberCategoryId) {
         Optional<CategoryBlackList> optionalBlackList = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
 
@@ -351,10 +352,10 @@ public class TodoServiceImpl implements TodoService{
     }
 
     /*
-    * Recommendation Fit(추천 적합도) Check & WhiteList Check
-    * True : 추천 적합도가 0이고 WhiteList에 없는 경우 -> 추천 거름
-    * False : 추천 적합도가 1이거나 WhiteList에 존재하는 경우 -> 테스트 통과
-    * */
+     * Recommendation Fit(추천 적합도) Check & WhiteList Check
+     * True : 추천 적합도가 0이고 WhiteList에 없는 경우 -> 추천 거름
+     * False : 추천 적합도가 1이거나 WhiteList에 존재하는 경우 -> 테스트 통과
+     * */
     private Boolean checkRecommendationFitAndWhiteList(MemberCategoryId memberCategoryId, Category category) {
         Optional<CategoryWhiteList> optionalWhiteList = categoryWhiteListRepository.findByMemberCategoryId(memberCategoryId);
 

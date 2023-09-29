@@ -46,7 +46,8 @@ public enum ExceptionStatus {
 
 	LOCATION_TRANSPORT_FAIL("-10000", "사용자 위경도를 FastAPI로 전송하는데 실패했습니다."),
 	MEMBER_INFO_TRANSPORT_FAIL("-10001", "사용자 정보를 FastAPI로 전송하는데 실패했습니다."),
-	FASTAPI_CONNECTION_FAIL("-11111", "FastAPI 서버와 연결을 실패했습니다");
+	FASTAPI_CONNECTION_FAIL("-11111", "FastAPI 서버와 연결을 실패했습니다"),
+	UNEXPECTED_RESPONSE_TYPE("-11112", "FastAPI 서버로부터 예상하지 못한 데이터 타입이 도착했습니다.");
 
 	private final String code;
 	private final String message;
