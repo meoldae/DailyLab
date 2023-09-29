@@ -44,4 +44,24 @@ public class EmotionAggregateCount {
                 .tiredCount(emotionAggregate.getTiredCount())
                 .build();
     }
+
+    public static EmotionAggregateCount ofTotal(EmotionTotalAggregate emotionAggregate) {
+        return EmotionAggregateCount.builder()
+                .movedCount(emotionAggregate.getMovedCount())
+                .angerCount(emotionAggregate.getAngerCount())
+                .absurdCount(emotionAggregate.getAbsurdCount())
+                .joyCount(emotionAggregate.getJoyCount())
+                .happyCount(emotionAggregate.getHappyCount())
+                .proudCount(emotionAggregate.getProudCount())
+                .excitedCount(emotionAggregate.getExcitedCount())
+                .thankfulCount(emotionAggregate.getThankfulCount())
+                .comfortCount(emotionAggregate.getComfortCount())
+                .stuffyCount(emotionAggregate.getStuffyCount())
+                .depressionCount(emotionAggregate.getDepressionCount())
+                .sadCount(emotionAggregate.getSadCount())
+                .panicCount(emotionAggregate.getPanicCount())
+                .annoyCount(emotionAggregate.getAnnoyCount())
+                .tiredCount(emotionAggregate.getTiredCount())
+                .build();
+    }
 }

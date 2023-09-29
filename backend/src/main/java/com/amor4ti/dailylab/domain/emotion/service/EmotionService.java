@@ -22,4 +22,6 @@ public interface EmotionService {
     List<ResponseEmotionAggregate> getEmotionsAggregate(Long memberId, LocalDate startDate, LocalDate endDate);
 
     void updateEmotionsAggregate(String date);
+
+    List<ResponseEmotionAggregate> getEmotionsTotalAggregate(Long memberId, LocalDate startDate, LocalDate endDate);
 }
