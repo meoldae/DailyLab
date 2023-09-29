@@ -47,7 +47,7 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
           setMostTaste(mostTaste);
           
         }, (error) => console.log(error));
-      }, []);
+      }, [state, period]);
 
     return (
         <div>
