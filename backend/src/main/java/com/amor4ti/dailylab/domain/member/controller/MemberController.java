@@ -189,4 +189,11 @@ public class MemberController {
 	public DataResponse getMembership(@PathVariable Long memberId){
 		return memberService.getMembership(memberId);
 	}
+
+	@GetMapping("/joinDate")
+	public DataResponse getJoinDate(Authentication authentication) {
+		Long memberId = Long.parseLong(authentication.getName());
+		LocalDate joinDateByMemberId = memberService.getJoinDateByMemberId(memberId);
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, joinDateByMemberId);
+	}
 }
