@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { postTodayDiary } from '@/api/diary';
 import Emotion from '@/components/emotion/Emotion';
 import CustomModal from '@/utils/CustomModal/customModal';
+import ProceedMatter from './ProceedMatter';
 
 
 const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}) => {
@@ -104,6 +105,9 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                         </div>
                         </CustomModal>
                     )}
+                </div>
+                <div id='matterCanvasCon' className="absolute left-0 top-[20px] -z-10">
+                    <ProceedMatter/>
                 </div>
             </div>
         )
