@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { refreshToken } from "./User";
 import { SetAccessToken } from "@/atom/UserAtom";
 import { HttpJson } from "./Http";
@@ -29,13 +29,13 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
   const { response } = _err; // err 객체에서 response 를 구조 분해 할당
   const originalConfig = _err.config as InternalAxiosRequestConfig; // 기존의 요청 정보를 저장한다.
 
-  if (response && response.status === -1000) {
+  if (response && response.status === 401) {
     await refreshToken(({data}) => {
-      originalConfig.headers.Authorization = data.data as string;
+      originalConfig.headers.Authorization = "Bearer " + data.data as string;
       localStorage.setItem("userAtom", `"userAtom" : {"accessToken" : "${data.data as string}"}`);
       SetAccessToken(data.data as string);
       
-      return HttpJson.request(originalConfig);
+      return axios.request(originalConfig);
     }, (error) => console.log(error));
   }
 
