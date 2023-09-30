@@ -1,15 +1,12 @@
-import Select, { SingleValue } from 'react-select';
 import { useEffect } from 'react';
-import { CategoryType } from "@/type/CategoryType";
+import { CategoryKeywordType } from "@/type/CategoryType";
 import { TodoParamType, TodoType } from "@/type/TodoType";
-import { SelectType } from "@/type/SelectType";
 import { useState } from "react";
-import { toStringByFormatting } from '@/utils/date/DateFormatter';
 
 interface props {
     mode : string
     info? : TodoType
-    categoryList : CategoryType[]
+    categoryList : CategoryKeywordType[]
     insertItem? : (param: TodoParamType) => void
     selectToDate : string
     changeInsertMode? : () => void
@@ -18,80 +15,47 @@ interface props {
 }
 
 const TodoHandleItem = (props : props) => {
-    const [content, setContent] = useState("");
-    const [selectedCategoryId, setSelectedCategoryId] = useState(props.info?.categoryId);
-    const [selectedFirstCategory, setSelectedFirstCategory] = useState("");
-    const [selectedSecondCategory, setSelectedSecondCategory] = useState("");
-    const [selectedThirdCategory, setSelectedThirdCategory] = useState("");
-    const [firstCategoryList, setFirstCategoryList] = useState<SelectType[]>([]);
-    const [secondCategoryList, setSecondCategoryList] = useState<SelectType[]>([]);
-    const [thirdCategoryList, setThirdCategoryList] = useState<SelectType[]>([]);
+    const [content, setContent] = useState(props.info?.content || "");
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number>(props.info?.categoryId || -1);
+    const [searchMode, setSearchMode] = useState(false);
+    const [keyword, setKeyword] = useState<string>(props.info?.small || "");
+    const [searchItems, setSearchItems] = useState<CategoryKeywordType[]>([]);
 
-    function mappingFromCategoryToSelect(categoryList: CategoryType[]): SelectType[] {
-        const result:SelectType[] = [];
-        categoryList.map((category) => result.push({label: category.name, value: category.name}));
-        return result;
+    const onChangeData = (e:React.FormEvent<HTMLInputElement>) => {
+        if(e.currentTarget.value != "") setSearchMode(true);
+        setKeyword(e.currentTarget.value);
+    };
+
+    function updateKeyWordList() {
+        const temp:CategoryKeywordType[] = keyword != "" ? props.categoryList.filter((item) => item.name.includes(keyword) === true) : [];
+        if(temp.length == 0) temp.push({name: "검색 결과가 없습니다", categoryId: -1});
+        setSearchItems(temp);
+    }
+
+    const onFocusInKeyword = (e:React.FormEvent<HTMLInputElement>) => {
+        if(e.currentTarget.value != "") setSearchMode(true);
+        setKeyword(e.currentTarget.value);
     }
 
     useEffect(() => {
-        setContent(() => props.info?.content as string);
-        const result:SelectType[] = mappingFromCategoryToSelect(props.categoryList);
-        setFirstCategoryList(() => result);
-
-        if(props.info != null && props.info != undefined){
-            setSelectedFirstCategory(() => props.info!.large);
-            setSelectedSecondCategory(() => props.info!.medium);
-            setSelectedThirdCategory(() => props.info!.small);
-        }
-    }, [props]);
+        const searchModeRemove = () => {setSearchMode(false)};
+        if(searchMode) document.body.addEventListener("click", searchModeRemove, false);
+        else document.body.removeEventListener("click", searchModeRemove, false);
+    }, [searchMode]);
 
     useEffect(() => {
-        if(selectedFirstCategory != ""){
-            const temp:CategoryType[] = props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!;
-            const result:SelectType[] = [];
-            temp.map((category) => result.push({label: category.name, value: category.name}));
-            setSecondCategoryList(() => result);
-        } else setSecondCategoryList(() => []);
-    }, [selectedFirstCategory]);
+        const matchCategory = props.categoryList.find(item => item.name === keyword);
+        if(matchCategory !== undefined && matchCategory !== null) setSelectedCategoryId(() => matchCategory.categoryId);
+        else setSelectedCategoryId(() => -1);
 
-    useEffect(() => {
-        if(selectedSecondCategory != ""){
-            const result = mappingFromCategoryToSelect(props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory)!.list!);
-            setThirdCategoryList(() => result);
-        }
-    }, [selectedSecondCategory]);
-
-    useEffect(() => {
-        if(selectedSecondCategory != "" && props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list != undefined && props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory) != undefined){
-            const result = mappingFromCategoryToSelect(props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory)!.list!);
-            setThirdCategoryList(() => result);
-        } else setThirdCategoryList(() => []);
-
-    }, [secondCategoryList]);
-
-    useEffect(() => {
-        if(selectedThirdCategory != "" && props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory)!.list!.find((category3) => category3.name == selectedThirdCategory) != undefined){
-            const result:number = props.categoryList.find((category1) => category1.name == selectedFirstCategory)!.list!.find((category2) => category2.name == selectedSecondCategory)!.list!.find((category3) => category3.name == selectedThirdCategory)!.categoryId!;
-            setSelectedCategoryId(() => result);
-            setContent(() => selectedThirdCategory);
-        } else setSelectedCategoryId(() => undefined);
-    }, [selectedThirdCategory]);
-
-    useEffect(() => {
-        const content:string = thirdCategoryList.find((select) => {return select.value == selectedThirdCategory}) != undefined ? thirdCategoryList.find((select) => {return select.value == selectedThirdCategory})!.value : "";
-        setContent(() => content);
-    }, [selectedThirdCategory, selectedCategoryId]);
+        const debounce = setTimeout(() => {updateKeyWordList();}, 200);
+        return () => {clearTimeout(debounce);};
+    }, [keyword]);
 
     function handleContent(e: React.ChangeEvent<HTMLInputElement>){setContent(() => e.target.value);}
 
-    function handleSelectChange(e: SingleValue<SelectType>, depth: number){
-        if(depth == 1) setSelectedFirstCategory(() => e!.value);
-        if(depth == 2) setSelectedSecondCategory(() => e!.value);
-        if(depth == 3) setSelectedThirdCategory(() => e!.value);
-    }
-
     function submitInsert(){
-        if(selectedCategoryId == undefined){
+        if(selectedCategoryId == undefined || selectedCategoryId == -1){
             alert("카테고리를 선택해주세요");
             return;
         }
@@ -105,7 +69,7 @@ const TodoHandleItem = (props : props) => {
     }
 
     function submitUpdate(){
-        if(selectedCategoryId == undefined){
+        if(selectedCategoryId == undefined || selectedCategoryId == -1){
             alert("카테고리를 선택해주세요");
             return;
         }
@@ -119,10 +83,14 @@ const TodoHandleItem = (props : props) => {
 
     return (
         <div className="w-full p-4 bg-secondary rounded-xl text-xl">
-            <div className="flex mb-3">
-                <Select options={firstCategoryList} onChange={(e) => handleSelectChange(e, 1)} placeholder="대분류" value={firstCategoryList.filter((item) => {return item.value == selectedFirstCategory})}/>
-                <Select options={secondCategoryList} onChange={(e) => handleSelectChange(e, 2)} placeholder="중분류" value={secondCategoryList.filter((item) => {return item.value == selectedSecondCategory})}/>
-                <Select className="flex-1" options={thirdCategoryList} onChange={(e) => handleSelectChange(e, 3)} placeholder="소분류" value={thirdCategoryList.filter((item) => {return item.value == selectedThirdCategory})}/>
+            <div className="relative flex mb-3">
+                <input className="w-full p-3 mb-3 rounded-xl bg-primary text-text" type="text" placeholder="카테고리를 검색해보세요" title="카테고리 검색" name="카테고리 검색" value={keyword}
+                onChange={onChangeData} onFocus={onFocusInKeyword}/>
+                {searchMode ? 
+                <ul className="text-left w-full absolute bg-primary bottom-[10px] transform translate-y-[100%] border border-gray child-[li]:cursor-pointer child-[li]:p-3 child-[li:not(:last-child)]:border-b child-[li:not(:last-child)]:border-gray">
+                    {searchItems.map((search, idx) => (search.categoryId != -1 ? <li className="cursor-pointer" key={idx} onClick={() => setKeyword(search.name)}>{search.name}</li> : <li key={idx}>{search.name}</li>))}
+                </ul>
+                : null}
             </div>
             <input className="w-full p-3 mb-3 rounded-xl bg-primary text-text" type="text" name="" id="" placeholder="상세 내용을 입력해주세요" value={content || ""} onChange={handleContent}/>
             {props.mode == "insert" ?

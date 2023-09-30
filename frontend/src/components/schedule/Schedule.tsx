@@ -1,12 +1,17 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import CustomCalendar from '@/utils/calendar/CustomCalendar';
 import { getMonthFirstDate, getMonthLastDate, toStringByFormatting, differDate } from '@/utils/date/DateFormatter';
 import { getMonthScheduleList } from '@/api/Schedule';
 import { ScheduleType } from '@/type/ScheduleType';
 import ScheduleItem from './item/ScheduleItem';
 import ScheduleView from './ScheduleView';
+import { GetJoinDate } from '@/api/User';
 
 const Schedule = () => {
+    const [joinDate, setJoinDate] = useState<Date>(new Date());
+    useEffect(() => {
+        GetJoinDate(({data}) => {setJoinDate(() => new Date(data.data as string))}, (error) => console.log(error));
+    }, []);
 
     const [curDate, setCurDate] = useState<Date>(new Date());
     const [selectedDate, setSelectedDate] = useState("");
@@ -34,7 +39,7 @@ const Schedule = () => {
     useLayoutEffect(() => {
         const elementList:JSX.Element[] = [];
         dataList.map((item) => {
-            elementList.push(<ScheduleItem activeStatus={selectedDate == item.selectedDate} colorCode={item.colorCode} dateText={item.selectedDate} clickStatus={item.status !== "X" || differDate(new Date(item.selectedDate), new Date()) > 0} clickEvent={setSelectedDate} />);
+            elementList.push(<ScheduleItem activeStatus={selectedDate == item.selectedDate} colorCode={item.colorCode} dateText={item.selectedDate} clickStatus={( differDate(new Date(item.selectedDate), joinDate) >= 0 && (item.status !== "X" || differDate(new Date(item.selectedDate), new Date()) > 0))} clickEvent={setSelectedDate} />);
         });
         setDateContentsList(() => elementList);
     }, [dataList, selectedDate]);

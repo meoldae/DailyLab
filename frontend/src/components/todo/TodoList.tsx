@@ -1,12 +1,12 @@
 import { TodoType, TodoParamType } from "@/type/TodoType";
-import { CategoryType } from "@/type/CategoryType";
+import { CategoryKeywordType } from "@/type/CategoryType";
 import TodoListItem from "./item/TodoListItem";
 import TodoHandleItem from "./item/TodoHandleItem";
 
 interface props {
     type : string
     contents : TodoType[]
-    categoryList : CategoryType[]
+    categoryList : CategoryKeywordType[]
     selectToDate : string
     blackItem? : (todoId: number) => void
     deleteItem? : (todoId: number) => void

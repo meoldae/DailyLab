@@ -9,6 +9,10 @@ const getCategoryList = async (success: (data : {data : ReturnType}) => void, fa
     await HttpJson.get(`category/all/tree`).then(success).catch(fail);
 }
 
+const getCategoryKeywordList = async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.get(`category`).then(success).catch(fail);
+}
+
 const insertTodoItem = async (param: object, success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.post(`todo`, JSON.stringify(param)).then(success).catch(fail);
 }
@@ -33,4 +37,4 @@ const getTodoStatistics = async (state: string, startDate: string, endDate: stri
     await HttpJson.get(`todo/statistics?state=${state}&startDate=${startDate}&endDate=${endDate}`).then(success).catch(fail);
 }
 
-export { getCategoryList, getTodoList, insertTodoItem, checkTodoItem, blackTodoItem, updateTodoItem, deleteTodoItem, getTodoStatistics };
+export { getCategoryList, getCategoryKeywordList, getTodoList, insertTodoItem, checkTodoItem, blackTodoItem, updateTodoItem, deleteTodoItem, getTodoStatistics };
