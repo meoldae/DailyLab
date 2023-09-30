@@ -61,4 +61,6 @@ public interface MemberService {
     DataResponse getMembership(Long memberId);
 
     List getMemberListByGenderAndAge(String gender, Integer age);
+
+    LocalDate getJoinDateByMemberId(Long memberId);
 }

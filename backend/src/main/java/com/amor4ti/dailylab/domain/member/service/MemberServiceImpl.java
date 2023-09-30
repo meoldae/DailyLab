@@ -7,6 +7,7 @@ import com.amor4ti.dailylab.domain.member.mapper.MbtiMapper;
 import com.amor4ti.dailylab.domain.member.mapper.MemberMapper;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.member.repository.MemberStatusRepository;
+import com.amor4ti.dailylab.domain.taste.service.TasteService;
 import com.amor4ti.dailylab.domain.todo.service.TodoService;
 import com.amor4ti.dailylab.domain.todoReport.service.TodoReportService;
 import com.amor4ti.dailylab.global.exception.CustomException;
@@ -53,6 +54,7 @@ public class MemberServiceImpl implements MemberService {
 	private final MbtiService mbtiService;
 	private final TodoService todoService;
 	private final TodoReportService todoReportService;
+	private final TasteService tasteService;
 	private final MemberMapper memberMapper;
 
 	private final WebClientUtil webClientUtil;
@@ -345,10 +347,14 @@ public class MemberServiceImpl implements MemberService {
 
 		List<MemberStatusForCalendarDto> statusByRange = new ArrayList<>();
 
+		String[] colorCodes = {"#ffa640", "#ffe70e", "#2cb0ee", "#ff3251e1", "#63c23d"};
+
 		while (!startDay.isAfter(endDay)) {
 			boolean flag = false;
 			for (MemberStatusForCalendarDto member : allStatusByRangeAndMemberId) {
 				if (member.getSelectedDate().equals(startDay)) {
+					int selectTaste = tasteService.getSelectTaste(memberId, startDay);
+					member.setColorCode(colorCodes[selectTaste/3]);
 					statusByRange.add(member);
 					flag = true;
 					break;
@@ -402,5 +408,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List getMemberListByGenderAndAge(String gender, Integer age) {
 		return memberRepository.findMemberByGenderAndAge(gender, LocalDate.now().getYear(), age);
+	}
+
+	@Override
+	public LocalDate getJoinDateByMemberId(Long memberId) {
+		return memberRepository.findById(memberId).orElseThrow(
+				() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+		).getJoinDate().toLocalDate();
 	}
 }
