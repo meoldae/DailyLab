@@ -29,7 +29,7 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
   const { response } = _err; // err 객체에서 response 를 구조 분해 할당
   const originalConfig = _err.config as InternalAxiosRequestConfig; // 기존의 요청 정보를 저장한다.
 
-  if (response && response.status === 401) {
+  if (response && response.status === -1000) {
     await refreshToken(({data}) => {
       originalConfig.headers.Authorization = data.data as string;
       localStorage.setItem("userAtom", `"userAtom" : {"accessToken" : "${data.data as string}"}`);
