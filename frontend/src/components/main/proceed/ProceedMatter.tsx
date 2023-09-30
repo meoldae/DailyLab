@@ -1,26 +1,38 @@
 import { useEffect, useState } from "react";
 import Matter from "matter-js";
-import { getDailyData } from "@/api/Emotion";
-import { EmotionResultType } from "@/type/EmotionType";
+import { getDailyData, getRatioData } from "@/api/Emotion";
+import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
 
   const ProceedMatter = () => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
+  const [emotionRatioList, setEmontionRatioList] = useState<EmotionRatioType[]>([]);
   const curDate = toStringByFormatting(new Date());
-  
   
   useEffect(() => {
     const getData = async () => {
-        await getDailyData({date: curDate}, ({data}) => {
-            setEmontionResultList(() => data.data as EmotionResultType[]);
-        }, (error) => { console.log(error) });
+      await getDailyData({ date: curDate }, ({ data }) => {
+      setEmontionResultList(() => data.data as EmotionResultType[]);
+      }, (error) => { console.log(error) });
     };
     
     void getData();
-}, []);
+  }, []);
   
+  useEffect(() => {
+    const getRatio = async () => {
+      if (emotionResultList.length >= 100) {
+        await getRatioData(curDate, ({ data }) => {
+          setEmontionRatioList(() => data.data as EmotionRatioType[]);
+        }, (error) => { console.log(error) });
+      }
+    };
+
+    void getRatio();
+  }, [emotionResultList]);
+    
   useEffect(() => {
     const {
       Engine,
@@ -110,20 +122,40 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+180, 2000, 100, {isStatic: true, render: {fillStyle: '#535394'} }));
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
     // Composite.add(world, Matter.Bodies.rectangle(0, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
-    console.log(emotionResultList.length);
-    for(let i = 0; i < emotionResultList.length; i++) {
-      const x = 300+Math.random()*10;
-      const y = Math.random()*10;
-      const circleRadius = 40;
-      Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
-          render: {
-              sprite: {
-                  texture: `./assets/img/emotion/${emotionResultList[i].emotionId}.png`,
-                  xScale: (circleRadius *2) / 467,
-                  yScale: (circleRadius *2) / 467,
-                },
-          }
-      }));
+    if (emotionResultList.length < 100) {
+      for (let i = 0; i < emotionResultList.length; i++) {
+        const x = 300 + Math.random() * 200;
+        const y = -Math.random() * 50;
+        const circleRadius = 40;
+  
+        Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
+            render: {
+                sprite: {
+                    texture: `./assets/img/emotion/${emotionResultList[i].emotionId}.png`,
+                    xScale: (circleRadius *2) / 467,
+                    yScale: (circleRadius *2) / 467,
+                  },
+            }
+        }));
+      }
+    } else {
+      for (let i = 0; i < emotionRatioList.length; i++) {
+        const x = 300 + Math.random() * 10;
+        const y = Math.random() * 10;
+        const circleRadius = 40;
+  
+        for (let j = 0; j < emotionRatioList[i].percentage; j++) {
+          Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
+              render: {
+                  sprite: {
+                      texture: `./assets/img/emotion/${emotionRatioList[i].emotionId}.png`,
+                      xScale: (circleRadius *2) / 467,
+                      yScale: (circleRadius *2) / 467,
+                    },
+              }
+          }));
+        }
+      }
     }
 
     // keep the mouse in sync with rendering
@@ -151,7 +183,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
       }
     };
 
-  }, [emotionResultList]);
+  }, [emotionResultList, emotionRatioList]);
 
   return null;
 };
