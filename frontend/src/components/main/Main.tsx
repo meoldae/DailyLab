@@ -21,6 +21,7 @@ interface StatusType {
   }
 
 const Main = () => {
+    
     const [status, setStatus] = useState("proceed");
     const [getDate, setGetDate] = useState('');
     const curDate = toStringByFormatting(new Date());

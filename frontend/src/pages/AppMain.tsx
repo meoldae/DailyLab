@@ -3,6 +3,7 @@ import Footer from '@/components/inc/Footer';
 import Main from '@/components/main/Main';
 
 const AppMain = () => {
+
     return (
         <>
             <Header/>

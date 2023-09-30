@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useEffect, useState } from "react";
 import { TodoType, TodoParamType } from "@/type/TodoType";
 import { getTodoList, getCategoryList, blackTodoItem, deleteTodoItem, updateTodoItem, checkTodoItem, insertTodoItem } from "@/api/Todo"; 
 import TodoHandleItem from "./item/TodoHandleItem";
@@ -13,7 +13,7 @@ interface props {
 
 const Todo = (props: props) => {
     const [contentsList, setContentsList] = useState<TodoType[]>([]);
-    useEffect(() => {getTodoList(props.date, ({data}) => {setContentsList(() => data.data as TodoType[]);}, (error) => console.log(error));}, [props]);
+    useLayoutEffect(() => {getTodoList(props.date, ({data}) => {setContentsList(() => data.data as TodoType[]);}, (error) => console.log(error));}, [props]);
 
     const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
     useEffect(() => {getCategoryList(({data}) => {setCategoryList(() => data.data as CategoryType[]);}, (error) => console.log(error));}, []);
@@ -59,10 +59,11 @@ const Todo = (props: props) => {
     }
 
     async function checkTodo(param: TodoParamType){
+        console.log(param);
         await checkTodoItem(param, ({data}) => {
             const result = [...contentsList];
             result.find(contents => contents.todoId == param.todoId)!.check = param.checkedDate != "";
-            if(param.checkedDate != "") props.setText!(param.content!);
+            if(param.checkedDate != "") props.setText!(param.categoryName!);
             else props.setText!("");
             setContentsList(() => result);
         }, (error) => console.log(error));

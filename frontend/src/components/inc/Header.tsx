@@ -12,9 +12,18 @@ import headerMenuDarkIconDark from 'public/assets/img/header/header_dark_mode_ic
 import { useSetRecoilState } from "recoil";
 import { GetProgressStatus } from "@/atom/ProgressAtom";
 import Progress from "@/components/progress/Progress";
+import { UpdateLocation } from "@/api/User";
 
 
 export default function Header() {
+
+    navigator.geolocation.watchPosition(function(position) {
+        const locationParam = {
+            "latitude" : position.coords.latitude,
+            "longitude" : position.coords.longitude
+        }
+        UpdateLocation(locationParam, ({data}) => {}, (error) => console.log(error));
+    });
 
     const isProgress = GetProgressStatus();
     const changeMode = useSetRecoilState(modeAtom);

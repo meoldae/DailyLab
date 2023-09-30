@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import CustomCalendar from '@/utils/calendar/CustomCalendar';
 import { getMonthFirstDate, getMonthLastDate, toStringByFormatting, differDate } from '@/utils/date/DateFormatter';
 import { getMonthScheduleList } from '@/api/Schedule';
@@ -23,15 +23,15 @@ const Schedule = () => {
             ({data}) => {setDataList(() => data.data as ScheduleType[]);}, (error) => console.log(error));
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setCurMonth(() => curDate.getMonth() + 1);
         setFirstDate(() => getMonthFirstDate(curDate));
         setLastDate(() => getMonthLastDate(curDate));
     }, [curDate]);
 
-    useEffect(() => {void getDateConentsList();},[firstDate, lastDate]);
+    useLayoutEffect(() => {void getDateConentsList();},[firstDate, lastDate]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const elementList:JSX.Element[] = [];
         dataList.map((item) => {
             elementList.push(<ScheduleItem activeStatus={selectedDate == item.selectedDate} colorCode={item.colorCode} dateText={item.selectedDate} clickStatus={item.status !== "X" || differDate(new Date(item.selectedDate), new Date()) > 0} clickEvent={setSelectedDate} />);
