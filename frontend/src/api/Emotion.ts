@@ -30,4 +30,4 @@ const putEmotion = async (param: EmotionData, success: (data : {data : ReturnTyp
     await HttpJson.post(`emotion`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export { getEmotionList, getDailyData, putEmotion, getPeriodData, getAggregateData, getRatioData};
+export { getEmotionList, getDailyData, putEmotion, getPeriodData, getAggregateData, getRatioData };
