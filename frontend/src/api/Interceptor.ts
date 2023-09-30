@@ -31,8 +31,6 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
   if (response && response.status === 401) {
     try {
       const data = await HttpJson.get(`auth/refresh`);
-      console.dir(data);
-      alert("테스트");
       if(data){
         await SetAccessToken(data.data as string);
         return await HttpJson.request(originalConfig);
