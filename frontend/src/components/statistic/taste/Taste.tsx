@@ -11,23 +11,26 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
         spicy : number;
         bitter : number;
         mostTaste : string;
+        imgSrc : string;
     }
     const [chartInfo, setChartInfo] = useState<number[]>([]);
     const [mostDetailTaste, setMostDetailTaste] = useState<string>();
     const [mostTaste, setMostTaste] = useState<String>();
+    const [tasteImgSrc, setTasteImgSrc] = useState<String>();
 
     useEffect(() =>{
         getTasteStatistics(state, startDate, endDate, ({data}) => {
           const temp = data.data as tasteResultprop;
           const result:number[] = [
+            temp.spicy,
             temp.sweet,
             temp.sour,
-            temp.salty,
-            temp.spicy,
             temp.bitter,
+            temp.salty,
           ];
           setMostDetailTaste(temp.mostTaste);
           setChartInfo(result);
+          setTasteImgSrc(temp.imgSrc);
 
           const maxTaste = Math.max(temp.sweet, temp.sour, temp.salty, temp.spicy, temp.bitter);
           let mostTaste = "";
@@ -47,7 +50,7 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
           setMostTaste(mostTaste);
           
         }, (error) => console.log(error));
-      }, []);
+      }, [state, period]);
 
     return (
         <div>
@@ -55,7 +58,7 @@ const Taste = ({state, period, startDate, endDate}: {state:string, period:string
                 이번 {period === 'month' ? '달은' : '주는'} <p className="inline-block font-black">{mostTaste}</p>이 많이 검출되었어요
             </div>
             <TasteChart chartInfo={chartInfo}/>
-            <img className="p-4 w-[120px] -mt-[170px] m-auto" src="./assets/img/taste/sweet/strawberryParfait.png" alt="" />
+            <img className="p-4 w-[120px] -mt-[170px] m-auto" src={ `./assets/img/taste/${tasteImgSrc}.png` } alt="" />
             <div className="text-center font-light text-2xl">
                 그중에서도 많이 검출된 맛은<br/>
                 <p className="font-semibold inline-block"> {mostDetailTaste} </p> 이에요!

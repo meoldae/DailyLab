@@ -56,22 +56,15 @@ const Emotion = (props: props) => {
             </div>
         </div>
         <div className="absolute top-[100px] left-[calc(50%-150px)] h-[230px]">
-            {/* lottie 시험하기 */}
-            {/* <Player
-            src="./assets/lottie/sample.json"
-            className="players"
-            // loop
-            // autoplay
-            style={{ height: '200px', width: '300px' }}
-            ref={playerRef}
-            /> */}
-            <div className="text-center font-semibold text-3xl">
-                <div className="bg-primary h-[70px] rounded-3xl pt-[10px]">
-                    {circleCount === 0 ? (
-                        <p className="mb-24 w-[300px] h-[40px] pt-[10px]">오늘은 어떤 기분이신가요?</p>
-                    ) : (
-                        <p className="mb-24 w-[300px] h-[40px]">이 감정은... {emotionName}!<br/> {emotionType === 'n' ? "안좋은 감정은 제가 대신 가져갈게요!" : "저까지 기분이 좋아지네요!"}</p>
-                    )}
+            <div className="text-center font-light text-2xl">
+                <div className="flex w-[300px] h-[80px] justify-center items-center bg-primary rounded-3xl">
+                    <div>
+                        {circleCount === 0 ? (
+                            <div>오늘은 어떤 기분이신가요?</div>
+                        ) : (
+                            <div>이 감정은... <p className="inline font-bold" >{emotionName}!</p><br/> {emotionType === 'n' ? "안좋은 감정은 제가 대신 가져갈게요" : "저까지 기분이 좋아지네요"}</div>
+                        )}
+                    </div>
                 </div>
                 <div className="mt-[50px]">
                     <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src={cloeNoFaceImg} alt="클로에" />

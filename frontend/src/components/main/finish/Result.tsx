@@ -1,6 +1,6 @@
 import { cloe2Img } from "@/components/character/Character";
 import DailyChart from "@/components/chart/emotion/daily/DailyChart";
-import Diary from "@/components/diary/Diary";
+import Diary from "@/components/report/Diary";
 
 const MainResult = ({curDate} : {curDate : string}) => {
     return (
