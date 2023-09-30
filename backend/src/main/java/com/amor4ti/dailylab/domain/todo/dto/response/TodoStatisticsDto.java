@@ -10,4 +10,5 @@ import java.util.List;
 public class TodoStatisticsDto {
     private Long[] count;
     private double percent;
+    private String mostCategory;
 }

@@ -65,7 +65,7 @@ public class TodoStatisticsServiceImpl implements TodoStatisticsService {
     public DataResponse getTodoSummary(Long memberId, String state, LocalDate startDate, LocalDate endDate) {
         List<Long> memberIdList = new LinkedList<>();
 
-        if(!state.equals("all")){
+        if(!state.equals("total")){
             Member findMember = memberRepository.findById(memberId)
                     .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
@@ -91,17 +91,22 @@ public class TodoStatisticsServiceImpl implements TodoStatisticsService {
 
         long all = 0l, success = 0l;
         List<Tuple> list = todoRepository.getStatistics(startDate, endDate, memberIdList);
-
+        long max = Long.MIN_VALUE;
+        String mostCategory = null;
 
         for(Tuple i : list) {
             long a = i.get(0, Long.class);
             allCount[map.get(i.get(2, String.class))] = a;
+            if(max < a) {
+                max = Math.max(a, max);
+                mostCategory = i.get(2, String.class);
+            }
             all += a;
             success += i.get(1, Integer.class).longValue();
         }
 
         double percent = ((double)success/(double)all) * 100.0;
-        TodoStatisticsDto todoStatisticsDto = todoMapper.todoToTodoStatisticsDto(allCount, Math.round(percent*100)/100.0);
+        TodoStatisticsDto todoStatisticsDto = todoMapper.todoToTodoStatisticsDto(allCount, Math.round(percent*100)/100.0, mostCategory);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoStatisticsDto);
     }
 

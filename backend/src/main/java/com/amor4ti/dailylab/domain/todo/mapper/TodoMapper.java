@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TodoMapper {
-    TodoStatisticsDto todoToTodoStatisticsDto(Long[] count, double percent);
+    TodoStatisticsDto todoToTodoStatisticsDto(Long[] count, double percent, String mostCategory);
 }
