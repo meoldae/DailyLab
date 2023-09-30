@@ -25,8 +25,12 @@ const getStatus = async (success: (data : {data : ReturnType}) => void, fail: (e
     await HttpJson.get(`member/status`).then(success).catch(fail);
 }
 
+const UpdateLocation = async (param: object, success : (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.post(`member/weather/location`, JSON.stringify(param)).then(success).catch(fail);
+}
+
 const refreshToken = async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.post(`auth/refresh`).then(success).catch(fail);
 }
 
-export { CheckUserStatus, UpdateSignUp, GetMyInfo, UpdateMyInfo, SubmitSecession, getStatus, refreshToken };
+export { CheckUserStatus, UpdateSignUp, GetMyInfo, UpdateMyInfo, SubmitSecession, getStatus, UpdateLocation, refreshToken };

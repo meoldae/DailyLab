@@ -19,7 +19,7 @@ interface props {
 const TodoListItem = (props: props) => {
 
     function clickCheckItem(){
-        const param:TodoParamType = {todoId : props.info.todoId, checkedDate : (!props.info.check ? toStringByFormattingIncludeTime(new Date()) : "")};
+        const param:TodoParamType = {todoId : props.info.todoId, checkedDate : (!props.info.check ? toStringByFormattingIncludeTime(new Date()) : ""), categoryName : props.info.small};
         props.checkItem!(param);
     }
 

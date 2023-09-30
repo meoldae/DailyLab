@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import Matter from "matter-js";
-import { redirect } from "react-router-dom";
+import { getDailyData } from "@/api/Emotion";
+import { EmotionResultType } from "@/type/EmotionType";
+import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
-interface WaitingMatterProps {
-    clickCount: number;
-    imgName: string;
-  }
-  
-  const WaitingMatter = ({ clickCount, imgName }: WaitingMatterProps) => {
+
+  const ProceedMatter = () => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
-  const [imgSrc, setImgSrc] = useState('');
+  const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
+  const curDate = toStringByFormatting(new Date());
   
   
   useEffect(() => {
-    setImgSrc(imgName);
-  },[imgName])
+    const getData = async () => {
+        await getDailyData({date: curDate}, ({data}) => {
+            setEmontionResultList(() => data.data as EmotionResultType[]);
+        }, (error) => { console.log(error) });
+    };
+    
+    void getData();
+}, []);
   
   useEffect(() => {
     const {
@@ -24,7 +29,6 @@ interface WaitingMatterProps {
       MouseConstraint,
       Mouse,
       Composite,
-      Events,
     } = Matter;
 
     // create engine
@@ -39,7 +43,7 @@ interface WaitingMatterProps {
       engine: newEngine,
       options: {
         width: window.innerWidth,
-        height: window.innerHeight-70,
+        height: window.innerHeight,
         wireframes: false,
         background: "transparent",
       },
@@ -97,11 +101,8 @@ interface WaitingMatterProps {
     });
 
     Composite.add(world, mouseConstraint);
-    Composite.add(world, Matter.Bodies.rectangle(0, 100, 1000, 20, { isStatic: true, angle: Math.PI * 0.12, render: { fillStyle: '#208FFF' } }));
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 400, 1000, 20, { isStatic: true, angle: -Math.PI * 0.08, render: { fillStyle: '#12AB47' } }));
-    Composite.add(world, Matter.Bodies.rectangle(0, 600, 1000, 20, { isStatic: true, angle: Math.PI * 0.12, render: { fillStyle: '#FF891A' } }));
-    
-    Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 100, { isStatic: true, render: {fillStyle: 'rgba(0, 0, 0, 0)'} }));
+
+    // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, -window.innerHeight/2-100, 1000, 100, { isStatic: true, render: {fillStyle: '#ff0000b9'} }));
     Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+180, 2000, 100, {isStatic: true, render: {fillStyle: 'rgba(0, 0, 0, 0)'} }));
     Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: 'rgba(0, 0, 0, 0)'}  }));
     Composite.add(world, Matter.Bodies.rectangle(0, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: 'rgba(0, 0, 0, 0)'}  }));
@@ -109,14 +110,28 @@ interface WaitingMatterProps {
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+180, 2000, 100, {isStatic: true, render: {fillStyle: '#535394'} }));
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
     // Composite.add(world, Matter.Bodies.rectangle(0, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
-  
+    for(let i = 0; i < emotionResultList.length; i++) {
+      const x = 300+Math.random()*10;
+      const y = Math.random()*10;
+      const circleRadius = 40;
+      Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
+          render: {
+              sprite: {
+                  texture: `./assets/img/emotion/${emotionResultList[i].emotionId}.png`,
+                  xScale: (circleRadius *2) / 467,
+                  yScale: (circleRadius *2) / 467,
+                },
+          }
+      }));
+    }
+
     // keep the mouse in sync with rendering
     render.mouse = mouse;
 
     // fit the render viewport to the scene
     Render.lookAt(render, {
       min: { x: 0, y: 0 },
-      max: { x: 800, y: 600 },
+      max: { x: 800, y: 300 },
     });
     
     // Clean up the engine and renderer when component unmounts
@@ -135,31 +150,9 @@ interface WaitingMatterProps {
       }
     };
 
-  }, []);
-
-  const addCircle = () => {
-    if (engine) {
-      const { Bodies, Composite } = Matter;
-      const x = window.innerWidth/2 + Math.random() * (window.innerWidth);
-      const y = -(Math.random() * window.innerHeight)/10-100;
-      const circleRadius = 40;
-      const circle = Bodies.circle(x, y, circleRadius, {
-        render: {
-          sprite: {
-            texture: imgSrc,
-            xScale: (circleRadius * 2) / 400,
-            yScale: (circleRadius * 2) / 400,
-          },
-        },
-      });
-      Composite.add(engine.world, circle);
-    }
-  };
-  useEffect(() => {
-    addCircle();
-  },[clickCount])
+  }, [emotionResultList]);
 
   return null;
 };
 
-export default WaitingMatter;
+export default ProceedMatter;
