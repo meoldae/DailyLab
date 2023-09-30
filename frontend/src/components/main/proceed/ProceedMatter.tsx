@@ -110,6 +110,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth, window.innerHeight+180, 2000, 100, {isStatic: true, render: {fillStyle: '#535394'} }));
     // Composite.add(world, Matter.Bodies.rectangle(window.innerWidth*2+20, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#0059ff'}  }));
     // Composite.add(world, Matter.Bodies.rectangle(0, 300, 100, window.innerHeight*2, { isStatic: true, render: {fillStyle: '#e100ff'}  }));
+    console.log(emotionResultList.length);
     for(let i = 0; i < emotionResultList.length; i++) {
       const x = 300+Math.random()*10;
       const y = Math.random()*10;
