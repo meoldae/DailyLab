@@ -37,7 +37,6 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
         });
     }
 
-
     const handleFinish = async (date : string) => {
         await setStatusFinish(date, ({data}) => {
             window.location.reload();
