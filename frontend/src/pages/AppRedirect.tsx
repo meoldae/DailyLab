@@ -8,7 +8,7 @@ const AppRedirect = () => {
     const token = urlParams.get("token");
     
     if (token !== null) {
-        SetAccessToken(token);
+        void SetAccessToken(token);
         navigate('/'); 
     }
     return (

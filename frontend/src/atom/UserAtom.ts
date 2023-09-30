@@ -17,7 +17,7 @@ const userAtom = atom<userType>({
 
 function GetAccessToken():string {return useRecoilValue(userAtom).accessToken;}
 
-function SetAccessToken(newAccessToken: string) {
+async function SetAccessToken(newAccessToken: string) {
     const setAccessToken = useSetRecoilState(userAtom);
     setAccessToken((prevState) => ({
         ...prevState,

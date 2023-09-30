@@ -5,7 +5,7 @@ export default function Logout() {
 
     const navigate = useNavigate(); 
 
-    SetAccessToken("");
+    void SetAccessToken("");
     localStorage.removeItem("userAtom");
     navigate("/login");
 
