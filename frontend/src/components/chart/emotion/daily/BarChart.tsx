@@ -6,7 +6,7 @@ type TransformedDataType = { name: string; data: number[] }[];
 
 const BarChart = ({ transformedData, emotionList, period }: { transformedData: TransformedDataType, emotionList: EmotionType[], period: string }) => {
     const [horizontal, setHorizontal] = useState(false);
-  
+  console.log(transformedData);
     const toggleHorizontal = () => {
         setHorizontal(prevHorizontal => !prevHorizontal);
     }

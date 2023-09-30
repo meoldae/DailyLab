@@ -16,7 +16,7 @@ const Statistic = () => {
         const today = new Date();
         
         if (period === 'week') {
-            // 이전 주의 시작 (월요일)과 끝 (일요일)을 찾습니다.
+            // 이전 주의 시작 (월요일)과 끝 (일요일)을 찾기.
             const startOfLastWeek = startOfWeek(subWeeks(today, 1), { weekStartsOn: 1 });
             const endOfLastWeek = endOfWeek(subWeeks(today, 1), { weekStartsOn: 1 });
             
@@ -25,7 +25,7 @@ const Statistic = () => {
                 endDate: toStringByFormatting(endOfLastWeek)
             };
         } else if (period === 'month') {
-            // 이전 달의 시작 (1일)과 끝 (마지막 일)을 찾습니다.
+            // 이전 달의 시작 (1일)과 끝 (마지막 일)을 찾기.
             const startOfLastMonth = startOfMonth(subMonths(today, 1));
             const endOfLastMonth = endOfMonth(subMonths(today, 1));
             

@@ -1,21 +1,23 @@
-import { EmotionType, EmotionResultType, EmotionPeriodType, EmotionCountType } from '@/type/EmotionType';
+import { EmotionType, TransformedDataType } from '@/type/EmotionType';
 
-type TotalEmotionProps = { emotionResultList: EmotionPeriodType[], emotionList: EmotionType[] };
+type TotalEmotionProps = { transformedData: TransformedDataType, emotionList: EmotionType[] };
 
-const TotalEmotion = ({emotionResultList, emotionList} : TotalEmotionProps) => {
+const TotalEmotion = ({ transformedData, emotionList }: TotalEmotionProps) => {
     const data = emotionList.map(emotion => ({
         imgsrc: `./assets/img/emotion/${emotion.emotionId}.png`,
         name: emotion.name,
         cnt: 0
     }));
 
-     emotionResultList.forEach(dayData => {
-        dayData.emotions.forEach(emotion => {
-            const index = data.findIndex(item => item.imgsrc === `./assets/img/emotion/${emotion.emotionId}.png`);
-            if (index !== -1) {
-                data[index].cnt += emotion.count;
-            }
-        });
+
+    transformedData.forEach(emotionData => {
+        const emotionId = parseInt(emotionData.name);
+        const total = emotionData.data.reduce((acc, count) => acc + count, 0);
+        const index = data.findIndex(item => item.imgsrc === `./assets/img/emotion/${emotionId}.png`);
+
+        if (index !== -1) {
+            data[index].cnt += total;
+        }
     });
     
     return (
