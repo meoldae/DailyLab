@@ -32,7 +32,7 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
   if (response && response.status === 401) {
     await refreshToken(({data}) => {
       originalConfig.headers.Authorization = data.data as string;
-      localStorage.setItem("useAtom", `"userAtom" : {"accessToken" : "${data.data as string}"}`);
+      localStorage.setItem("userAtom", `"userAtom" : {"accessToken" : "${data.data as string}"}`);
       SetAccessToken(data.data as string);
       
       return HttpJson.request(originalConfig);
