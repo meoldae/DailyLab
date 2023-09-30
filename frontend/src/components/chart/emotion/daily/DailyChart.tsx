@@ -46,7 +46,6 @@ const DailyChart = ({ state, period, startDate, endDate, onMostFrequentEmotion }
                     count: value as number
                 }));
 
-                console.log(state);
                 emotions.forEach(emotion => {
                     const emotionIndex = transformedData.findIndex(
                         data => data.name === emotion.emotionId.toString()
@@ -67,7 +66,6 @@ const DailyChart = ({ state, period, startDate, endDate, onMostFrequentEmotion }
     };
 
     const getData = async () => {
-        console.log(state)
         if (state === 'personal') {
             await getPeriodData(startDate, endDate, ({ data }) => {
                 setEmotionResultList(() => data.data as EmotionPeriodType[]);
