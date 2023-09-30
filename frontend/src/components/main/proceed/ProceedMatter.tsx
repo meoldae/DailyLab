@@ -157,7 +157,6 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
         }
       }
     }
-    
 
     // keep the mouse in sync with rendering
     render.mouse = mouse;
