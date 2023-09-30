@@ -12,4 +12,6 @@ public interface CategoryService {
     DataResponse getCategoryTreeList();
 
     String getCategoryName(Long categroyId);
+
+    DataResponse getCategorySearchList();
 }

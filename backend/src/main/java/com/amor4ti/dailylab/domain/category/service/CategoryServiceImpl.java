@@ -1,6 +1,8 @@
 package com.amor4ti.dailylab.domain.category.service;
 
 import com.amor4ti.dailylab.domain.category.dto.response.CategoryDto;
+import com.amor4ti.dailylab.domain.category.dto.response.CategorySearchDto;
+import com.amor4ti.dailylab.domain.category.mapper.CategoryMapper;
 import com.amor4ti.dailylab.domain.category.repository.CategoryRepository;
 import com.amor4ti.dailylab.domain.entity.category.Category;
 import com.amor4ti.dailylab.global.exception.CustomException;
@@ -26,6 +28,7 @@ public class  CategoryServiceImpl implements CategoryService{
     private final CategoryRepository categoryRepository;
 
     private final CategoryConverter categoryConverter;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public DataResponse getOneCategory(Long categoryId) {
@@ -79,5 +82,18 @@ public class  CategoryServiceImpl implements CategoryService{
                 .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
         log.info("찾은 카테고리 이름: {}", category.getSmall());
         return category.getSmall();
+    }
+
+    @Override
+    public DataResponse getCategorySearchList() {
+        List<CategorySearchDto> categoryDtoList = new ArrayList<>();
+        List<Category> categoryList = categoryRepository.findAll();
+
+        for (Category category : categoryList) {
+            CategorySearchDto categorySearchDto = categoryMapper.categoryToCategorySearchDto(category);
+            categoryDtoList.add(categorySearchDto);
+        }
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, categoryDtoList);
     }
 }

@@ -33,4 +33,10 @@ public class CategoryController {
         return categoryService.getCategoryTreeList();
     }
 
+    @GetMapping
+    public DataResponse getCategorySearchList() {
+
+        return categoryService.getCategorySearchList();
+    }
+
 }
