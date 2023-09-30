@@ -15,7 +15,6 @@ const Todo = ({state, period, startDate, endDate}: {state:string, period:string,
 
     useEffect(() =>{
         getTodoStatistics(state, startDate, endDate, ({data}) => {
-            console.log(data.data)
             const temp = data.data as todoResultprop;
 
             setChartInfo(temp.count);
