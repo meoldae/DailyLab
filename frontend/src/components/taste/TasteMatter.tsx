@@ -5,14 +5,17 @@ import { getDailyData } from "@/api/Emotion";
 import { EmotionResultType } from "@/type/EmotionType";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
   
-  const TasteMatter = () => {
+interface TasteProps {
+  date : string;
+}
+
+const TasteMatter: React.FC<TasteProps> = ({ date }) => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
-  const curDate = toStringByFormatting(new Date());
 
   useEffect(() => {
     const getData = async () => {
-        await getDailyData({date: curDate}, ({data}) => {
+        await getDailyData({date: date}, ({data}) => {
             setEmontionResultList(() => data.data as EmotionResultType[]);
         }, (error) => { console.log(error) });
     };
