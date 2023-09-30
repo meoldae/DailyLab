@@ -9,6 +9,10 @@ const UpdateSignUp = async (param: object, success: (data : {data : ReturnType})
     await HttpJson.post(`member/signup`, JSON.stringify(param)).then(success).catch(fail);
 }
 
+const GetJoinDate = async (success: (data: {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.get(`member/joinDate`).then(success).catch(fail);
+}
+
 const GetMyInfo = async (success: (data: {data: ReturnType}) => void, fail: (error: unknown) => void) => {
     await HttpJson.get(`member/mypage`).then(success).catch(fail);
 }
@@ -33,4 +37,4 @@ const refreshToken = async (success: (data : {data : ReturnType}) => void, fail:
     await HttpJson.post(`auth/refresh`).then(success).catch(fail);
 }
 
-export { CheckUserStatus, UpdateSignUp, GetMyInfo, UpdateMyInfo, SubmitSecession, getStatus, UpdateLocation, refreshToken };
+export { CheckUserStatus, UpdateSignUp, GetJoinDate, GetMyInfo, UpdateMyInfo, SubmitSecession, getStatus, UpdateLocation, refreshToken };

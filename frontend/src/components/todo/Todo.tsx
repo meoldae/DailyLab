@@ -1,9 +1,9 @@
 import { useLayoutEffect, useEffect, useState } from "react";
 import { TodoType, TodoParamType } from "@/type/TodoType";
-import { getTodoList, getCategoryList, blackTodoItem, deleteTodoItem, updateTodoItem, checkTodoItem, insertTodoItem } from "@/api/Todo"; 
+import { getTodoList, getCategoryKeywordList, blackTodoItem, deleteTodoItem, updateTodoItem, checkTodoItem, insertTodoItem } from "@/api/Todo"; 
 import TodoHandleItem from "./item/TodoHandleItem";
 import TodoList from "./TodoList";
-import { CategoryType } from "@/type/CategoryType";
+import { CategoryKeywordType } from "@/type/CategoryType";
 
 interface props {
     mode : string; //1. current, 2. prev, 3. future
@@ -15,8 +15,8 @@ const Todo = (props: props) => {
     const [contentsList, setContentsList] = useState<TodoType[]>([]);
     useLayoutEffect(() => {getTodoList(props.date, ({data}) => {setContentsList(() => data.data as TodoType[]);}, (error) => console.log(error));}, [props]);
 
-    const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
-    useEffect(() => {getCategoryList(({data}) => {setCategoryList(() => data.data as CategoryType[]);}, (error) => console.log(error));}, []);
+    const [categoryList, setCategoryList] = useState<CategoryKeywordType[]>([]);
+    useEffect(() => {getCategoryKeywordList(({data}) => {setCategoryList(() => data.data as CategoryKeywordType[]);}, (error) => console.log(error));}, []);
 
     const [insertMode, setInsertMode] = useState(false);
     function handleInsertMode() {setInsertMode((prev) => !prev);}
@@ -59,7 +59,6 @@ const Todo = (props: props) => {
     }
 
     async function checkTodo(param: TodoParamType){
-        console.log(param);
         await checkTodoItem(param, ({data}) => {
             const result = [...contentsList];
             result.find(contents => contents.todoId == param.todoId)!.check = param.checkedDate != "";
