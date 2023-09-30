@@ -35,7 +35,7 @@ const onErrorResponse = async (err: AxiosError | Error) => {
       localStorage.setItem("userAtom", `"userAtom" : {"accessToken" : "${data.data as string}"}`);
       SetAccessToken(data.data as string);
       
-      return axios.request(originalConfig);
+      return axios(originalConfig);
     }, (error) => console.log(error));
   } else return Promise.reject(err);
 };
