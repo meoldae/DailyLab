@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 import Matter from "matter-js";
 import { cloeImg } from "../character/Character";
-import { getDailyData } from "@/api/Emotion";
-import { EmotionResultType } from "@/type/EmotionType";
+import { getRatioData } from "@/api/Emotion";
+import { EmotionRatioType } from "@/type/EmotionType";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
   
   const TasteMatter = () => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
-  const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
+  const [emotionRatioList, setEmontionRatioList] = useState<EmotionRatioType[]>([]);
   const curDate = toStringByFormatting(new Date());
 
   useEffect(() => {
     const getData = async () => {
-        await getDailyData({date: curDate}, ({data}) => {
-            setEmontionResultList(() => data.data as EmotionResultType[]);
+        await getRatioData(curDate, ({ data }) => {
+          setEmontionRatioList(() => data.data as EmotionRatioType[]);
         }, (error) => { console.log(error) });
     };
     
     void getData();
-}, []);
+  }, []);
 
-  
   useEffect(() => {
     const {
       Engine,
@@ -112,22 +111,25 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
     const right = Matter.Bodies.rectangle(350, 50, 100, 300, { isStatic: true, render: {fillStyle: '#2222220'} });
 
     Composite.add(world, [bottom, top, left, right]);
-
-    for(let i = 0; i < emotionResultList.length; i++) {
-        const x = 120+Math.random()*50;
-        const y = Math.random()*10;
-        const circleRadius = 10;
+    
+    for (let i = 0; i < emotionRatioList.length; i++) {
+      const x = 120+Math.random()*50;
+      const y = Math.random()*10;
+      const circleRadius = 10;
+        
+      for (let j = 0; j < emotionRatioList[i].percentage / 2; j++) {
         Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
             render: {
                 sprite: {
-                    texture: `./assets/img/emotion/${emotionResultList[i].emotionId}.png`,
+                    texture: `./assets/img/emotion/${emotionRatioList[i].emotionId}.png`,
                     xScale: (circleRadius *2) / 467,
                     yScale: (circleRadius *2) / 467,
                   },
             }
         }));
       }
-
+    }
+    
     // keep the mouse in sync with rendering
     render.mouse = mouse;
 
@@ -153,7 +155,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
       }
     };
 
-  }, [emotionResultList]);
+  }, [emotionRatioList]);
 
   return null;
 };

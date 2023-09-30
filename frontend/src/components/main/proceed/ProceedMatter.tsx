@@ -4,7 +4,6 @@ import { getDailyData, getRatioData } from "@/api/Emotion";
 import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
-
   const ProceedMatter = () => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
@@ -143,7 +142,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
         const x = 300 + Math.random() * 10;
         const y = Math.random() * 10;
         const circleRadius = 40;
-  
+        
         for (let j = 0; j < emotionRatioList[i].percentage; j++) {
           Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
               render: {

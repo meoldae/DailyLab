@@ -149,7 +149,7 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
         const y = Math.random() * 10;
         const circleRadius = 40;
   
-        for (let j = 0; j < emotionRatioList[i].percentage; j++) {
+        for (let j = 0; j < emotionRatioList[i].percentage / 2; j++) {
           Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
               render: {
                   sprite: {
