@@ -10,13 +10,15 @@ public class TasteStatisticsDto {
 	private int spicy;
 	private int bitter;
 	private String mostTaste;
+	private String imgSrc;
 
-	public TasteStatisticsDto(int[] major, String mostTaste){
+	public TasteStatisticsDto(int[] major, String mostTaste, String imgSrc){
 		this.sweet = major[0];
 		this.sour = major[1];
 		this.salty = major[2];
 		this.spicy = major[3];
 		this.bitter = major[4];
 		this.mostTaste = mostTaste;
+		this.imgSrc = imgSrc;
 	}
 }

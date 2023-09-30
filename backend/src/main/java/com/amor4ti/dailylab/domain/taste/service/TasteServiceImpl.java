@@ -2,6 +2,7 @@ package com.amor4ti.dailylab.domain.taste.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import com.amor4ti.dailylab.domain.taste.dto.TasteSummaryDto;
 import com.amor4ti.dailylab.domain.taste.dto.TasteVectorTable;
 import com.amor4ti.dailylab.domain.taste.repository.PersonalTasteRepository;
 import com.amor4ti.dailylab.domain.taste.repository.TasteAggregateRepository;
-import com.amor4ti.dailylab.domain.taste.repository.TasterRepository;
+import com.amor4ti.dailylab.domain.taste.repository.TasteRepository;
 import com.amor4ti.dailylab.global.exception.CustomException;
 import com.amor4ti.dailylab.global.exception.ExceptionStatus;
 
@@ -33,7 +34,7 @@ public class TasteServiceImpl implements TasteService {
 
 	private final EmotionService emotionService;
 	private final MemberRepository memberRepository;
-	private final TasterRepository tasterRepository;
+	private final TasteRepository tasteRepository;
 	private final TasteAggregateRepository tasteAggregateRepository;
 	private final PersonalTasteRepository personalTasteRepository;
 
@@ -109,7 +110,7 @@ public class TasteServiceImpl implements TasteService {
 			}
 		}
 
-		return tasterRepository.findById(tasteIndex + 1).orElseThrow(
+		return tasteRepository.findById(tasteIndex + 1).orElseThrow(
 			() -> new CustomException(ExceptionStatus.EXCEPTION)
 		);
 	}
@@ -185,17 +186,34 @@ public class TasteServiceImpl implements TasteService {
 				}
 			}
 		);
-		int maxValue = 0;
-		int maxIndex = 0;
+
 		int[] major = new int[5];
 		for (int i = 0; i < result.length; i++) {
-			if (result[i] > maxValue) {
-				maxValue = result[i];
-				maxIndex = i;
-			}
 			major[i / 3] += result[i];
 		}
-		TasteStatisticsDto tasteStatisticsDto = new TasteStatisticsDto(major, TasteVectorTable.tasteList[maxIndex]);
+		// 최대 대분류 중에서 최대 항목
+		int maxMajorValue = Arrays.stream(major).max().getAsInt();
+		int maxMajorIndex = 0;
+		for (int i = 0; i < major.length; i++) {
+			if (maxMajorValue == major[i]) {
+				maxMajorIndex = i;
+				break;
+			}
+		}
+
+		int maxIndex = maxMajorIndex;
+		int maxValue = 0;
+		for (int i = 0; i < 3; i++) {
+			if (maxValue <= result[i + (maxMajorIndex*3)]) {
+				maxValue = result[i + (maxMajorIndex*3)];
+				maxIndex = i + (maxMajorIndex*3);
+			}
+		}
+
+		TasteSummaryDto tasteSummaryDto = tasteRepository.findById(maxIndex + 1).orElseThrow(
+				() -> new CustomException(ExceptionStatus.EXCEPTION)
+		);
+		TasteStatisticsDto tasteStatisticsDto = new TasteStatisticsDto(major, TasteVectorTable.tasteList[maxIndex], tasteSummaryDto.getImgSrc());
 		return tasteStatisticsDto;
 	}
 

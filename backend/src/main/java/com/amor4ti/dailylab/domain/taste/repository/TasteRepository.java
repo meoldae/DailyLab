@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.amor4ti.dailylab.domain.entity.Taste;
 import com.amor4ti.dailylab.domain.taste.dto.TasteSummaryDto;
 
-public interface TasterRepository extends JpaRepository<Taste, Long> {
+public interface TasteRepository extends JpaRepository<Taste, Long> {
 
 	@Query(" SELECT new com.amor4ti.dailylab.domain.taste.dto.TasteSummaryDto("
 		 + " t.tasteName, t.description, t.imgSrc) "
