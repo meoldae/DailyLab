@@ -8,7 +8,7 @@ import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, subWeeks, subMonths }
 const Statistic = () => {
     const initIdx = 0;
     const TabContents = [] as TabType[];
-    const [period, setPeriod] = useState('month');
+    const [period, setPeriod] = useState('week');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     
