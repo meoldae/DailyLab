@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const CategoryChart = ({state, period, startDate, endDate}: {state:string, period:string, startDate:string, endDate:string}) => {
-  const [series] = useState([{
-    data: [40, 43, 48, 47, 54, 58]
+const CategoryChart = ({chartInfo} : { chartInfo : number[]}) => {
+  const [series, setSeries] = useState([{
+    data: chartInfo
   }]);
-  
+
   const [options] = useState({
     chart: {
       type: 'bar',
@@ -69,6 +69,10 @@ const CategoryChart = ({state, period, startDate, endDate}: {state:string, perio
       }
     },
   });
+
+  useEffect(() => {
+    setSeries([{ data: chartInfo }]);
+  }, [chartInfo]);
 
   return (
     <div className='pr-4' id="chart">
