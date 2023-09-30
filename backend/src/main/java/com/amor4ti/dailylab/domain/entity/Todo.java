@@ -63,6 +63,5 @@ public class Todo {
     public void changeContentAndCategory(String content, Category category) {
         this.content = content;
         this.category = category;
-        this.isSystem = true;
     }
 }
