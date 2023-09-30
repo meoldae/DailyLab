@@ -8,7 +8,5 @@ import java.time.LocalDate;
 public interface TodoStatisticsService {
     Object connection(Object data, String url);
     DataResponse getOtherList(Long memberId);
-    DataResponse getGroupTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate);
-    DataResponse getPersonalTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate);
-    DataResponse getAllTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate);
+    DataResponse getTodoSummary(Long memberId, String state, LocalDate startDate, LocalDate endDate);
 }

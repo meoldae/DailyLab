@@ -18,30 +18,13 @@ public class TodoStatisticsController {
 
     private final TodoStatisticsService todoStatisticsService;
 
-    @GetMapping("/personal")
-    public DataResponse getPersonalSummary(Authentication authentication,
-                                        @RequestParam("startDate") LocalDate startDate,
-                                        @RequestParam("endDate") LocalDate endDate){
+    @GetMapping
+    public DataResponse getTodoSummary(Authentication authentication,
+                                       @RequestParam("state") String state,
+                                       @RequestParam("startDate") LocalDate startDate,
+                                       @RequestParam("endDate") LocalDate endDate){
         Long memberId = Long.parseLong(authentication.getName());
 
-        return todoStatisticsService.getPersonalTodoSummary(memberId, startDate, endDate);
-    }
-
-    @GetMapping("/group")
-    public DataResponse getGroupSummary(Authentication authentication,
-                                    @RequestParam("startDate") LocalDate startDate,
-                                    @RequestParam("endDate") LocalDate endDate){
-        Long memberId = Long.parseLong(authentication.getName());
-
-        return todoStatisticsService.getGroupTodoSummary(memberId, startDate, endDate);
-    }
-
-    @GetMapping("/all")
-    public DataResponse getAllSummary(Authentication authentication,
-                                        @RequestParam("startDate") LocalDate startDate,
-                                        @RequestParam("endDate") LocalDate endDate){
-        Long memberId = Long.parseLong(authentication.getName());
-
-        return todoStatisticsService.getAllTodoSummary(memberId, startDate, endDate);
+        return todoStatisticsService.getTodoSummary(memberId, state, startDate, endDate);
     }
 }

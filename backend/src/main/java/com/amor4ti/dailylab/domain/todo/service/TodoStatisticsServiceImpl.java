@@ -62,83 +62,37 @@ public class TodoStatisticsServiceImpl implements TodoStatisticsService {
     }
 
     @Override
-    public DataResponse getGroupTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
-        Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
-
-        int memberAge = (LocalDate.now().getYear() - findMember.getBirthday().getYear())/10;
-        String gender = findMember.getGender();
-
-        List<Long> memberIdList = memberService.getMemberListByGenderAndAge(gender, memberAge);
-        List<Tuple> list = todoRepository.getStatistics(startDate, endDate, memberIdList);
-
-        Long[] allCount = {0l, 0l, 0l, 0l, 0l, 0l};
-        Map<String, Integer> map = new HashMap<>();
-        map.put("소통", 0);
-        map.put("성장", 1);
-        map.put("일상", 2);
-        map.put("과업", 3);
-        map.put("여가", 4);
-        map.put("기타", 5);
-
-        long all = 0l, success = 0l;
-        for(Tuple i : list) {
-            long a = i.get(0, Long.class);
-            allCount[map.get(i.get(2, String.class))] = a;
-            all += a;
-            success += i.get(1, Integer.class).longValue();
-        }
-
-        double percent = ((double)success/(double)all) * 100.0;
-        TodoStatisticsDto todoStatisticsDto = todoMapper.todoToTodoStatisticsDto(allCount, Math.round(percent*100)/100.0);
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoStatisticsDto);
-    }
-
-    @Override
-    public DataResponse getPersonalTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
-        Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
-
+    public DataResponse getTodoSummary(Long memberId, String state, LocalDate startDate, LocalDate endDate) {
         List<Long> memberIdList = new LinkedList<>();
-        memberIdList.add(findMember.getMemberId());
+
+        if(!state.equals("all")){
+            Member findMember = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+            int memberAge = (LocalDate.now().getYear() - findMember.getBirthday().getYear())/10;
+            String gender = findMember.getGender();
+
+            if(state.equals("personal")){
+                memberIdList.add(findMember.getMemberId());
+            }else{
+                memberIdList = memberService.getMemberListByGenderAndAge(gender, memberAge);
+            }
+
+        }else memberIdList = null;
+
+        Long[] allCount = {0l, 0l, 0l, 0l, 0l, 0l};
+        Map<String, Integer> map = new HashMap<>();
+        map.put("소통", 0);
+        map.put("성장", 1);
+        map.put("일상", 2);
+        map.put("과업", 3);
+        map.put("여가", 4);
+        map.put("기타", 5);
+
+        long all = 0l, success = 0l;
         List<Tuple> list = todoRepository.getStatistics(startDate, endDate, memberIdList);
 
-        Long[] allCount = {0l, 0l, 0l, 0l, 0l, 0l};
-        Map<String, Integer> map = new HashMap<>();
-        map.put("소통", 0);
-        map.put("성장", 1);
-        map.put("일상", 2);
-        map.put("과업", 3);
-        map.put("여가", 4);
-        map.put("기타", 5);
 
-        long all = 0l, success = 0l;
-        for(Tuple i : list) {
-            long a = i.get(0, Long.class);
-            allCount[map.get(i.get(2, String.class))] = a;
-            all += a;
-            success += i.get(1, Integer.class).longValue();
-        }
-
-        double percent = ((double)success/(double)all) * 100.0;
-        TodoStatisticsDto todoStatisticsDto = todoMapper.todoToTodoStatisticsDto(allCount, Math.round(percent*100)/100.0);
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoStatisticsDto);
-    }
-
-    @Override
-    public DataResponse getAllTodoSummary(Long memberId, LocalDate startDate, LocalDate endDate) {
-        List<Tuple> list = todoRepository.getStatistics(startDate, endDate, null);
-
-        Long[] allCount = {0l, 0l, 0l, 0l, 0l, 0l};
-        Map<String, Integer> map = new HashMap<>();
-        map.put("소통", 0);
-        map.put("성장", 1);
-        map.put("일상", 2);
-        map.put("과업", 3);
-        map.put("여가", 4);
-        map.put("기타", 5);
-
-        long all = 0l, success = 0l;
         for(Tuple i : list) {
             long a = i.get(0, Long.class);
             allCount[map.get(i.get(2, String.class))] = a;
