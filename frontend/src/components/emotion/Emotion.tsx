@@ -35,14 +35,12 @@ const Emotion = (props: props) => {
         const newDate = addHours(now, 9);
         const formattedDateTime = newDate.toISOString().slice(0, 16).replace("T", " ");
 
-        console.log(emotionId, formattedDateTime)
         const emotionData = {
             emotionId: emotionId,
             timeStamp: formattedDateTime
         };
 
         await putEmotion(emotionData,({ data }) => {
-            console.log(data);
         }, (error) => {console.log(error)});
 
     };

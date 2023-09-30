@@ -14,7 +14,6 @@ interface WaitingMatterProps {
   
   useEffect(() => {
     setImgSrc(imgName);
-    console.log(imgName);
   },[imgName])
   
   useEffect(() => {

@@ -22,7 +22,6 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     // 시간대에 따른 메시지를 반환하는 함수
     const getTimeBasedGreeting = () => {
         const hour = getCurrentHour();
-        console.log(hour);
         if (hour >= 5 && hour < 12) {
             return '아침은 드셨나요?';
         } else if (hour >= 12 && hour < 18) {
@@ -34,7 +33,6 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     
     const getNewDiary = async () => {
         await postTodayDiary(curDate ,({ data }) => {
-        console.log(data);
         }, (error) => {console.log(error)});
     }
 

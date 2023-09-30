@@ -43,7 +43,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
       engine: newEngine,
       options: {
         width: window.innerWidth,
-        height: window.innerHeight+100,
+        height: window.innerHeight,
         wireframes: false,
         background: "transparent",
       },
@@ -113,7 +113,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
     for(let i = 0; i < emotionResultList.length; i++) {
       const x = 300+Math.random()*10;
       const y = Math.random()*10;
-      const circleRadius = 30;
+      const circleRadius = 40;
       Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
           render: {
               sprite: {
