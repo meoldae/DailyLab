@@ -12,6 +12,11 @@ export type EmotionResultType = {
     type : string,
 }
 
+export type EmotionRatioType = {
+    emotionId: number,
+    percentage: number;
+}
+
 export type EmotionPeriodType = {
     date: string;
     emotions: EmotionCountType[];
