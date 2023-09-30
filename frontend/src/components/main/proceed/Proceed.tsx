@@ -1,11 +1,12 @@
 import Todo from '@/components/todo/Todo';
 import { diegoImg, ianImg, cloe2Img } from '@/components/character/Character';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postTodayDiary } from '@/api/diary';
 import Emotion from '@/components/emotion/Emotion';
 import CustomModal from '@/utils/CustomModal/customModal';
 import ProceedMatter from './ProceedMatter';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 
 const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}) => {
@@ -13,7 +14,8 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     const [proceedText, setProceedText] = useState("");
     const [emotionMode, setEmotionMode] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-
+    const lottieRef = useRef();
+    
     // 현재 시간을 구하는 함수
     const getCurrentHour = () => {
         const currentHour = new Date().getHours();
@@ -47,6 +49,11 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
         getNewDiary();
         navigate('/loading');
     }
+
+    useEffect(()=>{
+        lottieRef.current.play();
+    },[proceedText])
+
     if(!emotionMode) {
         return (
             <div className='contents_wrap'>
@@ -66,7 +73,15 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                     <div>
                         <div className='flex items-center justify-end'>
                             <p>오늘은 이런 일 어떨까요?</p>
-                            <img className='w-[90px]' src={ianImg} alt="이안" />
+                            <Player
+                            className="rounded-3xl"
+                            autoplay={false}
+                            loop={false}
+                            src="./assets/lottie/ian.json"
+                            style={{ width: '90px' }}
+                            ref={lottieRef}
+                            />
+                            {/* <img className='w-[90px]' src={ianImg} alt="이안" /> */}
                         </div>
                         <div className='relative -mt-12'>
                             <Todo mode="current" date={curDate} setText={setProceedText}/>
