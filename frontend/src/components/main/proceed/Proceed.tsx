@@ -10,6 +10,7 @@ import ProceedMatter from './ProceedMatter';
 
 const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}) => {
     const navigate = useNavigate();
+    const [proceedText, setProceedText] = useState("");
     const [emotionMode, setEmotionMode] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -54,7 +55,11 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                     <div>
                         <img className='w-[90px] m-auto' src={diegoImg} alt="디에고" />
                         <div className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
-                            <p>{`${Number(getDate.split('-')[1])}월 ${Number(getDate.split('-')[2])}일`}의 연구를 진행중이에요</p>
+                            {
+                                proceedText != "" ? <p>{proceedText}를 해내셨네요!</p>
+                                : <p>{`${Number(getDate.split('-')[1])}월 ${Number(getDate.split('-')[2])}일`}의 연구를 진행중이에요</p>
+                            }
+                            
                         </div>
                     </div>
                     {/* TODO영역 */}
@@ -64,7 +69,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                             <img className='w-[90px]' src={ianImg} alt="이안" />
                         </div>
                         <div className='relative -mt-12'>
-                            <Todo mode="current" date={curDate}/>
+                            <Todo mode="current" date={curDate} setText={setProceedText}/>
                         </div>
                     </div>
                     {/* 감정 선택 버튼 영역 */}
