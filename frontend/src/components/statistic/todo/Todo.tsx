@@ -27,13 +27,27 @@ const Todo = ({state, period, startDate, endDate}: {state:string, period:string,
 
     return (
         <div className="mt-[20px]">
-            <div className="text-center font-semibold text-2xl mb-4">
+            {mostCategory ? (
+                <div className="text-center font-semibold text-2xl mb-4">
                 이번 {period === 'month' ? '달은' : '주는'} <p className="inline-block font-black">{mostCategory}</p>에 관한 일이 많았어요
-            </div>
+                </div>
+                ) : (
+                <div className="text-center font-semibold text-2xl mb-4">
+                이번 {period === 'month' ? '달' : '주'}에 대한 기록이 없어요
+                </div>
+                ) 
+            }
             <CategoryChart chartInfo={chartInfo}/>
-            <div className="text-center font-light text-2xl">
+            {mostCategory ? (
+                <div className="text-center font-light text-2xl">
                 총 이행률은 <p className="font-semibold inline-block"> {percent} </p>%예요!
-            </div>
+                </div>
+                ) : (
+                <div className="text-center font-light text-2xl">
+                이번 {period === 'month' ? '달' : '주'}에 대한 이행률 기록이 없어요
+                </div>
+                ) 
+            }    
         </div>
     )
 }
