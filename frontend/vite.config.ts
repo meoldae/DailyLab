@@ -26,7 +26,7 @@ export default defineConfig({
         start_url: '/',
         display: 'standalone',
         background_color: '#F5F5F5', // 스플래시 화면의 배경색
-        theme_color: '#FA4949', // 애플리케이션의 주 테마 색상
+        // theme_color: '#F5F5F5', // 애플리케이션의 주 테마 색상
         icons: [
           {
             src: "icons/pwa_icon.png",
