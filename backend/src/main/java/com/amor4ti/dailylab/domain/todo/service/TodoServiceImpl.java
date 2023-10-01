@@ -322,8 +322,8 @@ public class TodoServiceImpl implements TodoService{
     private String communicateWithFastAPI(Long memberId, String todoDate) {
         log.info("데이터 서버와 통신 시작");
         // fastAPI 요청 주소
-        String fastApiUrl = "http://localhost:8181/todo";
-//        String fastApiUrl = DATA_SERVER_URL + "/todo";
+//        String fastApiUrl = "http://localhost:8181/todo";
+        String fastApiUrl = DATA_SERVER_URL + "/todo";
 
         // RestTemplate 통신
 //        Map<String, Object> data = new HashMap<>();
