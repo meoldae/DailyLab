@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { diego2Img, cloeImg } from "@/components/character/Character";
 import TasteMatter from "./TasteMatter";
 import { getDailyTaste } from "@/api/Taste";
 
@@ -12,12 +11,6 @@ interface TasteProps {
     imgSrc : string,
     description : string,
 }
-
-// const tempTaste = {
-//     title : "딸기 프라페 맛",
-//     imgSrc : "./assets/img/taste/sweet_01.png",
-//     content : "딸기 프라페는 영국에서 왔으며 이 음료를 주위 7명에게 넘기지 않으면,딸기 프라페는 영국에서 왔으며 이 음료를 주위 7명에게 넘기지 않으면,"
-// }
 
 const Taste: React.FC<TasteProps> = ({ date }) => {
     const [todayTaste, setTodayTaste] = useState<TasteType>();
@@ -54,7 +47,7 @@ const Taste: React.FC<TasteProps> = ({ date }) => {
                 {/* 느낀 감정 보여주는 곳 */}
                 <div className="w-[300px] m-auto bg-secondary rounded-2xl">
                     <div id="matterCanvasCon" className="">
-                        <TasteMatter/>
+                        <TasteMatter date={date}/>
                     </div>
                 </div>
             </div>
