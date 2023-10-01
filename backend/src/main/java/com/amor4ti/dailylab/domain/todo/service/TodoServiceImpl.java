@@ -129,12 +129,21 @@ public class TodoServiceImpl implements TodoService{
 
         Optional<CategoryBlackList> blackListOptional = categoryBlackListRepository.findByMemberCategoryId(memberCategoryId);
 
-        // 이미 블랙리스트에 있는 경우 등록 X
-        if(blackListOptional.isPresent() && !blackListOptional.get().isRemove())
-            throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_FALSE);
+        // 이미 블랙리스트에 있을 때
+        if(blackListOptional.isPresent() && !blackListOptional.get().isRemove()) {
+            // 사용자 등록 시도라면 => blackList 취소
+            if(!todoRegistDto.isSystem())
+                blackListOptional.get().cancelBlack();
+            // 추천 todo 등록 시도라면 => blackList에 걸려버림.
+            else
+                throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_FALSE);
+        }
 
         // 화이트 리스트 등록
-        categoryWhiteListService.regist(todoRegistDto.getCategoryId(), memberId);
+        Optional<CategoryWhiteList> whiteListOptional = categoryWhiteListRepository.findByMemberCategoryId(memberCategoryId);
+
+        if(whiteListOptional.isEmpty())
+            categoryWhiteListService.regist(todoRegistDto.getCategoryId(), memberId);
 
         Todo todo = todoRegistDto.toEntity(member, category);
 
