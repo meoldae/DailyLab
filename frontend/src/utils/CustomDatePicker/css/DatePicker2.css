@@ -10,10 +10,8 @@
   position: relative;
 }
 
-.react-datepicker__input-container input{border: 1px solid #B2B2B2; width:180px; border-radius: 5px; padding: 7px;}
-.react-datepicker {
-  background-color: rgba(255, 255, 255);
-}
+.react-datepicker__input-container input{border: 1px solid #B2B2B2; width:180px; border-radius: 5px; padding: 7px; @apply bg-secondary;}
+.react-datepicker {background-color: rgba(255, 255, 255);}
 
 .react-datepicker__month-container {
   width: 20rem;
