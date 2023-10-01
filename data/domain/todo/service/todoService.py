@@ -76,6 +76,8 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     # 최근 7일치 중 가장 많이 등록된 category를 5개만 가져옴
     topFiveRecords = todoRepository.getRecommendedList(member_id, 7, db)
+    print("topFiveRecords")
+    print(topFiveRecords)
 
     if topFiveRecords:
         # topFiveRecords 리스트를 fail_count와 success_count의 합을 기준으로 내림차순 정렬
@@ -109,16 +111,24 @@ def makeTodo(member_id: int, todo_date: date, db):
     resultList = process_first_list(firstList, resultList)
     resultList = afterListProcess(member_id, resultList, db)
 
+    # resultList에서 가장 높은 값을 찾아 40%를 증가값으로 설정
+    increase_value = resultList.max() * 0.4
+    print(resultList)
+    print(resultList.max())
+
+
     if member_response.mbtiA == 1:
         for idx in mbtiIList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += 1
-    elif member_response.mbtiB == 2:
+                resultList.loc[idx] += increase_value
+    elif member_response.mbtiA == 2:
         for idx in mbtiEList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += 1
+                resultList.loc[idx] += increase_value
 
     resultList = resultList.sort_values(ascending=False)
+
+    print(resultList)
 
     return resultList
 
