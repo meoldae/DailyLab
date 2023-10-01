@@ -111,18 +111,24 @@ def makeTodo(member_id: int, todo_date: date, db):
     resultList = process_first_list(firstList, resultList)
     resultList = afterListProcess(member_id, resultList, db)
 
+    # resultList에서 가장 높은 값을 찾아 40%를 증가값으로 설정
+    increase_value = resultList.max() * 0.4
+    print(resultList)
+    print(resultList.max())
+
+
     if member_response.mbtiA == 1:
         for idx in mbtiIList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += 1
+                resultList.loc[idx] += increase_value
     elif member_response.mbtiA == 2:
         for idx in mbtiEList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += 1
+                resultList.loc[idx] += increase_value
 
     resultList = resultList.sort_values(ascending=False)
 
-    print("??")
+    print(resultList)
 
     return resultList
 
