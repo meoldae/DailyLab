@@ -35,7 +35,7 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
       originalConfig.headers.Authorization = `Bearer ` + data.data;
       return axios(originalConfig);
     }, (error) => console.log(error));
-  } else if()
+  }
 
   return Promise.reject(err);
 };
