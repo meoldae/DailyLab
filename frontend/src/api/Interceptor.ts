@@ -34,7 +34,9 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
       axios.defaults.headers.common.Authorization = `Bearer ` + data.data;
       originalConfig.headers.Authorization = `Bearer ` + data.data;
       return axios(originalConfig);
-    }, (error) => console.log(error));
+    }, (error) => console.log(error)).then((res) => {
+      window.location.reload();
+    });
   }
 
   return Promise.reject(err);
