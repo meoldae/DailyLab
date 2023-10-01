@@ -32,6 +32,7 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
     RefreshToken(({data}) => {
       localStorage.setItem('userAtom', `{"accessToken" : "${data.data as string}"}`);
       console.dir(data.data);
+      axios.defaults.headers.common.Authorization = `Bearer ` + data.data;
       originalConfig.headers.Authorization = `Bearer ` + data.data;
       return axios(originalConfig);
     }, (error) => console.log(error));
