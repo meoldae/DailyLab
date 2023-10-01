@@ -2,7 +2,7 @@ import { setStatusFinish } from "@/api/Status";
 import { getStatus } from "@/api/User";
 import { useEffect, useRef, useState } from "react";
 import WaitingMatter from "./WaitingMatter";
-import { SetProgressStatus } from "@/atom/ProgressAtom";
+import { useProgress } from "@/atom/ProgressAtom";
 import { Player } from "@lottiefiles/react-lottie-player";
 
 interface StatusType {
@@ -11,7 +11,11 @@ interface StatusType {
   }
 
 const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) => {
-    SetProgressStatus(true);    
+    const { setProgress } = useProgress();
+    useEffect(() => {
+        setProgress((prevProgress) => ({...prevProgress, isShow : true, isRunning : true, status : "wait"}));
+    }, []); 
+
     const [status, setStatus] = useState('wait');
     const [imgName, setImgName] = useState('./assets/img/character/cloe.png');
     const [clickCount, setClickCount] = useState(0);

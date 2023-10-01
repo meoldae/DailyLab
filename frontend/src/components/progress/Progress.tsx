@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { getStatus } from "@/api/User";
 import UseInterval from "@/utils/useInterval/UseInterval";
 import { useNavigate } from "react-router-dom";
+import { useProgress } from "@/atom/ProgressAtom";
 
 interface StatusType {
     date: string;
@@ -9,15 +10,18 @@ interface StatusType {
 }
 
 const Progress = () => {
+
+    const { progress, setProgress, stopProgress } = useProgress();
+
     const navigator = useNavigate();
-    const [status, setStatus] = useState("complete");
-    const [isRunning, setIsRunning] = useState(true);
-    const [percent, setPercent] = useState(0);
 
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            setStatus(nowState.status);
+            if(nowState.status != "wait"){
+                setProgress((prevProgress) => ({...prevProgress, status : nowState.status}));
+            }
+            console.log(nowState);
         }, (error) => {
             console.log(error)
         });
@@ -25,18 +29,20 @@ const Progress = () => {
 
     useEffect(() => {
         nowStatus();
-    }, [percent]);
+    }, [progress.percent]);
 
-    UseInterval(() => setPercent((prev) => prev + 2), isRunning ? 1000 : null);
+    UseInterval(() => {
+        setProgress((prevProgress) => ({...prevProgress, percent : prevProgress.percent + 2}));
+    }, progress.isRunning ? 1000 : null);
 
     useEffect(() => {
-        if(status == "finish" || (status == "complete" && percent > 95) ) setIsRunning(() => false);
-    }, [percent]);
+        if(progress.status == "complete" || (progress.status == "wait" && progress.percent > 95)) stopProgress();
+    }, [progress.percent]);
 
     return (
-        <div className="fixed w-[calc(100%-100px)] box-border top-[15px] left-[50px] bg_contents_con p-[7px]">
-            {status == 'finish' ? <button type="button" onClick={() => navigator('/')}>이동</button>
-            : <div className="rounded-[3px] overflow-hidden w-full bg-secondary text-0"><div style={{width: (percent + "%")}} className={`w-0 inline-block bg-reverse-primary py-[3px] transition-all`}></div></div>}
+        <div className="text-left fixed w-[calc(100%-100px)] box-border top-[18px] left-[50px] bg_contents_con overflow-hidden">
+            {progress.status != "wait" ? <button type="button" className="w-full bg-reverse-primary text-[13px] font-semibold text-primary p-[3px]" onClick={() => navigator('/')}>이동</button>
+            : <div className="p-[8px]"><div className="rounded-[3px] overflow-hidden w-full bg-secondary text-0"><div style={{width: (progress.percent + "%")}} className={`w-0 inline-block bg-reverse-primary py-[5px] transition-all`}></div></div></div>}
         </div>
     )
 }

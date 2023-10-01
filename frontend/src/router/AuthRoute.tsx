@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
 import { Navigate, Outlet } from 'react-router';
 import { userAtom } from '@/atom/UserAtom';
 import { useRecoilState } from 'recoil';
@@ -21,17 +21,16 @@ export default function AuthRoute({ authentication } : AuthRouteProps) {
 
     const [token, setToken] = useRecoilState(userAtom);
     //로그인되었는지
-    const [isLogin, setIsLogin] = useState<boolean>((token.accessToken != "" && token.accessToken != "undefined"));
+    let isLogin = (token.accessToken != "" && token.accessToken != "undefined");
 
-    useEffect(() => {
-        if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != "undefined" && token.accessToken != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken && JSON.parse(localStorage.getItem("userAtom")!).accessToken != "undefined"){
-            setToken(JSON.parse(localStorage.getItem("userAtom")!));
-            setIsLogin(() => true);
-        }
-        if(token.accessToken == "undefined"){
-            setToken({accessToken : ""});
-        }
-    }, []);
+    if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != "undefined" && token.accessToken != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken && JSON.parse(localStorage.getItem("userAtom")!).accessToken != "undefined"){
+        setToken(JSON.parse(localStorage.getItem("userAtom")!));
+        isLogin = true;
+    }
+
+    if(token.accessToken == "undefined"){
+        setToken({accessToken : ""});
+    }
 
     const authText = authentication;
     

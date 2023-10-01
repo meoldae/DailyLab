@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import Report from "../report/Report";
 import Taste from "../taste/Taste";
 import { setStatusProceed } from "@/api/Status";
-import { SetProgressStatus } from "@/atom/ProgressAtom";
+import { useProgress } from "@/atom/ProgressAtom";
 
 const MainResult = ({getDate, curDate} : {getDate : string, curDate : string}) => {
-    SetProgressStatus(false);
+    const { resetProgress } = useProgress();
+    useEffect(() => {
+        resetProgress();
+    }, []);
     const [isActiveButton, setIsActiveButton] = useState(false);
 
     const handleProceed = async (date : string) => {
