@@ -25,7 +25,7 @@ export default function AuthRoute({ authentication } : AuthRouteProps) {
     const [isLogin, setIsLogin] = useState<boolean>(token.accessToken != "");
 
     useEffect(() => {
-        if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken){
+        if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken && JSON.parse(localStorage.getItem("userAtom")!).accessToken != "undefined"){
             setToken(JSON.parse(localStorage.getItem("userAtom")!));
             setIsLogin(() => true);
         }
