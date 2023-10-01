@@ -1,4 +1,3 @@
-import { SetAccessToken } from "@/atom/UserAtom";
 import { useNavigate } from 'react-router-dom';
 
 const AppRedirect = () => {
@@ -8,7 +7,7 @@ const AppRedirect = () => {
     const token = urlParams.get("token");
     
     if (token !== null) {
-        SetAccessToken(token);
+        //SetAccessToken(token);
         navigate('/'); 
     }
     return (
