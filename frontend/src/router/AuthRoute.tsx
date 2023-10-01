@@ -21,7 +21,7 @@ export default function AuthRoute({ authentication } : AuthRouteProps) {
     const token = GetAccessToken();
 
     //로그인되었는지
-    let isLogin = token != "" || token != "undefined";
+    let isLogin = (token != "" || token != undefined);
 
     if(localStorage.getItem("userAtom") != null && token != JSON.parse(localStorage.getItem("userAtom")!).accessToken){
         SetAccessToken(JSON.parse(localStorage.getItem("userAtom")!).accessToken);
