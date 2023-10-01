@@ -62,7 +62,6 @@ public class MemberController {
 		return memberService.exitMember(memberId);
 	}
 
-
 	@GetMapping("/mypage")
 	public DataResponse getMemberInfo(Authentication authentication) {
 		Long memberId = Long.parseLong(authentication.getName());

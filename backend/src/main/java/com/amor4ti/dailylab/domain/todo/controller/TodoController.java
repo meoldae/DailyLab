@@ -74,10 +74,10 @@ public class TodoController {
         return todoService.changeTodoContentAndCategory(todoContentAndCategoryUpdateDto, memberId);
     }
 
-    @GetMapping("/recommend/{todoDate}")
-    public DataResponse recommendTodo(@PathVariable("todoDate") String todoDate, Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
-
-        return todoService.recommendTodo(memberId, todoDate);
-    }
+//    @GetMapping("/recommend/{todoDate}")
+//    public DataResponse recommendTodo(@PathVariable("todoDate") String todoDate, Authentication authentication) {
+//        Long memberId = Long.parseLong(authentication.getName());
+//
+//        return todoService.recommendTodo(memberId, todoDate);
+//    }
 }
