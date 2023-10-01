@@ -9,18 +9,18 @@ const SignUp = () => {
     
     const id = new URLSearchParams(window.location.search).get("id");
 
-    // useEffect(() => {
-    //     CheckUserStatus(Number(id), ({data}) => {
-    //         const result = data.data as string;
-    //         if(result == "Member"){
-    //             alert("정회원입니다.");
-    //             navigate('/');
-    //         } else if(result == "notMember"){
-    //             alert("회원이 아닙니다.");
-    //             navigate('/');
-    //         }
-    //     }, (error) => console.log(error));
-    // }, []);
+    useEffect(() => {
+        CheckUserStatus(Number(id), ({data}) => {
+            const result = data.data as string;
+            if(result == "Member"){
+                alert("정회원입니다.");
+                navigate('/');
+            } else if(result == "notMember"){
+                alert("회원이 아닙니다.");
+                navigate('/');
+            }
+        }, (error) => console.log(error));
+    }, []);
 
     const [birth, setBirth] = useState("");
     const [gender, setGender] = useState("M");
