@@ -1,7 +1,6 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
 import { Navigate, Outlet } from 'react-router';
-import { SetAccessToken, GetAccessToken, userAtom } from '@/atom/UserAtom';
-import { useRecoilState } from 'recoil';
+import { SetAccessToken, GetAccessToken } from '@/atom/UserAtom';
 
 /**
  * 접근한 페이지에 맞는 권한을 가지고 있는지 판단
@@ -19,18 +18,15 @@ interface AuthRouteProps {
 
 export default function AuthRoute({ authentication } : AuthRouteProps) {
 
-    const [token, setToken] = useRecoilState(userAtom);
+    const token = GetAccessToken();
 
     //로그인되었는지
-    const [isLogin, setIsLogin] = useState(GetAccessToken() != "" || GetAccessToken() != "undefined");
+    let isLogin = token != "" || token != "undefined";
 
-    useEffect(() => {
-        if(localStorage.getItem("userAtom") != null && token.accessToken != JSON.parse(localStorage.getItem("userAtom")).accessToken){
-            SetAccessToken(JSON.parse(localStorage.getItem("userAtom")).accessToken);
-            setIsLogin(() => true);
-        }
-    }, []);
-    
+    if(localStorage.getItem("userAtom") != null && token != JSON.parse(localStorage.getItem("userAtom")!).accessToken){
+        SetAccessToken(JSON.parse(localStorage.getItem("userAtom")!).accessToken);
+        isLogin = true;
+    }
 
     const authText = authentication;
     
