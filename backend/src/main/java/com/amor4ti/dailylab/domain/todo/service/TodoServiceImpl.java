@@ -118,9 +118,7 @@ public class TodoServiceImpl implements TodoService{
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
         Category category = categoryRepository.findByCategoryId(todoRegistDto.getCategoryId())
-                .orElseThrow(() -> {
-                    return new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND);
-                });
+                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
 
         MemberCategoryId memberCategoryId = MemberCategoryId.builder()
                 .categoryId(todoRegistDto.getCategoryId())
@@ -136,7 +134,7 @@ public class TodoServiceImpl implements TodoService{
                 blackListOptional.get().cancelBlack();
             // 추천 todo 등록 시도라면 => blackList에 걸려버림.
             else
-                throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_FALSE);
+                return null;
         }
 
         // 화이트 리스트 등록
@@ -201,89 +199,66 @@ public class TodoServiceImpl implements TodoService{
             backoff = @Backoff(delay = 100L)
     )
     @Transactional
-    public DataResponse recommendTodo(Long memberId, String todoDate) {
-        // 코드 실행 시작 시간 기록
-        Instant startTime = Instant.now();
-
-        log.info("todo 추천 로직 시작");
-
-        // 우선 하루 마무리
-        // 마무리는 언제 추천 요청을 하든 간에 추천 todo 수행일 -1에 실행된다.
-//         todoReportService.finishToday(memberId, LocalDate.parse(todoDate).minusDays(1));
-
+    public void recommendTodo(Long memberId, String todoDate) {
         // FastAPI와 통신
-        String response = communicateWithFastAPI(memberId, todoDate);
+        String fastApiUrl = DATA_SERVER_URL + "/todo";
 
-        // String -> JSON
-//        JsonObject jsonObject = jsonConverter.converter(response);
-        JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
+        TodoCommunicateDto todoCommunicateDto = TodoCommunicateDto.builder()
+                                                                  .memberId(memberId)
+                                                                  .todoDate(todoDate)
+                                                                  .build();
 
-        List<Long> CategoryIdList = new ArrayList<>();
-        List<Double> ScoreList = new ArrayList<>();
+        webClientUtil.post(fastApiUrl, todoCommunicateDto, String.class)
+                .subscribe(response -> {
+                    // String -> JSON
+                    JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
 
-        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-            // 카테고리 ID (랭킹)
-            CategoryIdList.add(Long.parseLong(entry.getKey()) + 1);
+                    List<Long> categoryIdList = new ArrayList<>();
+                    List<Double> scoreList = new ArrayList<>();
 
-            // 점수 (랭킹)
-            ScoreList.add(entry.getValue().getAsDouble());
-        }
+                    for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                        // 카테고리 ID (랭킹)
+                        categoryIdList.add(Long.parseLong(entry.getKey()) + 1);
 
-        // 빈 추천 Todo 객체
-        List<TodoRecommendedDto> todoRecommendedDtoList = new ArrayList<>();
+                        // 점수 (랭킹)
+                        scoreList.add(entry.getValue().getAsDouble());
+                    }
+                    // 빈 추천 Todo 객체
 
-        // 기존에 등록되어 있던 todo 갯수 세기 (기존에 유저가 등록해 뒀던)
-        long beforeTodoCnt = todoRepository.countMemberTodoByMemberIdAndTodoDate(memberId, LocalDate.parse(todoDate));
+                    // 기존에 등록되어 있던 todo 갯수 세기 (기존에 유저가 등록해 뒀던)
+                    long beforeTodoCnt = todoRepository.countMemberTodoByMemberIdAndTodoDate(memberId, LocalDate.parse(todoDate));
 
-        if(beforeTodoCnt >= 7)
-            throw new CustomException(ExceptionStatus.TODO_ALREADY_OVER_SEVEN);
+                    if(beforeTodoCnt >= 7)
+                        throw new CustomException(ExceptionStatus.TODO_ALREADY_OVER_SEVEN);
 
-        int cnt = 0;
+                    int cnt = 0;
 
-        for (Long categoryId : CategoryIdList) {
-            // 일단 7개만
-            if(cnt == 7 - beforeTodoCnt)
-                break;
+                    for (Long categoryId : categoryIdList) {
+                        // 일단 7개만
+                        if(cnt == 7 - beforeTodoCnt)
+                            break;
 
-            if(categoryId == 0)
-                continue;
+                        if(categoryId == 0)
+                            continue;
 
-            Category category = categoryRepository.findByCategoryId(categoryId)
-                    .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+                        Category category = categoryRepository.findByCategoryId(categoryId)
+                                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
 
-            // 횟수 증가
-            cnt++;
+                        // db에 추천 db 등록 로직
+                        TodoRegistDto todoRegistDto = TodoRegistDto.builder()
+                                                                   .categoryId(categoryId)
+                                                                   .content(category.getSmall())
+                                                                   .todoDate(LocalDate.parse(todoDate))
+                                                                   .isSystem(true)
+                                                                   .build();
 
-            // db에 추천 db 등록 로직
-            TodoRegistDto todoRegistDto = TodoRegistDto.builder()
-                    .categoryId(categoryId)
-                    .content(category.getSmall())
-                    .todoDate(LocalDate.parse(todoDate))
-                    .isSystem(true)
-                    .build();
-
-            DataResponse dataResponse = registTodo(todoRegistDto, memberId);
-
-
-            List<Todo> todoList = todoRepository.findByMemberIdAndCategoryIdAndTodoDate(memberId, categoryId, LocalDate.parse(todoDate));
-
-            for (Todo todo : todoList) {
-                TodoRecommendedDto todoRecommendedDto = todoRepository.findTodoRecommendedDtoByMemberIdAndTodoId(memberId, todo.getTodoId())
-                        .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION));
-
-                todoRecommendedDtoList.add(todoRecommendedDto);
-            }
-        }
-
-        log.info("추천 todo 개수 : " + todoRecommendedDtoList.size());
-
-        // 코드 실행 종료 시간 기록
-        Instant endTime = Instant.now();
-
-        log.info("걸린 시간 : " + (Duration.between(startTime, endTime).toNanos()) / 1_000_000_000.0 + "초");
-        log.info("todo 추천 로직 종료");
-
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, todoRecommendedDtoList);
+                        if (registTodo(todoRegistDto, memberId) != null) {
+                            cnt++;
+                        }
+                    }
+                }, error -> {
+                    new CustomException(ExceptionStatus.FASTAPI_CONNECTION_FAIL);
+                });
     }
 
     @Override
@@ -330,18 +305,8 @@ public class TodoServiceImpl implements TodoService{
      * */
     private String communicateWithFastAPI(Long memberId, String todoDate) {
         log.info("데이터 서버와 통신 시작");
-        // fastAPI 요청 주소
-//        String fastApiUrl = "http://localhost:8181/todo";
+
         String fastApiUrl = DATA_SERVER_URL + "/todo";
-
-        // RestTemplate 통신
-//        Map<String, Object> data = new HashMap<>();
-//        data.put("memberId", memberId);
-//        data.put("todoDate", todoDate);
-//        RestTemplate restTemplate = new RestTemplate();
-
-        // 통신 결과 (FastAPI에서 반환한 값)
-//        String response = restTemplate.postForObject(fastApiUrl, data, String.class);
 
         TodoCommunicateDto todoCommunicateDto = TodoCommunicateDto.builder()
                 .memberId(memberId)
@@ -356,11 +321,6 @@ public class TodoServiceImpl implements TodoService{
                 })
                 .doOnError(error -> new CustomException(ExceptionStatus.FASTAPI_CONNECTION_FAIL))
                 .block();
-
-
-//        log.info("response : " + response);
-//        log.info("데이터 서버와 통신 종료");
-//        return response;
     }
 
     /*
