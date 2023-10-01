@@ -10,7 +10,7 @@ interface StatusType {
     status: string;
   }
 
-const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) => {
+const MainWaiting = ({getDate} : {getDate : string}) => {
     const { setProgress } = useProgress();
     useEffect(() => {
         setProgress((prevProgress) => ({...prevProgress, isShow : true, isRunning : true, status : "wait"}));
