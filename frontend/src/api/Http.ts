@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { onRequest, onErrorRequest, onResponse, onErrorResponse } from "./Interceptor";
+import { onRequest, onErrorRequest, onResponse, OnErrorResponse } from "./Interceptor";
 
 
 const HttpJson:AxiosInstance = axios.create({
@@ -10,7 +10,7 @@ const HttpJson:AxiosInstance = axios.create({
 });
 
 HttpJson.interceptors.request.use(onRequest, onErrorRequest);
-HttpJson.interceptors.response.use(onResponse, onErrorResponse);
+HttpJson.interceptors.response.use(onResponse, OnErrorResponse);
 
 const HttpForm = axios.create({
     baseURL : import.meta.env.VITE_DEV_API as string,
@@ -20,6 +20,6 @@ const HttpForm = axios.create({
 });
 
 HttpForm.interceptors.request.use(onRequest, onErrorRequest);
-HttpForm.interceptors.response.use(onResponse, onErrorResponse);
+HttpForm.interceptors.response.use(onResponse, OnErrorResponse);
 
 export { HttpJson, HttpForm };

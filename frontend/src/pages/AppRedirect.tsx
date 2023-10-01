@@ -1,4 +1,5 @@
-import { SetAccessToken } from "@/atom/UserAtom";
+import { useRecoilState } from "recoil";
+import { UserSelector } from "@/atom/UserAtom";
 import { useNavigate } from 'react-router-dom';
 
 const AppRedirect = () => {
@@ -6,9 +7,11 @@ const AppRedirect = () => {
     
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
+
+    const [, setUser] = useRecoilState(UserSelector);
     
     if (token !== null) {
-        void SetAccessToken(token);
+        setUser({accessToken: token});
         navigate('/'); 
     }
     return (
