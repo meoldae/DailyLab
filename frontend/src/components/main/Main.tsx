@@ -1,6 +1,6 @@
 import MainProceed from "./proceed/Proceed";
 // import MainFinish from "./finish/Finish";
-import { toStringByFormatting } from '@/utils/date/DateFormatter';
+import { toStringByFormatting, differDate } from '@/utils/date/DateFormatter';
 import MainWaiting from "./waiting/Waiting";
 import { useEffect, useState } from "react";
 import { getStatus } from "@/api/User";
@@ -34,38 +34,37 @@ const Main = () => {
             if(nowState.status === 'init'){
                 navigator('/tutorial');
             }
-            setStatus(() => nowState.status);
-            setGetDate(() => nowState.date);
+
+            const curDate2: Date = new Date(curDate);
+            const getDate2: Date = new Date(nowState.date);
             
+            const timeDifference: number = differDate(curDate2, getDate2);
+            if(timeDifference != 0){
+                if(timeDifference != 1 || nowState.status != "proceed") void setNewStatus(curDate);
+            } else {
+                setStatus(() => nowState.status);
+                setGetDate(() => nowState.date);
+            }
         }, (error) => {
             console.log(error)
         });
     }
 
-    const getDateDiff = () => {
-        const curDate2: Date = new Date(curDate);
-        const getDate2: Date = new Date(getDate);
-        
-        const timeDifference: number = (curDate2.getDate() - getDate2.getDate());
-
-        if(timeDifference >= 1) setNewStatus(curDate);
-    }
-
     useEffect(() => {
         void nowStatus();
-        getDateDiff();
     }, [getDate]);
 
     const setNewStatus = async (date : string) => {
         await setStatusProceed(date, ({data}) => {
             setStatus(() => "proceed");
+            setGetDate(() => date);
         }, (error) => {console.log(error)})
     }
     
     return (
         <>
             {status === 'proceed' && (<MainProceed getDate={getDate} curDate={curDate}/>)}
-            {(status === 'wait' || status === 'complete') && (<MainWaiting getDate={getDate} curDate={curDate}/>)}
+            {(status === 'wait' || status === 'complete') && (<MainWaiting getDate={getDate} />)}
             {status === 'finish' && (<MainResult getDate={getDate} curDate={curDate}/>)}
         </>
     )
