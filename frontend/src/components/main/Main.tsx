@@ -63,7 +63,7 @@ const Main = () => {
     
     return (
         <>
-            {status === 'proceed' && (<MainProceed getDate={getDate} curDate={curDate}/>)}
+            {status === 'proceed' && (<MainProceed getDate={getDate} />)}
             {(status === 'wait' || status === 'complete') && (<MainWaiting getDate={getDate} />)}
             {status === 'finish' && (<MainResult getDate={getDate} curDate={curDate}/>)}
         </>
