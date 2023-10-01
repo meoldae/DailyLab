@@ -33,7 +33,7 @@ const Progress = () => {
 
     UseInterval(() => {
         setProgress((prevProgress) => ({...prevProgress, percent : prevProgress.percent + 2}));
-    }, progress.isRunning ? 1000 : null);
+    }, progress.isRunning ? 1500 : null);
 
     useEffect(() => {
         if(progress.status == "complete" || (progress.status == "wait" && progress.percent > 95)) stopProgress();
