@@ -74,7 +74,7 @@ const Report: React.FC<ReportProps> = ({ date }) => {
               }
             };
           }
-    }, []);
+    }, [date]);
 
     return (
         <div>

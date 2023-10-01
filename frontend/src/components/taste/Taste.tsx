@@ -24,7 +24,7 @@ const Taste: React.FC<TasteProps> = ({ date }) => {
     // 오늘의 맛 받아오기
     useEffect(() => {
         getTodayTaste();
-    }, []);
+    }, [date]);
 
     return (
         <div>
