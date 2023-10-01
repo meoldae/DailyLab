@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Matter from "matter-js";
-import { cloeImg } from "../character/Character";
 import { getRatioData } from "@/api/Emotion";
 import { EmotionRatioType } from "@/type/EmotionType";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
@@ -16,7 +15,7 @@ const TasteMatter: React.FC<TasteProps> = ({ date }) => {
 
   useEffect(() => {
     const getData = async () => {
-        await getRatioData(curDate, ({ data }) => {
+        await getRatioData(date, ({ data }) => {
           setEmontionRatioList(() => data.data as EmotionRatioType[]);
         }, (error) => { console.log(error) });
     };
@@ -116,7 +115,7 @@ const TasteMatter: React.FC<TasteProps> = ({ date }) => {
 
     Composite.add(world, [bottom, top, left, right]);
     
-    for (let i = 0; i < emotionRatioList.length; i++) {
+    for (let i = 0; i < (emotionRatioList ? emotionRatioList.length : 0); i++) {
       const x = 120+Math.random()*50;
       const y = Math.random()*10;
       const circleRadius = 10;
