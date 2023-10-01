@@ -1,13 +1,12 @@
-import { atom, selector } from "recoil";
+import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import userType from "@/type/UserType";
 
 const { persistAtom } = recoilPersist({
-    key : "userAtom",
     storage : localStorage,
 })
 
-export const userAtom = atom<userType>({
+const userAtom = atom<userType>({
     key : "userAtom",
     default: {
         accessToken : "",
@@ -15,8 +14,14 @@ export const userAtom = atom<userType>({
     effects_UNSTABLE: [persistAtom],
 });
 
-export const UserSelector = selector({
-    key: "userSelector",
-    get: ({get}) => get(userAtom),
-    set: ({set}, newValue) => set(userAtom, newValue),
-})
+function GetAccessToken():string {return useRecoilValue(userAtom).accessToken;}
+
+async function SetAccessToken(newAccessToken: string) {
+    const setAccessToken = useSetRecoilState(userAtom);
+    setAccessToken((prevState) => ({
+        ...prevState,
+        accessToken: newAccessToken,
+    }));
+}
+
+export { userAtom, GetAccessToken, SetAccessToken };
