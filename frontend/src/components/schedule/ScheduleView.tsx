@@ -8,7 +8,7 @@ interface props {
 }
 
 const ScheduleView = (props : props) => {
-    const mode = differDate(new Date(props.selectedDate), new Date()) > 0 ? "future" : "prev";
+    const mode = differDate(new Date(props.selectedDate), new Date()) > -1 ? "future" : "prev";
     return (
         <>  
             <Todo mode={mode} date={props.selectedDate} />

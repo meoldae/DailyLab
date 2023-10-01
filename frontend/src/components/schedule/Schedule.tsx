@@ -39,7 +39,7 @@ const Schedule = () => {
     useLayoutEffect(() => {
         const elementList:JSX.Element[] = [];
         dataList.map((item) => {
-            elementList.push(<ScheduleItem activeStatus={selectedDate == item.selectedDate} colorCode={item.colorCode} dateText={item.selectedDate} clickStatus={( differDate(new Date(item.selectedDate), joinDate) >= 0 && (item.status !== "X" || differDate(new Date(item.selectedDate), new Date()) > 0))} clickEvent={setSelectedDate} />);
+            elementList.push(<ScheduleItem activeStatus={selectedDate == item.selectedDate} colorCode={item.colorCode} dateText={item.selectedDate} clickStatus={( differDate(new Date(item.selectedDate), joinDate) > -1 && (item.status == "complete" || item.status == "finish" || differDate(new Date(item.selectedDate), new Date()) > 0))} clickEvent={setSelectedDate} />);
         });
         setDateContentsList(() => elementList);
     }, [dataList, selectedDate]);

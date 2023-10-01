@@ -10,7 +10,7 @@ import headerMenuLightIconDark from 'public/assets/img/header/header_light_mode_
 import headerMenuDarkIconLight from 'public/assets/img/header/header_dark_mode_icon_light.png';
 import headerMenuDarkIconDark from 'public/assets/img/header/header_dark_mode_icon_dark.png';
 import { useSetRecoilState } from "recoil";
-import { GetProgressStatus } from "@/atom/ProgressAtom";
+import { useProgress } from "@/atom/ProgressAtom";
 import Progress from "@/components/progress/Progress";
 import { UpdateLocation } from "@/api/User";
 
@@ -25,7 +25,7 @@ export default function Header() {
         UpdateLocation(locationParam, ({data}) => {}, (error) => console.log(error));
     });
 
-    const isProgress = GetProgressStatus();
+    const { progress } = useProgress();
     const changeMode = useSetRecoilState(modeAtom);
     const isLight = GetMode() == 'light';
 
@@ -74,6 +74,7 @@ export default function Header() {
                             <img src={isLight ? headerMenuDarkIconLight : headerMenuDarkIconDark } alt="다크 모드" />
                         </li>
                     </ul>
+                    {progress.isShow ? <Progress/> : null}
             </div>
         </header>
     )
