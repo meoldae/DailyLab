@@ -134,7 +134,7 @@ public class TodoServiceImpl implements TodoService{
                 blackListOptional.get().cancelBlack();
             // 추천 todo 등록 시도라면 => blackList에 걸려버림.
             else
-                throw new CustomException(ExceptionStatus.CATEGORY_BLACKLIST_ALREADY_FALSE);
+                return null;
         }
 
         // 화이트 리스트 등록
@@ -200,9 +200,6 @@ public class TodoServiceImpl implements TodoService{
     )
     @Transactional
     public void recommendTodo(Long memberId, String todoDate) {
-        // 코드 실행 시작 시간 기록
-        Instant startTime = Instant.now();
-
         // FastAPI와 통신
         String fastApiUrl = DATA_SERVER_URL + "/todo";
 
@@ -214,7 +211,6 @@ public class TodoServiceImpl implements TodoService{
         webClientUtil.post(fastApiUrl, todoCommunicateDto, String.class)
                 .subscribe(response -> {
                     // String -> JSON
-                    log.info("resposne={}", response);
                     JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
 
                     List<Long> categoryIdList = new ArrayList<>();
@@ -227,14 +223,10 @@ public class TodoServiceImpl implements TodoService{
                         // 점수 (랭킹)
                         scoreList.add(entry.getValue().getAsDouble());
                     }
-                    log.info("category={}", categoryIdList);
-                    log.info("score={}", scoreList);
                     // 빈 추천 Todo 객체
 
                     // 기존에 등록되어 있던 todo 갯수 세기 (기존에 유저가 등록해 뒀던)
                     long beforeTodoCnt = todoRepository.countMemberTodoByMemberIdAndTodoDate(memberId, LocalDate.parse(todoDate));
-
-                    log.info("beforeTodoCnt={}", beforeTodoCnt);
 
                     if(beforeTodoCnt >= 7)
                         throw new CustomException(ExceptionStatus.TODO_ALREADY_OVER_SEVEN);
@@ -242,8 +234,6 @@ public class TodoServiceImpl implements TodoService{
                     int cnt = 0;
 
                     for (Long categoryId : categoryIdList) {
-                        log.info("id={}", categoryId);
-                        log.info("cnt={}", cnt);
                         // 일단 7개만
                         if(cnt == 7 - beforeTodoCnt)
                             break;
@@ -254,9 +244,6 @@ public class TodoServiceImpl implements TodoService{
                         Category category = categoryRepository.findByCategoryId(categoryId)
                                 .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
 
-                        // 횟수 증가
-                        cnt++;
-
                         // db에 추천 db 등록 로직
                         TodoRegistDto todoRegistDto = TodoRegistDto.builder()
                                                                    .categoryId(categoryId)
@@ -265,17 +252,13 @@ public class TodoServiceImpl implements TodoService{
                                                                    .isSystem(true)
                                                                    .build();
 
-                        registTodo(todoRegistDto, memberId);
+                        if (registTodo(todoRegistDto, memberId) != null) {
+                            cnt++;
+                        }
                     }
                 }, error -> {
                     new CustomException(ExceptionStatus.FASTAPI_CONNECTION_FAIL);
                 });
-
-        // 코드 실행 종료 시간 기록
-        Instant endTime = Instant.now();
-
-        log.info("걸린 시간 : " + (Duration.between(startTime, endTime).toNanos()) / 1_000_000_000.0 + "초");
-        log.info("todo 추천 로직 종료");
     }
 
     @Override
