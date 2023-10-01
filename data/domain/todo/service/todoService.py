@@ -116,6 +116,8 @@ def makeTodo(member_id: int, todo_date: date, db):
     ################################################################
     ##주하야 아마 여기? 에 period 적용 로직을 가진 함수를 호출하면 될거같아###
     ##이미 알겠지만 혹시 주의할 점이라면 이미 위에서 몇개는 drop되었을 거야.###
+    ##그리고 아래 specialTodo를 호출할 때 파라미터에 member_id에 4로#######
+    ##고정해놨는데 그 csv 파일 스케쥴러 문제가 해결 되면 member_id로 대체####
     ################################################################
 
     # 컨텐츠 기반 필터링 : 50%, 협업 필터링 : 20%, 성향(MBTI) : 30%
@@ -149,6 +151,7 @@ def makeTodo(member_id: int, todo_date: date, db):
             if idx in resultList.index:
                 resultList.loc[idx] += 0.3
     elif member_response.mbtiA == 2:
+        print("EEEEEE")
         for idx in mbtiEList.index:
             if idx in resultList.index:
                 resultList.loc[idx] += 0.3
