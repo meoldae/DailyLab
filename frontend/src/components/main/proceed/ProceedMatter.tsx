@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import Matter from "matter-js";
 import { getDailyData, getRatioData } from "@/api/Emotion";
 import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
+import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
-  const ProceedMatter = ({date}:{date:string}) => {
+  const ProceedMatter: React.FC<TasteProps> = ({ date }) => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
   const [emotionRatioList, setEmontionRatioList] = useState<EmotionRatioType[]>([]);
+  const curDate = toStringByFormatting(new Date());
   
   useEffect(() => {
     const getData = async () => {
@@ -66,18 +68,11 @@ import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
 
     // add gyro control
     if (typeof window !== "undefined") {
-      const updateGravity = (event: DeviceOrientationEvent) => {
-        const orientation =
-          typeof window.orientation !== "undefined"
-            ? window.orientation
-            : 0;
+      const handleDeviceOrientation = (event:DeviceOrientationEvent) => {
+        const orientation = typeof window.orientation !== "undefined" ? window.orientation : 0;
         const gravity = newEngine.world.gravity;
 
-        if (
-          event.gamma !== null &&
-          event.beta !== null &&
-          event.beta !== null
-        ) {
+        if (event.gamma !== null && event.beta !== null && event.beta !== null) {
           if (orientation === 0) {
             gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 10;
             gravity.y = Math.min(Math.max(event.beta, -90), 90) / 10;
@@ -94,7 +89,20 @@ import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
         }
       };
 
-      window.addEventListener("deviceorientation", updateGravity);
+      const requestPermission = async () => {
+        if (DeviceOrientationEvent.requestPermission) {
+          const permissionState = await DeviceOrientationEvent.requestPermission();
+
+          if (permissionState === 'granted') {
+            window.addEventListener("deviceorientation", handleDeviceOrientation);
+          }
+        } else {
+          // For non-iOS 13+ devices
+          window.addEventListener("deviceorientation", handleDeviceOrientation);
+        }
+      };
+
+      requestPermission();
     }
 
     // add mouse control
