@@ -1,4 +1,6 @@
 from sqlalchemy import *
+from sqlalchemy.orm import relationship
+
 from .database import Base
 
 
@@ -11,12 +13,23 @@ class Member(Base):
     gender = Column(String)
     birthday = Column(Date)
     join_date = Column(DateTime)
-    exit_date = Column(DateTime)
+    exit_date = Column(DateTime, nullable=True)
     provider = Column(String)
     mbti_id = Column(SmallInteger)
-    job = Column(String)
-    goal = Column(String)
-    religion = Column(String)
+    job = Column(String, nullable=True)
+    goal = Column(String, nullable=True)
+    religion = Column(String, nullable=True)
+
+
+class mbti(Base):
+    __tablename__ = 'mbti'
+
+    mbti_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    typea = Column(Integer)
+    typeb = Column(Integer)
+    typec = Column(Integer)
+    typed = Column(Integer)
+
 
 class todo(Base):
     __tablename__ = "todo"
@@ -30,6 +43,7 @@ class todo(Base):
     is_system = Column(Boolean)
     is_deleted = Column(Boolean)
 
+
 class todo_report(Base):
     __tablename__ = "todo_report"
 
@@ -41,6 +55,7 @@ class todo_report(Base):
     first_recommend_date = Column(Date)
     last_recommend_date = Column(Date)
 
+
 class category_dict(Base):
     __tablename__ = "category"
 
@@ -50,12 +65,14 @@ class category_dict(Base):
     small = Column(String)
     recommendation_fit = Column(Integer)
 
+
 class category_black_list(Base):
     __tablename__ = "category_black_list"
 
     category_id = Column(BigInteger, ForeignKey('category_dict.category_id'), primary_key=True)
     member_id = Column(BigInteger, ForeignKey('Member.member_id'), primary_key=True)
     is_remove = Column(Boolean)
+
 
 class category_white_list(Base):
     __tablename__ = "category_white_list"

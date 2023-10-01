@@ -5,7 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 from api import weatherAPI
 from api.weatherAPI import get_weather
 from domain.diary import diaryService
-from tempSave import userLocations, weatherDict
+from tempSave import userLocations
 
 from domain.member.router import member
 from domain.todo.routers import todo
@@ -30,6 +30,7 @@ app.add_middleware(
 @app.post("/diary/default")
 async def createDiary(param: dict):
     data = diaryService.createDiary(param, "gpt-3.5-turbo-16k")
+    # data = diaryService.createDiary(param, "gpt-4")
     return data
 
 
@@ -52,6 +53,10 @@ async def setLocation(member_id: int, location: Location):
 
     return {"status": "Location set successfully"}
 
+# @app.post("/info/{member_id}")
+# async def getMemberInfo(member_id: int, memberInfo: MemberInfo):
+#     return {"status" : ""}
+
 app.include_router(todo.router)
 app.include_router(member.router)
 app.include_router(weatherAPI.router)
@@ -61,5 +66,5 @@ if __name__ == "__main__":
 
     # from [module_name] import app # FastAPI 객체 가져오기
 
-    # 8081 포트번호에서 FastAPI 어플리케이션 수신 대기
+    # 8181 포트번호에서 FastAPI 어플리케이션 수신 대기
     uvicorn.run(app, host="0.0.0.0", port=8181)
