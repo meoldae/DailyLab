@@ -1,12 +1,14 @@
-import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { SetAccessToken } from "@/atom/UserAtom";
+import { userAtom } from '@/atom/UserAtom';
+import { useRecoilState } from 'recoil';
 
 export default function Logout() {
 
+    const [, setToken] = useRecoilState(userAtom);
+
     const navigate = useNavigate();
 
-    //SetAccessToken("");
+    setToken({accessToken : ""});
     localStorage.removeItem("userAtom");
     navigate("/login");
 
