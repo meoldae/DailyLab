@@ -8,8 +8,8 @@ export default function Logout() {
 
     const navigate = useNavigate();
 
-    setToken({accessToken : ""});
     localStorage.removeItem("userAtom");
+    setToken({accessToken : ""});
     navigate("/login");
 
     return (

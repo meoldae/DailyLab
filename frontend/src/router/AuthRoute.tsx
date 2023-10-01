@@ -28,6 +28,9 @@ export default function AuthRoute({ authentication } : AuthRouteProps) {
             setToken(JSON.parse(localStorage.getItem("userAtom")!));
             setIsLogin(() => true);
         }
+        if(token.accessToken == "undefined"){
+            setToken({accessToken : ""});
+        }
     }, []);
 
     const authText = authentication;
