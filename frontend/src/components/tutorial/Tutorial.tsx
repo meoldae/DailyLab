@@ -8,9 +8,7 @@ import characters from "../intro/CharacterInfo";
 import TutorialFirst from "./TutorialFirst";
 import TutorialLast from "./TutorialLast";
 
-type SliderType = {
-    slickGoTo: (slide: number) => void;
-  };
+type SliderType = Slider;
 
 const Tutorial = () => {
     const [currentSlide, setCurrentSlide] = useState(0)

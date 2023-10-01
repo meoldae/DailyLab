@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { ApexOptions } from 'apexcharts';
 
 const CategoryChart = ({chartInfo} : { chartInfo : number[]}) => {
   const [series, setSeries] = useState([{
@@ -68,7 +69,7 @@ const CategoryChart = ({chartInfo} : { chartInfo : number[]}) => {
         show: true
       }
     },
-  });
+  } as ApexOptions);
 
   useEffect(() => {
     setSeries([{ data: chartInfo }]);

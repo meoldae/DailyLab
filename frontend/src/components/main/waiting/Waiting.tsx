@@ -61,10 +61,12 @@ const MainWaiting = ({getDate, curDate} : {getDate : string, curDate : string}) 
           return () => clearInterval(interval);
     },[])
 
-    const lottieRef = useRef();
+    const lottieRef = useRef<Player | null>(null);
 
     const handleButtonClick = () => {
-      lottieRef.current.play(); // Start animation on button click
+        if (lottieRef.current) {
+            lottieRef.current.play();
+        }
     };
     
     return (

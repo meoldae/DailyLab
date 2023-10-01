@@ -48,7 +48,6 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
     const [checkState, setCheckState] = useState(state);
     const [inputState, setInputState] = useState('input');
     const [contentText, setContentText] = useState(content);
-    const [inputValue, setInputValue] = useState('');
 
     const HandleSetInputState = () => {
         setInputState(inputState === 'input' ? 'submit' : 'input');
@@ -90,7 +89,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
             console.log(data);
             alert("관심없음 처리")
             deleteTodo();
-        }, (error) => {console.log(error)});
+        }, (error:Error) => {console.log(error)});
     }
 
       const deleteTodo = async () => {
@@ -99,7 +98,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ todoId, state, content, type, onChe
     
         await deleteTodoItems({todoIdList: todoItem },({ data }) => {
             console.log(data);
-        }, (error) => {console.log(error)});
+        }, (error:Error) => {console.log(error)});
     }
 
 

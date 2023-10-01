@@ -1,4 +1,5 @@
 import ReactApexChart from 'react-apexcharts';
+import { ApexOptions } from 'apexcharts';
 
 const TasteChart = (chartInfo : { chartInfo : number[]}) => {
   const options = {
@@ -44,7 +45,7 @@ const TasteChart = (chartInfo : { chartInfo : number[]}) => {
     dataLabels: {
         enabled: false // 숫자 표시를 비활성화
     },
-  };
+  } as ApexOptions;
 
 
 

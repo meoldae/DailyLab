@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import Matter from "matter-js";
 import { getDailyData, getRatioData } from "@/api/Emotion";
 import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
-import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
-  const ProceedMatter: React.FC<TasteProps> = ({ date }) => {
+  const ProceedMatter = ({date}:{date:string}) => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
   const [emotionRatioList, setEmontionRatioList] = useState<EmotionRatioType[]>([]);
-  const curDate = toStringByFormatting(new Date());
   
   useEffect(() => {
     const getData = async () => {
