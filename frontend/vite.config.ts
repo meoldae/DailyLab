@@ -22,7 +22,7 @@ export default defineConfig({
       manifest: {
         icons: [
           {
-            src: "icons/coco_icon.png",
+            src: "icons/pwa_icon.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any maskable",
