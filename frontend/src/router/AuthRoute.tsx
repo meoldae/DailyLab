@@ -21,12 +21,10 @@ export default function AuthRoute({ authentication } : AuthRouteProps) {
 
     const [token, setToken] = useRecoilState(userAtom);
 
-    console.log(token);
     //로그인되었는지
     const [isLogin, setIsLogin] = useState<boolean>(token.accessToken != "");
 
     useEffect(() => {
-        console.log(localStorage.getItem("userAtom") );
         if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken){
             setToken(JSON.parse(localStorage.getItem("userAtom")!));
             setIsLogin(() => true);
