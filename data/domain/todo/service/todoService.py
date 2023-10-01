@@ -1,5 +1,3 @@
-import json
-import random
 import time
 from datetime import date
 from typing import Optional
@@ -91,7 +89,7 @@ def makeTodo(member_id: int, todo_date: date, db):
             category_id = record.category_id
             resultList = resultList + cbf.printSim(str(category_id - 1))
 
-    # record가 없는 경우 : MBTI로 추천
+    # record가 없는 경우 : MBTI로 추천 (이 경우는 협업 필터링도 불가능 하다.)
     else:
         if member_response.mbtiA == 1:
             return noReportRecommendTodoByMbti(resultList, mbtiIList, firstList, member_id, db)
@@ -108,26 +106,56 @@ def makeTodo(member_id: int, todo_date: date, db):
 
             return shuffled_resultList.to_dict()
 
+    # 여기까지 넘어온 경우 : todoReport 일주일치에 데이터가 있던 경우!
+
+
+    # 전처리
     resultList = process_first_list(firstList, resultList)
     resultList = afterListProcess(member_id, resultList, db)
 
-    # resultList에서 가장 높은 값을 찾아 40%를 증가값으로 설정
-    increase_value = resultList.max() * 0.4
+    ################################################################
+    ##주하야 아마 여기? 에 period 적용 로직을 가진 함수를 호출하면 될거같아###
+    ##이미 알겠지만 혹시 주의할 점이라면 이미 위에서 몇개는 drop되었을 거야.###
+    ################################################################
+
+    # 컨텐츠 기반 필터링 : 50%, 협업 필터링 : 20%, 성향(MBTI) : 30%
+
+    # 5점 만점을 1점 만점으로 만들기
+    resultList = resultList / 5 * 0.5
+
+    # 정렬 후 print 찍어보기
+    resultList = resultList.sort_values(ascending=False)
     print(resultList)
-    print(resultList.max())
 
+    # 협업 필터링 결과물에서 Top 10만 분리하기
+    userResultList = specialTodo(4, 7, db)
+    topTenKeys = list(userResultList.keys())[:10]
 
+    # 점수 부여하기 (1등 : 1*0.2, 2등 : 0.9*0.2, 3등 : 0.8*0.2 ...)
+    multiplier = 0.2
+    for i, key in enumerate(topTenKeys):
+        if key in resultList.index:
+            print(key)
+            resultList.loc[key] += (1 - i * 0.1) * multiplier
+
+    # 정렬 후 print 찍어보기
+    print("협업필터링 적용 후")
+    resultList = resultList.sort_values(ascending=False)
+    print(resultList)
+
+    # 성향 적용
     if member_response.mbtiA == 1:
         for idx in mbtiIList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += increase_value
+                resultList.loc[idx] += 0.3
     elif member_response.mbtiA == 2:
         for idx in mbtiEList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += increase_value
+                resultList.loc[idx] += 0.3
 
+    # 정렬 후 print 찍어보기
     resultList = resultList.sort_values(ascending=False)
-
+    print("MBTI 적용 후")
     print(resultList)
 
     return resultList
