@@ -125,7 +125,7 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
                     )}
                 </div>
                 <div id='matterCanvasCon' className="absolute left-0 top-[20px] -z-10">
-                    <ProceedMatter/>
+                    <ProceedMatter date={getDate}/>
                 </div>
             </div>
         )

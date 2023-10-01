@@ -4,7 +4,7 @@ import { getDailyData, getRatioData } from "@/api/Emotion";
 import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
-  const ProceedMatter = () => {
+  const ProceedMatter: React.FC<TasteProps> = ({ date }) => {
   const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
   const [emotionRatioList, setEmontionRatioList] = useState<EmotionRatioType[]>([]);
@@ -12,7 +12,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
   
   useEffect(() => {
     const getData = async () => {
-      await getDailyData({ date: curDate }, ({ data }) => {
+      await getDailyData({ date: date }, ({ data }) => {
       setEmontionResultList(() => data.data as EmotionResultType[]);
       }, (error) => { console.log(error) });
     };
@@ -23,7 +23,7 @@ import { toStringByFormatting } from "@/utils/date/DateFormatter";
   useEffect(() => {
     const getRatio = async () => {
       if (emotionResultList.length >= 100) {
-        await getRatioData(curDate, ({ data }) => {
+        await getRatioData(date, ({ data }) => {
           setEmontionRatioList(() => data.data as EmotionRatioType[]);
         }, (error) => { console.log(error) });
       }
