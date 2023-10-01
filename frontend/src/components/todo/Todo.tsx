@@ -4,6 +4,8 @@ import { getTodoList, getCategoryKeywordList, blackTodoItem, deleteTodoItem, upd
 import TodoHandleItem from "./item/TodoHandleItem";
 import TodoList from "./TodoList";
 import { CategoryKeywordType } from "@/type/CategoryType";
+import UseInterval from "@/utils/useInterval/UseInterval";
+import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
 interface props {
     mode : string; //1. current, 2. prev, 3. future
@@ -13,7 +15,23 @@ interface props {
 
 const Todo = (props: props) => {
     const [contentsList, setContentsList] = useState<TodoType[]>([]);
-    useLayoutEffect(() => {getTodoList(props.date, ({data}) => {setContentsList(() => data.data as TodoType[]);}, (error) => console.log(error));}, [props]);
+    const [getTodoStatus, setGetTodoStatus] = useState<boolean>(false);
+    async function getContentsList() {
+        await getTodoList(props.date, ({data}) => {
+            setContentsList(() => data.data as TodoType[]);
+        }, (error) => console.log(error));
+    }
+
+    useLayoutEffect(() => {getContentsList()}, [props]);
+
+    UseInterval(() => {
+        getContentsList();
+    }, getTodoStatus ? 1500 : null);
+
+    useEffect(() => {
+        if(props.date == toStringByFormatting(new Date()) && contentsList.length == 0) setGetTodoStatus(() => true);
+        else setGetTodoStatus(() => false);
+    }, [contentsList]);
 
     const [categoryList, setCategoryList] = useState<CategoryKeywordType[]>([]);
     useEffect(() => {getCategoryKeywordList(({data}) => {setCategoryList(() => data.data as CategoryKeywordType[]);}, (error) => console.log(error));}, []);

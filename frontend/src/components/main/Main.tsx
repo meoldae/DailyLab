@@ -23,7 +23,7 @@ interface StatusType {
 const Main = () => {
     
     const [status, setStatus] = useState("proceed");
-    const [getDate, setGetDate] = useState('');
+    const [getDate, setGetDate] = useState(toStringByFormatting(new Date()));
     const curDate = toStringByFormatting(new Date());
     const navigator = useNavigate();
 
