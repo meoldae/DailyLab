@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { HttpJson } from "./Http";
 import { RefreshToken } from "./User";
+import { GetAccessToken } from "@/atom/UserAtom";
 
 /* 
   http가 request를 보내기 전에 호출되는 함수이다.
@@ -32,6 +33,9 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
   if (response && response.status === 401) {
     RefreshToken(({data}) => {
       localStorage.setItem('userAtom', `{"accessToken" : "${data.data as string}"}`);
+      console.dir(data.data);
+      console.log(GetAccessToken());
+      alert("dddd");
       return HttpJson.request(originalConfig);
     }, (error) => console.log(error));
   }
