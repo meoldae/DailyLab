@@ -7,9 +7,16 @@ import Emotion from '@/components/emotion/Emotion';
 import CustomModal from '@/utils/CustomModal/customModal';
 import ProceedMatter from './ProceedMatter';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { useProgress } from "@/atom/ProgressAtom";
 
 
 const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}) => {
+
+    const { resetProgress } = useProgress();
+    useEffect(() => {
+        resetProgress();
+    },[]);
+
     const navigate = useNavigate();
     const [proceedText, setProceedText] = useState("");
     const [emotionMode, setEmotionMode] = useState(false);
