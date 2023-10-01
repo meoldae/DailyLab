@@ -69,7 +69,7 @@ public class TodoReportServiceImpl implements TodoReportService {
                 else
                     newTodoReport.updateSuccessCount();
 
-                // 업데이트 적용
+                // 업데이트 적용 : 매 for문마다 save하는 것이 에러 추적 / 디버깅에 유리
                 todoReportRepository.save(newTodoReport);
             }
 
@@ -87,7 +87,7 @@ public class TodoReportServiceImpl implements TodoReportService {
                 // 최근 추천 일 업데이트
                 todoReport.get().updateLastRecommendDate(todoDate);
 
-                // 업데이트 적용
+                // 업데이트 적용 : 매 for문마다 save하는 것이 에러 추적 / 디버깅에 유리
                 todoReportRepository.save(todoReport.get());
             }
         }

@@ -12,6 +12,7 @@ import com.amor4ti.dailylab.domain.entity.category.CategoryWhiteList;
 import com.amor4ti.dailylab.domain.entity.category.MemberCategoryId;
 import com.amor4ti.dailylab.domain.member.repository.MemberRepository;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoCheckUpdateDto;
+import com.amor4ti.dailylab.domain.todo.dto.request.TodoCommunicateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoContentAndCategoryUpdateDto;
 import com.amor4ti.dailylab.domain.todo.dto.request.TodoRegistDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
@@ -26,6 +27,7 @@ import com.amor4ti.dailylab.global.response.DataResponse;
 import com.amor4ti.dailylab.global.response.ResponseService;
 import com.amor4ti.dailylab.global.response.ResponseStatus;
 import com.amor4ti.dailylab.global.util.JsonConverter;
+import com.amor4ti.dailylab.global.util.WebClientUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -62,6 +64,7 @@ public class TodoServiceImpl implements TodoService{
     private final CategoryWhiteListService categoryWhiteListService;
 
     private final JsonConverter jsonConverter;
+    private final WebClientUtil webClientUtil;
 
     @Override
     public DataResponse getTodoListByMemberId(Long memberId) {
@@ -188,7 +191,6 @@ public class TodoServiceImpl implements TodoService{
             maxAttempts = 3,
             backoff = @Backoff(delay = 100L)
     )
-
     @Transactional
     public DataResponse recommendTodo(Long memberId, String todoDate) {
         // 코드 실행 시작 시간 기록
@@ -212,7 +214,6 @@ public class TodoServiceImpl implements TodoService{
 
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             // 카테고리 ID (랭킹)
-            log.info("입력 categoryId : " + Long.parseLong(entry.getKey()) + 1);
             CategoryIdList.add(Long.parseLong(entry.getKey()) + 1);
 
             // 점수 (랭킹)
@@ -237,8 +238,6 @@ public class TodoServiceImpl implements TodoService{
 
             if(categoryId == 0)
                 continue;
-
-            log.info("최종 categoryId : " + categoryId);
 
             Category category = categoryRepository.findByCategoryId(categoryId)
                     .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
@@ -327,17 +326,32 @@ public class TodoServiceImpl implements TodoService{
         String fastApiUrl = DATA_SERVER_URL + "/todo";
 
         // RestTemplate 통신
-        Map<String, Object> data = new HashMap<>();
-        data.put("memberId", memberId);
-        data.put("todoDate", todoDate);
-        RestTemplate restTemplate = new RestTemplate();
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("memberId", memberId);
+//        data.put("todoDate", todoDate);
+//        RestTemplate restTemplate = new RestTemplate();
 
         // 통신 결과 (FastAPI에서 반환한 값)
-        String response = restTemplate.postForObject(fastApiUrl, data, String.class);
+//        String response = restTemplate.postForObject(fastApiUrl, data, String.class);
 
-        log.info("response : " + response);
-        log.info("데이터 서버와 통신 종료");
-        return response;
+        TodoCommunicateDto todoCommunicateDto = TodoCommunicateDto.builder()
+                .memberId(memberId)
+                .todoDate(todoDate)
+                .build();
+
+        return webClientUtil.post(fastApiUrl, todoCommunicateDto, String.class)
+                .doOnNext(response -> {
+                    log.info("FastAPI와 통신 성공!");
+                    log.info(response);
+                    log.info("데이터 서버와 통신 종료");
+                })
+                .doOnError(error -> new CustomException(ExceptionStatus.FASTAPI_CONNECTION_FAIL))
+                .block();
+
+
+//        log.info("response : " + response);
+//        log.info("데이터 서버와 통신 종료");
+//        return response;
     }
 
     /*
