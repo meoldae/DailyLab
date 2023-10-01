@@ -3,10 +3,10 @@ import { SetAccessToken } from "@/atom/UserAtom";
 
 export default function Logout() {
 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     SetAccessToken("");
-    localStorage.removeItem("userAtom");
+    //localStorage.removeItem("userAtom");
     navigate("/login");
 
     return (

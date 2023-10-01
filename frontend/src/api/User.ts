@@ -33,8 +33,8 @@ const UpdateLocation = async (param: object, success : (data : {data : ReturnTyp
     await HttpJson.post(`member/weather/location`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-const refreshToken = async (success: (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
-    await HttpJson.post(`auth/refresh`).then(success).catch(fail);
+const RefreshToken = async (success : (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+    await HttpJson.get(`auth/refresh`).then(success).catch(fail);
 }
 
-export { CheckUserStatus, UpdateSignUp, GetJoinDate, GetMyInfo, UpdateMyInfo, SubmitSecession, getStatus, UpdateLocation, refreshToken };
+export { CheckUserStatus, UpdateSignUp, GetJoinDate, GetMyInfo, UpdateMyInfo, SubmitSecession, getStatus, UpdateLocation, RefreshToken };

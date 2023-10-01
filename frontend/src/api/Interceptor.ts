@@ -1,14 +1,13 @@
-import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
-import { refreshToken } from "./User";
-import { SetAccessToken } from "@/atom/UserAtom";
-import { HttpJson } from "./Http";
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { RefreshToken } from "./User";
 
 /* 
   http가 request를 보내기 전에 호출되는 함수이다.
   localStorage에 저장된 access_token을 인증 헤더에 삽입하여 요청마다 보내준다.
 */
+
 const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    const accessToken = localStorage.getItem('userAtom') != null ? `Bearer ` + JSON.parse(localStorage.getItem('userAtom')!).userAtom.accessToken : "";
+    const accessToken = localStorage.getItem('userAtom') != null ? `Bearer ` + JSON.parse(localStorage.getItem('userAtom')!).accessToken : "";
     /* 토큰이 있을 경우 헤더에 삽입한다. 없을 경우 빈 문자열을 넣는다(null은 안됨) */
 
     config.headers.Authorization = accessToken;
@@ -30,9 +29,11 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
   const originalConfig = _err.config as InternalAxiosRequestConfig; // 기존의 요청 정보를 저장한다.
 
   if (response && response.status === 401) {
-    await refreshToken(({data}) => {
-      SetAccessToken(data.data as string);
-      return HttpJson.request(originalConfig);
+    RefreshToken(({data}) => {
+      localStorage.setItem('userAtom', `{"accessToken" : "${data.data as string}"}`);
+      axios.defaults.headers.common.Authorization = `Bearer ` + data.data;
+      originalConfig.headers.Authorization = `Bearer ` + data.data;
+      return axios(originalConfig);
     }, (error) => console.log(error));
   }
 
