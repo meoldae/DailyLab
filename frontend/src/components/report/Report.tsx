@@ -19,6 +19,7 @@ const Report: React.FC<ReportProps> = ({ date }) => {
     const [isBottom, setIsBottom] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const lottieRef = useRef<Player | null>(null);
+    const [filePath, setFilePath] = useState('');
     
     const getDiary = async () =>{
         await getTodayDiary(date, ({data}) => {
@@ -42,6 +43,20 @@ const Report: React.FC<ReportProps> = ({ date }) => {
         }
     }
 
+    useEffect(() => {
+         if (todayDiary?.score === 'A+') {
+            setFilePath('./assets/lottie/cocoStamp.json');
+        } else if (todayDiary?.score === 'A') {
+            setFilePath('./assets/lottie/diegoStamp.json');
+        } else if (todayDiary?.score === 'B') {
+            setFilePath('./assets/lottie/ianStamp.json');
+        } else if (todayDiary?.score === 'C') {
+            setFilePath('./assets/lottie/marcoStamp.json');
+        } else {
+            setFilePath('./assets/lottie/cloeStamp.json');
+        }
+    },[todayDiary?.score])
+    
     useEffect(() => {
             if (lottieRef.current) {
                 lottieRef.current.play();
@@ -79,7 +94,7 @@ const Report: React.FC<ReportProps> = ({ date }) => {
     return (
         <div>
             {/* 일지 내용 */}
-            <div ref={containerRef} 
+            <div ref={containerRef}
             className='bg_contents_con p-[20px] max-h-[50vh] overflow-scroll font-light text-xl text-left break-keep leading-relaxed
             child-[div]:mb-8 [&>div>p]:text-2xl [&>div>p]:font-semibold'>
                 <div>
@@ -99,7 +114,7 @@ const Report: React.FC<ReportProps> = ({ date }) => {
                         className="rounded-3xl"
                         autoplay={false}
                         loop={true}
-                        src="./assets/lottie/stamp.json"
+                        src={filePath}
                         style={{ width: '150px' }}
                         controls={true}
                         ref={lottieRef}

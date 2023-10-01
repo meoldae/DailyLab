@@ -19,8 +19,6 @@ const MainResult = ({getDate, curDate} : {getDate : string, curDate : string}) =
 
     const handleStartDay = () =>{
         handleProceed(curDate);
-        // 업데이트된 state 확인하기 위한 새로고침
-        location.reload();
     }
 
     useEffect(() => {

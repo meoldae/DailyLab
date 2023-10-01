@@ -39,8 +39,13 @@ const Main = () => {
             const getDate2: Date = new Date(nowState.date);
             
             const timeDifference: number = differDate(curDate2, getDate2);
-            if(timeDifference != 0){
-                if(timeDifference != 1 || nowState.status != "proceed") void setNewStatus(curDate);
+
+            if(timeDifference != 0 && nowState.status !== 'wait'){
+                if(timeDifference != 1 && nowState.status != "proceed") void setNewStatus(curDate);
+                else if(timeDifference == 1){
+                    setStatus(() => nowState.status);
+                    setGetDate(() => nowState.date);
+                }
             } else {
                 setStatus(() => nowState.status);
                 setGetDate(() => nowState.date);
@@ -48,6 +53,7 @@ const Main = () => {
         }, (error) => {
             console.log(error)
         });
+
     }
 
     useEffect(() => {
@@ -60,7 +66,8 @@ const Main = () => {
             setGetDate(() => date);
         }, (error) => {console.log(error)})
     }
-    
+
+
     return (
         <>
             {status === 'proceed' && (<MainProceed getDate={getDate} />)}
