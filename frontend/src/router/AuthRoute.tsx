@@ -20,12 +20,11 @@ interface AuthRouteProps {
 export default function AuthRoute({ authentication } : AuthRouteProps) {
 
     const [token, setToken] = useRecoilState(userAtom);
-
     //로그인되었는지
     const [isLogin, setIsLogin] = useState<boolean>(token.accessToken != "");
 
     useEffect(() => {
-        if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken && JSON.parse(localStorage.getItem("userAtom")!).accessToken != "undefined"){
+        if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != "undefined" && token.accessToken != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken && JSON.parse(localStorage.getItem("userAtom")!).accessToken != "undefined"){
             setToken(JSON.parse(localStorage.getItem("userAtom")!));
             setIsLogin(() => true);
         }
