@@ -18,7 +18,7 @@ const Report: React.FC<ReportProps> = ({ date }) => {
     const [todayDiary, setTodayDiary] = useState<ReportType>();
     const [isBottom, setIsBottom] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const lottieRef = useRef();
+    const lottieRef = useRef<Player | null>(null);
     
     const getDiary = async () =>{
         await getTodayDiary(date, ({data}) => {

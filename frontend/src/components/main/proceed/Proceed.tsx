@@ -1,5 +1,5 @@
 import Todo from '@/components/todo/Todo';
-import { diegoImg, ianImg, cloe2Img } from '@/components/character/Character';
+import { diegoImg, cloe2Img } from '@/components/character/Character';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postTodayDiary } from '@/api/diary';
@@ -14,7 +14,8 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     const [proceedText, setProceedText] = useState("");
     const [emotionMode, setEmotionMode] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const lottieRef = useRef();
+    // const lottieRef = useRef();
+    const lottieRef = useRef<Player | null>(null);
     
     // 현재 시간을 구하는 함수
     const getCurrentHour = () => {
@@ -51,7 +52,9 @@ const MainProceed = ({ getDate, curDate} : { getDate : string, curDate : string}
     }
 
     useEffect(()=>{
-        lottieRef.current.play();
+        if (lottieRef.current) {
+            lottieRef.current.play();
+        }
     },[proceedText])
 
     if(!emotionMode) {
