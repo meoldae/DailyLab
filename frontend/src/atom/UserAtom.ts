@@ -13,8 +13,8 @@ const userAtom = atom<userType>({
 
             onSet((newValue, _, isReset) => {
                 isReset
-                  ? sessionStorage.removeItem("userAtom")
-                  : sessionStorage.setItem("userAtom", JSON.stringify(newValue));
+                  ? localStorage.removeItem("userAtom")
+                  : localStorage.setItem("userAtom", JSON.stringify(newValue));
             });
         }
     ]
