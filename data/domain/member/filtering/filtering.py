@@ -9,18 +9,19 @@ def makeMatrix(matrix):
     data = []
     for value in matrix:
         row_data = [
-            value.get("memberId", None),
-            value.get("ageGroup", None),
-            value.get("gender", None),
-            value.get("mbtiA", None),
-            value.get("mbtiB", None),
-            value.get("mbtiC", None),
-            value.get("mbtiD", None),
-            value.get("job", None),
-            value.get("religion", None),
+            value.memberId,
+            value.ageGroup,
+            value.gender,
+            value.mbtiA,
+            value.mbtiB,
+            value.mbtiC,
+            value.mbtiD,
+            value.job,
+            value.religion,
         ]
+
         for i in range(1, 34):
-            if i in value.get("hobbyList", []):
+            if i in value.hobbyList:
                 hobby_value = 1
             else:
                 hobby_value = 0
