@@ -23,14 +23,11 @@ public class ForceCompleteScheduler {
 	private final TodoReportService todoReportService;
 	private final MemberService memberService;
 
-	@Scheduled(cron = "5 * * * * *")
+	@Scheduled(cron = "0 0 6 * * *")
 	public void forceCompleteDay() {
 		LocalDate today = LocalDate.now().minusDays(1);
 		List<Long> proceedMember1List = memberService.getProceedMemberList(today);
-		log.info("스케쥴러입니다 !!!! === " );
-		for (Long l : proceedMember1List) {
-			log.info("Member id = {}", l);
-		}
+		log.info("스케쥴러 작동! 시간 : {} ", LocalDate.now() );
 		// 확정 일기 생성 및 내일 Todo 추천
 		proceedMember1List.stream().parallel().forEach(memberId -> {
 			diaryService.createConfirmDiary(memberId, today);
