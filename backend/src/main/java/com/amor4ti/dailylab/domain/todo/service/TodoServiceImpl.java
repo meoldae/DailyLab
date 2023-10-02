@@ -221,19 +221,12 @@ public class TodoServiceImpl implements TodoService{
                         // 점수 (랭킹)
                         scoreList.add(entry.getValue().getAsDouble());
                     }
-                    // 빈 추천 Todo 객체
-
-                    // 기존에 등록되어 있던 todo 갯수 세기 (기존에 유저가 등록해 뒀던)
-                    long beforeTodoCnt = todoRepository.countMemberTodoByMemberIdAndTodoDate(memberId, LocalDate.parse(todoDate));
 
                     int cnt = 0;
 
                     for (Long categoryId : categoryIdList) {
-                        // 일단 7개만
-                        if(cnt == 7 - beforeTodoCnt)
-                            break;
-
-                        if(beforeTodoCnt >= 7)
+                        // 일단 6개만
+                        if(cnt == 6)
                             break;
 
                         if(categoryId == 0)
