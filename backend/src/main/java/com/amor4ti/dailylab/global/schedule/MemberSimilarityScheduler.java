@@ -30,11 +30,6 @@ public class MemberSimilarityScheduler {
 	private final WebClientUtil webClientUtil;
 
 	@Scheduled(cron = "0 0 6 * * *")
-	@Transactional
-	@Retryable(
-		maxAttempts = 3,
-		backoff = @Backoff(delay = 100L)
-	)
 	public void MemberSimilaritySchedule() {
 		List<MemberSimilarityDto> memberSimilarityList = memberService.getMemberSimilarityList();
 		webClientUtil.post(DATA_SERVER_URL + "/member/make", memberSimilarityList, List.class)
