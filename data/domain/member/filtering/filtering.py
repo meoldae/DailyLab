@@ -45,6 +45,5 @@ def calculateSim(matrix):
 
 def findBest(A):
     cosine_similarity_df = pd.DataFrame(cosine_similarity_matrix)
-    print(cosine_similarity_df)
     answer = cosine_similarity_df.sort_values(by=f'{A}', ascending=False)
     return answer['memberId'].values.tolist()
