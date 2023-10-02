@@ -74,8 +74,6 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     # 최근 7일치 중 가장 많이 등록된 category를 5개만 가져옴
     topFiveRecords = todoRepository.getRecommendedList(member_id, 7, db)
-    print("topFiveRecords")
-    print(topFiveRecords)
 
     if topFiveRecords:
         # topFiveRecords 리스트를 fail_count와 success_count의 합을 기준으로 내림차순 정렬
@@ -111,56 +109,35 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     # 전처리
     resultList = process_first_list(firstList, resultList)
-    resultList = afterListProcess(member_id, resultList, db)
+    resultList = afterListProcess(member_id, resultList, todo_date, db)
 
-    ################################################################
-    ##주하야 아마 여기? 에 period 적용 로직을 가진 함수를 호출하면 될거같아###
-    ##이미 알겠지만 주의할점이라면 이미 위에서 카테고리몇개는 drop되었을거야.###
-    ##그리고 아래 specialTodo를 호출할 때 파라미터에 member_id에 4로#######
-    ##고정해놨는데 그 csv 파일 스케쥴러 문제가 해결 되면 member_id로 대체####
-    ################################################################
+    # 컨텐츠 기반 필터링 : 60%, 협업 필터링 : 20%, 성향(MBTI) : 20%
 
-    # 컨텐츠 기반 필터링 : 50%, 협업 필터링 : 20%, 성향(MBTI) : 30%
-
-    # 5점 만점을 1점 만점으로 만들기
-    resultList = resultList / 5 * 0.5
-
-    # 정렬 후 print 찍어보기
-    resultList = resultList.sort_values(ascending=False)
-    print(resultList)
+    # 5점 만점을 1.2점 만점으로 만들기
+    resultList = resultList / 5 * 0.6
 
     # 협업 필터링 결과물에서 Top 10만 분리하기
-    userResultList = specialTodo(4, 7, db)
+    userResultList = specialTodo(member_id, 7, db)
     topTenKeys = list(userResultList.keys())[:10]
 
     # 점수 부여하기 (1등 : 1*0.2, 2등 : 0.9*0.2, 3등 : 0.8*0.2 ...)
     multiplier = 0.2
     for i, key in enumerate(topTenKeys):
         if key in resultList.index:
-            print(key)
             resultList.loc[key] += (1 - i * 0.1) * multiplier
-
-    # 정렬 후 print 찍어보기
-    print("협업필터링 적용 후")
-    resultList = resultList.sort_values(ascending=False)
-    print(resultList)
 
     # 성향 적용
     if member_response.mbtiA == 1:
         for idx in mbtiIList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += 0.3
+                resultList.loc[idx] += 0.2
     elif member_response.mbtiA == 2:
-        print("EEEEEE")
         for idx in mbtiEList.index:
             if idx in resultList.index:
-                resultList.loc[idx] += 0.3
+                resultList.loc[idx] += 0.2
 
-    # 정렬 후 print 찍어보기
+    # 정렬
     resultList = resultList.sort_values(ascending=False)
-    print("MBTI 적용 후")
-    print(resultList)
-
     return resultList
 
 
@@ -195,7 +172,7 @@ def process_first_list(first_list, result_list):
     return result_list
 
 
-def afterListProcess(member_id: int, resultList: list[int], db):
+def afterListProcess(member_id, resultList, todo_date, db):
     userBlackList = todoRepository.getBlacklist(member_id, db)
     userWhiteList = todoRepository.getWhitelist(member_id, db)
 
@@ -234,6 +211,12 @@ def afterListProcess(member_id: int, resultList: list[int], db):
 
         # resultList의 인덱스와 카테고리 ID - 1가 같을 때 drop
         resultList = resultList[~resultList.index.isin(filtered_indices)]
+
+    for idx in resultList.index:
+        successDay = todoRepository.getTodoLastDay(member_id, idx + 1, db)
+        if successDay:
+            if (todo_date - successDay[0]).days < cbf.getPeriod(idx):
+                resultList = resultList.drop(idx)
 
     return resultList  # 또는 필요에 따라 member_response 객체를 반환할 수도 있습니다.
 

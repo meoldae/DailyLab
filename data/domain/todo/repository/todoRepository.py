@@ -48,3 +48,12 @@ def getTodoCount(member_id: int, day: int, db: Session):
     .filter(models.todo.is_deleted == 0).count()
 
     return todoCount
+
+def getTodoLastDay(member_id: int, category_id: int, db: Session):
+    lastDay = db.query(models.todo.todo_date).filter(models.todo.member_id == member_id)\
+    .filter(models.todo.category_id == category_id)\
+    .filter(models.todo.checked_date.isnot(None))\
+    .order_by(models.todo.todo_date.desc())\
+    .first()
+
+    return lastDay
