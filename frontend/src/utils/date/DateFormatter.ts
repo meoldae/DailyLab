@@ -35,7 +35,7 @@ function fromStringtoDate(stringDate: string) {
 
 function differDate(compare1Date: Date, compare2Date: Date){
     const diff = compare1Date.getTime() - compare2Date.getTime();
-    return Math.floor(diff / (1000 * 60 * 60 * 24));
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
 
