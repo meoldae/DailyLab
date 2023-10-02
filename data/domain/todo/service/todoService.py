@@ -118,13 +118,14 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     # 협업 필터링 결과물에서 Top 10만 분리하기
     userResultList = specialTodo(member_id, 7, db)
-    topTenKeys = list(userResultList.keys())[:10]
+    if userResultList != 0:
+        topTenKeys = list(userResultList.keys())[:10]
 
-    # 점수 부여하기 (1등 : 1*0.2, 2등 : 0.9*0.2, 3등 : 0.8*0.2 ...)
-    multiplier = 0.2
-    for i, key in enumerate(topTenKeys):
-        if key in resultList.index:
-            resultList.loc[key] += (1 - i * 0.1) * multiplier
+        # 점수 부여하기 (1등 : 1*0.2, 2등 : 0.9*0.2, 3등 : 0.8*0.2 ...)
+        multiplier = 0.2
+        for i, key in enumerate(topTenKeys):
+            if key in resultList.index:
+                resultList.loc[key] += (1 - i * 0.1) * multiplier
 
     # 성향 적용
     if member_response.mbtiA == 1:
@@ -144,6 +145,9 @@ def makeTodo(member_id: int, todo_date: date, db):
 def specialTodo(member_id: int, day: int, db):
     similar = filtering.findBest(member_id)
     # similar = similar[:len(similar)/10]
+    if similar == 0:
+        return 0
+
     similar = similar[:6]
 
     category = {}
