@@ -165,9 +165,7 @@ public class TodoServiceImpl implements TodoService{
                 .username(member.getUsername())
                 .build();
 
-        DataResponse<?> dataResponse = responseService.successDataResponse(ResponseStatus.TODO_REGIST_SUCCESS, todoDto);
-
-        return dataResponse;
+        return responseService.successDataResponse(ResponseStatus.TODO_REGIST_SUCCESS, todoDto);
     }
 
     @Override
@@ -228,14 +226,14 @@ public class TodoServiceImpl implements TodoService{
                     // 기존에 등록되어 있던 todo 갯수 세기 (기존에 유저가 등록해 뒀던)
                     long beforeTodoCnt = todoRepository.countMemberTodoByMemberIdAndTodoDate(memberId, LocalDate.parse(todoDate));
 
-                    if(beforeTodoCnt >= 7)
-                        throw new CustomException(ExceptionStatus.TODO_ALREADY_OVER_SEVEN);
-
                     int cnt = 0;
 
                     for (Long categoryId : categoryIdList) {
                         // 일단 7개만
                         if(cnt == 7 - beforeTodoCnt)
+                            break;
+
+                        if(beforeTodoCnt >= 7)
                             break;
 
                         if(categoryId == 0)
