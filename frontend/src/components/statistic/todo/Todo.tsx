@@ -22,7 +22,7 @@ const Todo = ({state, period, startDate, endDate}: {state:string, period:string,
             setPercent(temp.percent);
 
         }, (error) => console.log(error));
-    }, [state, period]);
+    }, [state, period, startDate, endDate]);
     
 
     return (
