@@ -397,6 +397,10 @@ public class MemberServiceImpl implements MemberService {
 					}else {
 						result[0] = "tempMember";
 					}
+
+					if (findMember.getExitDate() != null) {
+						result[0] = "exitedMember";
+					}
 				},
 				() -> {
 					result[0] = "notMember";
