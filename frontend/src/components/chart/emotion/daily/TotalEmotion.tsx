@@ -29,7 +29,7 @@ const TotalEmotion = ({ transformedData, emotionList }: TotalEmotionProps) => {
                             <div key={index} className="text-center mx-3">
                                 <img className="h-[35px] mb-[5px]" src={item.imgsrc} alt={item.name} />
                                 <div className="w-[35px] text-[13px] mb-[3px]">{item.name}</div>
-                                <div className="text-[13px]">{item.cnt}번</div>
+                                <div className="text-[13px] break-keep">{`${item.cnt}번`}</div>
                             </div>
                         )
                     }

@@ -12,4 +12,5 @@
     .bg_contents_con{border-radius: 20px; @apply bg-primary;}
     .bg_contents_con.type_2{border-radius: 15px; @apply bg-secondary;}
     .-ms-flex-1{-ms-flex: 1 1 auto;}
+    .-webkit-flex-1{-webkit-flex: 1;}
 }
