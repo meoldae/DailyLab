@@ -17,7 +17,7 @@ const Goal = () => {
     }
 
     return (
-        <div className="flex items-center child-[*]:rounded-[10px]">
+        <div className="w-full flex items-center child-[*]:rounded-[10px]">
             <input
             className="bg-secondary flex-1 mr-[20px] py-[6px] px-[12px] text-[15px] font-normal -ms-flex-1 -webkit-flex-1 max-w-[calc(100%-51px)]"
             type="text" value={myGoal || ''} onChange={(e) => setMyGoal(e.target.value)}
