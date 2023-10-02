@@ -83,7 +83,7 @@ public class TasteServiceImpl implements TasteService {
 
 		if (queryResult.size() == 0) {
 			// 감정을 넣은 적이 없다면...
-			TasteSummaryDto tasteSummaryDto = new TasteSummaryDto("아무런 맛이 나지 않아요.", "결과가 없어요.", "no_result");
+			TasteSummaryDto tasteSummaryDto = new TasteSummaryDto("아무런 맛이 나지 않아요.", "결과가 없어요.", "no_taste");
 			return tasteSummaryDto;
 		}
 
