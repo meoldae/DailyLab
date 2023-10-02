@@ -11,4 +11,5 @@
     .contents_wrap{min-height: calc(100vh - 44px); padding: 20px 30px 110px; position: relative;}
     .bg_contents_con{border-radius: 20px; @apply bg-primary;}
     .bg_contents_con.type_2{border-radius: 15px; @apply bg-secondary;}
+    .-ms-flex-1{-ms-flex: 1 1 auto;}
 }
