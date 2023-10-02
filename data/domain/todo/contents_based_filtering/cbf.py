@@ -3,6 +3,9 @@ import pandas as pd
 # filePath = '../../../dataset/'
 filePath = 'dataset/'
 cosine_similarity_matrix = pd.read_csv(filePath + 'cosine_similarity_matrix.csv', encoding='utf-8')
+allDf = pd.read_csv(filePath + 'ToDoVer1.csv', encoding='utf-8')
+periodMatrix = allDf['period']
+
 
 def printSim(A):
     return cosine_similarity_matrix[A]
@@ -21,4 +24,12 @@ def findDummy():
     resultList = resultList.sort_values(ascending=False)
     return resultList
 
-# print(findDummy())
+def getPeriod(index):
+    answer = 0
+    if periodMatrix[index] == 0:
+        answer = 180
+    elif periodMatrix[index] == 1:
+        answer = 15
+    elif periodMatrix[index] == 2:
+        answer = 7
+    return answer

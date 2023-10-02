@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from datetime import date
+
 from mysql.database import get_db
 from mysql import schemas
 from domain.todo.service import todoService
@@ -13,7 +15,7 @@ router = APIRouter(
 
 @router.get("/{memberId}")
 async def makeTodo(memberId: int, db: Session = Depends(get_db)):
-    todoResult = todoService.makeTodo(memberId, db)
+    todoResult = todoService.makeTodo(memberId, date.today() ,db)
 
     if todoResult is not None and not todoResult.empty and not todoResult.isnull().all():
         return todoResult
@@ -21,7 +23,7 @@ async def makeTodo(memberId: int, db: Session = Depends(get_db)):
 
 
 @router.get("/recommend/{memberId}")
-async def makeTodo(memberId: int, db: Session = Depends(get_db)):
+async def makeRecommendTodo(memberId: int, db: Session = Depends(get_db)):
     otherUserList = todoService.specialTodo(memberId, 7, db)
 
     if otherUserList:

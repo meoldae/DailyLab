@@ -154,4 +154,4 @@ async def makeSimiliarity(request: List[schemas.member]):
     similarity = memberService.makeMatrix(request).values.tolist()
 
     if similarity:
-        return "성공했어용"
+        return similarity
