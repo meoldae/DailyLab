@@ -42,7 +42,15 @@ const Taste: React.FC<TasteProps> = ({ date }) => {
                     <div className="flex p-[20px] items-center justify-around">
                         <div className="">
                             <p className="text-center text-xl mb-4">오늘의 기분은...</p>
-                            <p className="text-center text-2xl font-semibold">{todayTaste?.tasteName} 이에요!</p>
+                            {todayTaste?.imgSrc !== 'no_taste' ? (
+                                <p className="text-center text-2xl font-semibold">
+                                    {todayTaste?.tasteName} 이에요!
+                                </p>
+                                ) : (
+                                <p className="text-center text-2xl font-semibold">
+                                    {todayTaste?.tasteName}
+                                </p>
+                                )}
                         </div>
                         <img className="w-[80px] h-[80px]" src={`./assets/img/taste/${todayTaste?.imgSrc}.png`} alt="맛" />
                     </div>
