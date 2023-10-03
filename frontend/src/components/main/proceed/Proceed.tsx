@@ -147,7 +147,7 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                         </CustomModal>
                     )}
                 </div>
-                <div id='matterCanvasCon' className="absolute left-0 top-[20px] -z-10">
+                <div id='matterCanvasCon' className="absolute left-0 top-0 -z-10 child-[canvas]:max-h-full">
                     <ProceedMatter date={getDate}/>
                 </div>
             </div>
