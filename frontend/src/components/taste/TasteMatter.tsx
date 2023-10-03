@@ -125,8 +125,8 @@ const TasteMatter: React.FC<TasteProps> = ({ date }) => {
             render: {
                 sprite: {
                     texture: `./assets/img/emotion/small/${emotionRatioList[i].emotionId}.png`,
-                    xScale: (circleRadius *2) / 20,
-                    yScale: (circleRadius *2) / 20,
+                    xScale: (circleRadius *2) / 100,
+                    yScale: (circleRadius *2) / 100,
                   },
             }
         }));
