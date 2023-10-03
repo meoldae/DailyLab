@@ -5,7 +5,6 @@ import checkBoxFillImg from "public/assets/img/icon/checkbox_fill.png";
 import checkBoxEmptyImg from "public/assets/img/icon/checkbox_empty.png";
 import { toStringByFormattingIncludeTime } from "@/utils/date/DateFormatter";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useState } from "react";
 
 interface props {
     info : TodoType
