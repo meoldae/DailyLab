@@ -9,5 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CategorySearchDto {
     private Long categoryId;
+    private String large;
     private String name;
 }
