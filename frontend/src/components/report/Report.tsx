@@ -16,7 +16,6 @@ interface ReportProps {
 
 const Report: React.FC<ReportProps> = ({ date }) => {
     const [todayDiary, setTodayDiary] = useState<ReportType>();
-    const [isBottom, setIsBottom] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const lottieRef = useRef<Player | null>(null);
     const [filePath, setFilePath] = useState('');
@@ -26,21 +25,6 @@ const Report: React.FC<ReportProps> = ({ date }) => {
             console.log(data.data)
             setTodayDiary(data.data as ReportType)
         }, (error) => {console.log(error)})
-    }
-
-    const getScoreGretting = () => {
-        const score = todayDiary?.score;
-        if (score === 'A+') {
-            return '정말 완벽한 하루!';
-        } else if (score === 'A') {
-            return '정말 멋진 하루!';
-        } else if (score === 'B') {
-            return '보람찬 하루!';
-        } else if (score === 'C') {
-            return '노력한 하루!';
-        } else {
-            return '쉬어가는 하루!';
-        }
     }
 
     useEffect(() => {
@@ -57,38 +41,10 @@ const Report: React.FC<ReportProps> = ({ date }) => {
         }
     },[todayDiary?.score])
     
-    useEffect(() => {
-            if (lottieRef.current) {
-                lottieRef.current.play();
-                
-                setTimeout(() => {
-                if (lottieRef.current) {
-                    lottieRef.current.pause();
-                }
-                }, 18000); 
-            }
-    },[isBottom])
     
     // 오늘의 일지 받아오기
     useEffect(() => {
         void getDiary();
-        const handleScroll = () => {
-            if (!containerRef.current) return;
-            const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-
-            if (scrollTop + clientHeight >= scrollHeight-100) {
-                setIsBottom(true);
-              }
-          };
-
-          if(containerRef.current) {
-            containerRef.current.addEventListener('scroll', handleScroll);
-            return () => {
-              if(containerRef.current) {
-                containerRef.current.removeEventListener('scroll', handleScroll);
-              }
-            };
-          }
     }, [date]);
 
     return (
@@ -106,11 +62,10 @@ const Report: React.FC<ReportProps> = ({ date }) => {
                         autoplay={true}
                         loop={true}
                         src={filePath}
+                        speed={0.7}
                         style={{ width: '150px' }}
-                        controls={true}
                         ref={lottieRef}
                         />
-                        {/* <p className="text-center font-semibold">{getScoreGretting()}</p> */}
                 </div>
                 <div className="">
                     <p className="mb-4">연구 내용</p>{todayDiary?.content}
