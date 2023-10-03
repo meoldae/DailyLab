@@ -1,18 +1,9 @@
-import { setStatusProceed } from "@/api/Status";
-import { toStringByFormatting } from "@/utils/date/DateFormatter";
 import { useNavigate } from "react-router";
 
 const TutorialLast = () => {
     const navigator = useNavigate();
-
-    const handleProceed = async (date : string) => {
-        await setStatusProceed(date, ({data}) => {
-            navigator('/');
-        }, (error) => {console.log(error)})
-    }
-
     const handleStart = () => {
-        handleProceed(toStringByFormatting(new Date()));
+        navigator('/');
     }
     
     return(

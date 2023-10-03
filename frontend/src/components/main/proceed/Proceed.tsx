@@ -7,18 +7,12 @@ import Emotion from '@/components/emotion/Emotion';
 import CustomModal from '@/utils/CustomModal/customModal';
 import ProceedMatter from './ProceedMatter';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { useProgress } from "@/atom/ProgressAtom";
 import { motion, useAnimation } from 'framer-motion';
 
 
 const MainProceed = ({getDate} : { getDate : string}) => {
     const controls = useAnimation();
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
-  
-    const { resetProgress } = useProgress();
-    useEffect(() => {
-        resetProgress();
-    },[]);
 
     const navigate = useNavigate();
     const [proceedText, setProceedText] = useState("");

@@ -54,8 +54,8 @@ const Todo = (props: props) => {
 
     async function deleteTodo(todoId: number){
         await deleteTodoItem(todoId, ({data}) => {
-            const result = contentsList.filter(contents => contents.todoId != todoId);
-            setContentsList(() => result);
+            /*const result = contentsList.filter(contents => contents.todoId != todoId);
+            setContentsList(() => result);*/
         }, (error) => console.log(error));
     }
 
