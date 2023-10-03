@@ -95,32 +95,33 @@ const Report: React.FC<ReportProps> = ({ date }) => {
         <div>
             {/* 일지 내용 */}
             <div ref={containerRef}
-            className='bg_contents_con p-[20px] max-h-[50vh] overflow-scroll font-light text-xl text-left break-keep leading-relaxed
-            child-[div]:mb-8 [&>div>p]:text-2xl [&>div>p]:font-semibold'>
-                <div>
-                    <p>보고서 제목</p>{todayDiary?.title}
-                </div>
-                <div>
-                    <p>데이터 및 관찰</p>{todayDiary?.content}
-                </div>
-                <div>
-                    <p>연구 결과</p>{todayDiary?.conclusion}
-                </div>
-                <div>
-                    <p>결론</p>{todayDiary?.advice}
+            className='bg_contents_con p-[20px] max-h-[50vh] overflow-scroll font-light text-[15px] text-left break-keep leading-relaxed
+            child-[div]:mb-8 [&>div>p]:text-3xl [&>div>p]:font-semibold'>
+                <div className="text-center font-semibold text-3xl">
+                    <p className="">{todayDiary?.title}</p>
                 </div>
                 <div className="pb-4 m-auto w-fit rounded-3xl">
                         <Player
                         className="rounded-3xl"
-                        autoplay={false}
+                        autoplay={true}
                         loop={true}
                         src={filePath}
                         style={{ width: '150px' }}
                         controls={true}
                         ref={lottieRef}
                         />
-                        <p className="text-center font-semibold">{getScoreGretting()}</p>
+                        {/* <p className="text-center font-semibold">{getScoreGretting()}</p> */}
                 </div>
+                <div className="">
+                    <p className="mb-4">연구 내용</p>{todayDiary?.content}
+                </div>
+                <div>
+                    <p className="mb-4">연구 결과</p>{todayDiary?.conclusion}
+                </div>
+                <div>
+                    <p className="mb-4">조언 & 추천</p>{todayDiary?.advice}
+                </div>
+                
             </div>
         </div>
     )
