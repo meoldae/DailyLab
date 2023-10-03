@@ -15,6 +15,7 @@ const ScheduleView = (props : props) => {
             {mode == "prev" ? 
             <div className="mt-[20px]">
                 <Report date={props.selectedDate}/>
+                <p className="mt-[20px]"></p>
                 <Taste date={props.selectedDate}/>
             </div>
              : null}
