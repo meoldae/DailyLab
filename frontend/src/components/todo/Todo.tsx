@@ -11,6 +11,7 @@ interface props {
     mode : string; //1. current, 2. prev, 3. future
     date : string;
     setText? : (selectText: string) => void
+    setCategoryText? : (large: string) => void
     maxNum : number
 }
 
@@ -47,8 +48,8 @@ const Todo = (props: props) => {
 
     async function blackTodo(todoId: number){
         await blackTodoItem(todoId, ({data}) => {
-            const result = contentsList.filter(contents => contents.todoId != todoId);
-            setContentsList(() => result);
+            /*const result = contentsList.filter(contents => contents.todoId != todoId);
+            setContentsList(() => result);*/
         }, (error) => console.log(error));
     }
 
@@ -80,14 +81,20 @@ const Todo = (props: props) => {
         const result = [...contentsList];
         result.find(contents => contents.todoId == todoId)!.updateStatus = status;
         setContentsList(() => result);
+        setGetTodoStatus(() => false);
     }
 
     async function checkTodo(param: TodoParamType){
         await checkTodoItem(param, ({data}) => {
             const result = [...contentsList];
             result.find(contents => contents.todoId == param.todoId)!.check = param.checkedDate != "";
-            if(param.checkedDate != "") props.setText!(param.categoryName!);
-            else props.setText!("");
+            if(param.checkedDate != ""){
+                props.setText!(param.categoryName!);
+                props.setCategoryText!(param.large!);
+            } else {
+                props.setText!("");
+                props.setCategoryText!("");
+            }
             setContentsList(() => result);
         }, (error) => console.log(error));
     }

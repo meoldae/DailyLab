@@ -18,10 +18,7 @@ const Progress = () => {
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            if(nowState.status != "wait"){
-                setProgress((prevProgress) => ({...prevProgress, status : nowState.status}));
-            }
-            console.log(nowState);
+            if(nowState.status != "wait") setProgress((prevProgress) => ({...prevProgress, status : nowState.status}));
         }, (error) => {
             console.log(error)
         });
@@ -40,7 +37,7 @@ const Progress = () => {
     }, [progress.percent]);
 
     return (
-        <div className="text-left fixed w-[calc(100%-100px)] box-border top-[18px] left-[50px] bg_contents_con overflow-hidden">
+        <div className="text-left absolute w-[calc(100%-90px)] box-border top-[18px] left-[35px] bg_contents_con overflow-hidden">
             {progress.status != "wait" ? <button type="button" className="w-full bg-green text-[13px] font-semibold text-primary p-[3px]" onClick={() => navigator('/')}>보고서로 이동</button>
             : <div className="p-[8px]"><div className="rounded-[3px] overflow-hidden w-full bg-secondary text-0"><div style={{width: (progress.percent + "%")}} className={`w-0 inline-block bg-reverse-primary py-[5px] transition-all`}></div></div></div>}
         </div>

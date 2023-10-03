@@ -16,6 +16,7 @@ const MainProceed = ({getDate} : { getDate : string}) => {
 
     const navigate = useNavigate();
     const [proceedText, setProceedText] = useState("");
+    const [categoryText, setCategoryText] = useState("");
     const [emotionMode, setEmotionMode] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     // const lottieRef = useRef();
@@ -107,7 +108,7 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                             {/* <img className='w-[90px]' src={ianImg} alt="이안" /> */}
                         </div>
                         <div className='relative -mt-12'>
-                            <Todo mode="current" date={getDate} setText={setProceedText} maxNum={12}/>
+                            <Todo mode="current" date={getDate} setText={setProceedText} setCategoryText={setCategoryText} maxNum={12}/>
                         </div>
                     </div>
                     {/* 감정 선택 버튼 영역 */}

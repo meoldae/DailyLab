@@ -22,4 +22,5 @@ export type TodoParamType = {
     content? : string;
     todoDate? : string;
     isSystem? : number;
+    large? : string;
 }

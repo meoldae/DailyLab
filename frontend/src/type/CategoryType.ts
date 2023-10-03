@@ -6,5 +6,6 @@ export type CategoryType = {
 
 export type CategoryKeywordType = {
     name: string;
+    large: string;
     categoryId : number;
 }

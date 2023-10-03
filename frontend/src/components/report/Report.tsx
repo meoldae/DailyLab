@@ -18,26 +18,21 @@ const Report: React.FC<ReportProps> = ({ date }) => {
     const [todayDiary, setTodayDiary] = useState<ReportType>();
     const containerRef = useRef<HTMLDivElement>(null);
     const lottieRef = useRef<Player | null>(null);
+    const [stampOpen, setStampOpen] = useState(false);
     const [filePath, setFilePath] = useState('');
     
     const getDiary = async () =>{
         await getTodayDiary(date, ({data}) => {
-            console.log(data.data)
-            setTodayDiary(data.data as ReportType)
+            setTodayDiary(data.data as ReportType);
         }, (error) => {console.log(error)})
     }
 
     useEffect(() => {
-         if (todayDiary?.score === 'A+') {
-            setFilePath('./assets/lottie/cocoStamp.json');
-        } else if (todayDiary?.score === 'A') {
-            setFilePath('./assets/lottie/diegoStamp.json');
-        } else if (todayDiary?.score === 'B') {
-            setFilePath('./assets/lottie/ianStamp.json');
-        } else if (todayDiary?.score === 'C') {
-            setFilePath('./assets/lottie/marcoStamp.json');
+        if(todayDiary?.score != undefined){
+            setFilePath(() => `./assets/lottie/` + todayDiary.score + `.json`);
+            setStampOpen(() => true);
         } else {
-            setFilePath('./assets/lottie/cloeStamp.json');
+            setStampOpen(() => false);
         }
     },[todayDiary?.score])
     
@@ -57,15 +52,7 @@ const Report: React.FC<ReportProps> = ({ date }) => {
                     <p className="">{todayDiary?.title}</p>
                 </div>
                 <div className="pb-4 m-auto w-fit rounded-3xl">
-                        <Player
-                        className="rounded-3xl"
-                        autoplay={true}
-                        loop={true}
-                        src={filePath}
-                        speed={0.7}
-                        style={{ width: '150px' }}
-                        ref={lottieRef}
-                        />
+                        {stampOpen ? <Player className="rounded-3xl" autoplay={true} loop={true} src={filePath} speed={0.7} style={{ width: '150px' }} ref={lottieRef} /> : null}
                 </div>
                 <div className="">
                     <p className="mb-4">연구 내용</p>{todayDiary?.content}
