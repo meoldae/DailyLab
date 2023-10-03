@@ -17,6 +17,7 @@ interface props {
 
 const TodoList = (props: props) => {
     const contents = [...props.contents];
+    console.log(contents);
     return (
         <div className="child-[div:not(:last-child)]:mb-4">
             {props.type != "prev" ? contents.map((item, index) => {

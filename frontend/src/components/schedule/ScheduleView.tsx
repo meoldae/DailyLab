@@ -8,10 +8,10 @@ interface props {
 }
 
 const ScheduleView = (props : props) => {
-    const mode = differDate(new Date(props.selectedDate), new Date()) > -1 ? "future" : "prev";
+    const mode = differDate(new Date(props.selectedDate), new Date()) > 0 ? "future" : "prev";
     return (
         <>  
-            <Todo mode={mode} date={props.selectedDate} />
+            <Todo mode={mode} date={props.selectedDate} maxNum={6} />
             {mode == "prev" ? 
             <div className="mt-[20px]">
                 <Report date={props.selectedDate}/>

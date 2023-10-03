@@ -33,9 +33,9 @@ const onErrorResponse = async (err: AxiosError | Error): Promise<AxiosError> => 
       localStorage.setItem('userAtom', `{"accessToken" : "${data.data as string}"}`);
       axios.defaults.headers.common.Authorization = `Bearer ` + data.data;
       originalConfig.headers.Authorization = `Bearer ` + data.data;
+      
       return axios(originalConfig);
     }, (error) => console.log(error)).then((res) => {
-      window.location.reload();
     });
   }
 

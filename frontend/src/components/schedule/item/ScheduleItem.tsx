@@ -17,7 +17,7 @@ const ScheduleItem = (props : props) => {
         "#2cb0ee" : "bg-[#2cb0ee]"
     }
     return (
-        <div className="relative text-center child-[span]:text-[13px] child-[span]:inline-block child-[span]:w-[29px] h-[29px] child-[span]:p-[5px] child-[span]:rounded-[50%]">
+        <div className="relative text-center child-[span]:text-[13px] child-[span]:inline-block child-[span]:w-[29px] child-[span]:h-[29px] child-[span]:p-[5px] child-[span]:rounded-[50%]">
             {props.clickStatus ? <span className={
                 `${props.activeStatus ? "text-primary bg-reverse-primary"
                 : props.colorCode != null ? colorList[props.colorCode] + " text-primary" : "border border-gray"}

@@ -45,7 +45,7 @@ const TodoListItem = (props: props) => {
         return (
             <SwipeableList>
                 <SwipeableListItem maxSwipe={0.7} threshold={0.5} listType={Type.IOS} leadingActions={leadingActions()} trailingActions={trailingActions()}>
-                    <motion.div animate={controls} className={`w-full p-4 rounded-xl text-xl flex justify-between${props.info.system ? " border border-[rgba(255,137,26,0.3)]" : null} ${props.info.check ? "bg-[#ff9c4047]" : "bg-secondary"}`}>
+                    <motion.div animate={controls} className={`w-full p-4 bg-secondary rounded-xl text-xl flex justify-between${props.info.system ? " border border-[rgba(255,137,26,0.3)]" : ""} ${props.info.check ? "bg-[#ff9c4047]" : "bg-secondary"}`}>
                         <div className="mr-10 text-left flex-1">
                             <div className="cursor-pointer" onClick={() => props.changeTodoUpdateMode!(props.info.todoId, true)}>{(props.info.content === "" || props.info.content === "상세내용") ? props.info.small : props.info.content}</div>
                         </div>
@@ -54,14 +54,15 @@ const TodoListItem = (props: props) => {
                 </SwipeableListItem>
             </SwipeableList>
         )
-    }
-    return (
-        <div className={`w-full p-4 bg-secondary rounded-xl text-xl flex justify-between${props.info.system ? " border border-[rgba(255,137,26,0.3)]" : null}`}>
-            <div className="mr-10 text-left flex-1">
-                <div>{(props.info.content === "" || props.info.content === "상세내용") ? props.info.small : props.info.content}</div>
+    } else {
+        return (
+            <div className={`w-full p-4 bg-secondary rounded-xl text-xl flex justify-between${props.info.system ? " border border-[rgba(255,137,26,0.3)]" : null}`}>
+                <div className="mr-10 text-left flex-1">
+                    <div>{(props.info.content === "" || props.info.content === "상세내용") ? props.info.small : props.info.content}</div>
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default TodoListItem;

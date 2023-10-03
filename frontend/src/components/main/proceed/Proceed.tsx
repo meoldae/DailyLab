@@ -113,7 +113,7 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                             {/* <img className='w-[90px]' src={ianImg} alt="이안" /> */}
                         </div>
                         <div className='relative -mt-12'>
-                            <Todo mode="current" date={getDate} setText={setProceedText}/>
+                            <Todo mode="current" date={getDate} setText={setProceedText} maxNum={12}/>
                         </div>
                     </div>
                     {/* 감정 선택 버튼 영역 */}

@@ -11,11 +11,13 @@ interface props {
     mode : string; //1. current, 2. prev, 3. future
     date : string;
     setText? : (selectText: string) => void
+    maxNum : number
 }
 
 const Todo = (props: props) => {
     const [contentsList, setContentsList] = useState<TodoType[]>([]);
     const [getTodoStatus, setGetTodoStatus] = useState<boolean>(false);
+    const [maxNumStatus, setMaxNumStatus] = useState(false);
     async function getContentsList() {
         await getTodoList(props.date, ({data}) => {
             setContentsList(() => data.data as TodoType[]);
@@ -29,8 +31,12 @@ const Todo = (props: props) => {
     }, getTodoStatus ? 1500 : null);
 
     useEffect(() => {
-        if(props.date == toStringByFormatting(new Date()) && contentsList.length == 0) setGetTodoStatus(() => true);
+        let recommendStatus = false;
+        contentsList.map((item) => {if(item.system) recommendStatus = true});
+
+        if(props.date == toStringByFormatting(new Date()) && (contentsList.length == 0 || !recommendStatus)) setGetTodoStatus(() => true);
         else setGetTodoStatus(() => false);
+        setMaxNumStatus(() => props.maxNum - contentsList.length == 0);
     }, [contentsList]);
 
     const [categoryList, setCategoryList] = useState<CategoryKeywordType[]>([]);
@@ -92,7 +98,7 @@ const Todo = (props: props) => {
                 <TodoList type={props.mode} contents={contentsList} selectToDate={props.date} blackItem={blackTodo} deleteItem={deleteTodo} checkItem={checkTodo} updateItem={updateTodo} changeItemUpdateMode={changeTodoUpdateMode}  categoryList={categoryList}/>
                 {insertMode ? <div className="mt-4"><TodoHandleItem selectToDate={props.date} insertItem={insertTodo} mode="insert" categoryList={categoryList} changeInsertMode={handleInsertMode} /></div> : null}
 
-                {props.mode != "prev" && !insertMode ?
+                {props.mode != "prev" && !insertMode && !maxNumStatus ?
                     <div className="text-right text-xl text-primary mt-4">
                         <button onClick={handleInsertMode} className="mr-4 w-28 h-10 bg-text rounded-xl ">
                             추가
