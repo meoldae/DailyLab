@@ -124,9 +124,9 @@ const TasteMatter: React.FC<TasteProps> = ({ date }) => {
         Composite.add(world, Matter.Bodies.circle(x, y, circleRadius, {
             render: {
                 sprite: {
-                    texture: `./assets/img/emotion/${emotionRatioList[i].emotionId}.png`,
-                    xScale: (circleRadius *2) / 467,
-                    yScale: (circleRadius *2) / 467,
+                    texture: `./assets/img/emotion/small/${emotionRatioList[i].emotionId}.png`,
+                    xScale: (circleRadius *2) / 20,
+                    yScale: (circleRadius *2) / 20,
                   },
             }
         }));
