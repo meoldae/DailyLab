@@ -137,8 +137,8 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
             render: {
                 sprite: {
                     texture: `./assets/img/emotion/${emotionResultList[i].emotionId}.png`,
-                    xScale: (circleRadius *2) / 467,
-                    yScale: (circleRadius *2) / 467,
+                    xScale: (circleRadius *2) / 50,
+                    yScale: (circleRadius *2) / 50,
                   },
             }
         }));
@@ -154,8 +154,8 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
               render: {
                   sprite: {
                       texture: `./assets/img/emotion/${emotionRatioList[i].emotionId}.png`,
-                      xScale: (circleRadius *2) / 467,
-                      yScale: (circleRadius *2) / 467,
+                      xScale: (circleRadius *2) / 50,
+                      yScale: (circleRadius *2) / 50,
                     },
               }
           }));
@@ -200,8 +200,8 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
         render: {
           sprite: {
             texture: imgSrc,
-            xScale: (circleRadius * 2) / 467,
-            yScale: (circleRadius * 2) / 467,
+            xScale: (circleRadius * 2) / 50,
+            yScale: (circleRadius * 2) / 50,
           },
         },
       });
