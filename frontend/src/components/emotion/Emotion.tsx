@@ -5,6 +5,7 @@ import { EmotionType } from "@/type/EmotionType";
 import { Player } from '@lottiefiles/react-lottie-player';
 import { addHours } from "date-fns";
 import { cloeNoFaceImg } from "@/components/character/Character";
+import { motion, useAnimation } from "framer-motion";
 
 interface props {
     changeMode : () => void
@@ -16,6 +17,8 @@ const Emotion = (props: props) => {
     const [emotionName, setEmotionName] = useState(""); 
     const [emotionType, setEmotionType] = useState(""); 
     const [emotionList, setEmotionList] = useState<EmotionType[]>([]);
+    const controls = useAnimation();
+
     useEffect(() => {
         getEmotionList(({data}) => {
             setEmotionList(data.data as EmotionType[]);
@@ -28,6 +31,11 @@ const Emotion = (props: props) => {
         setEmotionType(type);
         updateEmotion(emoId);
         setCircleCount(prevCount => prevCount + 1);
+        controls.start({
+            // y: [-10, 10, -10, 10, -5, 5, -5, 5, 0],
+            y: [-5, 5, -1, 1, 0],
+            transition: { duration: 0.5 }
+        });
     };
 
     const updateEmotion = async (emotionId : number) => {
@@ -64,10 +72,10 @@ const Emotion = (props: props) => {
                         )}
                     </div>
                 </div>
-                <div className="mt-[50px]">
+                <motion.div animate={controls} className="mt-[50px]">
                     <img className="absolute left-1/2 mb-24 transform -translate-x-1/2 w-[150px]" src={cloeNoFaceImg} alt="클로에" />
                     <img className="absolute left-1/2 transform mt-[20px] -translate-x-1/2 w-[100px]" src={circleCount === 0 ? `./assets/img/emotion/face/100.png` : `./assets/img/emotion/face/${emotionNo}.png`} alt="표정" />
-                </div>
+                </motion.div>
             </div>
         </div>
         <div className="absolute top-[400px] left-[calc(50%-160px)] max-h-[300px] h-[calc(100%-500px)] overflow-y-auto w-[320px] bg_contents_con p-[20px] child-[button]:w-[40px] child-[button]:m-3 ">
