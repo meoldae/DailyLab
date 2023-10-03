@@ -8,10 +8,13 @@ import CustomModal from '@/utils/CustomModal/customModal';
 import ProceedMatter from './ProceedMatter';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useProgress } from "@/atom/ProgressAtom";
+import { motion, useAnimation } from 'framer-motion';
 
 
 const MainProceed = ({getDate} : { getDate : string}) => {
-
+    const controls = useAnimation();
+    const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  
     const { resetProgress } = useProgress();
     useEffect(() => {
         resetProgress();
@@ -23,6 +26,22 @@ const MainProceed = ({getDate} : { getDate : string}) => {
     const [modalOpen, setModalOpen] = useState(false);
     // const lottieRef = useRef();
     const lottieRef = useRef<Player | null>(null);
+
+    useEffect(() => {
+        setIntervalId(
+          setInterval(() => {
+            controls.start({
+                // y: [-10, 10, -10, 10, -5, 5, -5, 5, 0],
+                y: [-5, 5, -1, 1, 0],
+                transition: { duration: 0.5 }
+            });
+          }, 3000)
+        );
+        
+        return () => {
+          if (intervalId) clearInterval(intervalId);
+        };
+      }, [controls]);
     
     // 현재 시간을 구하는 함수
     const getCurrentHour = () => {
@@ -98,7 +117,7 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                         </div>
                     </div>
                     {/* 감정 선택 버튼 영역 */}
-                    <div onClick={changeEmotionMode} className='bg_contents_con p-[10px]'>
+                    <motion.div animate={controls} onClick={changeEmotionMode} className='bg_contents_con p-[10px]'>
                         <div className='flex items-center justify-between'>
                             <img className='w-[70px]' src={cloe2Img} alt="클로에" />
                             <div className='text-left'>
@@ -107,7 +126,7 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                             </div>
                             <img className='mr-[10px] w-[25px]' src="./assets/img/icon/arrow_right.png" alt="" />
                         </div>
-                    </div>
+                    </motion.div>
                     {/* 버튼 */}
                     <div onClick={() => setModalOpen(true)} className='w-72 h-20 bg-text rounded-2xl flex items-center justify-center'>
                         <p className='text-primary'>하루 마무리</p>
