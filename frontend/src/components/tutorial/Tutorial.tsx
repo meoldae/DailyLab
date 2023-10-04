@@ -40,7 +40,7 @@ const Tutorial = () => {
       }
 
       const handleSkipButton = () => {
-        sliderRef.current?.slickGoTo(6);
+        sliderRef.current?.slickGoTo(8);
       }
       
     return (
