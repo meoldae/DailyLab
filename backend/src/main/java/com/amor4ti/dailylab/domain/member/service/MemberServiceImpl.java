@@ -328,7 +328,7 @@ public class MemberServiceImpl implements MemberService {
 		webClientUtil.post(DATA_SERVER_URL + "/location/" + memberId, memberLocationDto, Map.class)
 				.subscribe(
 						response -> {
-							log.info("위경도 전송 성공!");
+
 						},
 						error -> {
 							throw new CustomException(ExceptionStatus.LOCATION_TRANSPORT_FAIL);
