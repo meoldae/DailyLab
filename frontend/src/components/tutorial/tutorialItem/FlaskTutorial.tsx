@@ -56,7 +56,7 @@ const FlaskTutorial = () => {
             </div>
             {/* 설명 부분 */}
             <div className="flex text-center ">
-                <img className="w-[150px] -mt-[50px]" src={marco2Img} alt="" />
+                <img className="w-[150px] -mt-[30px]" src={marco2Img} alt="" />
                 <span className="mt-[20px] text-2xl !font-light">성향을 알려주세요!<br/>받은 정보를 통해 <br/>할 일을 추천해드릴게요!</span>
             </div>
         </>
