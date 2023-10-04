@@ -3,7 +3,6 @@ import Slider from "react-slick"
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '@/components/tutorial/slick.css'
-import TutorialItem from "./TutorialItem";
 import characters from "../intro/CharacterInfo";
 import TutorialFirst from "./TutorialFirst";
 import TutorialLast from "./TutorialLast";

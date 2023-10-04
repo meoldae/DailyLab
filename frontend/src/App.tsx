@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import AppRouter from "@/router/AppRouter";
+import { CustomToast } from '@/utils/customToast/CustomToast';
 import { RecoilRoot } from 'recoil';
 import './tailwind.css';
 import "@/styles/common/fontImport.css";
@@ -11,6 +12,7 @@ import "@/styles/common/fontImport.css";
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <RecoilRoot>
     <AppRouter />
+    <CustomToast />
   </RecoilRoot>
 )
 

@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { CheckUserStatus, UpdateSignUp } from "@/api/User";
 import { cloeImg, cocoImg, diegoImg, ianImg, marcoImg } from "../character/Character";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
+import { successMsg } from '@/utils/customToast/CustomToast';
 
 const SignUp = () => {
     const navigate = useNavigate(); 
-    
     const id = new URLSearchParams(window.location.search).get("id");
+    const dateInput = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         CheckUserStatus(Number(id), ({data}) => {
@@ -27,8 +28,8 @@ const SignUp = () => {
 
     async function doSignUp() {
         if(birth == undefined || birth == ""){
-            alert("생년월일을 선택해주세요");
-            return;
+            successMsg("생년월일을 선택해주세요");
+            return dateInput.current?.focus();
         }
         const param = {memberId: id, gender: gender, birthDay: birth};
         await UpdateSignUp(param, ({data}) => {
@@ -52,7 +53,7 @@ const SignUp = () => {
                 <div className="mt-[50px]">
                     <div className="float-left mt-[10px] min-w-[100px] text-[15px]">생년월일 : </div>
                     <div className="overflow-hidden">
-                        <input className="bg-secondary py-[10px] px-[15px] text-[15px] font-normal w-full" type="date" onChange={birthChange} onKeyDown={(e) => e.preventDefault()} placeholder="생년월일을 선택해주세요" max={toStringByFormatting(new Date())} />
+                        <input ref={dateInput} className="bg-secondary py-[10px] px-[15px] text-[15px] font-normal w-full" type="date" onChange={birthChange} onKeyDown={(e) => e.preventDefault()} placeholder="생년월일을 선택해주세요" max={toStringByFormatting(new Date())} />
                     </div>
                 </div>
                 <div>

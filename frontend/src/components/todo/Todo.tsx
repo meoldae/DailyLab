@@ -6,7 +6,9 @@ import TodoList from "./TodoList";
 import { CategoryKeywordType } from "@/type/CategoryType";
 import UseInterval from "@/utils/useInterval/UseInterval";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
+import { successMsg } from '@/utils/customToast/CustomToast';
 import { cocoNodataImg } from "../character/Character";
+
 
 interface props {
     mode : string; //1. current, 2. prev, 3. future
@@ -49,13 +51,19 @@ const Todo = (props: props) => {
 
     async function blackTodo(todoId: number){
         await blackTodoItem(todoId, ({data}) => {
-            setTimeout(() => setContentsList(() => contentsList.filter(contents => contents.todoId != todoId)), 300);
+            setTimeout(() => {
+                setContentsList(() => (contentsList.filter(contents => contents.todoId != todoId)));
+                successMsg("관심없음으로 추가했어요");
+            }, 300);
         }, (error) => console.log(error));
     }
 
     async function deleteTodo(todoId: number){
         await deleteTodoItem(todoId, ({data}) => {
-            setTimeout(() => setContentsList(() => contentsList.filter(contents => contents.todoId != todoId)), 300);
+            setTimeout(() => {
+                setContentsList(() => contentsList.filter(contents => contents.todoId != todoId));
+                successMsg("할 일을 삭제했어요");
+            }, 300);
         }, (error) => console.log(error));
     }
 
@@ -65,6 +73,7 @@ const Todo = (props: props) => {
             result.push(data.data as TodoType);
             setContentsList(() => result);
             setInsertMode((prev) => !prev);
+            successMsg("할 일을 추가했어요");
         }, (error) => console.log(error));
     }
 
@@ -73,6 +82,7 @@ const Todo = (props: props) => {
             const updateData = data.data as TodoType;
             const result = contentsList.map((todo) => todo.todoId === updateData.todoId ? updateData : todo);
             setContentsList(() => result);
+            successMsg("할 일을 변경했어요");
         }, (error) => console.log(error));
     }
 

@@ -43,12 +43,12 @@ const FlaskTutorial = () => {
                     <div className="flex justify-around items-center flex-wrap child-[div]:mr-[10px] child-[div]:mb-[15px] -mb-[15px]">
                         {jobList.map((item, index) => {
                             return (
-                                        <div key={index}>
-                                            <input className="opacity-0 peer/job" type="radio" id={"job" + String(index)} value={item} name="job" checked={item == '직장인'}/>
-                                            <label className="pl-[30px] relative peer-checked/job:after:opacity-100 peer-checked/job:font-semibold peer-checked/job:text-green peer-checked/job:before:border-green text-[13px] pt-[3px] pb-[2px]
-                                        before:content-[''] before:border-[2px] before:border-gray before:rounded-full before:w-[20px] before:h-[20px] before:inline-block before:absolute before:top-0 before:left-0
-                                        after:content-[''] after:opacity-0 after:bg-green after:rounded-full after:absolute after:top-[4px] after:left-[4px] after:w-[12px] after:h-[12px] after:inline-block" htmlFor={"job" + String(index)}>{item}</label>
-                                        </div>
+                                <div key={index}>
+                                    <input className="opacity-0 peer/job" type="radio" id={"job" + String(index)} value={item} name="job" checked={item == '직장인'}/>
+                                    <label className="pl-[30px] relative peer-checked/job:after:opacity-100 peer-checked/job:font-semibold peer-checked/job:text-green peer-checked/job:before:border-green text-[13px] pt-[3px] pb-[2px]
+                                before:content-[''] before:border-[2px] before:border-gray before:rounded-full before:w-[20px] before:h-[20px] before:inline-block before:absolute before:top-0 before:left-0
+                                after:content-[''] after:opacity-0 after:bg-green after:rounded-full after:absolute after:top-[4px] after:left-[4px] after:w-[12px] after:h-[12px] after:inline-block" htmlFor={"job" + String(index)}>{item}</label>
+                                </div>
                             )
                         })}
                     </div>
