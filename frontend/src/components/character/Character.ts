@@ -12,4 +12,4 @@ import loadingDiaryGif from "public/assets/img/character/loading_diary.gif";
 import loadingEmotionGif from "public/assets/img/character/loading_emotion.gif";
 import informDefault from "public/assets/img/character/inform_default.png";
 
-export { diegoImg, informDefault, diego2Img, ianImg, marcoImg, marco2Img, cloeImg, cloe2Img, cocoImg, cloeNoFaceImg, loadingDiaryGif, loadingEmotionGif };
+export { diegoImg, informDefault, cocoNodataImg, diego2Img, ianImg, marcoImg, marco2Img, cloeImg, cloe2Img, cocoImg, cloeNoFaceImg, loadingDiaryGif, loadingEmotionGif };
