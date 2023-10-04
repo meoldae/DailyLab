@@ -59,12 +59,12 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
 
-    condition = ds.iloc[:, 4].isin([3, 4, 5])
+    condition = ds.iloc[:, 4].isin([2, 3, 4])
     filtered_indices = (ds.index[condition]).tolist()
     mbtiEList = [0] * 290
     mbtiEList = resultList[resultList.index.isin(filtered_indices)]
 
-    condition = ds.iloc[:, 4].isin([1, 2, 3])
+    condition = ds.iloc[:, 4].isin([0, 1, 2])
     filtered_indices = (ds.index[condition]).tolist()
     mbtiIList = [0] * 290
     mbtiIList = resultList[resultList.index.isin(filtered_indices)]
