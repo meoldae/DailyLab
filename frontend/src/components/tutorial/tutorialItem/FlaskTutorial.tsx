@@ -39,7 +39,7 @@ const FlaskTutorial = () => {
                     </div>
                 </div>
                 <span className="block font-semibold text-3xl p-[20px]">어떤 일을 하시나요?</span>
-                <div className="mb-[45px] p-[20px]">
+                <div className="mb-[45px]">
                     <div className="flex justify-around items-center flex-wrap child-[div]:mr-[10px] child-[div]:mb-[15px] -mb-[15px]">
                         {jobList.map((item, index) => {
                             return (

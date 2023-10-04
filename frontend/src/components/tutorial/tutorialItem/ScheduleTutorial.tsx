@@ -7,10 +7,8 @@ const ScheduleTutorial = () => {
             <div className="text-center p-[20px] font-semibold text-[24px] mt-[20px]">
                 <span className="text-red">나의 기록 </span>돌아보기
             </div>
-            <div className="bg_contents_con p-[20px] h-[45vh] pt-[30px]">
-                <div>
-                    <img className="m-auto h-[35vh]" src={GetMode() === 'dark' ? "./assets/img/tutorial/schedule_dark.png" : "./assets/img/tutorial/schedule_light.png"} alt="" />
-                </div>
+            <div className="bg_contents_con p-[20px] h-[45vh] pt-[30px]  flex justify-center">
+                <img className="m-auto w-[250px]" src={GetMode() === 'dark' ? "./assets/img/tutorial/schedule_dark.png" : "./assets/img/tutorial/schedule_light.png"} alt="" />
             </div>
             {/* 설명 부분 */}
             <div className="flex text-center items-center">
