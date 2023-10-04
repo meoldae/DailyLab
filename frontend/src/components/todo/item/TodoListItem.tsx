@@ -1,5 +1,5 @@
 import { TodoType, TodoParamType } from "@/type/TodoType";
-import { LeadingActions, SwipeableList, SwipeableListItem, SwipeAction, TrailingActions, Type } from 'react-swipeable-list';
+import { LeadingActions, SwipeableListItem, SwipeAction, TrailingActions, Type } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
 import checkBoxFillImg from "public/assets/img/icon/checkbox_fill.png";
 import checkBoxEmptyImg from "public/assets/img/icon/checkbox_empty.png";
@@ -25,17 +25,12 @@ const TodoListItem = (props: props) => {
         const param:TodoParamType = {todoId : props.info.todoId, checkedDate : (!props.info.check ? toStringByFormattingIncludeTime(new Date()) : ""), categoryName : props.info.small, large: props.info.large};
         props.checkItem!(param);
     }
-
-    const leadingActions = () => (
-        <LeadingActions>
-          <SwipeAction destructive={true} onClick={() => props.blackItem!(props.info.todoId)}>
-            <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>관심없음</div>
-          </SwipeAction>
-        </LeadingActions>
-    );
       
     const trailingActions = () => (
         <TrailingActions>
+            <SwipeAction destructive={true} onClick={() => props.blackItem!(props.info.todoId)}>
+                <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>관심없음</div>
+            </SwipeAction>
             <SwipeAction destructive={true} onClick={() => props.deleteItem!(props.info.todoId)}>
                 <div className='bg-orange flex justify-center items-center rounded-xl text-white'>삭제하기</div>
             </SwipeAction>
@@ -43,16 +38,14 @@ const TodoListItem = (props: props) => {
     );
     if(props.status != "prev") {
         return (
-            <SwipeableList>
-                <SwipeableListItem maxSwipe={0.7} threshold={0.5} listType={Type.IOS} leadingActions={leadingActions()} trailingActions={trailingActions()}>
-                    <motion.div animate={controls} className={`w-full rounded-xl text-xl flex justify-between${props.info.system ? " border border-[rgba(255,137,26,0.3)]" : ""} ${props.info.check ? " bg-[#ff9c4047]" : " bg-secondary"}`}>
+                <SwipeableListItem key={props.info.todoId} listType={Type.IOS} maxSwipe={0.5} trailingActions={trailingActions()}>
+                    <motion.div animate={controls} className={`w-full rounded-xl text-xl flex justify-between${props.info.system ? " border-2 border-[rgba(255,137,26,0.3)]" : ""} ${props.info.check ? " bg-[#ff9c4047]" : " bg-secondary"}`}>
                         <div className="mr-10 text-left flex-1 p-4">
                             <div className="cursor-pointer" onClick={() => props.changeTodoUpdateMode!(props.info.todoId, true)}>{(props.info.content === "" || props.info.content === "상세내용") ? props.info.small : props.info.content}</div>
                         </div>
                         {props.status == "current" ? <div className="p-4"><img onClick={clickCheckItem} className="w-[20px] cursor-pointer" src={props.info.check ? checkBoxFillImg : checkBoxEmptyImg }  alt="" /></div> : null}
                     </motion.div>
                 </SwipeableListItem>
-            </SwipeableList>
         )
     } else {
         return (
