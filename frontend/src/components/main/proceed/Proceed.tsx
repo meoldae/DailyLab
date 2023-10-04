@@ -1,5 +1,5 @@
 import Todo from '@/components/todo/Todo';
-import { diegoImg, cloe2Img } from '@/components/character/Character';
+import { informDefault, cloe2Img } from '@/components/character/Character';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postTodayDiary } from '@/api/diary';
@@ -19,9 +19,8 @@ const MainProceed = ({getDate} : { getDate : string}) => {
     const [categoryText, setCategoryText] = useState("");
     const [emotionMode, setEmotionMode] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    // const lottieRef = useRef();
     const lottieRef = useRef<Player | null>(null);
-
+    
     useEffect(() => {
         setIntervalId(
           setInterval(() => {
@@ -55,6 +54,29 @@ const MainProceed = ({getDate} : { getDate : string}) => {
             return '어떤 저녁을 보내고 계신가요?';
         }
     }
+
+    // 시간대에 따른 메시지를 반환하는 함수
+    const getInformLottie = () => {
+        const category = categoryText;
+        if (category === '여가') {
+            return "./assets/lottie/inform/free.json";
+        } 
+        if (category === '소통') {
+            return "./assets/lottie/inform/communicate.json";
+        } 
+        if (category === '성장') {
+            return "./assets/lottie/inform/growth.json";
+        } 
+        if (category === '일상') {
+            return "./assets/lottie/inform/daily.json";
+        } 
+        if (category === '과업') {
+            return "./assets/lottie/inform/task.json";
+        } 
+        if (category === '기타') {
+            return "./assets/lottie/inform/etc.json";
+        } 
+    }
     
     const getNewDiary = async () => {
         await postTodayDiary(getDate ,({ data }) => {
@@ -84,8 +106,19 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                 <div className='text-center text-2xl font-semibold child-[div:not(:last-child)]:mb-12 child-[div]:m-auto child-[div]:max-w-xl'>
                     {/* 안내멘트 영역 */}
                     <div>
-                        <img className='w-[90px] m-auto' src={diegoImg} alt="디에고" />
-                        <div className='relative -mt-[40px] bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
+                        {categoryText === '' ? (
+                            <img className='w-[90px] -mt-[40px] m-auto' src={informDefault} alt="디에고" />
+                        ) : (
+                        <Player
+                            className="rounded-3xl !-mt-[40px]"
+                            autoplay={true}
+                            loop={false}
+                            src={getInformLottie()}
+                            style={{ width: '90px' }}
+                            speed={0.5}
+                            />
+                        )}
+                        <div className='relative bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
                             {
                                 proceedText != "" ? <p>{proceedText}를 해내셨네요!</p>
                                 : <p>{`${Number(getDate.split('-')[1])}월 ${Number(getDate.split('-')[2])}일`}의 연구를 진행중이에요</p>
@@ -105,7 +138,6 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                             style={{ width: '90px' }}
                             ref={lottieRef}
                             />
-                            {/* <img className='w-[90px]' src={ianImg} alt="이안" /> */}
                         </div>
                         <div className='relative -mt-12'>
                             <Todo mode="current" date={getDate} setText={setProceedText} setCategoryText={setCategoryText} maxNum={12}/>
