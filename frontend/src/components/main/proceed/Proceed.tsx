@@ -56,26 +56,17 @@ const MainProceed = ({getDate} : { getDate : string}) => {
     }
 
     // 시간대에 따른 메시지를 반환하는 함수
-    const getInformLottie = () => {
-        const category = categoryText;
-        if (category === '여가') {
-            return "./assets/lottie/inform/free.json";
-        } 
-        if (category === '소통') {
-            return "./assets/lottie/inform/communicate.json";
-        } 
-        if (category === '성장') {
-            return "./assets/lottie/inform/growth.json";
-        } 
-        if (category === '일상') {
-            return "./assets/lottie/inform/daily.json";
-        } 
-        if (category === '과업') {
-            return "./assets/lottie/inform/task.json";
-        } 
-        if (category === '기타') {
-            return "./assets/lottie/inform/etc.json";
-        } 
+    const getInformLottie = ():string => {
+        let result = "";
+        switch(categoryText){
+            case "여가" : result = "./assets/lottie/inform/free.json"; break;
+            case "소통" : result = "./assets/lottie/inform/communicate.json"; break;
+            case "성장" : result = "./assets/lottie/inform/growth.json"; break;
+            case "일상" : result = "./assets/lottie/inform/daily.json"; break;
+            case "과업" : result = "./assets/lottie/inform/task.json"; break;
+            case "기타" : result = "./assets/lottie/inform/etc.json"; break;
+        }
+        return result;
     }
     
     const getNewDiary = async () => {
@@ -106,18 +97,9 @@ const MainProceed = ({getDate} : { getDate : string}) => {
                 <div className='text-center text-2xl font-semibold child-[div:not(:last-child)]:mb-12 child-[div]:m-auto child-[div]:max-w-xl'>
                     {/* 안내멘트 영역 */}
                     <div>
-                        {categoryText === '' ? (
-                            <img className='w-[90px] -mt-[40px] m-auto' src={informDefault} alt="디에고" />
-                        ) : (
-                        <Player
-                            className="rounded-3xl !-mt-[40px]"
-                            autoplay={true}
-                            loop={false}
-                            src={getInformLottie()}
-                            style={{ width: '90px' }}
-                            speed={0.5}
-                            />
-                        )}
+                        <div className="h-[90px]">
+                        {categoryText !== '' ? (<Player className="rounded-3xl !-mt-[40px]" autoplay={true} loop={false} src={getInformLottie()} style={{ width: '90px' }} speed={0.5} />) : (<img className='w-[90px] -mt-[40px] m-auto' src={informDefault} alt="디에고" />)}
+                        </div>
                         <div className='relative bg_contents_con p-[20px] flex flex-wrap items-center justify-center'>
                             {
                                 proceedText != "" ? <p>{proceedText}를 해내셨네요!</p>
