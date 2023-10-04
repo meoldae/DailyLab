@@ -17,8 +17,7 @@ const Taste: React.FC<TasteProps> = ({ date }) => {
 
     const getTodayTaste = async() => {
         await getDailyTaste(date, ({data}) => {
-            console.log(data)
-            setTodayTaste(data.data as TasteType)
+            setTodayTaste(data.data as TasteType);
         }, (error) => {console.log(error)})
     }
     // 오늘의 맛 받아오기

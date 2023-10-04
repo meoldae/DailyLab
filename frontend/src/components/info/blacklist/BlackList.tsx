@@ -19,7 +19,6 @@ const BlackList = () => {
 
     function handleBlackList(activeStatus: boolean, idx: number){
         DeleteBlackList(idx, ({data}) => {
-            console.log(data);
             const result = myBlackList.filter(black => black.categoryId != idx);
             setMyBlackList(() => result);
             successMsg("블랙리스트를 삭제했어요");
