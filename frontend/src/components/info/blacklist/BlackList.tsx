@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GetSelectedBlackList, DeleteBlackList } from "@/api/Info";
 import CustomKeyword from "../item/CustomKeyword";
+import { successMsg } from '@/utils/customToast/CustomToast';
 
 type blackListData = {
     categoryId : number;
@@ -21,6 +22,7 @@ const BlackList = () => {
             console.log(data);
             const result = myBlackList.filter(black => black.categoryId != idx);
             setMyBlackList(() => result);
+            successMsg("블랙리스트를 삭제했어요");
         }, (error) => console.log(error));
     }
 
