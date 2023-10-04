@@ -172,7 +172,8 @@ def process_first_list(first_list, result_list):
     if first_list:
         for remove in first_list:
             category_id = remove.category_id
-            result_list = result_list.drop(category_id - 1)
+            if category_id - 1 in result_list.index:
+                result_list = result_list.drop(category_id - 1)
     return result_list
 
 
@@ -182,6 +183,7 @@ def afterListProcess(member_id, resultList, todo_date, db):
 
     allRemoveCategory = todoRepository.getAllRemoveCategory(db)
 
+    # 화이트리스트에 있는 내용을 초기 추천 안 되는 카테고리에서 지움
     if userWhiteList:
         for white in userWhiteList:
             category_id = white.category_id
@@ -190,18 +192,21 @@ def afterListProcess(member_id, resultList, todo_date, db):
                     allRemoveCategory.remove(all)
                     break
 
+    # 블랙리스트를 추천 리스트에서 지움
     if userBlackList:
         for black in userBlackList:
             category_id = black.category_id
             if category_id - 1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
+    # 화이트리스트 적용한 추천 안 되는 카테고리를 추천 리스트에서 지움
     if allRemoveCategory:
         for remove in allRemoveCategory:
             category_id = remove.category_id
             if category_id - 1 in resultList.index:
                 resultList = resultList.drop(category_id - 1)
 
+    # 날씨 기반으로 카테고리 제거함
     if weatherDict[member_id].rain != "강수없음":
         print("날씨가 안좋아요.")
 
@@ -216,6 +221,7 @@ def afterListProcess(member_id, resultList, todo_date, db):
         # resultList의 인덱스와 카테고리 ID - 1가 같을 때 drop
         resultList = resultList[~resultList.index.isin(filtered_indices)]
 
+    # 남은 카테고리 중 최근에 진행했던 투두 중 일정 기간이 지나지 않은 걸 제거함
     for idx in resultList.index:
         successDay = todoRepository.getTodoLastDay(member_id, idx + 1, db)
         if successDay:
