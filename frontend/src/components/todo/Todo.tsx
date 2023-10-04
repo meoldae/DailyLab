@@ -6,6 +6,7 @@ import TodoList from "./TodoList";
 import { CategoryKeywordType } from "@/type/CategoryType";
 import UseInterval from "@/utils/useInterval/UseInterval";
 import { toStringByFormatting } from "@/utils/date/DateFormatter";
+import { cocoNodataImg } from "../character/Character";
 
 interface props {
     mode : string; //1. current, 2. prev, 3. future
@@ -48,15 +49,13 @@ const Todo = (props: props) => {
 
     async function blackTodo(todoId: number){
         await blackTodoItem(todoId, ({data}) => {
-            /*const result = contentsList.filter(contents => contents.todoId != todoId);
-            setContentsList(() => result);*/
+            setTimeout(() => setContentsList(() => contentsList.filter(contents => contents.todoId != todoId)), 300);
         }, (error) => console.log(error));
     }
 
     async function deleteTodo(todoId: number){
         await deleteTodoItem(todoId, ({data}) => {
-            /*const result = contentsList.filter(contents => contents.todoId != todoId);
-            setContentsList(() => result);*/
+            setTimeout(() => setContentsList(() => contentsList.filter(contents => contents.todoId != todoId)), 300);
         }, (error) => console.log(error));
     }
 
@@ -106,10 +105,20 @@ const Todo = (props: props) => {
                 {insertMode ? <div className="mt-4"><TodoHandleItem selectToDate={props.date} insertItem={insertTodo} mode="insert" categoryList={categoryList} changeInsertMode={handleInsertMode} /></div> : null}
 
                 {props.mode != "prev" && !insertMode && !maxNumStatus ?
-                    <div className="text-right text-xl text-primary mt-4">
-                        <button onClick={handleInsertMode} className="mr-4 w-28 h-10 bg-text rounded-xl ">
-                            추가
-                        </button>
+                    <div className="mt-4">
+                        {contentsList.length == 0 ?
+                        <div className="flex justify-center items-center mb-[20px]">
+                            <img className="w-[47px] mr-[15px]" src={cocoNodataImg} alt="코코 이미지"/>
+                            <div className="text-center text-[13px]">
+                                <p>목록이 비어있어요</p>
+                                <p>할 일을 추가해 보세요!</p>
+                            </div>
+                        </div> : null}
+                        <div className="text-right text-xl text-primary">
+                            <button onClick={handleInsertMode} className="w-28 h-10 bg-text rounded-xl ">
+                                추가
+                            </button>
+                        </div>
                     </div>
                 : null}
             </div>

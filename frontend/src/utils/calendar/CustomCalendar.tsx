@@ -19,7 +19,8 @@ const CustomCalendar = (props : CalendarProps) => {
 
     const dateContents:JSX.Element[] = [...props.dateContents];
 
-    for(let i=props.firstDate.getDay(); i > 1; i--) dateContents.unshift(<div></div>);
+    let firstDay = props.firstDate.getDay() > 0 ? props.firstDate.getDay() : 7;
+    while(firstDay-- > 1) dateContents.unshift(<div></div>);
 
     return (   
         <div>
