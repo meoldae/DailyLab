@@ -16,6 +16,7 @@ import AppLogout from "@/pages/AppLogout";
 import AppTutorial from "@/pages/AppTutorial";
 import { useEffect } from "react";
 import { hotjar } from 'react-hotjar';
+import ScrollRestoration from "./ScrollRestoration";
 
 
 const AppRouter = () => {
@@ -36,6 +37,7 @@ const AppRouter = () => {
 
     return (
         <BrowserRouter>
+            <ScrollRestoration />
             <Routes>
                 <Route element={<AuthRoute authentication="user"/>}>
                     <Route path="/tutorial" element={<AppTutorial />} />

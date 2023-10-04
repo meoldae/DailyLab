@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { CheckUserStatus, UpdateSignUp } from "@/api/User";
-import CustomDatePicker from "@/utils/CustomDatePicker";
 import { cloeImg, cocoImg, diegoImg, ianImg, marcoImg } from "../character/Character";
+import { toStringByFormatting } from "@/utils/date/DateFormatter";
 
 const SignUp = () => {
     const navigate = useNavigate(); 
@@ -12,21 +12,17 @@ const SignUp = () => {
     useEffect(() => {
         CheckUserStatus(Number(id), ({data}) => {
             const result = data.data as string;
-            if(result == "Member"){
-                alert("정회원입니다.");
-                navigate('/');
-            } else if(result == "notMember"){
-                alert("회원이 아닙니다.");
+            if(result.includes("Member")){
+                alert("잘못된 접근입니다.");
                 navigate('/');
             }
         }, (error) => console.log(error));
     }, []);
 
     const [birth, setBirth] = useState("");
+    function birthChange(e: React.ChangeEvent<HTMLInputElement>){setBirth(() => e.target.value);}
+
     const [gender, setGender] = useState("M");
-    
-    
-    function birthChange(selectDate: string){setBirth(() => selectDate)}
     function genderChange(e: React.ChangeEvent<HTMLInputElement>){setGender(() => e.target.value);}
 
     async function doSignUp() {
@@ -53,10 +49,10 @@ const SignUp = () => {
                     <img src={cloeImg} alt="" />
                     <img src={marcoImg} alt="" />
                 </div>
-                <div className="mt-[60px]">
-                    <div className="float-left mt-[6px] min-w-[100px] text-[15px]">생년월일 : </div>
+                <div className="mt-[50px]">
+                    <div className="float-left mt-[10px] min-w-[100px] text-[15px]">생년월일 : </div>
                     <div className="overflow-hidden">
-                        <CustomDatePicker setData={birthChange} placeholder="생년월일을 선택해주세요" maxDate={new Date()}/>
+                        <input className="bg-secondary py-[10px] px-[15px] text-[15px] font-normal w-full" type="date" onChange={birthChange} onKeyDown={(e) => e.preventDefault()} placeholder="생년월일을 선택해주세요" max={toStringByFormatting(new Date())} />
                     </div>
                 </div>
                 <div>

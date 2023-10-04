@@ -41,13 +41,13 @@ const CustomCalendar = (props : CalendarProps) => {
                 </div>
             </div>
             <div className="w-full">
-                <div className="overflow-hidden -mb-[20px] w-[calc(100% + 13px)] -ml-[13px]  child-[div]:float-left child-[div]:w-[14.285%] child-[div]:pl-[13px] child-[div]:mb-[15px]">
-                    {dateContents.map((component, index) => (
-                        <React.Fragment key={index}>
-                            {component}
-                        </React.Fragment>
-                    ))}
-                </div>
+                    <div className="overflow-hidden -mb-[20px] w-[calc(100% + 13px)] -ml-[13px]  child-[div]:float-left child-[div]:w-[14.285%] child-[div]:pl-[13px] child-[div]:mb-[15px]">
+                        {dateContents.map((component, index) => (
+                            <React.Fragment key={index}>
+                                {component}
+                            </React.Fragment>
+                        ))}
+                    </div>          
             </div>
         </div>
     )   
