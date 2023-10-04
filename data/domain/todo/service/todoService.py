@@ -59,12 +59,12 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
 
-    condition = ds.iloc[:, 4].isin([3, 4, 5])
+    condition = ds.iloc[:, 4].isin([2, 3, 4])
     filtered_indices = (ds.index[condition]).tolist()
     mbtiEList = [0] * 290
     mbtiEList = resultList[resultList.index.isin(filtered_indices)]
 
-    condition = ds.iloc[:, 4].isin([1, 2, 3])
+    condition = ds.iloc[:, 4].isin([0, 1, 2])
     filtered_indices = (ds.index[condition]).tolist()
     mbtiIList = [0] * 290
     mbtiIList = resultList[resultList.index.isin(filtered_indices)]
@@ -90,15 +90,15 @@ def makeTodo(member_id: int, todo_date: date, db):
     # record가 없는 경우 : MBTI로 추천 (이 경우는 협업 필터링도 불가능 하다.)
     else:
         if member_response.mbtiA == 1:
-            return noReportRecommendTodoByMbti(resultList, mbtiIList, firstList, member_id, db)
+            return noReportRecommendTodoByMbti(resultList, mbtiIList, firstList, member_id, todo_date, db)
 
         elif member_response.mbtiA == 2:
-            return noReportRecommendTodoByMbti(resultList, mbtiEList, firstList, member_id, db)
+            return noReportRecommendTodoByMbti(resultList, mbtiEList, firstList, member_id, todo_date, db)
 
         # 초기 데이터도 없고 MBTI도 없는 경우... : black, white만 거른 후 랜덤
         else:
             resultList = process_first_list(firstList, resultList)
-            resultList = afterListProcess(member_id, resultList, db)
+            resultList = afterListProcess(member_id, resultList, todo_date, db)
 
             shuffled_resultList = resultList.sample(frac=1)
 
@@ -231,9 +231,9 @@ def afterListProcess(member_id, resultList, todo_date, db):
     return resultList  # 또는 필요에 따라 member_response 객체를 반환할 수도 있습니다.
 
 
-def noReportRecommendTodoByMbti(resultList, mbtiList, firstList, member_id, db):
+def noReportRecommendTodoByMbti(resultList, mbtiList, firstList, member_id, todo_date, db):
     resultList = process_first_list(firstList, resultList)
-    resultList = afterListProcess(member_id, resultList, db)
+    resultList = afterListProcess(member_id, resultList, todo_date, db)
 
     # mbtiList와 resultList에서 공통 인덱스를 가진 항목들만 추출
     common_indices = mbtiList.index.intersection(resultList.index)
