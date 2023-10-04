@@ -7,6 +7,13 @@ import TutorialItem from "./TutorialItem";
 import characters from "../intro/CharacterInfo";
 import TutorialFirst from "./TutorialFirst";
 import TutorialLast from "./TutorialLast";
+import FlaskTutorial from "./tutorialItem/FlaskTutorial";
+import TodoTutorial from "./tutorialItem/TodoTutorial";
+import TodoTutorial2 from "./tutorialItem/TodoTutorial2";
+import EmotionTutorial from "./tutorialItem/EmotionTutorial";
+import ReportTutorial from "./tutorialItem/ReportTutorial";
+import ScheduleTutorial from "./tutorialItem/ScheduleTutorial";
+import StatisticTutorial from "./tutorialItem/StatisticTutorial";
 
 type SliderType = Slider;
 
@@ -45,9 +52,13 @@ const Tutorial = () => {
             </div>
             <Slider {...settings} className="child-[div]:h-[80vh]">
                 <TutorialFirst/>
-                {characterList.length>0 && characterList.map((c) => (
-                    <TutorialItem name={c.name} imgsrc={c.imgsrc} desc={c.desc} color={c.color}/>
-                    ))}
+                <FlaskTutorial/>
+                <TodoTutorial/>
+                <TodoTutorial2/>
+                <EmotionTutorial/>
+                <ReportTutorial/>
+                <ScheduleTutorial/>
+                <StatisticTutorial/>
                 <TutorialLast/>
             </Slider>
         </div>
