@@ -13,7 +13,7 @@ const SignUp = () => {
     useEffect(() => {
         CheckUserStatus(Number(id), ({data}) => {
             const result = data.data as string;
-            if(result.includes("Member")){
+            if(result.includes("Member") && !result.includes("temp")){
                 alert("잘못된 접근입니다.");
                 navigate('/');
             }
