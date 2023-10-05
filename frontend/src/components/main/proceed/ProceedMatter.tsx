@@ -3,18 +3,18 @@ import Matter from "matter-js";
 import { getDailyData, getRatioData } from "@/api/Emotion";
 import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
 
-const ProceedMatter: React.FC<TasteProps> = ({ date }) => {
+interface props {
+  date : string;
+}
+
+const ProceedMatter: React.FC<props> = ({ date }) => {
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
   const [emotionRatioList, setEmontionRatioList] = useState<EmotionRatioType[]>([]);
   
   useEffect(() => {
-    const getData = async () => {
-      await getDailyData({ date: date }, ({ data }) => {
+    getDailyData({ date: date }, ({ data }) => {
       setEmontionResultList(() => data.data as EmotionResultType[]);
-      }, (error) => { console.log(error) });
-    };
-    
-    void getData();
+    }, (error) => { console.log(error) });
   }, []);
   
   useEffect(() => {
