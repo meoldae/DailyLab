@@ -49,7 +49,7 @@ const Tutorial = () => {
                     건너뛰기
                 </button>
             </div>
-            <Slider {...settings} className="child-[div]:h-[80vh]">
+            <Slider {...settings} className="child-[div]:h-[90vh]">
                 <TutorialFirst/>
                 <FlaskTutorial/>
                 <TodoTutorial/>
