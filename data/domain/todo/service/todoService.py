@@ -32,7 +32,7 @@ class MemberResponse(BaseModel):
 
 def makeTodo(member_id: int, todo_date: date, db):
     # 선언
-    resultList = pd.Series([0] * 290)
+    resultList = pd.Series([0] * 808)
 
     member = db.query(Member).filter(Member.member_id == member_id).first()  # 이 부분은 SQLAlchemy 쿼리로 member 객체를 가져옵니다.
     if not member:
@@ -61,12 +61,12 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     condition = ds.iloc[:, 4].isin([2, 3, 4])
     filtered_indices = (ds.index[condition]).tolist()
-    mbtiEList = [0] * 290
+    mbtiEList = [0] * 808
     mbtiEList = resultList[resultList.index.isin(filtered_indices)]
 
     condition = ds.iloc[:, 4].isin([0, 1, 2])
     filtered_indices = (ds.index[condition]).tolist()
-    mbtiIList = [0] * 290
+    mbtiIList = [0] * 808
     mbtiIList = resultList[resultList.index.isin(filtered_indices)]
 
     # todo 수행일 기준 미리 저장되어있는 todo 가져옴
@@ -90,10 +90,10 @@ def makeTodo(member_id: int, todo_date: date, db):
     # record가 없는 경우 : MBTI로 추천 (이 경우는 협업 필터링도 불가능 하다.)
     else:
         if member_response.mbtiA == 1:
-            return noReportRecommendTodoByMbti(resultList, mbtiIList, firstList, member_id, todo_date, db)
+            return removeDuplicate(pd.Series(noReportRecommendTodoByMbti(resultList, mbtiIList, firstList, member_id, todo_date, db)))
 
         elif member_response.mbtiA == 2:
-            return noReportRecommendTodoByMbti(resultList, mbtiEList, firstList, member_id, todo_date, db)
+            return removeDuplicate(pd.Series(noReportRecommendTodoByMbti(resultList, mbtiIList, firstList, member_id, todo_date, db)))
 
         # 초기 데이터도 없고 MBTI도 없는 경우... : black, white만 거른 후 랜덤
         else:
@@ -101,8 +101,9 @@ def makeTodo(member_id: int, todo_date: date, db):
             resultList = afterListProcess(member_id, resultList, todo_date, db)
 
             shuffled_resultList = resultList.sample(frac=1)
+            resultList = removeDuplicate(pd.Series(shuffled_resultList))
 
-            return shuffled_resultList.to_dict()
+            return resultList
 
     # 여기까지 넘어온 경우 : todoReport 일주일치에 데이터가 있던 경우!
 
@@ -139,10 +140,14 @@ def makeTodo(member_id: int, todo_date: date, db):
 
     # 정렬
     resultList = resultList.sort_values(ascending=False)
+    # 같은 분류의 투두를 추천에서 제거하는 함수
+    resultList = removeDuplicate(resultList)
+
     return resultList
 
 
 def specialTodo(member_id: int, day: int, db):
+    # 유저들끼리의 유사도를 비교해서 비슷한 사람 순위로 뽑아 옴
     similar = filtering.findBest(member_id)
     # similar = similar[:len(similar)/10]
     if similar == 0:
@@ -150,6 +155,7 @@ def specialTodo(member_id: int, day: int, db):
 
     similar = similar[:6]
 
+    # 유저들이 최근 day 기간 동안 했던 카테고리와 횟수를 정렬함
     category = {}
     for similarMember in similar:
         if similarMember == member_id:
@@ -208,7 +214,6 @@ def afterListProcess(member_id, resultList, todo_date, db):
 
     # 날씨 기반으로 카테고리 제거함
     if weatherDict[member_id].rain != "강수없음":
-        print("날씨가 안좋아요.")
 
         # csv 파일 읽기 - main 기준 파일 path
         ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
@@ -230,6 +235,17 @@ def afterListProcess(member_id, resultList, todo_date, db):
 
     return resultList  # 또는 필요에 따라 member_response 객체를 반환할 수도 있습니다.
 
+def removeDuplicate(resultList):
+    removeList = []
+
+    # 같은 분류에 속하는 것들을 하루에 두 번 추천하지 않게 제거하는 후처리 함수
+    for idx in resultList.index:
+        classfication = cbf.getClassification(idx)
+        if classfication not in removeList:
+            removeList.append(classfication)
+        elif classfication != 0:
+            resultList = resultList.drop(idx)
+    return resultList
 
 def noReportRecommendTodoByMbti(resultList, mbtiList, firstList, member_id, todo_date, db):
     resultList = process_first_list(firstList, resultList)
@@ -247,4 +263,4 @@ def noReportRecommendTodoByMbti(resultList, mbtiList, firstList, member_id, todo
     resultList = pd.concat([resultList[~resultList.index.isin(common_indices)], shuffled_series])  # sort_index() 제거
 
     shuffled_resultList = resultList.iloc[np.random.permutation(len(resultList))]
-    return shuffled_resultList.to_dict()
+    return shuffled_resultList

@@ -2,9 +2,10 @@ import pandas as pd
 
 # filePath = '../../../dataset/'
 filePath = 'dataset/'
-cosine_similarity_matrix = pd.read_csv(filePath + 'cosine_similarity_matrix.csv', encoding='utf-8')
-allDf = pd.read_csv(filePath + 'ToDoVer1.csv', encoding='utf-8')
+cosine_similarity_matrix = pd.read_csv(filePath + 'cosine_similarity_matrix2.csv', encoding='utf-8')
+allDf = pd.read_csv(filePath + 'ToDoVersion2.csv', encoding='euc-kr')
 periodMatrix = allDf['period']
+classificationMatrix = allDf['classification']
 
 
 def printSim(A):
@@ -25,11 +26,16 @@ def findDummy():
     return resultList
 
 def getPeriod(index):
-    answer = 0
+    answer = 2
     if periodMatrix[index] == 0:
         answer = 180
     elif periodMatrix[index] == 1:
         answer = 15
     elif periodMatrix[index] == 2:
         answer = 7
+    elif periodMatrix[index] == 5:
+        answer = 5000
     return answer
+
+def getClassification(index):
+    return classificationMatrix[index]

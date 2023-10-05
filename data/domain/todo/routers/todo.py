@@ -17,8 +17,8 @@ router = APIRouter(
 async def makeTodo(memberId: int, db: Session = Depends(get_db)):
     todoResult = todoService.makeTodo(memberId, date.today() ,db)
 
-    if todoResult is not None and not todoResult.empty and not todoResult.isnull().all():
-        return todoResult
+    if todoResult is not None:
+        return todoResult.to_dict()
     raise HTTPException(status_code=401, detail="no todo")
 
 
@@ -45,5 +45,5 @@ async def makeTodoByPost(request: schemas.todoReq, db: Session = Depends(get_db)
     todoResult = todoService.makeTodo(request.memberId, request.todoDate, db)
 
     if todoResult is not None:
-        return todoResult
+        return todoResult.to_dict()
     raise HTTPException(status_code=401, detail="todo Result에서 에러 뜸!")
