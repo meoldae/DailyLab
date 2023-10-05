@@ -35,7 +35,7 @@ const SignUp = () => {
         await UpdateSignUp(param, ({data}) => {
             navigate(`/oauth2/redirect?token=${data.data as string}`);
         }, (error) => {console.log(error)});
-    };
+    }
     
     return (
         <div className="mt-[calc(30%)]">

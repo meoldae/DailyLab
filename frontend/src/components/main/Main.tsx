@@ -32,7 +32,7 @@ const Main = () => {
             const nowState = data.data as StatusType;
 
             if(nowState.status === 'init'){
-                navigator('/tutorial');
+                navigator('/tutorial?isNew=true');
             }
 
             const curDate2: Date = new Date(curDate);
