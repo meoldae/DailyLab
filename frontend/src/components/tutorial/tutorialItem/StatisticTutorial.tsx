@@ -7,7 +7,7 @@ const StatisticTutorial = () => {
             <div className="text-center p-[20px] font-semibold text-[24px] mt-[20px]">
                 <span className="text-red">통계 </span>확인하기
             </div>
-            <div className="bg_contents_con p-[20px] h-[45vh] pt-[30px] flex justify-center">
+            <div className="bg_contents_con p-[20px] h-[50vh] pt-[30px] flex justify-center">
                 <img className="m-auto w-[250px]" src={GetMode() === 'dark' ? "./assets/img/tutorial/statistic_dark.png" : "./assets/img/tutorial/statistic_light.png"} alt="" />
             </div>
             {/* 설명 부분 */}

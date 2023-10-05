@@ -7,7 +7,7 @@ const ReportTutorial = () => {
             <div className="text-center p-[20px] font-semibold text-[24px] mt-[20px]">
                 <span className="text-blue">연구 보고서</span>받기
             </div>
-            <div className="bg_contents_con p-[20px] h-[45vh] pt-[30px] overflow-hidden flex justify-center"> 
+            <div className="bg_contents_con p-[20px] h-[50vh] pt-[30px] overflow-hidden flex justify-center"> 
                 <img className="m-auto w-[300px]" src={GetMode() === 'dark' ? "./assets/img/tutorial/report_dark.png" : "./assets/img/tutorial/report_light.png"} alt="" />
             </div>
             {/* 설명 부분 */}
