@@ -54,7 +54,7 @@ const Emotion = (props: props) => {
     };
   
     return (
-      <div className="w-full absolute px-[20px]">
+      <div className="contents_wrap">
         <div onClick={props.changeMode} className="mb-[30px] inline-flex items-center">
             <img className="w-[30px] transform scale-x-[-1]" src="./assets/img/icon/arrow_right.png" alt="" />
             <p className="text-2xl font-semibold">돌아가기</p>
@@ -69,9 +69,9 @@ const Emotion = (props: props) => {
             <img className="w-[150px] mx-auto" src={cloeNoFaceImg} alt="클로에" />
             <img className="absolute top-[20px] left-[calc(50%-50px)] w-[100px]" src={circleCount === 0 ? `./assets/img/emotion/face/100.png` : `./assets/img/emotion/face/${emotionNo}.png`} alt="표정" />
         </motion.div>
-        <div className="overflow-hidden bg_contents_con p-[20px] w-full child-[div:nth-child(5n+1)]:clear-left">
+        <div className="overflow-y-auto max-h-[300px] bg_contents_con p-[20px] w-full flex flex-wrap items-center justify-center">
             {emotionList.length > 0 && emotionList.map((emo, index) => (
-                <div className="float-left text-center w-[20%]">
+                <div className="text-center w-[20%]">
                     <button className="p-1 transition-transform duration-300 ease-in-out active:scale-125 webkit-tap-highlight-color" key={index} onClick={() => {onEmotionClick(emo.emotionId, emo.name, emo.type)}}>
                         <img className="w-[40px]" src={`./assets/img/emotion/${emo.emotionId}.png`} alt={emo.name} />
                         <p className="font-light text-xl p-2 text-text">{emo.name}</p>
@@ -79,7 +79,7 @@ const Emotion = (props: props) => {
                 </div>
             ))}
         </div>
-        <div>
+        <div id="matterCanvasCon" className="absolute left-0 top-0 -z-10 child-[canvas]:max-h-full">
             <EmotionMatter circleCount={circleCount} emotionNo={emotionNo} />
         </div>
       </div>

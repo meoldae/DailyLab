@@ -52,10 +52,10 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
     const newEngine = Engine.create();
     setEngine(newEngine);
     const world = newEngine.world;
-
+    const canvas = document.getElementById("matterCanvasCon")!;
     // create renderer
     const render = Render.create({
-      element: document.body,
+      element: canvas,
       engine: newEngine,
       options: {
         width: window.innerWidth,

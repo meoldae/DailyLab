@@ -94,12 +94,12 @@ const TodoHandleItem = (props : props) => {
             </div>
             <input className="w-full p-3 mb-3 rounded-xl bg-primary text-text" type="text" name="" id="" placeholder="상세 내용을 입력해주세요" value={content || ""} onChange={handleContent}/>
             {props.mode == "insert" ?
-                    <div>
+                    <div className="text-center">
                         <button type="button" className='w-[50px] h-[20px] bg-text rounded-xl mx-4 text-primary' onClick={props.changeInsertMode}>취소</button>
                         <button type="button" className='w-[50px] h-[20px] bg-orange rounded-xl mx-4 text-primary' onClick={submitInsert}>확인</button>
                     </div>
                     :
-                    <div>
+                    <div className="text-center">
                         <button type="button" className='w-[50px] h-[20px] bg-gray rounded-xl mx-4 text-primary' onClick={() => props.changeTodoUpdateMode!(props.info!.todoId, false)}>취소</button>
                         <button type="button" className='w-[50px] h-[20px] bg-orange rounded-xl mx-4 text-primary' onClick={submitUpdate}>수정</button>
                     </div>
