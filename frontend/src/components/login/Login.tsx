@@ -31,12 +31,12 @@ const Login = () => {
                 child-[*]:block
                 child-[*:not(:last-child)]:mb-4
                 child-[*:last-child]:mb-0">
-                    <NavLink to="/intro">
+                    {/* <NavLink to="/intro">
                         <img src={inform} alt="연구원 소개" />
                     </NavLink>
                     <button onClick={() => loginHandler('naver')}>
                         <img src={loginNaver} alt="네이버로그인" />
-                    </button>
+                    </button> */}
                     <button onClick={() => loginHandler('kakao')}>
                         <img src={loginKakao} alt="카카오로그인" />
                     </button>
