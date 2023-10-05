@@ -62,7 +62,7 @@ export default function Header() {
                     <ul className="bg-primary text-center rounded-[10px] overflow-hidden border-[1px] border-black
                     child-[li]:text-[13px] child-[li]:font-medium child-[li]:px-[50px] child-[li]:py-[8px] child-[li]:border-b-[1px] child-[li]:border-black
                     child-[li:last-child]:text-0 child-[li:last-child]:border-b-0">
-                        <li className="hover:bg-[#CFCFCF] transition-all cursor-pointer"><NavLink to="/tutorial">튜토리얼</NavLink></li>
+                        <li className="hover:bg-[#CFCFCF] transition-all cursor-pointer"><NavLink to="/tutorial?isNew=false">튜토리얼</NavLink></li>
                         <li className="hover:bg-[#CFCFCF] transition-all cursor-pointer"><NavLink to="/mypage">마이페이지</NavLink></li>
                         <li className="hover:bg-[#CFCFCF] transition-all cursor-pointer"><NavLink to="/logout">로그아웃</NavLink></li>
                         <li className="flex justify-center items-center">

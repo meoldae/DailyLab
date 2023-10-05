@@ -13,13 +13,17 @@ import EmotionTutorial from "./tutorialItem/EmotionTutorial";
 import ReportTutorial from "./tutorialItem/ReportTutorial";
 import ScheduleTutorial from "./tutorialItem/ScheduleTutorial";
 import StatisticTutorial from "./tutorialItem/StatisticTutorial";
+import { useNavigate } from "react-router-dom";
 
 type SliderType = Slider;
 
 const Tutorial = () => {
-    const [currentSlide, setCurrentSlide] = useState(0)
-    const characterList = Object.values(characters);
-    const sliderRef = useRef<SliderType>(null!);
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const characterList = Object.values(characters);
+  const sliderRef = useRef<SliderType>(null!);
+  const query = new URLSearchParams(location.search);
+  const isNewMember = query.get('isNew');
+  const navigator = useNavigate();
 
     const settings = {
         dots: true,
@@ -45,12 +49,18 @@ const Tutorial = () => {
     return (
         <div className="p-[20px]">
             <div className="mr-4 mt-4 text-right">
+              {isNewMember === 'true' ? (
                 <button className="text-2xl font-semibold" onClick={handleSkipButton}>
                     건너뛰기
                 </button>
+              ) : (
+                <button className="text-2xl font-semibold" onClick={() => {navigator(-1)}}>
+                    돌아가기
+                </button>
+              )}
             </div>
             <Slider {...settings} className="child-[div]:h-[90vh]">
-                <TutorialFirst/>
+                {isNewMember === 'true' && (<TutorialFirst/>)}
                 <FlaskTutorial/>
                 <TodoTutorial/>
                 <TodoTutorial2/>
@@ -58,7 +68,7 @@ const Tutorial = () => {
                 <ReportTutorial/>
                 <ScheduleTutorial/>
                 <StatisticTutorial/>
-                <TutorialLast/>
+                {isNewMember === 'true' && (<TutorialLast/>)}
             </Slider>
         </div>
     )
