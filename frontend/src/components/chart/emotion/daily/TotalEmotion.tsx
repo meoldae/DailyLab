@@ -25,11 +25,12 @@ const TotalEmotion = ({ transformedData, emotionList }: TotalEmotionProps) => {
         <div className="bg_contents_con flex h-[100px] py-[9px] px-[11px] type_2 overflow-x-scroll">
             {data.map((item, index) => {
                     if(item.cnt > 0){
+                        let displayCount = item.cnt < 1000 ? item.cnt : (item.cnt / 1000).toFixed(1) + 'K';
                         return (
                             <div key={index} className="text-center mx-3">
                                 <img className="h-[35px] mb-[5px]" src={item.imgsrc} alt={item.name} />
                                 <div className="w-[35px] text-[13px] mb-[3px]">{item.name}</div>
-                                <div className="text-[13px] break-keep">{`${item.cnt}번`}</div>
+                                <div className="text-[13px] break-keep">{`${displayCount}번`}</div>
                             </div>
                         )
                     }
