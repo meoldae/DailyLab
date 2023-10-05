@@ -47,16 +47,17 @@ const TodoListItem = (props: props) => {
                         <div className="mr-10 text-left flex-1 p-4">
                             <div className="cursor-pointer" onClick={() => props.changeTodoUpdateMode!(props.info.todoId, true)}>{(props.info.content === "" || props.info.content === "상세내용") ? props.info.small : props.info.content}</div>
                         </div>
-                        {props.status == "current" ? <div className="p-4"><img onClick={clickCheckItem} className="w-[20px] cursor-pointer" src={props.info.check ? checkBoxFillImg : checkBoxEmptyImg }  alt="" /></div> : null}
+                        {props.status == "current" ? <div className="p-4 cursor-pointer"><img onClick={clickCheckItem} className="w-[20px]" src={props.info.check ? checkBoxFillImg : checkBoxEmptyImg }  alt="" /></div> : null}
                     </motion.div>
                 </SwipeableListItem>
         )
     } else {
         return (
-            <div className={`w-full p-4 bg-secondary rounded-xl text-xl flex justify-between${props.info.system ? " border border-[rgba(255,137,26,0.3)]" : null}`}>
-                <div className="mr-10 text-left flex-1">
+            <div className={`w-full rounded-xl text-xl flex justify-between${props.info.system ? " border border-[rgba(255,137,26,0.3)]" : ""} ${props.info.check ? " bg-[#ff9c4047]" : " bg-secondary"}`}>
+                <div className="mr-10 text-left flex-1 p-4">
                     <div>{(props.info.content === "" || props.info.content === "상세내용") ? props.info.small : props.info.content}</div>
                 </div>
+                <div className="p-4"><img className="w-[20px]" src={props.info.check ? checkBoxFillImg : checkBoxEmptyImg }  alt=""/></div>
             </div>
         )
     }
