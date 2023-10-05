@@ -81,7 +81,7 @@ const Emotion = (props: props) => {
                     ))}
                 </div>
             </div>
-            <div id="matterCanvasCon" className="absolute left-0 top-0 z-[-1] child-[canvas]:max-h-full">
+            <div id="matterCanvasCon" className="mt-[20px] absolute left-0 top-0 z-[-1] child-[canvas]:max-h-full">
                 <EmotionMatter circleCount={circleCount} emotionNo={emotionNo} />
             </div>
         </div>
