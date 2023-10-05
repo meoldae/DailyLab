@@ -92,17 +92,17 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
           event.beta !== null
         ) {
           if (orientation === 0) {
-            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 10;
-            gravity.y = Math.min(Math.max(event.beta, -90), 90) / 10;
+            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 50;
+            gravity.y = Math.min(Math.max(event.beta, -90), 90) / 50;
           } else if (orientation === 180) {
-            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 10;
-            gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 10;
+            gravity.x = Math.min(Math.max(event.gamma, -90), 90) / 50;
+            gravity.y = Math.min(Math.max(-event.beta, -90), 90) / 50;
           } else if (orientation === 90) {
-            gravity.x = Math.min(Math.max(event.beta, -90), 90) / 10;
-            gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 10;
+            gravity.x = Math.min(Math.max(event.beta, -90), 90) / 50;
+            gravity.y = Math.min(Math.max(-event.gamma, -90), 90) / 50;
           } else if (orientation === -90) {
-            gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 10;
-            gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 10;
+            gravity.x = Math.min(Math.max(-event.beta, -90), 90) / 50;
+            gravity.y = Math.min(Math.max(event.gamma, -90), 90) / 50;
           }
         }
       };
