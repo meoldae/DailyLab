@@ -54,7 +54,7 @@ const Emotion = (props: props) => {
     };
   
     return (
-        <div className="h-[100vh]">
+        <div className="h-[calc(100vh-20px)]">
             <div className="px-[30px] pt-[20px]">
                 <div onClick={props.changeMode} className="mb-[30px] inline-flex items-center">
                     <img className="w-[30px] transform scale-x-[-1]" src="./assets/img/icon/arrow_right.png" alt="" />
@@ -81,7 +81,7 @@ const Emotion = (props: props) => {
                     ))}
                 </div>
             </div>
-            <div id="matterCanvasCon" className="mt-[20px] absolute left-0 top-0 z-[-1] child-[canvas]:max-h-full">
+            <div id="matterCanvasCon" className="absolute left-0 top-0 z-[-1] child-[canvas]:max-h-full">
                 <EmotionMatter circleCount={circleCount} emotionNo={emotionNo} />
             </div>
         </div>
