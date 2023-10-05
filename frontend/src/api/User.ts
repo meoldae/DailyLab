@@ -29,7 +29,7 @@ const getStatus = async (success: (data : {data : ReturnType}) => void, fail: (e
     await HttpJson.get(`member/status`).then(success).catch(fail);
 }
 
-const UpdateLocation = async (param: object, success : (data : {data : ReturnType}) => void, fail: (error: unknown) => void) => {
+const UpdateLocation = async (param: object, success : () => void, fail: (error: unknown) => void) => {
     await HttpJson.post(`member/weather/location`, JSON.stringify(param)).then(success).catch(fail);
 }
 
