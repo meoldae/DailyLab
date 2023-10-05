@@ -60,6 +60,7 @@ const Schedule = () => {
 
     return (
         <>
+            <div className='m-auto pb-[40px] text-center text-3xl font-semibold'>기록 & 계획</div>
             <CustomCalendar curMonth={curMonth!} firstDate={firstDate!} lastDate={lastDate!} dateContents={dateContentsList} prevMonthEvent={prevMonthEvent} nextMonthEvent={nextMonthEvent} />
             {selectedDate != "" ? <div className="mt-[20px]"><ScheduleView selectedDate={selectedDate} /></div> : null}
         </>
