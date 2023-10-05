@@ -29,10 +29,14 @@ const TodoListItem = (props: props) => {
     const trailingActions = () => (
         <TrailingActions>
             <SwipeAction destructive={true} onClick={() => props.blackItem!(props.info.todoId)}>
-                <div className='bg-yellow flex justify-center items-center rounded-xl text-white'>관심없음</div>
+                <div className='bg-yellow flex justify-center ml-1 w-[30px] items-center rounded-xl'>
+                    <img className="w-[25px]" src="./assets/img/icon/no_recommend.png" alt="" />
+                </div>
             </SwipeAction>
             <SwipeAction destructive={true} onClick={() => props.deleteItem!(props.info.todoId)}>
-                <div className='bg-orange flex justify-center items-center rounded-xl text-white'>삭제하기</div>
+                <div className='bg-orange flex justify-center ml-1 w-[30px] items-center rounded-xl'>
+                    <img className="w-[25px]" src="./assets/img/icon/delete.png" alt="" />
+                </div>
             </SwipeAction>
         </TrailingActions>
     );
