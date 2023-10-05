@@ -54,7 +54,7 @@ const Emotion = (props: props) => {
     };
   
     return (
-      <div className="mb-[70px] px-[30px] pt-[20px]">
+      <div className="pb-[70px] px-[30px] pt-[20px]">
         <div onClick={props.changeMode} className="mb-[30px] inline-flex items-center">
             <img className="w-[30px] transform scale-x-[-1]" src="./assets/img/icon/arrow_right.png" alt="" />
             <p className="text-2xl font-semibold">돌아가기</p>
