@@ -3,8 +3,7 @@ import Matter from "matter-js";
 import { getDailyData, getRatioData } from "@/api/Emotion";
 import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
 
-  const ProceedMatter: React.FC<TasteProps> = ({ date }) => {
-  const [engine, setEngine] = useState<Matter.Engine | undefined>(undefined);
+const ProceedMatter: React.FC<TasteProps> = ({ date }) => {
   const [emotionResultList, setEmontionResultList] = useState<EmotionResultType[]>([]);
   const [emotionRatioList, setEmontionRatioList] = useState<EmotionRatioType[]>([]);
   
@@ -42,7 +41,6 @@ import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
 
     // create engine
     const newEngine = Engine.create();
-    setEngine(newEngine);
     const world = newEngine.world;
 
     const canvas = document.getElementById("matterCanvasCon")!;
@@ -87,20 +85,18 @@ import { EmotionResultType, EmotionRatioType } from "@/type/EmotionType";
         }
       };
 
-      const requestPermission = async () => {
-        if (DeviceOrientationEvent.requestPermission) {
-          const permissionState = await DeviceOrientationEvent.requestPermission();
-
-          if (permissionState === 'granted') {
-            window.addEventListener("deviceorientation", handleDeviceOrientation);
-          }
+      const requestPermissionUser = () => {
+        if (window.DeviceOrientationEvent !== undefined &&  typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+          window.DeviceOrientationEvent.requestPermission().then((state) => {
+            if(state == 'granted') window.addEventListener("deviceorientation", handleDeviceOrientation);
+          }).catch(e => {console.error(e)});
         } else {
           // For non-iOS 13+ devices
           window.addEventListener("deviceorientation", handleDeviceOrientation);
         }
       };
 
-      requestPermission();
+      requestPermissionUser();
     }
 
     // add mouse control
