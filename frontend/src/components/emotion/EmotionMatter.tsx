@@ -57,7 +57,7 @@ const EmotionMatter = ({ circleCount, emotionNo }: EmotionMatterProps) => {
       document.body.scrollHeight, document.documentElement.scrollHeight,
       document.body.offsetHeight, document.documentElement.offsetHeight,
       document.body.clientHeight, document.documentElement.clientHeight
-    ) - 70;
+    ) - 30;
 
     // create renderer
     const render = Render.create({
