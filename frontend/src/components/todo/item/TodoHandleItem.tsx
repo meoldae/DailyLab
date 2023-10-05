@@ -87,7 +87,7 @@ const TodoHandleItem = (props : props) => {
                 <input className="w-full p-3 mb-3 rounded-xl bg-primary text-text" type="text" placeholder="카테고리를 검색해보세요" title="카테고리 검색" name="카테고리 검색" value={keyword}
                 onChange={onChangeData} onFocus={onFocusInKeyword}/>
                 {searchMode ? 
-                <ul className="text-left w-full z-[2] absolute bg-primary bottom-[10px] transform translate-y-[100%] border border-gray child-[li]:cursor-pointer child-[li]:p-3 child-[li:not(:last-child)]:border-b child-[li:not(:last-child)]:border-gray">
+                <ul className="text-left w-full z-[2] absolute bg-primary overflow-y-auto max-h-[140px] bottom-[10px] transform translate-y-[100%] border border-gray child-[li]:cursor-pointer child-[li]:p-3 child-[li:not(:last-child)]:border-b child-[li:not(:last-child)]:border-gray">
                     {searchItems.map((search, idx) => (search.categoryId != -1 ? <li className="cursor-pointer" key={idx} onClick={() => setKeyword(search.name)}>{search.name}</li> : <li key={idx}>{search.name}</li>))}
                 </ul>
                 : null}
