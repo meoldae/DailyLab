@@ -1,0 +1,81 @@
+-- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
+--
+-- Host: dailylab-db.cuvkk1xkflwb.ap-northeast-2.rds.amazonaws.com    Database: dailylab
+-- ------------------------------------------------------
+-- Server version	8.0.33
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
+SET @@SESSION.SQL_LOG_BIN= 0;
+
+--
+-- GTID state at the beginning of the backup 
+--
+
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
+
+--
+-- Table structure for table `taste_aggregate`
+--
+
+DROP TABLE IF EXISTS `taste_aggregate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `taste_aggregate` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `age_group` varchar(45) NOT NULL,
+  `gender` varchar(1) NOT NULL,
+  `taste0` int DEFAULT '0',
+  `taste1` int DEFAULT '0',
+  `taste2` int DEFAULT '0',
+  `taste3` int DEFAULT '0',
+  `taste4` int DEFAULT '0',
+  `taste5` int DEFAULT '0',
+  `taste6` int DEFAULT '0',
+  `taste7` int DEFAULT '0',
+  `taste8` int DEFAULT '0',
+  `taste9` int DEFAULT '0',
+  `taste10` int DEFAULT '0',
+  `taste11` int DEFAULT '0',
+  `taste12` int DEFAULT '0',
+  `taste13` int DEFAULT '0',
+  `taste14` int DEFAULT '0',
+  `typeA` varchar(45) DEFAULT NULL,
+  `typeB` varchar(45) DEFAULT NULL,
+  `typeC` varchar(45) DEFAULT NULL,
+  `typeD` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `taste_aggregate`
+--
+
+LOCK TABLES `taste_aggregate` WRITE;
+/*!40000 ALTER TABLE `taste_aggregate` DISABLE KEYS */;
+INSERT INTO `taste_aggregate` VALUES (2,'2023-09-27','20대','M',0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(3,'2023-09-28','20대','M',0,0,0,0,0,0,0,0,0,0,1,0,0,3,0,NULL,NULL,NULL,NULL),(7,'2023-09-28','20대','F',0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,NULL,NULL,NULL,NULL),(9,'2023-09-29','미성년자','M',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(11,'2023-09-29','20대','M',2,0,1,0,0,1,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(15,'2023-09-29','20대','F',1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,NULL,NULL,NULL,NULL),(18,'2023-09-30','20대','M',7,0,1,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(25,'2023-08-29','20대','F',1,123,33,45,5,32,71,9,8,10,11,23,44,55,43,NULL,NULL,NULL,NULL),(26,'2023-08-29','20대','M',7,9,65,12,2,3,83,12,55,23,34,54,66,12,33,NULL,NULL,NULL,NULL),(27,'2023-09-23','20대','F',12,3,32,15,44,2,4,5,6,7,89,0,1,121,3,NULL,NULL,NULL,NULL),(28,'2023-09-21','20대','F',12,3,32,15,44,2,4,5,6,7,89,0,1,121,3,NULL,NULL,NULL,NULL),(29,'2023-09-22','20대','F',12,3,32,15,44,2,4,5,6,7,89,0,1,121,3,NULL,NULL,NULL,NULL),(30,'2023-09-23','20대','M',12,3,32,15,44,2,4,5,6,7,89,0,1,121,3,NULL,NULL,NULL,NULL),(31,'2023-09-21','20대','M',12,3,32,15,44,2,4,5,6,7,89,0,1,121,3,NULL,NULL,NULL,NULL),(32,'2023-09-22','20대','M',12,3,32,15,44,2,4,5,6,7,89,0,1,121,3,NULL,NULL,NULL,NULL),(33,'2023-10-02','20대','F',2,0,0,0,0,5,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(38,'2023-10-02','20대','M',8,0,1,0,0,0,0,0,0,1,0,0,0,0,0,NULL,NULL,NULL,NULL),(47,'2023-10-02','미성년자','M',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(54,'2023-10-03','20대','M',10,0,1,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(58,'2023-10-03','미성년자','M',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(60,'2023-10-03','20대','F',0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(63,'2023-10-04','20대','M',4,1,8,0,0,1,0,0,0,1,1,0,0,0,0,NULL,NULL,NULL,NULL),(65,'2023-10-04','20대','F',3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL),(67,'2023-10-04','미성년자','M',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `taste_aggregate` ENABLE KEYS */;
+UNLOCK TABLES;
+SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-10-04 17:49:03
