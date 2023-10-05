@@ -7,7 +7,7 @@ const FlaskTutorial = () => {
             <div className="text-center p-[20px] font-semibold text-[24px] mt-[20px]">
                 <span className="text-green">성향 입력</span>하기
             </div>
-            <div className="bg_contents_con p-[20px] h-[45vh] pt-[30px]">
+            <div className="bg_contents_con p-[20px] h-[50vh] pt-[30px]">
                 {/* mbti 영역 */}
                 <span className="block font-semibold text-3xl p-[20px]">성향을 알려주세요</span>
                 <div className="px-[20px] mb-[30px]">

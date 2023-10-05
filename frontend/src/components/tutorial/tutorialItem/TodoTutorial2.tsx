@@ -7,7 +7,7 @@ const TodoTutorial2 = () => {
             <div className="text-center p-[20px] font-semibold text-[24px] mt-[20px]">
                 <span className="text-orange">할일 추천</span>하기
             </div>
-            <div className="bg_contents_con p-[20px] h-[45vh] pt-[30px] flex justify-center">
+            <div className="bg_contents_con p-[20px] h-[50vh] pt-[30px] flex justify-center">
                 <img className="w-[300px] m-auto" src={GetMode() === 'dark' ? "./assets/img/tutorial/todo2_dark.png" : "./assets/img/tutorial/todo2_light.png"} alt="" />
             </div>
             {/* 설명 부분 */}
