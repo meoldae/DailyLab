@@ -5,9 +5,17 @@ pipeline {
             steps {
                 script {
                     IMAGE_NAME_BE = "dailylab-dev-fastapi"
+                    CONFIG_PATH = "/usr/fastapi"
                     CONTAINER_NAME_BE = "daily_dev_data"
                     PROJECT_DIR_BE = "data"
                 }
+            }
+        }
+
+        // 설정파일 갖고오기
+        stage("copy config") {
+            steps {
+                sh "cp ${CONFIG_PATH}/* ${PROJECT_DIR_BE}/"
             }
         }
 
