@@ -15,5 +15,4 @@ public class MemberEmotionDayDto {
     private int emotionId;
     private String type;
     private String timeStamp;
-
 }

@@ -1,6 +1,8 @@
 package com.amor4ti.dailylab.domain.category.service;
 
 import com.amor4ti.dailylab.domain.category.dto.response.CategoryDto;
+import com.amor4ti.dailylab.domain.category.dto.response.CategorySearchDto;
+import com.amor4ti.dailylab.domain.category.mapper.CategoryMapper;
 import com.amor4ti.dailylab.domain.category.repository.CategoryRepository;
 import com.amor4ti.dailylab.domain.entity.category.Category;
 import com.amor4ti.dailylab.global.exception.CustomException;
@@ -20,12 +22,13 @@ import java.util.Map;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService{
+public class  CategoryServiceImpl implements CategoryService{
 
     private final ResponseService responseService;
     private final CategoryRepository categoryRepository;
 
     private final CategoryConverter categoryConverter;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public DataResponse getOneCategory(Long categoryId) {
@@ -69,6 +72,28 @@ public class CategoryServiceImpl implements CategoryService{
             categoryConverter.addCategoryToResult(result, large, medium, small, categoryId);
         }
 
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) result.get("list");
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, dataList);
+    }
+
+    @Override
+    public String getCategoryName(Long categroyId) {
+        Category category = categoryRepository.findByCategoryId(categroyId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.CATEGORY_NOT_FOUND));
+        log.info("찾은 카테고리 이름: {}", category.getSmall());
+        return category.getSmall();
+    }
+
+    @Override
+    public DataResponse getCategorySearchList() {
+        List<CategorySearchDto> categoryDtoList = new ArrayList<>();
+        List<Category> categoryList = categoryRepository.findAll();
+
+        for (Category category : categoryList) {
+            CategorySearchDto categorySearchDto = categoryMapper.categoryToCategorySearchDto(category);
+            categoryDtoList.add(categorySearchDto);
+        }
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, categoryDtoList);
     }
 }

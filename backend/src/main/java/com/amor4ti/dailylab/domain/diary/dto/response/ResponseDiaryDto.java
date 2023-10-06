@@ -13,6 +13,9 @@ import lombok.Data;
 public class ResponseDiaryDto {
     private String title;
     private String content;
+    private String conclusion;
+    private String advice;
+    private String score;
 
     public static ResponseDiaryDto ofToday(DiaryPredict diaryPredict) {
         return ResponseDiaryDto.builder()
@@ -25,6 +28,9 @@ public class ResponseDiaryDto {
         return ResponseDiaryDto.builder()
                 .title(diaryHistory.getTitle())
                 .content(diaryHistory.getContent())
+                .conclusion(diaryHistory.getConclusion())
+                .advice(diaryHistory.getAdvice())
+                .score(diaryHistory.getScore())
                 .build();
     }
 }

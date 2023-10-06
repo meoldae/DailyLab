@@ -3,6 +3,7 @@ import CustomHobbyList from './CustomHobbyList';
 import CustomHobbyInsert from './CustomHobbyInsert';
 import { HobbyType } from '@/type/HobbyType';
 import { GetSelectedHobbyList, GetHobbyList, InsertHobby, DeleteHobby } from '@/api/Info';
+import { successMsg } from '@/utils/customToast/CustomToast';
 
 const CustomHobby = () => {
 
@@ -24,6 +25,7 @@ const CustomHobby = () => {
                 const newData = totalHobbyList.find(item => item.hobbyId === idx);
                 result.push(newData);
                 setMyHobbyList(() => result);
+                successMsg("관심사를 추가했어요");
             }
         }, (error) => {console.log(error)});
     }
@@ -33,6 +35,7 @@ const CustomHobby = () => {
             if(data.code == "4004"){
                 const result = myHobbyList.filter(hobby => hobby.hobbyId != idx);
                 setMyHobbyList(() => result);
+                successMsg("관심사를 삭제했어요");
             }
         }, (error) => {console.log(error)});
     }
@@ -44,7 +47,7 @@ const CustomHobby = () => {
 
     return (
         <div>
-            <div className="-mt-[30px] relative bg_contents_con p-[20px]">
+            <div className="relative bg_contents_con p-[20px]">
                 <div className="text-[15px] mb-[10px] font-semibold">관심사가 궁금해요</div>
                 <CustomHobbyList handleInsert={handleInsertMode} insertStatus={insertMode} myHobbyList={myHobbyList} handleHobby={handleHobby}/>
             </div>

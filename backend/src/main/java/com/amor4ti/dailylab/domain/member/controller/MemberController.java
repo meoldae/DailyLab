@@ -62,7 +62,6 @@ public class MemberController {
 		return memberService.exitMember(memberId);
 	}
 
-
 	@GetMapping("/mypage")
 	public DataResponse getMemberInfo(Authentication authentication) {
 		Long memberId = Long.parseLong(authentication.getName());
@@ -70,11 +69,10 @@ public class MemberController {
 	}
 
 	@PostMapping("/modify")
-	public CommonResponse updateMember(@RequestBody UpdateMemberDto updateMemberDto, Authentication authentication){
+	public CommonResponse updateMember(@RequestBody UpdateMemberBasicDto updateMemberBasicDto, Authentication authentication){
 		Long memberId = Long.parseLong(authentication.getName());
-		return memberService.updateMemberInfo(memberId, updateMemberDto);
+		return memberService.updateMemberInfo(memberId, updateMemberBasicDto);
 	}
-
 
 	@DeleteMapping("/logout")
 	public CommonResponse logout(HttpServletRequest request, HttpServletResponse response) {
@@ -184,5 +182,17 @@ public class MemberController {
 		Long memberId = Long.parseLong(authentication.getName());
 
 		return memberService.getMemberLocation(memberLocationDto, memberId);
+	}
+
+	@GetMapping("membership/{memberId}")
+	public DataResponse getMembership(@PathVariable Long memberId){
+		return memberService.getMembership(memberId);
+	}
+
+	@GetMapping("/joinDate")
+	public DataResponse getJoinDate(Authentication authentication) {
+		Long memberId = Long.parseLong(authentication.getName());
+		LocalDate joinDateByMemberId = memberService.getJoinDateByMemberId(memberId);
+		return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, joinDateByMemberId);
 	}
 }

@@ -1,16 +1,17 @@
 import Header from '@/components/inc/Header';
 import Footer from '@/components/inc/Footer';
-import CustomCalendar from '@/utils/calendar/CustomCalendar';
+import Schedule from '@/components/schedule/Schedule';
+import { motion } from 'framer-motion';
+
 
 export default function AppSchedule() {
     return (
-        <>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <Header />
-                <div className='h-screen'>
-                    스케줄 페이지
-                    <CustomCalendar initDate="2023-09-14" showOverDate={false} />
+                <div className="contents_wrap">
+                    <Schedule />
                 </div>
             <Footer />
-        </>
+        </motion.div>
     )
 }

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useProgress } from '@/atom/ProgressAtom';
 import { NavLink } from "react-router-dom";
 import inform from "public/assets/img/login/inform.png";
 import loginNaver from "public/assets/img/login/login_naver.png";
@@ -5,6 +7,11 @@ import loginKakao from "public/assets/img/login/login_kakao.png";
 import loginGoogle from "public/assets/img/login/login_google.png";
 
 const Login = () => {
+
+    const { resetProgress } = useProgress();
+    useEffect(() => {
+        resetProgress();
+    }, []);
     
     const loginHandler = (service : string) => {
         const redirectUrl = (import.meta.env.VITE_DEV_API as string) + 'oauth2/authorization/' + service;
@@ -24,12 +31,12 @@ const Login = () => {
                 child-[*]:block
                 child-[*:not(:last-child)]:mb-4
                 child-[*:last-child]:mb-0">
-                    <NavLink to="/intro">
+                    {/* <NavLink to="/intro">
                         <img src={inform} alt="연구원 소개" />
                     </NavLink>
                     <button onClick={() => loginHandler('naver')}>
                         <img src={loginNaver} alt="네이버로그인" />
-                    </button>
+                    </button> */}
                     <button onClick={() => loginHandler('kakao')}>
                         <img src={loginKakao} alt="카카오로그인" />
                     </button>

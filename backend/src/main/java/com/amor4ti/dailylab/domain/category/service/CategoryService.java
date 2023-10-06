@@ -10,4 +10,8 @@ public interface CategoryService {
     DataResponse getCategoryList();
 
     DataResponse getCategoryTreeList();
+
+    String getCategoryName(Long categroyId);
+
+    DataResponse getCategorySearchList();
 }

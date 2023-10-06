@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryBlackListService {
 
-    CommonResponse black(List<Long> todoIdList, Long memberId);
+    CommonResponse black(Long todoId, Long memberId);
 
     CommonResponse cancelBlack(Long categoryId, Long memberId);
 

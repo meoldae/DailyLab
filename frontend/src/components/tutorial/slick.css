@@ -1,0 +1,3 @@
+.slick-dots {button::before {opacity: 1;margin-top: 30px;}}
+.slick-dots li button:before {content: ""; display: block; width: 12px; height: 12px; border-radius: 50%; background-color: #12AB47;}
+.slick-dots li.slick-active button:before {opacity: 1; content: ""; display: block; width: 30px; height: 12px; border-radius: 10px; background-color: #12AB47; position: absolute; left: -10px;}

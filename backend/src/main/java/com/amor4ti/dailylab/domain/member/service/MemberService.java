@@ -18,7 +18,7 @@ public interface MemberService {
     DataResponse getMemberInfo(Long memberId);
     DataResponse getMainMemberDto(Long memberId);
 
-    CommonResponse updateMemberInfo(Long memberId, UpdateMemberDto updateMemberDto);
+    CommonResponse updateMemberInfo(Long memberId, UpdateMemberBasicDto updateMemberBasicDto);
 
     DataResponse getHobbyList(Long memberId);
 
@@ -55,4 +55,12 @@ public interface MemberService {
     CommonResponse getMemberLocation(MemberLocationDto memberLocationDto, Long memberId);
 
     DataResponse getMemberStatusByRange(Long memberId, Map<String, String> paramMap);
+
+    void sendMemberInfotoFastAPI(Long memberId);
+
+    DataResponse getMembership(Long memberId);
+
+    List getMemberListByGenderAndAge(String gender, Integer age);
+
+    LocalDate getJoinDateByMemberId(Long memberId);
 }

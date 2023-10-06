@@ -11,25 +11,29 @@ import java.util.Map;
 public class CategoryConverter {
 
     public void addCategoryToResult(Map<String, Object> result, String large, String medium, String small, Long categoryId) {
-        if (!result.containsKey("large")) {
-            result.put("large", new ArrayList<>());
+        addToList(result, "list", large, medium, small, categoryId);
+    }
+
+    private void addToList(Map<String, Object> result, String key, String large, String medium, String small, Long categoryId) {
+        if (!result.containsKey(key)) {
+            result.put(key, new ArrayList<>());
         }
 
-        List<Map<String, Object>> largeList = (List<Map<String, Object>>) result.get("large");
-        Map<String, Object> largeMap = getOrCreateLargeMap(largeList, large);
+        List<Map<String, Object>> largeList = (List<Map<String, Object>>) result.get(key);
+        Map<String, Object> largeMap = getOrCreateMap(largeList, large);
 
-        if (!largeMap.containsKey("medium")) {
-            largeMap.put("medium", new ArrayList<>());
+        if (!largeMap.containsKey(key)) {
+            largeMap.put(key, new ArrayList<>());
         }
 
-        List<Map<String, Object>> mediumList = (List<Map<String, Object>>) largeMap.get("medium");
-        Map<String, Object> mediumMap = getOrCreateMediumMap(mediumList, medium);
+        List<Map<String, Object>> mediumList = (List<Map<String, Object>>) largeMap.get(key);
+        Map<String, Object> mediumMap = getOrCreateMap(mediumList, medium);
 
-        if (!mediumMap.containsKey("small")) {
-            mediumMap.put("small", new ArrayList<>());
+        if (!mediumMap.containsKey(key)) {
+            mediumMap.put(key, new ArrayList<>());
         }
 
-        List<Map<String, Object>> smallList = (List<Map<String, Object>>) mediumMap.get("small");
+        List<Map<String, Object>> smallList = (List<Map<String, Object>>) mediumMap.get(key);
 
         Map<String, Object> smallMap = new HashMap<>();
         smallMap.put("name", small);
@@ -38,31 +42,18 @@ public class CategoryConverter {
         smallList.add(smallMap);
     }
 
-    public Map<String, Object> getOrCreateLargeMap(List<Map<java.lang.String, java.lang.Object>> largeList, java.lang.String large) {
-        for (Map<java.lang.String, java.lang.Object> largeMap : largeList) {
-            if (largeMap.get("name").equals(large)) {
-                return largeMap;
+    private Map<String, Object> getOrCreateMap(List<Map<String, Object>> list, String name) {
+        for (Map<String, Object> map : list) {
+            if (map.get("name").equals(name)) {
+                return map;
             }
         }
 
-        Map<java.lang.String, java.lang.Object> newLargeMap = new HashMap<>();
-        newLargeMap.put("name", large);
-        largeList.add(newLargeMap);
+        Map<String, Object> newMap = new HashMap<>();
+        newMap.put("name", name);
+        list.add(newMap);
 
-        return newLargeMap;
-    }
-
-    public Map<String, Object> getOrCreateMediumMap(List<Map<String, Object>> mediumList, String medium) {
-        for (Map<String, Object> mediumMap : mediumList) {
-            if (mediumMap.get("name").equals(medium)) {
-                return mediumMap;
-            }
-        }
-
-        Map<String, Object> newMediumMap = new HashMap<>();
-        newMediumMap.put("name", medium);
-        mediumList.add(newMediumMap);
-
-        return newMediumMap;
+        return newMap;
     }
 }
+

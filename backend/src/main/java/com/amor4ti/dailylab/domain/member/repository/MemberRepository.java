@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.amor4ti.dailylab.domain.entity.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +15,9 @@ import com.amor4ti.dailylab.domain.entity.Member;
 import com.amor4ti.dailylab.domain.member.dto.MainMemberDto;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>,
+		  								  MemberCustomRepository,
+									      QuerydslPredicateExecutor<Todo> {
 
 	Optional<Member> findByEmailAndProvider(String email, String provider);
 

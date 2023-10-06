@@ -1,8 +1,7 @@
 package com.amor4ti.dailylab.domain.emotion.controller;
 
 import com.amor4ti.dailylab.domain.emotion.dto.request.RegisterMemberEmotionDto;
-import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionDayDto;
-import com.amor4ti.dailylab.domain.emotion.dto.response.MemberEmotionPeriodDto;
+import com.amor4ti.dailylab.domain.emotion.dto.response.*;
 import com.amor4ti.dailylab.domain.emotion.service.EmotionService;
 import com.amor4ti.dailylab.domain.emotion.entity.Emotion;
 import com.amor4ti.dailylab.global.rabbitmq.MessagePublisher;
@@ -15,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -47,9 +48,17 @@ public class EmotionController {
 
     @GetMapping("/date")
     private DataResponse findDayEmotion(Authentication authentication,
-                                        @RequestParam String date) {
+                                        @RequestParam("date") String date,
+                                        @RequestParam(value = "state", required = false) boolean state) {
         Long memberId = Long.parseLong(authentication.getName());
-        List<MemberEmotionDayDto> result = emotionService.getDayEmotion(memberId, date);
+        Object result;
+
+        log.info("state={}", state);
+        if (state) {
+            result = emotionService.getDayPercentageEmotion(memberId, date);
+        } else {
+            result = emotionService.getDayEmotion(memberId, date);
+        }
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
     }
@@ -62,5 +71,27 @@ public class EmotionController {
         Long memberId = Long.parseLong(authentication.getName());
         List<MemberEmotionPeriodDto> result = emotionService.getEmotionsBetweenDates(memberId, startDate, endDate);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+    }
+
+    @GetMapping("/aggregate")
+    private DataResponse findAggregateEmotion(Authentication authentication,
+                                              @RequestParam("state") String state,
+                                              @RequestParam("startdate") LocalDate startDate,
+                                              @RequestParam("enddate") LocalDate endDate) {
+
+        Long memberId = Long.parseLong(authentication.getName());
+        List<ResponseEmotionAggregate> result = new ArrayList<>();
+        if ("ageGender".equals(state)) {
+            result = emotionService.getEmotionsAggregate(memberId, startDate, endDate);
+        } else if ("total".equals(state)) {
+            result = emotionService.getEmotionsTotalAggregate(memberId, startDate, endDate);
+        }
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SUCCESS, result);
+    }
+
+    @PostMapping("/test")
+    private CommonResponse test(@RequestParam("date") String date) {
+        emotionService.updateEmotionsAggregate(date);
+        return responseService.successResponse(ResponseStatus.RESPONSE_SUCCESS);
     }
 }

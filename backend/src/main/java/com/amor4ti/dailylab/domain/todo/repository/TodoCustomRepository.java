@@ -4,6 +4,7 @@ import com.amor4ti.dailylab.domain.entity.Todo;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoRecommendedDto;
 import com.amor4ti.dailylab.domain.todo.dto.response.TodoSmallDto;
+import com.querydsl.core.Tuple;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,11 +20,13 @@ public interface TodoCustomRepository {
 
     Optional<Todo> findByMemberIdAndCategoryId(Long memberId, Long categoryId);
 
-    Optional<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate);
+    List<Todo> findByMemberIdAndCategoryIdAndTodoDate(Long memberId, Long categoryId, LocalDate todoDate);
 
     List<TodoDto> findByMemberId(Long memberId);
 
     Optional<TodoRecommendedDto> findTodoRecommendedDtoByMemberIdAndTodoId(Long memberId, Long todoId);
 
     long countMemberTodoByMemberIdAndTodoDate(Long memberId, LocalDate todoDate);
+
+    List<Tuple> getStatistics(LocalDate startDate, LocalDate endDate, List<Long> IdList);
 }

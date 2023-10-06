@@ -15,6 +15,9 @@ public enum ExceptionStatus {
 	DIARY_CANNOT_WRITE("-400", "일기 작성아 실패했습니다."),
 	DIARY_DAY_NOT_EXIST("-400", "오늘 작성된 일기가 없습니다."),
 
+	/* Emotion */
+	NOT_FOUND_AGGREGATE("-4000", "조회 가능한 데이터가 없습니다"),
+
 	TOKEN_EXPIRED("-1000", "토큰이 만료되었습니다."),
 	REFRESH_TOKEN_EXPIRED("-1001", "토큰이 만료되었습니다."),
 	TOKEN_NOT_FOUND_IN_COOKIE("-1002", "토큰이 없습니다."),
@@ -41,7 +44,10 @@ public enum ExceptionStatus {
 	MEMBER_HOBBY_IS_ALREADY_PRESENT("-8008", "이미 등록된 관심사입니다."),
 	MBTI_NOT_FOUND("-9000", "MBTI가 존재하지 않습니다"),
 
-	LOCATION_TRANSPORT_FAIL("-10000", "사용자 위경도 전송에 실패했습니다.");
+	LOCATION_TRANSPORT_FAIL("-10000", "사용자 위경도를 FastAPI로 전송하는데 실패했습니다."),
+	MEMBER_INFO_TRANSPORT_FAIL("-10001", "사용자 정보를 FastAPI로 전송하는데 실패했습니다."),
+	FASTAPI_CONNECTION_FAIL("-11111", "FastAPI 서버와 연결을 실패했습니다"),
+	UNEXPECTED_RESPONSE_TYPE("-11112", "FastAPI 서버로부터 예상하지 못한 데이터 타입이 도착했습니다.");
 
 	private final String code;
 	private final String message;
