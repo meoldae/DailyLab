@@ -1,0 +1,7 @@
+# gitignore
+config.py
+.idea
+../.idea/
+.env
+__pycache__/
+*.pyc
