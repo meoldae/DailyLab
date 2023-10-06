@@ -33,4 +33,10 @@ function fromStringtoDate(stringDate: string) {
     return new Date(stringDate);
 }
 
-export {leftPad, toStringByFormatting, toStringByFormattingIncludeTime, getMonthFirstDate, getMonthLastDate, fromStringtoDate};
+function differDate(compare1Date: Date, compare2Date: Date){
+    const diff = compare1Date.getTime() - compare2Date.getTime();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+
+export {leftPad, toStringByFormatting, toStringByFormattingIncludeTime, getMonthFirstDate, getMonthLastDate, fromStringtoDate, differDate};

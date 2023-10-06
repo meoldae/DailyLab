@@ -18,7 +18,9 @@ export type TodoParamType = {
     todoId? : number;
     checkedDate?: string;
     categoryId? : number;
+    categoryName? : string;
     content? : string;
     todoDate? : string;
     isSystem? : number;
+    large? : string;
 }

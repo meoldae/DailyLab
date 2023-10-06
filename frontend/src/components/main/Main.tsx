@@ -1,11 +1,12 @@
 import MainProceed from "./proceed/Proceed";
 // import MainFinish from "./finish/Finish";
-import { toStringByFormatting } from '@/utils/date/DateFormatter';
+import { toStringByFormatting, differDate } from '@/utils/date/DateFormatter';
 import MainWaiting from "./waiting/Waiting";
 import { useEffect, useState } from "react";
 import { getStatus } from "@/api/User";
 import MainResult from "./Result";
 import { setStatusProceed } from "@/api/Status";
+import { useNavigate } from "react-router";
 
 /*
  * 사용자의 status를 세가지 경우로 나누어 분기처리 
@@ -20,45 +21,57 @@ interface StatusType {
   }
 
 const Main = () => {
+    
     const [status, setStatus] = useState("proceed");
-    const [getDate, setGetDate] = useState('');
-    // const comp = 'result';
+    const [getDate, setGetDate] = useState(toStringByFormatting(new Date()));
     const curDate = toStringByFormatting(new Date());
+    const navigator = useNavigate();
+
     const nowStatus = async () => {
         await getStatus(({data}) => {
             const nowState = data.data as StatusType;
-            setStatus(() => nowState.status);
-            setGetDate(() => nowState.date);
+
+            if(nowState.status === 'init'){
+                navigator('/tutorial?isNew=true');
+            }
+
+            const curDate2: Date = new Date(curDate);
+            const getDate2: Date = new Date(nowState.date);
             
+            const timeDifference: number = differDate(curDate2, getDate2);
+
+            if(timeDifference != 0 && nowState.status !== 'wait'){
+                if(timeDifference != 1 && nowState.status != "proceed") void setNewStatus(curDate);
+                else if(timeDifference == 1){
+                    setStatus(() => nowState.status);
+                    setGetDate(() => nowState.date);
+                }
+            } else {
+                setStatus(() => nowState.status);
+                setGetDate(() => nowState.date);
+            }
         }, (error) => {
             console.log(error)
         });
-    }
 
-    const getDateDiff = () => {
-        const curDate2: Date = new Date(curDate);
-        const getDate2: Date = new Date(getDate);
-        
-        const timeDifference: number = (curDate2.getDate() - getDate2.getDate());
-
-        if(timeDifference >= 1) setNewStatus(curDate);
     }
 
     useEffect(() => {
         void nowStatus();
-        getDateDiff();
     }, [getDate]);
 
     const setNewStatus = async (date : string) => {
         await setStatusProceed(date, ({data}) => {
             setStatus(() => "proceed");
+            setGetDate(() => date);
         }, (error) => {console.log(error)})
     }
-    
+
+
     return (
         <>
-            {status === 'proceed' && (<MainProceed getDate={getDate} curDate={curDate}/>)}
-            {(status === 'wait' || status === 'complete') && (<MainWaiting getDate={getDate} curDate={curDate}/>)}
+            {status === 'proceed' && (<MainProceed getDate={getDate} />)}
+            {(status === 'wait' || status === 'complete') && (<MainWaiting getDate={getDate} />)}
             {status === 'finish' && (<MainResult getDate={getDate} curDate={curDate}/>)}
         </>
     )

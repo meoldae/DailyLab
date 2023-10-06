@@ -1,13 +1,13 @@
 {
-    "name": "vite-pwa",
-    "short_name": "vite-pwa",
+    "name": "하루연구소",
+    "short_name": "하루연구소",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#485EEE",
+    "background_color": "#F5F5F5",
+    "theme_color": "#12AB47",
     "icons": [
       {
-        "src": "icons/coco_icon.png",
+        "src": "icons/pwa_icon.png",
         "sizes": "192x192",
         "type": "image/png",
         "purpose": "any maskable"

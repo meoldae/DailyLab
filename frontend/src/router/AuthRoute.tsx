@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { Navigate, Outlet } from 'react-router';
-import { GetAccessToken } from '@/atom/UserAtom';
+import { userAtom } from '@/atom/UserAtom';
+import { useRecoilState } from 'recoil';
 
 /**
  * 접근한 페이지에 맞는 권한을 가지고 있는지 판단
@@ -17,9 +18,22 @@ interface AuthRouteProps {
 }
 
 export default function AuthRoute({ authentication } : AuthRouteProps) {
-    const authText = authentication;
+
+    const [token, setToken] = useRecoilState(userAtom);
     //로그인되었는지
-    const isLogin = GetAccessToken() != "" ? true : false;
+    let isLogin = (token.accessToken != "" && token.accessToken != "undefined");
+
+    if(localStorage.getItem("userAtom") != "" && localStorage.getItem("userAtom") != null && localStorage.getItem("userAtom") != undefined && token.accessToken != "undefined" && token.accessToken != undefined && token.accessToken != JSON.parse(localStorage.getItem("userAtom")!).accessToken && JSON.parse(localStorage.getItem("userAtom")!).accessToken != "undefined"){
+        setToken(JSON.parse(localStorage.getItem("userAtom")!));
+        isLogin = true;
+    }
+
+    if(token.accessToken == "undefined"){
+        setToken({accessToken : ""});
+    }
+
+    const authText = authentication;
+    
     if(authText.indexOf('Not') == -1){ //로그인이 필요한 곳을 접근하려고 할 때
         if(isLogin) return <Outlet />; //로그인이 되어있을 때
         else return <Navigate to={redirect(true, authText)} />;

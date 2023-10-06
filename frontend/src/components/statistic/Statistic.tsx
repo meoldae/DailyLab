@@ -2,30 +2,58 @@ import Tab, {TabType} from '@/utils/tab/Tab';
 import StatisticContainer from './StatisticContainer';
 import { useEffect, useState } from 'react';
 import { toStringByFormatting } from '@/utils/date/DateFormatter';
-import { subDays } from 'date-fns';
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, subWeeks, subMonths } from 'date-fns';
 
 
 const Statistic = () => {
     const initIdx = 0;
     const TabContents = [] as TabType[];
-    const [period, setPeriod] = useState('month');
-    const [startDate, setStartDate] = useState(toStringByFormatting(subDays(new Date(), 30)));
-    const [endDate, setEndDate] = useState(toStringByFormatting(new Date()));
+    const [period, setPeriod] = useState('week');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     
-    TabContents.push({title : "개인", contents: <StatisticContainer state="personal" period={period} startDate={startDate} endDate={endDate}/>});
-    TabContents.push({title : "연령대", contents: <StatisticContainer state="ageGender" period={period} startDate={startDate} endDate={endDate}/>});
-    TabContents.push({title : "전체", contents:<StatisticContainer state="total" period={period} startDate={startDate} endDate={endDate}/>});
+    const getStartAndEndDates = (period: string) => {
+        const today = new Date();
+        
+        if (period === 'week') {
+            // 이전 주의 시작 (월요일)과 끝 (일요일)을 찾기.
+            const startOfLastWeek = startOfWeek(subWeeks(today, 1), { weekStartsOn: 1 });
+            const endOfLastWeek = endOfWeek(subWeeks(today, 1), { weekStartsOn: 1 });
+            
+            return {
+                startDate: toStringByFormatting(startOfLastWeek),
+                endDate: toStringByFormatting(endOfLastWeek)
+            };
+        } else if (period === 'month') {
+            // 이전 달의 시작 (1일)과 끝 (마지막 일)을 찾기.
+            const startOfLastMonth = startOfMonth(subMonths(today, 1));
+            const endOfLastMonth = endOfMonth(subMonths(today, 1));
+            
+            return {
+                startDate: toStringByFormatting(startOfLastMonth),
+                endDate: toStringByFormatting(endOfLastMonth)
+            };
+        }
 
+        return {
+            startDate: '',
+            endDate: ''
+        }
+    };
 
     const handlePeriod = () => {
         setPeriod(period === 'month' ? 'week' : 'month');
     }
-
+    
     useEffect(() => {
-        period === 'month' ?
-        setStartDate(toStringByFormatting(subDays(new Date(), 30))) :
-        setStartDate(toStringByFormatting(subDays(new Date(), 7)))
+        const dates = getStartAndEndDates(period);
+        setStartDate(dates.startDate);
+        setEndDate(dates.endDate);
     },[period])
+    
+    TabContents.push({title : "개인", contents: <StatisticContainer state="personal" period={period} startDate={startDate} endDate={endDate}/>});
+    TabContents.push({title : "연령대", contents: <StatisticContainer state="ageGender" period={period} startDate={startDate} endDate={endDate}/>});
+    TabContents.push({title : "전체", contents:<StatisticContainer state="total" period={period} startDate={startDate} endDate={endDate}/>});
     
     return (
         <div className='contents_wrap'>

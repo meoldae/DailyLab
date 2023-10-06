@@ -19,7 +19,8 @@ const CustomCalendar = (props : CalendarProps) => {
 
     const dateContents:JSX.Element[] = [...props.dateContents];
 
-    for(let i=props.firstDate.getDay(); i > 1; i--) dateContents.unshift(<div></div>);
+    let firstDay = props.firstDate.getDay() > 0 ? props.firstDate.getDay() : 7;
+    while(firstDay-- > 1) dateContents.unshift(<div></div>);
 
     return (   
         <div>
@@ -40,13 +41,13 @@ const CustomCalendar = (props : CalendarProps) => {
                 </div>
             </div>
             <div className="w-full">
-                <div className="overflow-hidden -mb-[20px] w-[calc(100% + 13px)] -ml-[13px]  child-[div]:float-left child-[div]:w-[14.285%] child-[div]:pl-[13px] child-[div]:mb-[20px]">
-                    {dateContents.map((component, index) => (
-                        <React.Fragment key={index}>
-                            {component}
-                        </React.Fragment>
-                    ))}
-                </div>
+                    <div className="overflow-hidden -mb-[20px] w-[calc(100% + 13px)] -ml-[13px]  child-[div]:float-left child-[div]:w-[14.285%] child-[div]:pl-[13px] child-[div]:mb-[15px]">
+                        {dateContents.map((component, index) => (
+                            <React.Fragment key={index}>
+                                {component}
+                            </React.Fragment>
+                        ))}
+                    </div>          
             </div>
         </div>
     )   

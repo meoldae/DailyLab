@@ -3,6 +3,7 @@ import CustomHobbyList from './CustomHobbyList';
 import CustomHobbyInsert from './CustomHobbyInsert';
 import { HobbyType } from '@/type/HobbyType';
 import { GetSelectedHobbyList, GetHobbyList, InsertHobby, DeleteHobby } from '@/api/Info';
+import { successMsg } from '@/utils/customToast/CustomToast';
 
 const CustomHobby = () => {
 
@@ -24,6 +25,7 @@ const CustomHobby = () => {
                 const newData = totalHobbyList.find(item => item.hobbyId === idx);
                 result.push(newData);
                 setMyHobbyList(() => result);
+                successMsg("관심사를 추가했어요");
             }
         }, (error) => {console.log(error)});
     }
@@ -33,6 +35,7 @@ const CustomHobby = () => {
             if(data.code == "4004"){
                 const result = myHobbyList.filter(hobby => hobby.hobbyId != idx);
                 setMyHobbyList(() => result);
+                successMsg("관심사를 삭제했어요");
             }
         }, (error) => {console.log(error)});
     }

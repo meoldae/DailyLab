@@ -20,9 +20,16 @@ export default defineConfig({
         injectionPoint: undefined
       },
       manifest: {
+        name: '하루연구소',
+        short_name: '하루연구소',
+        description: '당신의 하루를 연구합니다',
+        start_url: '/',
+        display: 'standalone',
+        background_color: '#F5F5F5', // 스플래시 화면의 배경색
+        // theme_color: '#F5F5F5', // 애플리케이션의 주 테마 색상
         icons: [
           {
-            src: "icons/coco_icon.png",
+            src: "icons/pwa_icon.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any maskable",

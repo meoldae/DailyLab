@@ -11,9 +11,10 @@ const Info = () => {
 
     return (
         <>
+        <div className='m-auto pb-[20px] text-center text-3xl font-semibold'>정보 입력</div>
             <div className="flex justify-start items-center pr-[10px]">
                 <img className="w-[90px]" src={marco2Img} alt="마르코"/>
-                <p className="-mt-4 text-2xl font-semibold">마르코에게 알려주세요</p>
+                <p className="-mt-4 text-2xl font-semibold">연구자료를 모으고 있어요</p>
             </div>
             <div className="mb-[20px] -mt-[30px]">
                 <CustomHobby />
