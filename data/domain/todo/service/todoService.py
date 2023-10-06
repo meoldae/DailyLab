@@ -57,7 +57,7 @@ def makeTodo(member_id: int, todo_date: date, db):
         religion=member.religion,
     )
 
-    ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
+    ds = pd.read_csv('dataset/ToDoVersion2.csv', encoding='euc-kr')
 
     condition = ds.iloc[:, 4].isin([2, 3, 4])
     filtered_indices = (ds.index[condition]).tolist()
@@ -240,10 +240,10 @@ def removeDuplicate(resultList):
 
     # 같은 분류에 속하는 것들을 하루에 두 번 추천하지 않게 제거하는 후처리 함수
     for idx in resultList.index:
-        classfication = cbf.getClassification(idx)
-        if classfication not in removeList:
-            removeList.append(classfication)
-        elif classfication != 0:
+        classification = cbf.getClassification(idx)
+        if classification not in removeList:
+            removeList.append(classification)
+        elif classification != 0:
             resultList = resultList.drop(idx)
     return resultList
 
