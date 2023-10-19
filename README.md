@@ -50,6 +50,7 @@
 </table>
 
 ## 📅 진행 기간
+
 ```
 - 전체 기간 : 2023. 08. 28 ~ 2023. 10. 06 [ 6주 ]
 - 기획 및 설계 : 2023. 08. 28 ~ 2023. 09. 01
@@ -60,6 +61,7 @@
 ## 🛠 개발 환경
 <b>협업 도구</b> : <img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/Git-000000?style=flat-square&logo=git&logoColor=F05032"/> <img src="https://img.shields.io/badge/Jira-000000?style=flat-square&logo=jirasoftware&logoColor=0052CC"/> <img src="https://img.shields.io/badge/Gitlab-000000?style=flat-square&logo=gitlab&logoColor=FC6D26"/> <br/><br/>
 <b>운영 및 배포 </b> : <img src="https://img.shields.io/badge/AWS EC2-000000?style=flat-square&logo=amazonec2&logoColor=FF9900"/> <img src="https://img.shields.io/badge/AWS RDS-000000?style=flat-square&logo=amazonrds&logoColor=527FFF"/> <img src="https://img.shields.io/badge/Docker-000000?style=flat-square&logo=docker&logoColor=2496ED"/> <img src="https://img.shields.io/badge/Jenkins-000000?style=flat-square&logo=jenkins&logoColor=D24939"/> <img src="https://img.shields.io/badge/Nginx-000000?style=flat-square&logo=nginx&logoColor=009639"/> 
+
 <details>
 <summary>버전 상세 정보</summary>
 
@@ -180,7 +182,6 @@
 
 </br></br>
 
-
 </details>
 
 <br/><br/>
@@ -226,6 +227,7 @@
 
 
 ### 🔑Branch
+
 - develop/be : 백엔드 프로젝트 배포<br>
 - develop/fe  : 프론트엔드 프로젝트 배포<br>
 - feature/be/[기능명] : 백엔드 기능 개발
