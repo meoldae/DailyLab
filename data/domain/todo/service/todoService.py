@@ -216,7 +216,7 @@ def afterListProcess(member_id, resultList, todo_date, db):
     if weatherDict[member_id].rain != "강수없음":
 
         # csv 파일 읽기 - main 기준 파일 path
-        ds = pd.read_csv('dataset/ToDoVer1.csv', encoding='utf-8')
+        ds = pd.read_csv('dataset/ToDoVersion2.csv', encoding='utf-8')
 
         # 11열의 값이 1인 행의 인덱스를 뽑기 (날씨)
         condition = ds.iloc[:, 11] == 1
