@@ -189,7 +189,7 @@
 # 📚산출물
 ### 📗시스템 구성도
 <p align="center">
-![image](https://github.com/97Kzone/CodeTest_practice/assets/76652908/e467a9ae-4171-431c-b663-7b8237ac663d)
+<img src="https://github.com/97Kzone/CodeTest_practice/assets/76652908/e467a9ae-4171-431c-b663-7b8237ac663d"/>
 </p>
 
 ### 📘ER Diagram
